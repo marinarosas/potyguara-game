@@ -20,14 +20,14 @@ public class LightController : MonoBehaviour
         {
             foreach (var light in lights)
             {
-                light.GetComponent<Light>().enabled = false;
+                light.GetComponent<Light>().enabled = true;
             }
         }
         else
         {
             foreach (var light in lights)
             {
-                light.GetComponent<Light>().enabled = true;
+                light.GetComponent<Light>().enabled = false;
             }
         }
     }
