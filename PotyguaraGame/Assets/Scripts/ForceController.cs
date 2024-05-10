@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
@@ -8,12 +8,18 @@ using UnityEngine.XR;
 
 public class ForceController : MonoBehaviour
 {
+    public InputActionReference leftHandPosition;
+    public InputActionReference rightHandPosition;
     public GameObject xrRig;
-    private Rigidbody rig;
     public float force;
+
+    private Rigidbody rig;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        rig = GetComponent<Rigidbody>();   
         rig = GetComponent<Rigidbody>();   
     }
 
