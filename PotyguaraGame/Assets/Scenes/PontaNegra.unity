@@ -6786,7 +6786,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7102381293404511250, guid: 6039557e6eb97664e93794030ff517de, type: 3}
   m_PrefabInstance: {fileID: 7908798499017652004}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1526261650}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0cb9aa70a22847b5925ee5f067c10a9, type: 3}
@@ -20820,6 +20820,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2565889672700604679, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
   m_PrefabInstance: {fileID: 1521314810}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1526261650 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7134024963456918821, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+  m_PrefabInstance: {fileID: 7908798499017652004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1526261654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526261650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f07515ada089df47868559a20dd6783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quitKey: 27
+  fadeInTexture: {fileID: 0}
+  speedRotationIncrement: 0.05
+  layerName: Default
 --- !u!1 &1543427695
 GameObject:
   m_ObjectHideFlags: 0
@@ -28534,13 +28555,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7134024963456918821, guid: 6039557e6eb97664e93794030ff517de, type: 3}
-      propertyPath: m_Name
-      value: XR Origin (XR Rig)
-      objectReference: {fileID: 0}
     - target: {fileID: 1002141650569715903, guid: 6039557e6eb97664e93794030ff517de, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 176.9
+      value: 176.19
       objectReference: {fileID: 0}
     - target: {fileID: 1002141650569715903, guid: 6039557e6eb97664e93794030ff517de, type: 3}
       propertyPath: m_LocalPosition.y
@@ -28578,10 +28595,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6319838657890560913, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: m_ModelPrefab
+      value: 
+      objectReference: {fileID: -8679921383154817045, guid: bf7151579c38e2a44be94ba8773876c1, type: 3}
+    - target: {fileID: 6957889782689443382, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: m_ModelPrefab
+      value: 
+      objectReference: {fileID: -8679921383154817045, guid: 56186ccf27ad7864681108ed88349071, type: 3}
+    - target: {fileID: 6984994920358399918, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: m_LeftHandMesh
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: bf7151579c38e2a44be94ba8773876c1, type: 3}
+    - target: {fileID: 6984994920358399918, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: m_RightHandMesh
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: 56186ccf27ad7864681108ed88349071, type: 3}
+    - target: {fileID: 7134024963456918821, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: m_Name
+      value: XR Origin (XR Rig)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7134024963456918821, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7150969953456964712, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7588372803208693674, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      propertyPath: updateServerTimesPerSecond
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7150969953456964712, guid: 6039557e6eb97664e93794030ff517de, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7134024963456918821, guid: 6039557e6eb97664e93794030ff517de, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1526261654}
   m_SourcePrefab: {fileID: 100100000, guid: 6039557e6eb97664e93794030ff517de, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
