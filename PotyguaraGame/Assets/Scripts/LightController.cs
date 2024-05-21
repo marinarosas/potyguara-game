@@ -16,7 +16,7 @@ public class LightController : MonoBehaviour
     void Update()
     {
         Vector3 rotation = diretionalLight.transform.eulerAngles;
-        if(rotation.x >= 177 && rotation.x < 350)
+        if(rotation.x >= 186 && rotation.x < 350)
         {
             foreach (var light in lights)
             {

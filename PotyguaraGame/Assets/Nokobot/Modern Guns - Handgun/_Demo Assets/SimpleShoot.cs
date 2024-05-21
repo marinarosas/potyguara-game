@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
@@ -8,6 +9,7 @@ public class SimpleShoot : MonoBehaviour
 {
     private int maxBullets = 10;
     private int currentBullets;
+    private UnityEngine.XR.InputDevice targetDevice;
 
     public TextMeshProUGUI bullets;
 
@@ -23,8 +25,8 @@ public class SimpleShoot : MonoBehaviour
 
     [Header("Settings")]
     [Tooltip("Specify time to destory the casing object")] [SerializeField] private float destroyTimer = 2f;
-    [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 750f;
-    [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 750f;
+    [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 700f;
+    [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 250f;
 
 
     void Start()
@@ -41,18 +43,19 @@ public class SimpleShoot : MonoBehaviour
     void Update()
     {
         //If you want a different input, change it here
-        if (Input.GetKeyDown(KeyCode.K))
+        targetDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValue);
+        if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
         {
-            if(currentBullets > 0)
+            if (currentBullets > 0)
             {
                 //Calls animation on the gun that has the relevant animation events that will fire
+                FindObjectOfType<LeftHandController>().AnimationFinger();
                 gunAnimator.SetTrigger("Fire");
             }
             else
             {
                 Reload();
             }
-
         }
         bullets.text = currentBullets.ToString();
     }

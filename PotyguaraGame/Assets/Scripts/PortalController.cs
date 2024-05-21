@@ -12,9 +12,13 @@ public class PortalController : MonoBehaviour
             {
                 FindObjectOfType<GameController>().setHoverBunda(true);
             }
-            else
+            else if(transform.parent.name == "ForteDosReis")
             {
                 FindObjectOfType<GameController>().setForteDosReis(true);
+            }
+            else
+            {
+                FindObjectOfType<GameController>().setPontaNegra(true);
             }
         }
     }
