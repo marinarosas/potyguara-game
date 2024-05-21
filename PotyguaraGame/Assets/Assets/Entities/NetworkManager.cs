@@ -175,7 +175,7 @@ public class NetworkManager : MonoBehaviour
     void Update() {
         // A cada frame, verificar se precisa instanciar quantos RemotePlayerPrefab e
         // LocalPlayerPrefab forem necessários
-        Debug.Log("Avaliando UPDATE" + gameState.ToString());
+        //Debug.Log("Avaliando UPDATE" + gameState.ToString());
         if (gameState != null) {
 
             // Para cada jogador no gameState verificar se o jogador já existe na cena

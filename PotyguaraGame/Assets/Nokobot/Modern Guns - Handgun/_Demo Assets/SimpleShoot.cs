@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
 public class SimpleShoot : MonoBehaviour
@@ -10,6 +11,8 @@ public class SimpleShoot : MonoBehaviour
     private int maxBullets = 10;
     private int currentBullets;
     private UnityEngine.XR.InputDevice targetDevice;
+    private bool isLeft = false;
+    private bool isRight = false;
 
     public TextMeshProUGUI bullets;
 
@@ -40,21 +43,48 @@ public class SimpleShoot : MonoBehaviour
         Reload();
     }
 
+    public void setLeftHand()
+    {
+        isLeft = true;
+    }
+
+    public void setRightHand()
+    {
+        isRight = true;
+    }
+
     void Update()
     {
-        //If you want a different input, change it here
-        targetDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValue);
-        if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
+        if (isLeft)
         {
-            if (currentBullets > 0)
+            targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
+        }
+        else if (isRight)
+        {
+            targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
+        }
+        if (isRight != false || isLeft != false)
+        {
+            targetDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValue);
+            if (triggerValue > 0.1f)
             {
-                //Calls animation on the gun that has the relevant animation events that will fire
-                FindObjectOfType<LeftHandController>().AnimationFinger();
-                gunAnimator.SetTrigger("Fire");
-            }
-            else
-            {
-                Reload();
+                if (currentBullets > 0)
+                {
+                    //Calls animation on the gun that has the relevant animation events that will fire
+                    if (isRight)
+                    {
+                        FindObjectOfType<RightHandController>().AnimationFinger();
+                    }
+                    else
+                    {
+                        FindObjectOfType<LeftHandController>().AnimationFinger();
+                    }
+                    gunAnimator.SetTrigger("Fire");
+                }
+                else
+                {
+                    Reload();
+                }
             }
         }
         bullets.text = currentBullets.ToString();
