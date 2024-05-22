@@ -9,9 +9,9 @@ public class ZumbiController : MonoBehaviour
 {
     public Transform player;
     private NavMeshAgent navMesh;
-    public AudioClip attackEnemy;
+    //public AudioClip attackEnemy;
 
-    private float velocityWalking = 3f, velocityPersecution = 5f;
+    private float velocityWalking = 0.5f, velocityPersecution = 3f;
     private float distanceFollow = 20f, distancePerception = 30f, distanceAttack = 2f;
 
     private float timeForAttack = 1.5f;
@@ -67,25 +67,26 @@ public class ZumbiController : MonoBehaviour
             Walking();
         }
 
-        /*if (teste)
+        if (teste)
         {
-            //ani.SetBool("isRunning", true);
-            countPersecution += Time.deltaTime;
+            ani.SetBool("IsWalking", false);
+            ani.SetBool("IsRunning", true);
+            //countPersecution += Time.deltaTime;
         }
-        if (countPersecution >= 5f)
+        /*if (countPersecution >= 5f)
         {
             teste = false;
             followSomething = false;
             countPersecution = 0f;
-        }
+        }*/
 
         if (attackSomething)
         {
-            //ani.SetBool("isAtacking", true);
-            GetComponent<AudioSource>().PlayOneShot(attackEnemy);
-            countAttack += Time.deltaTime;
+            ani.SetBool("IsAttacking", true);
+            //GetComponent<AudioSource>().PlayOneShot(attackEnemy);
+            //countAttack += Time.deltaTime;
         }
-        if (countAttack >= timeForAttack && distanceForPlayer <= distanceAttack)
+        /*if (countAttack >= timeForAttack && distanceForPlayer <= distanceAttack)
         {
             attackSomething = true;
             countAttack = 0f;
@@ -104,7 +105,8 @@ public class ZumbiController : MonoBehaviour
     {
         if (!followSomething)
         {
-            //ani.SetBool("isRunning", false);
+            ani.SetBool("IsWalking", true);
+            ani.SetBool("IsRunning", false);
             navMesh.acceleration = 5f;
             navMesh.speed = velocityWalking;
             navMesh.destination = destinyRandow[AIPointCurrent].transform.position;
@@ -117,11 +119,14 @@ public class ZumbiController : MonoBehaviour
 
     void Follow()
     {
-        //ani.SetBool("isRunning", true);
+        ani.SetBool("IsWalking", false);
+        ani.SetBool("IsRunning", true);
         navMesh.acceleration = 8f;
         navMesh.speed = velocityPersecution;
         navMesh.destination = player.position;
+        
     }
+
 
     void Attack()
     {
@@ -137,6 +142,7 @@ public class ZumbiController : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Bullet"))
         {
+            ani.SetBool("IsDead", true);
             Debug.Log("Acertou!!!");
             Destroy(gameObject);
         }
