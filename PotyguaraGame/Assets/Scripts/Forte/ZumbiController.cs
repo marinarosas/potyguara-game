@@ -11,7 +11,7 @@ public class ZumbiController : MonoBehaviour
     private NavMeshAgent navMesh;
     //public AudioClip attackEnemy;
 
-    private float velocityWalking = 0.5f, velocityPersecution = 3f;
+    private float velocityWalking = 0.6f, velocityPersecution = 3f;
     private float distanceFollow = 20f, distancePerception = 30f, distanceAttack = 2f;
 
     private float timeForAttack = 1.5f;
@@ -49,6 +49,8 @@ public class ZumbiController : MonoBehaviour
             else
             {
                 Walking();
+                teste = false;
+                followSomething = false;
             }
         }
         if (distanceForPlayer > distancePerception)
@@ -121,22 +123,22 @@ public class ZumbiController : MonoBehaviour
     {
         ani.SetBool("IsWalking", false);
         ani.SetBool("IsRunning", true);
+        StartCoroutine(WaitAnimation());
+    }
+
+    IEnumerator WaitAnimation()
+    {
+        yield return new WaitForSeconds(1.5f);
         navMesh.acceleration = 8f;
         navMesh.speed = velocityPersecution;
         navMesh.destination = player.position;
-        
     }
-
 
     void Attack()
     {
         attackSomething = true;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y, transform.position.z + 2));
-    }
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -34,7 +34,6 @@ public class LeftHandController : MonoBehaviour
         ani.SetTrigger("IsFire");
         StartCoroutine(timeForStop());
     }
-
     
     IEnumerator timeForStop()
     {
