@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
@@ -10,7 +8,7 @@ public class SimpleShoot : MonoBehaviour
 {
     private int maxBullets = 10;
     private int currentBullets;
-    private UnityEngine.XR.InputDevice targetDevice;
+    private InputDevice targetDevice;
     private bool isLeft = false;
     private bool isRight = false;
 
@@ -57,15 +55,15 @@ public class SimpleShoot : MonoBehaviour
     {
         if (isLeft)
         {
-            targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
+            targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight)
         {
-            targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
+            targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
         }
         if (isRight != false || isLeft != false)
         {
-            targetDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValue);
+            targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
             if (triggerValue > 0.1f)
             {
                 if (currentBullets > 0)
@@ -75,7 +73,7 @@ public class SimpleShoot : MonoBehaviour
                     {
                         FindObjectOfType<RightHandController>().AnimationFinger();
                     }
-                    else
+                    else if(isLeft)
                     {
                         FindObjectOfType<LeftHandController>().AnimationFinger();
                     }

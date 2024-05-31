@@ -12,11 +12,11 @@ public class ZumbiController : MonoBehaviour
     //public AudioClip attackEnemy;
 
     private float velocityWalking = 0.6f, velocityPersecution = 3f;
-    private float distanceFollow = 20f, distancePerception = 30f, distanceAttack = 2f;
+    private float distanceFollow = 30f, distanceAttack = 3f;
 
     private float timeForAttack = 1.5f;
     private float distanceForPlayer, distanceForAIPoint;
-    private bool followSomething, attackSomething, teste;
+    private bool followSomething, attackSomething;
 
     public Transform[] destinyRandow;
     private int AIPointCurrent;
@@ -39,68 +39,34 @@ public class ZumbiController : MonoBehaviour
         Vector3 from = transform.position;
         Vector3 to = player.position;
         Vector3 direction = to - from;
-        if (Physics.Raycast(transform.position, direction, out hit, 1000) && distanceForPlayer < distancePerception) // for to see if the player is in the enemy perception ray
+        if (Physics.Raycast(transform.position, direction, out hit, 1000)) // for to see if the player is in the enemy perception ray
         {
             if (hit.collider.gameObject.CompareTag("Player"))
             {
-                Follow();
-                followSomething = true;
+                if(distanceForPlayer < distanceFollow)
+                {
+                    Follow();
+                    followSomething = true;
+                }
+                else
+                {
+                    followSomething = false;
+                    Walking();
+                    
+                }
             }
-            else
-            {
-                Walking();
-                teste = false;
-                followSomething = false;
-            }
-        }
-        if (distanceForPlayer > distancePerception)
-        {
-            Walking();
         }
 
-        if (distanceForPlayer <= distanceAttack) // para verificar se o inimigo pode atacar o player
+        if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
         {
             Attack();
         }
 
-        if (distanceForAIPoint <= 2f) // para mudar o destino aleatorio do inimigo
+        if (distanceForAIPoint <= 2f) // for change the enemy's random destiny
         {
             AIPointCurrent = Random.Range(0, destinyRandow.Length);
             Walking();
         }
-
-        if (teste)
-        {
-            ani.SetBool("IsWalking", false);
-            ani.SetBool("IsRunning", true);
-            //countPersecution += Time.deltaTime;
-        }
-        /*if (countPersecution >= 5f)
-        {
-            teste = false;
-            followSomething = false;
-            countPersecution = 0f;
-        }*/
-
-        if (attackSomething)
-        {
-            ani.SetBool("IsAttacking", true);
-            //GetComponent<AudioSource>().PlayOneShot(attackEnemy);
-            //countAttack += Time.deltaTime;
-        }
-        /*if (countAttack >= timeForAttack && distanceForPlayer <= distanceAttack)
-        {
-            attackSomething = true;
-            countAttack = 0f;
-            player.GetComponent<Animator>().SetBool("isDead", true);
-            SceneManager.LoadScene(1); // derrota
-        }
-        else if (countAttack >= timeForAttack && distanceForPlayer > distanceAttack)
-        {
-            ani.SetBool("isAtacking", false);
-            attackSomething = false;
-            countAttack = 0f;
-        }*/
     }
 
     void Walking()
@@ -113,22 +79,12 @@ public class ZumbiController : MonoBehaviour
             navMesh.speed = velocityWalking;
             navMesh.destination = destinyRandow[AIPointCurrent].transform.position;
         }
-        else
-        {
-            teste = true;
-        }
     }
 
     void Follow()
     {
         ani.SetBool("IsWalking", false);
         ani.SetBool("IsRunning", true);
-        StartCoroutine(WaitAnimation());
-    }
-
-    IEnumerator WaitAnimation()
-    {
-        yield return new WaitForSeconds(1.5f);
         navMesh.acceleration = 8f;
         navMesh.speed = velocityPersecution;
         navMesh.destination = player.position;
@@ -137,6 +93,9 @@ public class ZumbiController : MonoBehaviour
     void Attack()
     {
         attackSomething = true;
+        navMesh.isStopped = true;
+        ani.SetBool("isShouting", true);
+        // End Game
     }
 
 
@@ -144,9 +103,9 @@ public class ZumbiController : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Bullet"))
         {
+            navMesh.isStopped = true;
             ani.SetBool("IsDead", true);
             Debug.Log("Acertou!!!");
-            Destroy(gameObject);
         }
     }
 }

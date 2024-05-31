@@ -15,7 +15,7 @@ public class NetworkManager : MonoBehaviour
     public GameObject RemotePlayerPrefab;
 
     // Endereço do servidor
-    public string serverAddress = "ws://localhost:9000/";
+    public string serverAddress = "ws://192.168.0.2:9000/";
     // WebSocket para comunicação com o servidor
     private WebSocket ws;
 

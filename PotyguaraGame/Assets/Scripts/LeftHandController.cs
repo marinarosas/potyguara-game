@@ -9,7 +9,6 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class LeftHandController : MonoBehaviour
 {
-
     public Animator ani;
     private List<InputDevice> devices = new List<InputDevice>();
 
