@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -18,6 +19,7 @@ public class GameController : MonoBehaviour
     private GameObject timer;
     private int levelCurrent = 1;
     private bool startTimer = false;
+    private int points = 0;
 
     //Ponta Negra
     //HoverBunda
@@ -67,6 +69,12 @@ public class GameController : MonoBehaviour
         {
             InitTimer();
         }
+        Debug.Log(points);
+    }
+    
+    public void setPoints(int value)
+    {
+        points += value;
     }
 
     public void InitTimer()
@@ -77,7 +85,7 @@ public class GameController : MonoBehaviour
         {
             count -= Time.deltaTime;
             timer.transform.GetChild(0).GetComponent<Text>().text = count.ToString("F0");
-            timer.GetComponent<Image>().fillAmount -= Time.deltaTime / 9.6f;
+            timer.GetComponent<UnityEngine.UI.Image>().fillAmount -= Time.deltaTime / 9.6f;
             if(count <= 0)
             {
                 count = 0;
@@ -118,7 +126,7 @@ public class GameController : MonoBehaviour
 
     private void UpdateLevelBar()
     {
-        GameObject.FindGameObjectWithTag("Level").GetComponent<Image>().fillAmount = 0.35f * levelCurrent;
+        GameObject.FindGameObjectWithTag("Level").GetComponent<UnityEngine.UI.Image>().fillAmount = 0.35f * levelCurrent;
         GameObject.FindGameObjectWithTag("Level").transform.GetChild(2).GetComponent<Text>().text = levelCurrent + "";
     }
 }

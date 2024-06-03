@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
@@ -33,6 +34,15 @@ public class SpawnerController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(slot.childCount == 0)
+        {
+            Debug.Log("Fim de Level");
+            // end level
+        }
+    }
+
     public void InitSpawner(Transform[] points)
     {
         foreach(Transform point in points)
@@ -45,15 +55,15 @@ public class SpawnerController : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(TimeForSpawn());
-                    Instantiate(prefabZumbi, point.position, Quaternion.identity, slot);
+                    StartCoroutine(TimeForSpawn(point));
                 }
             }
         }
     }
 
-    IEnumerator TimeForSpawn()
+    IEnumerator TimeForSpawn(Transform point)
     {
         yield return new WaitForSeconds(5f);
+        Instantiate(prefabZumbi, point.position, Quaternion.identity, slot);
     }
 }

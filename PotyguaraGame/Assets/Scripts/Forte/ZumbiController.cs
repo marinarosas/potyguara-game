@@ -56,6 +56,11 @@ public class ZumbiController : MonoBehaviour
                         Walking();
                     }
                 }
+                else
+                {
+                    followSomething = false;
+                    Walking();
+                }
             }
 
             if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
@@ -112,6 +117,14 @@ public class ZumbiController : MonoBehaviour
             ani.SetBool("IsWalking", false);
             ani.SetBool("IsRunning", false);
             isDead = true;
+            FindObjectOfType<GameController>().setPoints(1);
+            Destroy(collision.gameObject);
+            Invoke("DestroyZumbi", 4f);
         }
+    }
+
+    private void DestroyZumbi()
+    {
+        Destroy(gameObject);
     }
 }
