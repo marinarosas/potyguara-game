@@ -5,6 +5,7 @@ using UnityEngine;
 public class LocalPlayer : MonoBehaviour
 {
     NetworkManager nm;
+    private int pontuacionGameForte = 0;
     public string playerId {
         get {
             return nm.playerId;
@@ -32,6 +33,10 @@ public class LocalPlayer : MonoBehaviour
             nm.SendPosition(transform.position);
             lastSentPositionTime = Time.time;
         }
+    }
 
+    public void setRanking(int value)
+    {
+        pontuacionGameForte = value;
     }
 }

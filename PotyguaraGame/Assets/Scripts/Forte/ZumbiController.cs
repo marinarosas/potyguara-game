@@ -16,7 +16,7 @@ public class ZumbiController : MonoBehaviour
 
     private float timeForAttack = 1.5f;
     private float distanceForPlayer, distanceForAIPoint;
-    private bool followSomething, attackSomething;
+    private bool followSomething, isDead = false;
 
     public Transform[] destinyRandow;
     private int AIPointCurrent;
@@ -39,33 +39,35 @@ public class ZumbiController : MonoBehaviour
         Vector3 from = transform.position;
         Vector3 to = player.position;
         Vector3 direction = to - from;
-        if (Physics.Raycast(transform.position, direction, out hit, 1000)) // for to see if the player is in the enemy perception ray
+        if (!isDead)
         {
-            if (hit.collider.gameObject.CompareTag("Player"))
+            if (Physics.Raycast(transform.position, direction, out hit, 1000)) // for to see if the player is in the enemy perception ray
             {
-                if(distanceForPlayer < distanceFollow)
+                if (hit.collider.gameObject.CompareTag("Player"))
                 {
-                    Follow();
-                    followSomething = true;
-                }
-                else
-                {
-                    followSomething = false;
-                    Walking();
-                    
+                    if(distanceForPlayer < distanceFollow)
+                    {
+                        Follow();
+                        followSomething = true;
+                    }
+                    else
+                    {
+                        followSomething = false;
+                        Walking();
+                    }
                 }
             }
-        }
 
-        if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
-        {
-            Attack();
-        }
+            if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
+            {
+                Attack();
+            }
 
-        if (distanceForAIPoint <= 2f) // for change the enemy's random destiny
-        {
-            AIPointCurrent = Random.Range(0, destinyRandow.Length);
-            Walking();
+            if (distanceForAIPoint <= 2f) // for change the enemy's random destiny
+            {
+                AIPointCurrent = Random.Range(0, destinyRandow.Length);
+                Walking();
+            }
         }
     }
 
@@ -92,7 +94,6 @@ public class ZumbiController : MonoBehaviour
 
     void Attack()
     {
-        attackSomething = true;
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
         // End Game
@@ -104,8 +105,13 @@ public class ZumbiController : MonoBehaviour
         if (collision.gameObject.tag.Equals("Bullet"))
         {
             navMesh.isStopped = true;
-            ani.SetBool("IsDead", true);
-            Debug.Log("Acertou!!!");
+            if (!isDead)
+            {
+                ani.SetBool("IsDead", true);
+            }
+            ani.SetBool("IsWalking", false);
+            ani.SetBool("IsRunning", false);
+            isDead = true;
         }
     }
 }
