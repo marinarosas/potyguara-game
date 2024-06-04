@@ -107,6 +107,10 @@ public class ZumbiController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag.Equals("Wall"))
+        {
+
+        }
         if (collision.gameObject.tag.Equals("Bullet"))
         {
             navMesh.isStopped = true;
