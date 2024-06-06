@@ -11,6 +11,7 @@ public class SimpleShoot : MonoBehaviour
     private InputDevice targetDevice;
     private bool isLeft = false;
     private bool isRight = false;
+    private float timeout = 0.5f;
 
     public TextMeshProUGUI bullets;
 
@@ -55,7 +56,7 @@ public class SimpleShoot : MonoBehaviour
     {
         if (isLeft)
         {
-            //targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
+           // targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight)
         {
@@ -64,7 +65,7 @@ public class SimpleShoot : MonoBehaviour
         if (isRight != false || isLeft != false)
         {
             //targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (/*triggerValue > 0.1f*/ Input.GetKeyDown(KeyCode.F))
+            if (/*triggerValue > 0.1f ||*/ Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {

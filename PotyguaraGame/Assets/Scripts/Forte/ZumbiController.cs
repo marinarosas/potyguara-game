@@ -88,6 +88,19 @@ public class ZumbiController : MonoBehaviour
         }
     }
 
+    public void Dead()
+    {
+        navMesh.isStopped = true;
+        if (!isDead)
+        {
+            ani.SetBool("IsDead", true);
+        }
+        ani.SetBool("IsWalking", false);
+        ani.SetBool("IsRunning", false);
+        isDead = true;
+        Invoke("DestroyZumbi", 4f);
+    }
+
     void Follow()
     {
         ani.SetBool("IsWalking", false);
@@ -102,29 +115,6 @@ public class ZumbiController : MonoBehaviour
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
         // End Game
-    }
-
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag.Equals("Wall"))
-        {
-
-        }
-        if (collision.gameObject.tag.Equals("Bullet"))
-        {
-            navMesh.isStopped = true;
-            if (!isDead)
-            {
-                ani.SetBool("IsDead", true);
-            }
-            ani.SetBool("IsWalking", false);
-            ani.SetBool("IsRunning", false);
-            isDead = true;
-            FindObjectOfType<GameController>().setPoints(1);
-            Destroy(collision.gameObject);
-            Invoke("DestroyZumbi", 4f);
-        }
     }
 
     private void DestroyZumbi()

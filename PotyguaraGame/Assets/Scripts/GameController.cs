@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -91,6 +92,11 @@ public class GameController : MonoBehaviour
                 count = 0;
                 startTimer = false;
                 FindObjectOfType<SpawnerController>().SetLevel(1);
+                Transform walls = GameObject.Find("Walls").transform;
+                for(int ii=0; ii < walls.childCount; ii++)
+                {
+                    walls.GetChild(ii).gameObject.SetActive(true);
+                }
                 timer.SetActive(false);
             }
         }
@@ -99,6 +105,12 @@ public class GameController : MonoBehaviour
     public void SetStartTimer()
     {
         startTimer = true;
+    }
+
+    public void NextLevel(float angulationY, Vector3 initialPosition)
+    {
+        player.transform.position = initialPosition;
+        player.transform.eulerAngles = new Vector3(0, angulationY, 0);
     }
 
     public void LevelOne()

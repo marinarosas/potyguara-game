@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WallController : MonoBehaviour
@@ -19,11 +20,19 @@ public class WallController : MonoBehaviour
         if(receivedDamage)
         {
             GetComponent<MeshRenderer>().material = damageWall;
-            receivedDamage = false;
+            //receivedDamage = false;
         }
         else 
         {
             GetComponent<MeshRenderer>().material = normalWall;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag.Equals("Hand") || collision.gameObject.tag.Equals("Body"))
+        {
+            collision.gameObject.GetComponent<WallController>().setDamage(true);
         }
     }
 }

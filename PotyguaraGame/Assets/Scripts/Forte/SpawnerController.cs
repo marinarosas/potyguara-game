@@ -13,9 +13,10 @@ public class SpawnerController : MonoBehaviour
 
     private int currentLevel = 0;
     private int currentAmountZumbis;
-
+    private bool initLevel = false;
     public void SetLevel(int value)
     {
+        initLevel = true;
         currentLevel = value;
         if (currentLevel == 1)
         {
@@ -36,10 +37,15 @@ public class SpawnerController : MonoBehaviour
 
     private void Update()
     {
-        if(slot.childCount == 0)
+        if(slot.childCount == 0 && initLevel)
         {
+            initLevel = false;
+            GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
+            finishUI.SetActive(true);
+            finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+            currentLevel++;
+
             Debug.Log("Fim de Level");
-            // end level
         }
     }
 
