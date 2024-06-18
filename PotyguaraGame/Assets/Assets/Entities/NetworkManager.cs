@@ -15,9 +15,11 @@ public class NetworkManager : MonoBehaviour
     public GameObject RemotePlayerPrefab;
 
     // Endereço do servidor
-    public string serverAddress = "ws://192.168.0.2:9000/";
+    public string serverAddress = "ws://localhost:9000/";
     // WebSocket para comunicação com o servidor
     private WebSocket ws;
+
+    private string ranking;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -80,6 +82,11 @@ public class NetworkManager : MonoBehaviour
         ws.Connect();
     }
 
+    public string GetRanking()
+    {
+        return ranking;
+    }
+
     NetworkManager() {
         gameState = new GameState();
     }
@@ -126,6 +133,10 @@ public class NetworkManager : MonoBehaviour
                     gameState = response.gameState;
                     // // mostrar o novo estado do jogo
                     break;
+                case "Ranking":
+                    ranking = response.parameters["ranking"];
+                    Debug.Log(response.parameters["ranking"]);
+                    break;
                 default:
                     break;
             }
@@ -164,6 +175,22 @@ public class NetworkManager : MonoBehaviour
         };
 
         // Enviar a ação para o servidor
+        ws.Send(action.ToJson());
+    }
+
+    internal void SendPontuacionForte(int totalPoints)
+    {
+        Action action = new Action()
+        {
+            type = "GameForte",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+                { "pointing", totalPoints.ToString() }
+            }
+        };
+
+        // envia a pontuação final no jogo do Forte para o servidor
         ws.Send(action.ToJson());
     }
 

@@ -19,20 +19,18 @@ public class WallController : MonoBehaviour
     {
         if(receivedDamage)
         {
-            GetComponent<MeshRenderer>().material = damageWall;
-            //receivedDamage = false;
-        }
-        else 
-        {
-            GetComponent<MeshRenderer>().material = normalWall;
+            gameObject.GetComponent<MeshRenderer>().material = damageWall;
         }
     }
-
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag.Equals("Hand") || collision.gameObject.tag.Equals("Body"))
+        if (!receivedDamage)
         {
-            collision.gameObject.GetComponent<WallController>().setDamage(true);
+            if (collision.gameObject.tag.Equals("Hand") || collision.gameObject.tag.Equals("Body"))
+            {
+                setDamage(true);
+                FindObjectOfType<SpawnerController>().setWallsDestroyed();
+            }
         }
     }
 }

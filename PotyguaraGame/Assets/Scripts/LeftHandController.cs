@@ -23,6 +23,16 @@ public class LeftHandController : MonoBehaviour
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(2).gameObject.SetActive(false);
     }
+
+    public void ResetHand()
+    {
+        GetComponent<XRRayInteractor>().enabled = true;
+        GetComponent<LineRenderer>().enabled = true;
+        GetComponent<XRInteractorLineVisual>().enabled = true;
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(2).gameObject.SetActive(true);
+    }
+
     public InputDevice GetTargetDevice()
     {
         return devices[0];

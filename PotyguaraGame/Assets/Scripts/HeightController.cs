@@ -12,6 +12,11 @@ public class HeightController : MonoBehaviour
         height = obj.transform.position.y;
     }
 
+    public void NewHeight(float value)
+    {
+        height = value;
+    }
+
     // Update is called once per frame
     void Update()
     {

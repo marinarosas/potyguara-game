@@ -20,7 +20,8 @@ public class GameController : MonoBehaviour
     private GameObject timer;
     private int levelCurrent = 1;
     private bool startTimer = false;
-    private int points = 0;
+    private int currentPoints = 0;
+    private int totalPoints = 0;
 
     //Ponta Negra
     //HoverBunda
@@ -43,6 +44,21 @@ public class GameController : MonoBehaviour
     public void setPontaNegra(bool value)
     {
         startPontaNegra = value;
+    }
+
+    public void GameOver()
+    {
+        totalPoints -= currentPoints; 
+        count = 10;
+        GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
+        finishUI.transform.GetChild(1).GetComponent<Text>().text = "Você Perdeu!!!";
+        finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Repetir Nivel";
+        finishUI.SetActive(true);
+    }
+    
+    public void ResetCount()
+    {
+        count = 10;
     }
 
     // Update is called once per frame
@@ -70,14 +86,40 @@ public class GameController : MonoBehaviour
         {
             InitTimer();
         }
-        Debug.Log(points);
-    }
-    
-    public void setPoints(int value)
-    {
-        points += value;
     }
 
+    public void TeleportEnterShow()
+    {
+        player.GetComponent<HeightController>().NewHeight(7.6f);
+        player.transform.position = new Vector3(177.72f, 7.6f, 107.53f);
+    }
+
+    public void TeleportExitShow()
+    {
+        player.GetComponent<HeightController>().NewHeight(1.24f);
+        player.transform.position = new Vector3(177.72f, 1.24f, 72.92f);
+    }
+
+    public void SetCurrentPoints(int value)
+    {
+        currentPoints += value;
+    }
+
+    public int GetCurrrentPoints()
+    {
+        return currentPoints;
+    }
+
+    public void SetTotalPoints()
+    {
+        totalPoints += currentPoints;
+        currentPoints = 0;
+    }
+
+    public int GetTotalPoints()
+    {
+        return totalPoints;
+    }
     public void InitTimer()
     {
         // timer bar
@@ -91,11 +133,14 @@ public class GameController : MonoBehaviour
             {
                 count = 0;
                 startTimer = false;
-                FindObjectOfType<SpawnerController>().SetLevel(1);
-                Transform walls = GameObject.Find("Walls").transform;
-                for(int ii=0; ii < walls.childCount; ii++)
+                FindObjectOfType<SpawnerController>().SetSpawn();
+                if(levelCurrent == 1 )
                 {
-                    walls.GetChild(ii).gameObject.SetActive(true);
+                    Transform walls = GameObject.Find("Walls").transform;
+                    for(int ii=0; ii < walls.childCount; ii++)
+                    {
+                        walls.GetChild(ii).gameObject.SetActive(true);
+                    }
                 }
                 timer.SetActive(false);
             }
@@ -105,40 +150,5 @@ public class GameController : MonoBehaviour
     public void SetStartTimer()
     {
         startTimer = true;
-    }
-
-    public void NextLevel(float angulationY, Vector3 initialPosition)
-    {
-        player.transform.position = initialPosition;
-        player.transform.eulerAngles = new Vector3(0, angulationY, 0);
-    }
-
-    public void LevelOne()
-    {
-        player.transform.position = new Vector3(746.14f, 9.3f, 400.35f);
-        player.transform.eulerAngles = new Vector3(0, 180, 0);
-    }
-
-    public void LevelTwo()
-    {
-        levelCurrent++;
-        count = 10;
-        UpdateLevelBar();
-        player.transform.position = new Vector3(654.91f, 18.6f, 400.95f);
-        player.transform.eulerAngles = new Vector3(0, 180, 0);
-    }
-    public void LevelThree()
-    {
-        levelCurrent++;
-        count = 10;
-        UpdateLevelBar();
-        player.transform.position = new Vector3(710.36f, 8.35f, 401.15f);
-        player.transform.eulerAngles = new Vector3(0, 0, 0);
-    }
-
-    private void UpdateLevelBar()
-    {
-        GameObject.FindGameObjectWithTag("Level").GetComponent<UnityEngine.UI.Image>().fillAmount = 0.35f * levelCurrent;
-        GameObject.FindGameObjectWithTag("Level").transform.GetChild(2).GetComponent<Text>().text = levelCurrent + "";
     }
 }

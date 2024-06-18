@@ -23,7 +23,7 @@ public class BulletController : MonoBehaviour
 
             if (!MarkedPontuacion)
             {
-                FindObjectOfType<GameController>().setPoints(2);
+                FindObjectOfType<GameController>().SetCurrentPoints(2);
                 MarkedPontuacion = true;
             }
             Invoke("DestroyBullet", 2f);
@@ -42,7 +42,7 @@ public class BulletController : MonoBehaviour
 
             if (!MarkedPontuacion)
             {
-                FindObjectOfType<GameController>().setPoints(1);
+                FindObjectOfType<GameController>().SetCurrentPoints(1);
                 MarkedPontuacion = true;
             }
             Invoke("DestroyBullet", 2f);

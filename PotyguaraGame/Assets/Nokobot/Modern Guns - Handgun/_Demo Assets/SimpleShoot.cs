@@ -16,6 +16,7 @@ public class SimpleShoot : MonoBehaviour
     public TextMeshProUGUI bullets;
 
     [Header("Prefab Refrences")]
+    public GameObject line;
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
     public GameObject muzzleFlashPrefab;
@@ -84,6 +85,9 @@ public class SimpleShoot : MonoBehaviour
                 {
                     Reload();
                 }
+                /*if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentBullets < 10){
+                    Reload();
+                }*/
             }
         }
         bullets.text = currentBullets.ToString();
@@ -106,9 +110,16 @@ public class SimpleShoot : MonoBehaviour
             tempFlash = Instantiate(muzzleFlashPrefab, barrelLocation.position, barrelLocation.rotation);
 
             //Destroy the muzzle flash effect
-            Destroy(tempFlash, destroyTimer);
+            //Destroy(tempFlash, destroyTimer);
         }
-
+        RaycastHit hitInfo;
+        bool hasHit = Physics.Raycast(barrelLocation.position, barrelLocation.forward, out hitInfo, 100);
+        if (line)
+        {
+            GameObject liner = Instantiate(line);
+            liner.GetComponent<LineRenderer>().SetPositions(new Vector3[] {barrelLocation.position, hasHit ? hitInfo.point : barrelLocation.position + barrelLocation.forward*100});
+            Destroy(liner, 0.5f);
+        }
         //cancels if there's no bullet prefeb
         if (!bulletPrefab)
         { return; }
