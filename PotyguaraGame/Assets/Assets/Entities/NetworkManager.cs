@@ -5,9 +5,12 @@ using UnityEngine;
 using WebSocketSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviour
 {
+    public GameObject CanvaWellcome;
+
     // Prefab do jogador local
     public GameObject LocalPlayerPrefab;
 
@@ -111,6 +114,8 @@ public class NetworkManager : MonoBehaviour
             switch (response.type)
             {
                 case "Wellcome":
+                    CanvaWellcome.transform.GetComponent<FadeController>().FadeIn();
+                    CanvaWellcome.transform.GetChild(1).GetComponent<Text>().text = "Conectado ao Servidor!!!";
                     // Se for uma mensagem "Wellcome", o servidor enviou o id do jogador que será usado para
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
