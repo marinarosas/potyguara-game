@@ -18,7 +18,7 @@ public class NetworkManager : MonoBehaviour
     public GameObject RemotePlayerPrefab;
 
     // Endereço do servidor
-    public string serverAddress = "ws://localhost:9000/";
+    public string serverAddress = "ws://192.168.0.2:9000/";
     // WebSocket para comunicação com o servidor
     private WebSocket ws;
 
@@ -72,6 +72,8 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("conectando");
         
         ws = new WebSocket(this.serverAddress);
+        CanvaWellcome.transform.GetComponent<FadeController>().FadeIn();
+        CanvaWellcome.transform.GetChild(1).GetComponent<Text>().text = this.serverAddress + "";
 
         // OnMessage é chamado sempre que uma mensagem é recebida
         ws.OnMessage += (sender, e) =>
