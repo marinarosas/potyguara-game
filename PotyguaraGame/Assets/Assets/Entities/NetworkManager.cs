@@ -6,10 +6,11 @@ using WebSocketSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.UI;
+using TMPro;
 
 public class NetworkManager : MonoBehaviour
 {
-    public GameObject CanvaWellcome;
+    //public GameObject CanvaWellcome;
 
     // Prefab do jogador local
     public GameObject LocalPlayerPrefab;
@@ -18,7 +19,7 @@ public class NetworkManager : MonoBehaviour
     public GameObject RemotePlayerPrefab;
 
     // Endereço do servidor
-    public string serverAddress = "ws://192.168.0.2:9000/";
+    public string serverAddress = "wss://potyws.ffcloud.com.br";
     // WebSocket para comunicação com o servidor
     private WebSocket ws;
 
@@ -72,8 +73,7 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("conectando");
         
         ws = new WebSocket(this.serverAddress);
-        CanvaWellcome.transform.GetComponent<FadeController>().FadeIn();
-        CanvaWellcome.transform.GetChild(1).GetComponent<Text>().text = this.serverAddress + "";
+        ws.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12;
 
         // OnMessage é chamado sempre que uma mensagem é recebida
         ws.OnMessage += (sender, e) =>
@@ -116,12 +116,12 @@ public class NetworkManager : MonoBehaviour
             switch (response.type)
             {
                 case "Wellcome":
-                    CanvaWellcome.transform.GetComponent<FadeController>().FadeIn();
-                    CanvaWellcome.transform.GetChild(1).GetComponent<Text>().text = "Conectado ao Servidor!!!";
                     // Se for uma mensagem "Wellcome", o servidor enviou o id do jogador que será usado para
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
+                    //CanvaWellcome.SetActive(true);
+                    //CanvaWellcome.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Conectado ao Servidor!!!";
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
