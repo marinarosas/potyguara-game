@@ -96,8 +96,8 @@ public class GameController : MonoBehaviour
 
     public void TeleportExitShow()
     {
-        player.GetComponent<HeightController>().NewHeight(1.24f);
-        player.transform.position = new Vector3(177.72f, 1.24f, 72.92f);
+        player.GetComponent<HeightController>().NewHeight(1.3f);
+        player.transform.position = new Vector3(177.72f, 1.3f, 72.92f);
     }
 
     public void SetCurrentPoints(int value)
