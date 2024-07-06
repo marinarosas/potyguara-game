@@ -22,14 +22,17 @@ public class RankingController : MonoBehaviour
     {
         string ranking = FindObjectOfType<NetworkManager>().GetRanking();
         string[] playersRanking = ranking.Split('|');
-        transform.GetChild(2).GetComponent<Text>().text = playersRanking[0];
-        transform.GetChild(3).GetComponent<Text>().text = playersRanking[1] != null ? playersRanking[1] + "pt" : " - ";
-        transform.GetChild(4).GetComponent<Text>().text = playersRanking[2] != null ? playersRanking[3] + "pt" : " - ";
-        transform.GetChild(5).GetComponent<Text>().text = playersRanking[3] != null ? playersRanking[3] + "pt" : " - ";
-        transform.GetChild(6).GetComponent<Text>().text = playersRanking[4] != null ? playersRanking[4] + "pt" : " - ";
-        transform.GetChild(7).GetComponent<Text>().text = playersRanking[5] != null ? playersRanking[5] + "pt" : " - ";
-        transform.GetChild(8).GetComponent<Text>().text = playersRanking[6] != null ? playersRanking[6] + "pt" : " - ";
-        transform.GetChild(9).GetComponent<Text>().text = playersRanking[7] != null ? playersRanking[7] + "pt" : " - ";
-        transform.GetChild(10).GetComponent<Text>().text = playersRanking[8] != null ? playersRanking[8] + "pt" : " - ";
+        transform.GetChild(2).GetComponent<Text>().text = playersRanking[0] + "pt";
+        for(int ii=1; ii < 8; ii++)
+        {
+            if(ii < playersRanking.Length && playersRanking[ii].Length > 1)
+            {
+                transform.GetChild(ii+2).GetComponent<Text>().text = playersRanking[ii] + "pt";
+            }
+            else
+            {
+                transform.GetChild(ii+2).GetComponent<Text>().text = "-";
+            }
+        }
     }
 }

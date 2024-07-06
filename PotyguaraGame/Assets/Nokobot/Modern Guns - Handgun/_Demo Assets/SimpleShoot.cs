@@ -57,16 +57,16 @@ public class SimpleShoot : MonoBehaviour
     {
         if (isLeft)
         {
-           // targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
+           targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight)
         {
-            //targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
+            targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
         }
         if (isRight != false || isLeft != false)
         {
-            //targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (/*triggerValue > 0.1f ||*/ Input.GetKeyDown(KeyCode.F))
+            targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+            if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {
@@ -85,15 +85,15 @@ public class SimpleShoot : MonoBehaviour
                 {
                     Reload();
                 }
-                /*if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentBullets < 10){
+                if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentBullets < 10){
                     Reload();
-                }*/
+                }
             }
         }
         bullets.text = currentBullets.ToString();
     }
 
-    private void Reload()
+    public void Reload()
     {
         currentBullets = maxBullets;
     }

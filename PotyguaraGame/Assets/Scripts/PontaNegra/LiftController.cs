@@ -28,6 +28,7 @@ public class LiftController : MonoBehaviour
     {
         leftDoor.GetComponent<Animator>().Play("CloseLeft");
         rightDoor.GetComponent<Animator>().Play("CloseRight");
+        player.GetComponent<HeightController>().NewHeight(player.transform.position.y);
     }
 
     public void ChangeFloor(int value)

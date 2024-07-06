@@ -112,6 +112,7 @@ public class ZumbiController : MonoBehaviour
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
         // End Game
+        FindObjectOfType<GameController>().GameOver();
     }
 
     private void DestroyZumbi()

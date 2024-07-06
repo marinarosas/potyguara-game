@@ -162,6 +162,11 @@ public class SpawnerController : MonoBehaviour
             ranking.transform.GetChild(ii).gameObject.SetActive(true);
         }
         FindObjectOfType<NetworkManager>().SendPontuacionForte(FindObjectOfType<GameController>().GetTotalPoints());
+        Invoke("ShowRanking", 0.7f);
+    }
+
+    private void ShowRanking()
+    {
         FindObjectOfType<RankingController>().ShowRanking();
     }
 

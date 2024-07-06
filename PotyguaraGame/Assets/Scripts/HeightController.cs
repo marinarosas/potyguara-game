@@ -43,6 +43,6 @@ public class HeightController : MonoBehaviour
 
     public void VariableHeight(GameObject obj)
     {
-        obj.transform.position = new Vector3(obj.transform.position.x, Mathf.Clamp(obj.transform.position.y, 1.30f,26.65f) , obj.transform.position.z);
+        obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
     }
 }

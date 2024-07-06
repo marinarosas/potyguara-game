@@ -1,11 +1,8 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using UnityEngine.XR;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameController : MonoBehaviour
 {
@@ -55,6 +52,26 @@ public class GameController : MonoBehaviour
         finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Repetir Nivel";
         finishUI.SetActive(true);
     }
+
+    public void ResetGame()
+    {
+        player.transform.position = new Vector3(809.36f, 8.2f, 400.38f);
+       
+        try
+        {
+            WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
+            foreach (WallController wall in walls)
+            {
+                wall.resetWall();
+            }
+            ManageWalls(false);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro when finding the walls: " + e);
+        }
+
+    }
     
     public void ResetCount()
     {
@@ -64,22 +81,29 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (startHoverBunda)
+        try
         {
-            startHoverBunda = false;
-            SceneManager.LoadScene("HoverBunda");
-        }
+            if (startHoverBunda)
+            {
+                startHoverBunda = false;
+                SceneManager.LoadScene("HoverBunda");
+            }
 
-        if (startForteDosReis)
-        {
-            startForteDosReis = false;
-            SceneManager.LoadScene("ForteDosReisMagos");
-        }
+            if (startForteDosReis)
+            {
+                startForteDosReis = false;
+                SceneManager.LoadScene("ForteDosReisMagos");
+            }
 
-        if(startPontaNegra)
+            if(startPontaNegra)
+            {
+                startPontaNegra = false;
+                SceneManager.LoadScene("PontaNegra");
+            }
+        }
+        catch (Exception e)
         {
-            startPontaNegra = false;
-            SceneManager.LoadScene("PontaNegra");
+            Debug.Log("Erro when load scenes: " + e);
         }
 
         if (startTimer)
@@ -91,13 +115,13 @@ public class GameController : MonoBehaviour
     public void TeleportEnterShow()
     {
         player.GetComponent<HeightController>().NewHeight(7.6f);
-        player.transform.position = new Vector3(177.72f, 7.6f, 107.53f);
+        player.transform.position = new Vector3(177.72f, 7.6f, 112.13f);
     }
 
     public void TeleportExitShow()
     {
         player.GetComponent<HeightController>().NewHeight(1.3f);
-        player.transform.position = new Vector3(177.72f, 1.3f, 72.92f);
+        player.transform.position = new Vector3(177.72f, 1.4f, 72.92f);
     }
 
     public void SetCurrentPoints(int value)
@@ -136,14 +160,19 @@ public class GameController : MonoBehaviour
                 FindObjectOfType<SpawnerController>().SetSpawn();
                 if(levelCurrent == 1 )
                 {
-                    Transform walls = GameObject.Find("Walls").transform;
-                    for(int ii=0; ii < walls.childCount; ii++)
-                    {
-                        walls.GetChild(ii).gameObject.SetActive(true);
-                    }
+                    ManageWalls(true);
                 }
                 timer.SetActive(false);
             }
+        }
+    }
+
+    private void ManageWalls(bool value)
+    {
+        Transform walls = GameObject.Find("Walls").transform;
+        for (int ii = 0; ii < walls.childCount; ii++)
+        {
+            walls.GetChild(ii).gameObject.SetActive(value);
         }
     }
 

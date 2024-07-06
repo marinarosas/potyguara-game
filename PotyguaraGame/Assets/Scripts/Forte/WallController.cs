@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class WallController : MonoBehaviour
@@ -21,6 +18,11 @@ public class WallController : MonoBehaviour
         {
             gameObject.GetComponent<MeshRenderer>().material = damageWall;
         }
+    }
+
+    public void resetWall()
+    {
+        gameObject.GetComponent<MeshRenderer>().material = normalWall;
     }
     private void OnCollisionEnter(Collision collision)
     {
