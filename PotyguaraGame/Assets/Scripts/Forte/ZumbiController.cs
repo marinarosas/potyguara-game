@@ -14,7 +14,7 @@ public class ZumbiController : MonoBehaviour
     private float timeForAttack = 1.5f;
     private float distanceForPlayer, distanceForAIPoint;
     private bool followSomething, isDead = false;
-    private Transform AIPointCurrent;
+    private Transform AIPointCurrent = null;
     private Animator ani;
 
     // Start is called before the first frame update
@@ -29,23 +29,35 @@ public class ZumbiController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
-        distanceForAIPoint = Vector3.Distance(AIPointCurrent.position, transform.position);
-
-        RaycastHit hit;
-        Vector3 from = transform.position;
-        Vector3 to = player.position;
-        Vector3 direction = to - from;
-        if (!isDead)
+        if(FindObjectOfType<GameController>().getMode() == 0)
         {
-            if (Physics.Raycast(transform.position, direction, out hit, 1000)) // for to see if the player is in the enemy perception ray
+            if (AIPointCurrent == null)
             {
-                if (hit.collider.gameObject.CompareTag("Player"))
+                AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
+            }
+            distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
+            distanceForAIPoint = Vector3.Distance(AIPointCurrent.position, transform.position);
+
+            RaycastHit hit;
+            Vector3 from = transform.position;
+            Vector3 to = player.position;
+            Vector3 direction = to - from;
+            if (!isDead)
+            {
+                if (Physics.Raycast(transform.position, direction, out hit, 1000)) // for to see if the player is in the enemy perception ray
                 {
-                    if(distanceForPlayer < distanceFollow)
+                    if (hit.collider.gameObject.CompareTag("Player"))
                     {
-                        Follow();
-                        followSomething = true;
+                        if(distanceForPlayer < distanceFollow)
+                        {
+                            Follow();
+                            followSomething = true;
+                        }
+                        else
+                        {
+                            followSomething = false;
+                            Walking();
+                        }
                     }
                     else
                     {
@@ -53,24 +65,19 @@ public class ZumbiController : MonoBehaviour
                         Walking();
                     }
                 }
-                else
+
+                if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
                 {
-                    followSomething = false;
+                    Attack();
+                }
+
+                if (distanceForAIPoint <= 2f) // for change the enemy's random destiny
+                {
+                    AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
                     Walking();
                 }
             }
-
-            if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
-            {
-                Attack();
-            }
-
-            if (distanceForAIPoint <= 2f) // for change the enemy's random destiny
-            {
-                AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
-                Walking();
-            }
-        }
+        }  
     }
 
     void Walking()

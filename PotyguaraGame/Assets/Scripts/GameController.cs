@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -6,19 +7,20 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    // geral
+    // GENERAL
     private bool startHoverBunda = false;
     private bool startForteDosReis = false;
     private bool startPontaNegra = false;
     private GameObject player;
 
-    // forte dos reis
+    // FORTE DOS REIS MAGOS
     private float count = 10;
     private GameObject timer;
     private int levelCurrent = 1;
     private bool startTimer = false;
     private int currentPoints = 0;
     private int totalPoints = 0;
+    private int modeGame = -1;
 
     //Ponta Negra
     //HoverBunda
@@ -43,6 +45,16 @@ public class GameController : MonoBehaviour
         startPontaNegra = value;
     }
 
+    public void setStartMode(int value)
+    {
+        modeGame = value;
+    }
+
+    public int getMode()
+    {
+        return modeGame;
+    }
+
     public void GameOver()
     {
         totalPoints -= currentPoints; 
@@ -56,7 +68,6 @@ public class GameController : MonoBehaviour
     public void ResetGame()
     {
         player.transform.position = new Vector3(809.36f, 8.2f, 400.38f);
-       
         try
         {
             WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);

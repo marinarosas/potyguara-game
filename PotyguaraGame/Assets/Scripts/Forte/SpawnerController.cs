@@ -2,9 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
+using Button = UnityEngine.UI.Button;
 
 public class SpawnerController : MonoBehaviour
 {
+    // NORMAL MODE
+    public Transform destinyLevel;
+    public GameObject prefabNavio;
+    private List<Transform> destinyRandowNavio = new List<Transform>();
+
+    // ZOMBIE MODE
     public GameObject prefabZumbi;
     public Transform destinyLevel1;
     public Transform destinyLevel2;
@@ -12,13 +20,13 @@ public class SpawnerController : MonoBehaviour
     public Transform slot; // gameobject parent of the zombies
 
     private int currentLevel = 1;
-    private int currentAmountZumbis;
+    private int wallsDestroyed = 0;
+    private List<Transform> destinyRandowZombie = new List<Transform>();
+
+    // GENERAL
     private bool initLevel = false;
     private GameObject player;
-    private List<Transform> destinyRandow = new List<Transform>();
-
-    private int wallsDestroyed = 0;
-
+    private int currentAmount;
     public void setWallsDestroyed()
     {
         wallsDestroyed++;
@@ -26,33 +34,57 @@ public class SpawnerController : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        for (var ii = 0; ii < destinyLevel.childCount; ii++)
+        {
+            destinyRandowNavio.Add(destinyLevel.GetChild(ii));
+        }
         for (var ii = 0; ii < destinyLevel1.childCount; ii++)
         {
-            destinyRandow.Add(destinyLevel1.GetChild(ii));
+            destinyRandowZombie.Add(destinyLevel1.GetChild(ii));
         }
     }
 
     public Transform getIAPoint()
     {
-        return destinyRandow[Random.Range(0, destinyRandow.Count - 1)];
+        if(FindObjectOfType<GameController>().getMode() == 1)
+        {
+            return destinyRandowNavio[Random.Range(0, destinyRandowNavio.Count - 1)];
+        }
+        else
+        {
+            return destinyRandowZombie[Random.Range(0, destinyRandowZombie.Count - 1)];
+        }
+
+    }
+
+    public Transform getIAPoint(int value, int categoria)
+    {
+        if(categoria == 0)
+        {
+            return destinyRandowZombie[value];
+        }
+        else
+        {
+            return destinyRandowNavio[value];
+        }
+
     }
 
     public void SetDestinyRandow(int value)
     {
+        destinyRandowZombie.Clear();
         if (value == 2)
         {
-            destinyRandow.Clear();
             for (var ii = 0; ii < destinyLevel2.childCount; ii++)
             {
-                destinyRandow.Add(destinyLevel2.GetChild(ii));
+                destinyRandowZombie.Add(destinyLevel2.GetChild(ii));
             }
         }
         if (value == 3)
         {
-            destinyRandow.Clear();
             for (var ii = 0; ii < destinyLevel3.childCount; ii++)
             {
-                destinyRandow.Add(destinyLevel3.GetChild(ii));
+                destinyRandowZombie.Add(destinyLevel3.GetChild(ii));
             }
         }
     }
@@ -82,24 +114,31 @@ public class SpawnerController : MonoBehaviour
         }
     }
 
-
     public void SetSpawn()
     {
         initLevel = true;
-        if (currentLevel == 1)
+        if(FindObjectOfType<GameController>().getMode() == 0)
         {
-            currentAmountZumbis = 12;
-            InitSpawner(destinyRandow);
+            if (currentLevel == 1)
+            {
+                currentAmount = 12;
+                InitSpawner(destinyRandowZombie);
+            }
+            if (currentLevel == 2)
+            {
+                currentAmount = 9;
+                InitSpawner(destinyRandowZombie);
+            }
+            if (currentLevel == 3)
+            {
+                currentAmount = 7;
+                InitSpawner(destinyRandowZombie);
+            }
         }
-        if (currentLevel == 2)
+        else
         {
-            currentAmountZumbis = 9;
-            InitSpawner(destinyRandow);
-        }
-        if (currentLevel == 3)
-        {
-            currentAmountZumbis = 7;
-            InitSpawner(destinyRandow);
+            currentAmount = 3;
+            InitSpawner(destinyRandowNavio);
         }
     }
 
@@ -170,25 +209,26 @@ public class SpawnerController : MonoBehaviour
         FindObjectOfType<RankingController>().ShowRanking();
     }
 
-    public void InitSpawner(System.Collections.Generic.List<Transform> points)
+    private void InitSpawner(List<Transform> points)
     {
-        for (int ii = 0; ii < currentAmountZumbis; ii++)
+        for (int ii = 0; ii < currentAmount; ii++)
         {
             int numInt = Random.Range(0, points.Count-1);
+            GameObject prefab = FindObjectOfType<GameController>().getMode() == 1 ? prefabNavio : prefabZumbi;
             if (ii == 0)
             {
-                Instantiate(prefabZumbi, points[numInt].position, Quaternion.identity, slot);
+                Instantiate(prefab, points[numInt].position, Quaternion.identity, slot);
             }
             else
             {
-                StartCoroutine(TimeForSpawn(points[numInt]));
+                StartCoroutine(TimeForSpawn(points[numInt], prefab));
             }
         }
     }
 
-    IEnumerator TimeForSpawn(Transform point)
+    IEnumerator TimeForSpawn(Transform point, GameObject prefab)
     {
         yield return new WaitForSeconds(4f);
-        Instantiate(prefabZumbi, point.position, Quaternion.identity, slot);
+        Instantiate(prefab, point.position, Quaternion.identity, slot);
     }
 }
