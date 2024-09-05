@@ -6,6 +6,7 @@ public class LocalPlayer : MonoBehaviour
 {
     NetworkManager nm;
     private int pontuacionGameForte = 0;
+    private bool isTheBeginningScene = true;
     public string playerId {
         get {
             return nm.playerId;
@@ -28,6 +29,12 @@ public class LocalPlayer : MonoBehaviour
     // A posição é enviada a cada 1/updateServerTimesPerSecond segundos
     void Update()
     {
+        Transform initialPos = GameObject.Find("InitialPosition").transform;
+        if ( initialPos != null && isTheBeginningScene)
+        {
+            transform.position = initialPos.position;
+            isTheBeginningScene=false;
+        }
         if (Time.time - lastSentPositionTime > 1/updateServerTimesPerSecond)
         {
             nm.SendPosition(transform.position);
