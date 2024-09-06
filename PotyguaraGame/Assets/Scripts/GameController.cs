@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -121,6 +122,11 @@ public class GameController : MonoBehaviour
         {
             InitTimer();
         }
+    }
+
+    public void LoadScene(TMP_Text name)
+    {
+        SceneManager.LoadScene(name.text);
     }
 
     public void TeleportEnterShow()
