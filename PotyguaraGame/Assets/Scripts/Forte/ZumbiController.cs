@@ -29,7 +29,7 @@ public class ZumbiController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(FindObjectOfType<GameController>().getMode() == 0)
+        if(FindObjectOfType<GameForteController>().getMode() == 0)
         {
             if (AIPointCurrent == null)
             {
@@ -119,7 +119,7 @@ public class ZumbiController : MonoBehaviour
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
         // End Game
-        FindObjectOfType<GameController>().GameOver();
+        FindObjectOfType<GameForteController>().GameOver();
     }
 
     private void DestroyZumbi()

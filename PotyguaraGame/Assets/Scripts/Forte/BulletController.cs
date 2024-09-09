@@ -20,7 +20,7 @@ public class BulletController : MonoBehaviour
 
             if (!MarkedPontuacion)
             {
-                FindObjectOfType<GameController>().SetCurrentPoints(2);
+                FindObjectOfType<GameForteController>().SetCurrentPoints(2);
                 MarkedPontuacion = true;
             }
             Invoke("DestroyBullet", 2f);
@@ -39,7 +39,7 @@ public class BulletController : MonoBehaviour
 
             if (!MarkedPontuacion)
             {
-                FindObjectOfType<GameController>().SetCurrentPoints(1);
+                FindObjectOfType<GameForteController>().SetCurrentPoints(1);
                 MarkedPontuacion = true;
             }
             Invoke("DestroyBullet", 2f);
