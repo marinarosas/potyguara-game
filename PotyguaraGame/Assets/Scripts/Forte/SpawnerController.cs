@@ -46,7 +46,7 @@ public class SpawnerController : MonoBehaviour
 
     public Transform getIAPoint()
     {
-        if(FindObjectOfType<GameController>().getMode() == 1)
+        if(FindObjectOfType<GameForteController>().getMode() == 1)
         {
             return destinyRandowNavio[Random.Range(0, destinyRandowNavio.Count - 1)];
         }
@@ -99,7 +99,7 @@ public class SpawnerController : MonoBehaviour
         if (currentLevel == 2)
         {
             SetDestinyRandow(2);
-            FindObjectOfType<GameController>().ResetCount();
+            FindObjectOfType<GameForteController>().ResetCount();
             FindObjectOfType<HeightController>().NewHeight(18.6f);
             UpdateLevelBar();
             NextLevel(0f, new Vector3(654.91f, 18.6f, 400.95f));
@@ -107,7 +107,7 @@ public class SpawnerController : MonoBehaviour
         if (currentLevel == 3)
         {
             SetDestinyRandow(3);
-            FindObjectOfType<GameController>().ResetCount();
+            FindObjectOfType<GameForteController>().ResetCount();
             FindObjectOfType<HeightController>().NewHeight(8.35f);
             UpdateLevelBar();
             NextLevel(0f, new Vector3(710.36f, 8.35f, 401.15f));
@@ -117,7 +117,7 @@ public class SpawnerController : MonoBehaviour
     public void SetSpawn()
     {
         initLevel = true;
-        if(FindObjectOfType<GameController>().getMode() == 0)
+        if(FindObjectOfType<GameForteController>().getMode() == 0)
         {
             if (currentLevel == 1)
             {
@@ -161,7 +161,7 @@ public class SpawnerController : MonoBehaviour
             initLevel = false;
             GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
             finishUI.SetActive(true);
-            FindObjectOfType<GameController>().GameOver();
+            FindObjectOfType<GameForteController>().GameOver();
 
         }
         if (slot.childCount == 0 && initLevel)
@@ -180,8 +180,8 @@ public class SpawnerController : MonoBehaviour
             {
                 finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
             }
-            finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameController>().GetCurrrentPoints() + "";
-            FindObjectOfType<GameController>().SetTotalPoints();
+            finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameForteController>().GetCurrrentPoints() + "";
+            FindObjectOfType<GameForteController>().SetTotalPoints();
             finishUI.SetActive(true);
             finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             if(currentLevel < 3)
@@ -200,7 +200,7 @@ public class SpawnerController : MonoBehaviour
         {
             ranking.transform.GetChild(ii).gameObject.SetActive(true);
         }
-        FindObjectOfType<NetworkManager>().SendPontuacionForte(FindObjectOfType<GameController>().GetTotalPoints());
+        FindObjectOfType<NetworkManager>().SendPontuacionForte(FindObjectOfType<GameForteController>().GetTotalPoints());
         Invoke("ShowRanking", 0.7f);
     }
 
@@ -214,7 +214,7 @@ public class SpawnerController : MonoBehaviour
         for (int ii = 0; ii < currentAmount; ii++)
         {
             int numInt = Random.Range(0, points.Count-1);
-            GameObject prefab = FindObjectOfType<GameController>().getMode() == 1 ? prefabNavio : prefabZumbi;
+            GameObject prefab = FindObjectOfType<GameForteController>().getMode() == 1 ? prefabNavio : prefabZumbi;
             if (ii == 0)
             {
                 Instantiate(prefab, points[numInt].position, Quaternion.identity, slot);
