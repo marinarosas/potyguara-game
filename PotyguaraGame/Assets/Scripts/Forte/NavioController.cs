@@ -19,7 +19,7 @@ public class NavioController : MonoBehaviour
     {
         navMesh = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-        AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
+        //AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
     }
 
     // Update is called once per frame

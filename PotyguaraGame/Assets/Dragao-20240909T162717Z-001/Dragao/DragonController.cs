@@ -16,7 +16,7 @@ public class DragonController : MonoBehaviour
     private bool startCurve = false;
     private int numVoltas = 2;
     private float currentValueCurve = 0f;
-    private bool startDragon = true;
+    private bool startDragon = false;
     
     // Start is called before the first frame update
     void Start()

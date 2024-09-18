@@ -81,7 +81,7 @@ public class GameForteController : MonoBehaviour
         {
             count -= Time.deltaTime;
             timer.transform.GetChild(0).GetComponent<Text>().text = count.ToString("F0");
-            timer.GetComponent<UnityEngine.UI.Image>().fillAmount -= Time.deltaTime / 9.6f;
+            timer.GetComponent<Image>().fillAmount -= Time.deltaTime / 9.6f;
             if (count <= 0)
             {
                 count = 0;

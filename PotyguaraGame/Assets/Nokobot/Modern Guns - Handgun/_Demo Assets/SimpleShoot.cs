@@ -55,18 +55,18 @@ public class SimpleShoot : MonoBehaviour
 
     void Update()
     {
-        if (isLeft)
+        /*if (isLeft)
         {
            targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight)
         {
             targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
-        }
+        }*/
         if (isRight != false || isLeft != false)
         {
-            targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
+            //targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+            if (/*triggerValue > 0.1f ||*/ Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {
