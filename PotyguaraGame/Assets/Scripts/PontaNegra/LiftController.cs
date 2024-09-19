@@ -7,7 +7,7 @@ public class LiftController : MonoBehaviour
     private Animator ani;
     private GameObject leftDoor;
     private GameObject rightDoor;
-
+    public Transform height;
     public Transform player;
 
     private void Start()
@@ -35,7 +35,7 @@ public class LiftController : MonoBehaviour
     {
         if(currentFloor != value)
         {
-            player.parent = transform;
+            player.parent = height;
             if(value == 0)
             {
                 if (currentFloor == 2)

@@ -43,6 +43,10 @@ public class HeightController : MonoBehaviour
 
     public void VariableHeight(GameObject obj)
     {
+        if(obj.transform.parent.name == "Height")
+        {
+            obj.transform.position = Vector3.zero;
+        }
         obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
     }
 }
