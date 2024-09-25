@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class LiftController : MonoBehaviour
 {
@@ -7,7 +8,6 @@ public class LiftController : MonoBehaviour
     private Animator ani;
     private GameObject leftDoor;
     private GameObject rightDoor;
-    public Transform height;
     public Transform player;
 
     private void Start()
@@ -15,6 +15,15 @@ public class LiftController : MonoBehaviour
         ani = GetComponent<Animator>();
         leftDoor = transform.GetChild(0).gameObject;
         rightDoor = transform.GetChild(1).gameObject;
+    }
+
+    private void Update()
+    {
+        if(FindObjectOfType<HeightController>().GetBool())
+        {
+            Transform floor = transform.GetChild(6);
+            player.GetComponent<HeightController>().NewHeight(floor.position.y + 3.74f);
+        }
     }
 
     public void OpenTheDoors()
@@ -35,8 +44,10 @@ public class LiftController : MonoBehaviour
     {
         if(currentFloor != value)
         {
-            player.parent = height;
-            if(value == 0)
+            player.parent = transform;
+            Transform floor = transform.GetChild(6);
+            player.GetComponent<HeightController>().NewHeight(floor.position.y+3.74f);
+            if (value == 0)
             {
                 if (currentFloor == 2)
                 {

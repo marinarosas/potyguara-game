@@ -6,6 +6,7 @@ using UnityEngine.Video;
 public class VideoController : MonoBehaviour
 {
     public VideoPlayer video;
+    public Transform characters;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,6 +14,10 @@ public class VideoController : MonoBehaviour
         {
             video.Play();
             FindObjectOfType<DragonController>().setStartDragon(true);
+            for(int ii=0; ii < characters.childCount; ii++)
+            {
+                characters.GetChild(ii).gameObject.SetActive(true);
+            }
         }
     }
 
@@ -21,6 +26,10 @@ public class VideoController : MonoBehaviour
         if (other.gameObject.tag.Equals("Player"))
         {
             video.Pause();
+            for (int ii = 0; ii < characters.childCount; ii++)
+            {
+                characters.GetChild(ii).gameObject.SetActive(false);
+            }
         }
     }
 }

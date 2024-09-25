@@ -36,6 +36,10 @@ public class HeightController : MonoBehaviour
         insideLift = value;
     }
 
+    public bool GetBool()
+    {
+        return insideLift;
+    }
     public void FixedHeight(GameObject obj)
     {
         obj.transform.position = new Vector3(obj.transform.position.x, height, obj.transform.position.z);
@@ -43,10 +47,6 @@ public class HeightController : MonoBehaviour
 
     public void VariableHeight(GameObject obj)
     {
-        if(obj.transform.parent.name == "Height")
-        {
-            obj.transform.position = Vector3.zero;
-        }
         obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
     }
 }
