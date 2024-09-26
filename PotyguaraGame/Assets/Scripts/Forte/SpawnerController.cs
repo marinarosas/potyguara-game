@@ -94,7 +94,7 @@ public class SpawnerController : MonoBehaviour
         finishUI.SetActive(false);
         if (currentLevel == 1)
         {
-            NextLevel(180f, new Vector3(746.14f, 9.3f, 400.35f));
+            NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
         }
         if (currentLevel == 2)
         {
@@ -102,7 +102,7 @@ public class SpawnerController : MonoBehaviour
             FindObjectOfType<GameForteController>().ResetCount();
             FindObjectOfType<HeightController>().NewHeight(18.6f);
             UpdateLevelBar();
-            NextLevel(0f, new Vector3(654.91f, 18.6f, 400.95f));
+            NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
         }
         if (currentLevel == 3)
         {
@@ -110,7 +110,7 @@ public class SpawnerController : MonoBehaviour
             FindObjectOfType<GameForteController>().ResetCount();
             FindObjectOfType<HeightController>().NewHeight(8.35f);
             UpdateLevelBar();
-            NextLevel(0f, new Vector3(710.36f, 8.35f, 401.15f));
+            NextLevel(90f, new Vector3(710.36f, 8.35f, 401.15f));
         }
     }
 
