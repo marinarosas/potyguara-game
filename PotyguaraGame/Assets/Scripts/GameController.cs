@@ -8,12 +8,13 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    // GENERAL
+    [Header("Transição de Cena")]
     private bool startHoverBunda = false;
     private bool startForteDosReis = false;
     private bool startPontaNegra = false;
-    private GameObject player;
     private bool isSkip = false;
+
+    private GameObject player;
 
     public static GameController instance = null;
 
@@ -29,10 +30,6 @@ public class GameController : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
     }
-
-    //Ponta Negra
-    //HoverBunda
-
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -111,8 +108,9 @@ public class GameController : MonoBehaviour
 
     public void TeleportEnterShow()
     {
-        player.GetComponent<HeightController>().NewHeight(7.57f);
-        player.transform.position = new Vector3(177.88f, 7.57f, 111.09f);
+        player.GetComponent<HeightController>().NewHeight(7.8f);
+        player.transform.position = new Vector3(177.72f, 7.8f, 110.5f);
+        player.transform.eulerAngles = Vector3.zero;
     }
 
     public void TeleportExitShow()
@@ -125,6 +123,7 @@ public class GameController : MonoBehaviour
     {
         player.GetComponent<HeightController>().NewHeight(11.6f);
         player.transform.position = new Vector3(205.4f, 11.6f, -6.8f);
+        player.transform.eulerAngles = new Vector3(0, -90, 0);
     }
 
     public void TeleportGameForteZombieMode()
