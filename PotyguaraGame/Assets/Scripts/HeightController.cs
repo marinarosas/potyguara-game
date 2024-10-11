@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class HeightController : MonoBehaviour
 {
-    private float height = 0f;
-    public GameObject obj;
+    [SerializeField] private float height = 0f;
+    private GameObject player;
     private bool insideLift = false;
     // Start is called before the first frame update
     void Start()
     {
-        height = obj.transform.position.y;
+        player = GameObject.FindWithTag("Player");
+        height = player.transform.position.y;
     }
 
     public void NewHeight(float value)
@@ -23,11 +24,11 @@ public class HeightController : MonoBehaviour
     {
         if (!insideLift)
         {
-            FixedHeight(obj);
+            FixedHeight(player);
         }
         else
         {
-            VariableHeight(obj);
+            VariableHeight(player);
         }
     }
 

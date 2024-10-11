@@ -29,7 +29,7 @@ public class ZumbiController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(FindObjectOfType<GameForteController>().getMode() == 0)
+        if(FindObjectOfType<GameController>().getMode() == 0)
         {
             if (AIPointCurrent == null)
             {

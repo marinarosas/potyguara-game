@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,10 +7,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    [Header("Transição de Cena")]
-    private bool startHoverBunda = false;
-    private bool startForteDosReis = false;
-    private bool startPontaNegra = false;
+    private int gameMode = -1;
     private bool isSkip = false;
 
     private GameObject player;
@@ -45,65 +41,39 @@ public class GameController : MonoBehaviour
         isSkip = value;
     }
 
-    public void setHoverBunda(bool value)
-    {
-        startHoverBunda = value;
-    }
-
-    public void setForteDosReis(bool value)
-    {
-        startForteDosReis = value;
-    }
-
-    public void setPontaNegra(bool value)
-    {
-        startPontaNegra = value;
-    }
-   
-
     // Update is called once per frame
     void Update()
     {
         if (isSkip)
         {
-            FindObjectOfType<SpawnerController>().SetLevel();
-            FindObjectOfType<GameForteController>().setStartMode(0);
-            GameObject.Find("PontaNegra").SetActive(false);
-            GameObject.Find("MainMenu").GetComponent<FadeController>().FadeOut();
-            GameObject.Find("MainMenu").SetActive(false);
+            if(gameMode == 0)
+            {
+                FindObjectOfType<SpawnerController>().SetLevel();
+                GameObject.Find("PontaNegra").SetActive(false);
+                GameObject.Find("MainMenu").GetComponent<FadeController>().FadeOut();
+                GameObject.Find("MainMenu").SetActive(false);
+            }else if(gameMode == 1)
+            {
+                FindObjectOfType<SpawnerController>().SetSpawn();
+                GameObject.Find("PontaNegra").SetActive(false);
+                GameObject.Find("MainMenu").GetComponent<FadeController>().FadeOut();
+                GameObject.Find("MainMenu").SetActive(false);
+            }
             isSkip = false;
-        }
-
-        try
-        {
-            if (startHoverBunda)
-            {
-                startHoverBunda = false;
-                SceneManager.LoadScene("HoverBunda");
-            }
-
-            if (startForteDosReis)
-            {
-                startForteDosReis = false;
-                SceneManager.LoadScene("ForteDosReisMagos");
-            }
-
-            if(startPontaNegra)
-            {
-                startPontaNegra = false;
-                SceneManager.LoadScene("PontaNegra");
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Erro when load scenes: " + e);
         }
     }
 
     public void LoadScene(int number)
     {
-        if(SceneManager.GetActiveScene().buildIndex != number)
-            SceneManager.LoadScene(number);
+        try
+        {
+            if (SceneManager.GetActiveScene().buildIndex != number)
+                SceneManager.LoadScene(number);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error when load scenes: " + e);
+        }
     }
 
     public void TeleportEnterShow()
@@ -129,6 +99,29 @@ public class GameController : MonoBehaviour
     public void TeleportGameForteZombieMode()
     {
         isSkip = true;
+        gameMode = 0;
         SceneManager.LoadScene("ForteDosReisMagos");
+    }
+
+    public void TeleporGameForteNormalMode()
+    {
+        isSkip = true;
+        gameMode = 1;
+        SceneManager.LoadScene("ForteDosReisMagos");
+    }
+
+    public void setStartMode(int value)
+    {
+        gameMode = value;
+    }
+
+    public int getMode()
+    {
+        return gameMode;
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }

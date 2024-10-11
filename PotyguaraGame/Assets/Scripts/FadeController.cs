@@ -16,7 +16,11 @@ public class FadeController : MonoBehaviour
     public void FadeOut()
     {
         fadeOut = true;
-        Debug.Log("Assinatura pega");
+    }
+
+    public void FadeOutWithTime(float time)
+    {
+        Invoke("FadeOut", time);
     }
 
     private void Update()

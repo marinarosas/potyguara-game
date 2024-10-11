@@ -6,14 +6,16 @@ using UnityEngine.UI;
 
 public class GameForteController : MonoBehaviour
 {
-    // FORTE DOS REIS MAGOS
+    [Header("Timer")]
+    private bool startTimer = false;
     private float count = 10;
     private GameObject timer;
+
+    [Header("Pontuação")]
     private int levelCurrent = 1;
-    private bool startTimer = false;
     private int currentPoints = 0;
     private int totalPoints = 0;
-    private int modeGame = -1;
+
     private GameObject player;
 
     private void Start()
@@ -27,16 +29,6 @@ public class GameForteController : MonoBehaviour
         {
             InitTimer();
         }
-    }
-
-    public void setStartMode(int value)
-    {
-        modeGame = value;
-    }
-
-    public int getMode()
-    {
-        return modeGame;
     }
 
     public void ResetCount()

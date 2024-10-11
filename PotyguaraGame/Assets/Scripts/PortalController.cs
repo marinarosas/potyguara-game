@@ -10,15 +10,15 @@ public class PortalController : MonoBehaviour
         {
             if(transform.parent.name == "HoverBunda")
             {
-                FindObjectOfType<GameController>().setHoverBunda(true);
+                FindObjectOfType<GameController>().LoadScene(3);
             }
             else if(transform.parent.name == "ForteDosReis")
             {
-                FindObjectOfType<GameController>().setForteDosReis(true);
+                FindObjectOfType<GameController>().LoadScene(2);
             }
             else
             {
-                FindObjectOfType<GameController>().setPontaNegra(true);
+                FindObjectOfType<GameController>().LoadScene(1);
             }
         }
     }
