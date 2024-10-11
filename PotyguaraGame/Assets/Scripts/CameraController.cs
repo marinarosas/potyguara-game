@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private Transform player;
+    private Transform canvas;
+    private Camera mainCamera;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        mainCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+    }
+
+    public void SetCanvas(Transform canvas)
+    {
+        this.canvas = canvas;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.eulerAngles = Vector3.zero;
-        transform.position = new Vector3(player.position.x, transform.position.y, player.position.z);   
+        if(canvas!=null)
+            canvas.transform.position = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, mainCamera.nearClipPlane));
     }
 }

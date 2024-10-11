@@ -29,8 +29,8 @@ public class LocalPlayer : MonoBehaviour
     // A posição é enviada a cada 1/updateServerTimesPerSecond segundos
     void Update()
     {
-        Transform initialPos = GameObject.Find("InitialPosition").transform;
-        if ( initialPos != null && isTheBeginningScene)
+        //Transform initialPos = GameObject.Find("InitialPosition").transform;
+        /*if ( initialPos != null && isTheBeginningScene)
         {
             transform.position = initialPos.position;
             isTheBeginningScene=false;
@@ -39,7 +39,7 @@ public class LocalPlayer : MonoBehaviour
         {
             nm.SendPosition(transform.position);
             lastSentPositionTime = Time.time;
-        }
+        }*/
     }
 
     public void setRanking(int value)

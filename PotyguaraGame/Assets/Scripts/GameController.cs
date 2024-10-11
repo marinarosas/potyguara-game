@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isSkip)
+        if (isSkip && SceneManager.GetActiveScene().buildIndex == 2)
         {
             if(gameMode == 0)
             {
@@ -60,6 +60,12 @@ public class GameController : MonoBehaviour
                 GameObject.Find("MainMenu").SetActive(false);
             }
             isSkip = false;
+        }
+
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            player.transform.GetChild(3).gameObject.SetActive(false);
+            FindObjectOfType<CameraController>().SetCanvas(GameObject.Find("MainMenu").transform);
         }
     }
 

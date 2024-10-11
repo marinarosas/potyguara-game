@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.XR.CoreUtils.Bindings.Variables;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
@@ -8,22 +9,18 @@ public class LiftController : MonoBehaviour
     private Animator ani;
     private GameObject leftDoor;
     private GameObject rightDoor;
-    public Transform player;
+    private Transform player;
 
     private void Start()
     {
         ani = GetComponent<Animator>();
+        player = GameObject.FindWithTag("Player").transform;
         leftDoor = transform.GetChild(0).gameObject;
         rightDoor = transform.GetChild(1).gameObject;
     }
 
     private void Update()
     {
-        if(FindObjectOfType<HeightController>().GetBool())
-        {
-            Transform floor = transform.GetChild(6);
-            player.GetComponent<HeightController>().NewHeight(floor.position.y + 3.74f);
-        }
     }
 
     public void OpenTheDoors()
@@ -47,37 +44,13 @@ public class LiftController : MonoBehaviour
             player.parent = transform;
             Transform floor = transform.GetChild(6);
             player.GetComponent<HeightController>().NewHeight(floor.position.y+3.74f);
-            if (value == 0)
+            if(value == 0)
             {
-                if (currentFloor == 2)
-                {
-                    ani.Play("DownSecondFloor");
-                }
-                else
-                {
-                    ani.Play("DownTerreo");
-                }
-            }else if(value == 1)
-            {
-                if (currentFloor == 2)
-                {
-                    ani.Play("DownFirstFloor");
-                }
-                else
-                {
-                    ani.Play("MoveUpTerreo");
-                }
+                ani.Play("DownTerreo");
             }
             else
-            {                
-                if (currentFloor == 1)
-                {
-                    ani.Play("MoveUpFirstFloor");
-                }
-                else
-                {
-                    ani.Play("MoveUpSecondFloor");
-                }
+            {
+                ani.Play("MoveUpFirstFloor");
             }
             currentFloor = value;
         }
