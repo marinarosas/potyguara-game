@@ -46,7 +46,7 @@ public class SpawnerController : MonoBehaviour
 
     public Transform getIAPoint()
     {
-        if(FindObjectOfType<GameController>().getMode() == 1)
+        if(FindObjectOfType<GameForteController>().getMode() == 1)
         {
             return destinyRandowNavio[Random.Range(0, destinyRandowNavio.Count - 1)];
         }
@@ -117,7 +117,7 @@ public class SpawnerController : MonoBehaviour
     public void SetSpawn()
     {
         initLevel = true;
-        if(FindObjectOfType<GameController>().getMode() == 0)
+        if(FindObjectOfType<GameForteController>().getMode() == 0)
         {
             if (currentLevel == 1)
             {
@@ -214,7 +214,7 @@ public class SpawnerController : MonoBehaviour
         for (int ii = 0; ii < currentAmount; ii++)
         {
             int numInt = Random.Range(0, points.Count-1);
-            GameObject prefab = FindObjectOfType<GameController>().getMode() == 1 ? prefabNavio : prefabZumbi;
+            GameObject prefab = FindObjectOfType<GameForteController>().getMode() == 1 ? prefabNavio : prefabZumbi;
             if (ii == 0)
             {
                 Instantiate(prefab, points[numInt].position, Quaternion.identity, slot);

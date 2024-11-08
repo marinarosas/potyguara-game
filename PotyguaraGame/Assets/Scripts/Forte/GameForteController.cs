@@ -16,6 +16,7 @@ public class GameForteController : MonoBehaviour
     private int currentPoints = 0;
     private int totalPoints = 0;
 
+    private int gameMode = -1;
     private GameObject player;
 
     private void Start()
@@ -34,6 +35,16 @@ public class GameForteController : MonoBehaviour
     public void ResetCount()
     {
         count = 10;
+    }
+
+    public void setStartMode(int value)
+    {
+        gameMode = value;
+    }
+
+    public int getMode()
+    {
+        return gameMode;
     }
 
     public void GameOver()

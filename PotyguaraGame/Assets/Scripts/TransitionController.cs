@@ -5,46 +5,19 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class TransitionController : MonoBehaviour
 {
-    private int gameMode = -1;
-    private bool isSkip = false;
-
     private GameObject player;
 
-    public static GameController instance = null;
-
-    private void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    public bool GetIsSkip()
-    {
-        return isSkip;
-    }
-
-    public void SetIsSkip(bool value)
-    {
-        isSkip = value;
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (isSkip && SceneManager.GetActiveScene().buildIndex == 2)
+        /*if (isSkip && SceneManager.GetActiveScene().buildIndex == 2)
         {
             if(gameMode == 0)
             {
@@ -60,12 +33,11 @@ public class GameController : MonoBehaviour
                 GameObject.Find("MainMenu").SetActive(false);
             }
             isSkip = false;
-        }
+        }*/
 
         if(SceneManager.GetActiveScene().buildIndex == 0)
         {
             player.transform.GetChild(3).gameObject.SetActive(false);
-            FindObjectOfType<CameraController>().SetCanvas(GameObject.Find("MainMenu").transform);
         }
     }
 
@@ -104,28 +76,13 @@ public class GameController : MonoBehaviour
 
     public void TeleportGameForteZombieMode()
     {
-        isSkip = true;
-        gameMode = 0;
         SceneManager.LoadScene("ForteDosReisMagos");
     }
 
     public void TeleporGameForteNormalMode()
     {
-        isSkip = true;
-        gameMode = 1;
         SceneManager.LoadScene("ForteDosReisMagos");
     }
-
-    public void setStartMode(int value)
-    {
-        gameMode = value;
-    }
-
-    public int getMode()
-    {
-        return gameMode;
-    }
-
     public void ExitGame()
     {
         Application.Quit();

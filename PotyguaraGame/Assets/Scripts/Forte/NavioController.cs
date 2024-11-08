@@ -25,7 +25,7 @@ public class NavioController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<GameController>().getMode() == 1)
+        if (FindObjectOfType<GameForteController>().getMode() == 1)
         {
             distanceForAIPoint = Vector3.Distance(AIPointCurrent.position, transform.position);
 
