@@ -18,7 +18,7 @@ public class Move : MonoBehaviour
         float v = Input.GetAxis("Vertical");
 
         Vector3 move = new Vector3(h, 0, v);
-        rb.velocity = move * 5;
+        rb.linearVelocity = move * 5;
 
         
     }

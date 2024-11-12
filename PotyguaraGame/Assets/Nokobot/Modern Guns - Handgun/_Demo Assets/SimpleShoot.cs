@@ -15,6 +15,10 @@ public class SimpleShoot : MonoBehaviour
 
     public TextMeshProUGUI bullets;
 
+    [SerializeField] float nextTimeForFire = 0f; // tempo para o proximo tiro
+    [SerializeField] private float delayBetweenShots = 0.3f;  // Delay entre cada disparo em segundos
+    [SerializeField] private bool canShoot = true; // booleano para saber se pode ou não atirar
+
     [Header("Prefab Refrences")]
     public GameObject line;
     public GameObject bulletPrefab;
@@ -55,31 +59,45 @@ public class SimpleShoot : MonoBehaviour
 
     void Update()
     {
+        // controle do tempo entre disparos
+        if (!canShoot)
+            nextTimeForFire += Time.deltaTime;
+
+        if (nextTimeForFire >= delayBetweenShots)
+        {
+            canShoot = true;
+            nextTimeForFire = 0f;
+        }
+
         if (isLeft)
         {
-           targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
+           //targetDevice = FindObjectOfType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight)
         {
-            targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
+            //targetDevice = FindObjectOfType<RightHandController>().GetTargetDevice();
         }
         if (isRight != false || isLeft != false)
         {
-            targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
+            //targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+            if (/*triggerValue > 0.1f ||*/ Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {
-                    //Calls animation on the gun that has the relevant animation events that will fire
-                    if (isRight)
+                    if (canShoot)
                     {
-                        FindObjectOfType<RightHandController>().AnimationFinger();
+                        //Calls animation on the gun that has the relevant animation events that will fire
+                        if (isRight)
+                        {
+                            FindFirstObjectByType<RightHandController>().AnimationFinger();
+                        }
+                        else if (isLeft)
+                        {
+                            FindFirstObjectByType<LeftHandController>().AnimationFinger();
+                        }
+                        gunAnimator.SetTrigger("Fire");
+                        canShoot = false;
                     }
-                    else if(isLeft)
-                    {
-                        FindObjectOfType<LeftHandController>().AnimationFinger();
-                    }
-                    gunAnimator.SetTrigger("Fire");
                 }
                 else
                 {
@@ -110,7 +128,7 @@ public class SimpleShoot : MonoBehaviour
             tempFlash = Instantiate(muzzleFlashPrefab, barrelLocation.position, barrelLocation.rotation);
 
             //Destroy the muzzle flash effect
-            //Destroy(tempFlash, destroyTimer);
+            Destroy(tempFlash, destroyTimer);
         }
         RaycastHit hitInfo;
         bool hasHit = Physics.Raycast(barrelLocation.position, barrelLocation.forward, out hitInfo, 100);

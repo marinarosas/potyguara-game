@@ -21,7 +21,7 @@ public class SpawnerController : MonoBehaviour
 
     private int currentLevel = 1;
     private int wallsDestroyed = 0;
-    private List<Transform> destinyRandowZombie = new List<Transform>();
+    private List<Transform> spawnRandowZombie = new List<Transform>();
 
     [Header("General")]
     private bool initLevel = false;
@@ -40,51 +40,35 @@ public class SpawnerController : MonoBehaviour
         }
         for (var ii = 0; ii < destinyLevel1.childCount; ii++)
         {
-            destinyRandowZombie.Add(destinyLevel1.GetChild(ii));
+            spawnRandowZombie.Add(destinyLevel1.GetChild(ii));
         }
     }
 
-    public Transform getIAPoint()
+    public int GetCurrentLevel()
     {
-        if(FindObjectOfType<GameForteController>().getMode() == 1)
-        {
-            return destinyRandowNavio[Random.Range(0, destinyRandowNavio.Count - 1)];
-        }
-        else
-        {
-            return destinyRandowZombie[Random.Range(0, destinyRandowZombie.Count - 1)];
-        }
-
+        return currentLevel;
     }
 
-    public Transform getIAPoint(int value, int categoria)
+    public Transform GetIAPoint()
     {
-        if(categoria == 0)
-        {
-            return destinyRandowZombie[value];
-        }
-        else
-        {
-            return destinyRandowNavio[value];
-        }
-
+        return destinyRandowNavio[Random.Range(0, destinyRandowNavio.Count - 1)];
     }
 
     public void SetDestinyRandow(int value)
     {
-        destinyRandowZombie.Clear();
+        spawnRandowZombie.Clear();
         if (value == 2)
         {
             for (var ii = 0; ii < destinyLevel2.childCount; ii++)
             {
-                destinyRandowZombie.Add(destinyLevel2.GetChild(ii));
+                spawnRandowZombie.Add(destinyLevel2.GetChild(ii));
             }
         }
         if (value == 3)
         {
             for (var ii = 0; ii < destinyLevel3.childCount; ii++)
             {
-                destinyRandowZombie.Add(destinyLevel3.GetChild(ii));
+                spawnRandowZombie.Add(destinyLevel3.GetChild(ii));
             }
         }
     }
@@ -99,16 +83,16 @@ public class SpawnerController : MonoBehaviour
         if (currentLevel == 2)
         {
             SetDestinyRandow(2);
-            FindObjectOfType<GameForteController>().ResetCount();
-            FindObjectOfType<HeightController>().NewHeight(18.6f);
+            FindFirstObjectByType<GameForteController>().ResetCount();
+            FindFirstObjectByType<HeightController>().NewHeight(18.6f);
             UpdateLevelBar();
             NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
         }
         if (currentLevel == 3)
         {
             SetDestinyRandow(3);
-            FindObjectOfType<GameForteController>().ResetCount();
-            FindObjectOfType<HeightController>().NewHeight(8.35f);
+            FindFirstObjectByType<GameForteController>().ResetCount();
+            FindFirstObjectByType<HeightController>().NewHeight(8.35f);
             UpdateLevelBar();
             NextLevel(90f, new Vector3(710.36f, 8.35f, 401.15f));
         }
@@ -117,22 +101,22 @@ public class SpawnerController : MonoBehaviour
     public void SetSpawn()
     {
         initLevel = true;
-        if(FindObjectOfType<GameForteController>().getMode() == 0)
+        if(FindFirstObjectByType<GameForteController>().getMode() == 0)
         {
             if (currentLevel == 1)
             {
                 currentAmount = 12;
-                InitSpawner(destinyRandowZombie);
+                InitSpawner(spawnRandowZombie);
             }
             if (currentLevel == 2)
             {
                 currentAmount = 9;
-                InitSpawner(destinyRandowZombie);
+                InitSpawner(spawnRandowZombie);
             }
             if (currentLevel == 3)
             {
                 currentAmount = 7;
-                InitSpawner(destinyRandowZombie);
+                InitSpawner(spawnRandowZombie);
             }
         }
         else
@@ -161,7 +145,7 @@ public class SpawnerController : MonoBehaviour
             initLevel = false;
             GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
             finishUI.SetActive(true);
-            FindObjectOfType<GameForteController>().GameOver();
+            FindFirstObjectByType<GameForteController>().GameOver();
 
         }
         if (slot.childCount == 0 && initLevel)
@@ -180,8 +164,8 @@ public class SpawnerController : MonoBehaviour
             {
                 finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
             }
-            finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameForteController>().GetCurrrentPoints() + "";
-            FindObjectOfType<GameForteController>().SetTotalPoints();
+            finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentPoints() + "";
+            FindFirstObjectByType<GameForteController>().SetTotalPoints();
             finishUI.SetActive(true);
             finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             if(currentLevel < 3)
@@ -200,13 +184,13 @@ public class SpawnerController : MonoBehaviour
         {
             ranking.transform.GetChild(ii).gameObject.SetActive(true);
         }
-        FindObjectOfType<NetworkManager>().SendPontuacionForte(FindObjectOfType<GameForteController>().GetTotalPoints());
+        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints());
         Invoke("ShowRanking", 0.7f);
     }
 
     private void ShowRanking()
     {
-        FindObjectOfType<RankingController>().ShowRanking();
+        FindFirstObjectByType<RankingController>().ShowRanking();
     }
 
     private void InitSpawner(List<Transform> points)
@@ -214,7 +198,7 @@ public class SpawnerController : MonoBehaviour
         for (int ii = 0; ii < currentAmount; ii++)
         {
             int numInt = Random.Range(0, points.Count-1);
-            GameObject prefab = FindObjectOfType<GameForteController>().getMode() == 1 ? prefabNavio : prefabZumbi;
+            GameObject prefab = FindFirstObjectByType<GameForteController>().getMode() == 1 ? prefabNavio : prefabZumbi;
             if (ii == 0)
             {
                 Instantiate(prefab, points[numInt].position, Quaternion.identity, slot);

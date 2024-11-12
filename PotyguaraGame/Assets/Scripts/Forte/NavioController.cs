@@ -25,7 +25,7 @@ public class NavioController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<GameForteController>().getMode() == 1)
+        if (FindFirstObjectByType<GameForteController>().getMode() == 1)
         {
             distanceForAIPoint = Vector3.Distance(AIPointCurrent.position, transform.position);
 
@@ -34,7 +34,7 @@ public class NavioController : MonoBehaviour
                 Walking();
                 if (distanceForAIPoint <= 2f) // for change the enemy's random destiny
                 {
-                    AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
+                    AIPointCurrent = FindFirstObjectByType<SpawnerController>().GetIAPoint();
                 }
             }            
         }

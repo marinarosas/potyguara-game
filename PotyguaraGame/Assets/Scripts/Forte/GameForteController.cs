@@ -89,7 +89,7 @@ public class GameForteController : MonoBehaviour
             {
                 count = 0;
                 startTimer = false;
-                FindObjectOfType<SpawnerController>().SetSpawn();
+                FindFirstObjectByType<SpawnerController>().SetSpawn();
                 if (levelCurrent == 1)
                 {
                     ManageWalls(true);

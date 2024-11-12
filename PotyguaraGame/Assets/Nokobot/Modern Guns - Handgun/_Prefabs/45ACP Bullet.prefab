@@ -60,7 +60,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1001 &3724705277012589230
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69,6 +69,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4396417133449288}
     m_Modifications:
+    - target: {fileID: 1773974481383211893, guid: 65c9f6563c561ee4e8905d1e6a32548b, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1895300901454820957, guid: 65c9f6563c561ee4e8905d1e6a32548b, type: 3}
       propertyPath: m_RootOrder
       value: 0

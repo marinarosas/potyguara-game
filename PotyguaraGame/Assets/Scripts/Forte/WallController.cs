@@ -31,7 +31,7 @@ public class WallController : MonoBehaviour
             if (collision.gameObject.tag.Equals("Hand") || collision.gameObject.tag.Equals("Body"))
             {
                 setDamage(true);
-                FindObjectOfType<SpawnerController>().setWallsDestroyed();
+                FindFirstObjectByType<SpawnerController>().setWallsDestroyed();
             }
         }
     }

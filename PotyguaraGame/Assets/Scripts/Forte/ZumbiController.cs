@@ -12,9 +12,8 @@ public class ZumbiController : MonoBehaviour
     private float distanceFollow = 30f, distanceAttack = 3f;
 
     private float timeForAttack = 1.5f;
-    private float distanceForPlayer, distanceForAIPoint;
-    private bool followSomething, isDead = false;
-    private Transform AIPointCurrent = null;
+    private float distanceForPlayer;
+    private bool isDead = false;
     private Animator ani;
 
     // Start is called before the first frame update
@@ -23,58 +22,35 @@ public class ZumbiController : MonoBehaviour
         navMesh = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
+        Walking();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(FindObjectOfType<GameForteController>().getMode() == 0)
+        SpawnerController spawner = FindFirstObjectByType<SpawnerController>();
+        if(spawner.GetCurrentLevel() == 3)
         {
-            if (AIPointCurrent == null)
-            {
-                AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
-            }
+            player = GameObject.Find("Alvo").transform;
+        }
+        if(FindFirstObjectByType<GameForteController>().getMode() == 0)
+        {
             distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
-            distanceForAIPoint = Vector3.Distance(AIPointCurrent.position, transform.position);
 
-            RaycastHit hit;
-            Vector3 from = transform.position;
-            Vector3 to = player.position;
-            Vector3 direction = to - from;
             if (!isDead)
             {
-                if (Physics.Raycast(transform.position, direction, out hit, 1000)) // for to see if the player is in the enemy perception ray
+                if(distanceForPlayer < distanceFollow)
                 {
-                    if (hit.collider.gameObject.CompareTag("Player"))
-                    {
-                        if(distanceForPlayer < distanceFollow)
-                        {
-                            Follow();
-                            followSomething = true;
-                        }
-                        else
-                        {
-                            followSomething = false;
-                            Walking();
-                        }
-                    }
-                    else
-                    {
-                        followSomething = false;
-                        Walking();
-                    }
+                    Follow();
+                }
+                else
+                {
+                    Walking();
                 }
 
                 if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
                 {
                     Attack();
-                }
-
-                if (distanceForAIPoint <= 2f) // for change the enemy's random destiny
-                {
-                    AIPointCurrent = FindObjectOfType<SpawnerController>().getIAPoint();
-                    Walking();
                 }
             }
         }  
@@ -82,14 +58,11 @@ public class ZumbiController : MonoBehaviour
 
     void Walking()
     {
-        if (!followSomething)
-        {
-            ani.SetBool("IsWalking", true);
-            ani.SetBool("IsRunning", false);
-            navMesh.acceleration = 5f;
-            navMesh.speed = velocityWalking;
-            navMesh.destination = AIPointCurrent.position;
-        }
+        ani.SetBool("IsWalking", true);
+        ani.SetBool("IsRunning", false);
+        navMesh.acceleration = 5f;
+        navMesh.speed = velocityWalking;
+        navMesh.destination = player.position;
     }
 
     public void Dead()
@@ -105,11 +78,19 @@ public class ZumbiController : MonoBehaviour
         Invoke("DestroyZumbi", 4f);
     }
 
+    void Idle()
+    {
+        ani.SetBool("IsWalking", false);
+        ani.SetBool("IsRunning", false);
+        navMesh.acceleration = 0f;
+        navMesh.speed = 0f;
+    }
+
     void Follow()
     {
         ani.SetBool("IsWalking", false);
         ani.SetBool("IsRunning", true);
-        navMesh.acceleration = 8f;
+        navMesh.acceleration = 7f;
         navMesh.speed = velocityPersecution;
         navMesh.destination = player.position;
     }
@@ -119,7 +100,7 @@ public class ZumbiController : MonoBehaviour
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
         // End Game
-        FindObjectOfType<GameForteController>().GameOver();
+        FindFirstObjectByType<GameForteController>().GameOver();
     }
 
     private void DestroyZumbi()
