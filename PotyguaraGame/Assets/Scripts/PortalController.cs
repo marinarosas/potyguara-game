@@ -6,7 +6,7 @@ public class PortalController : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.Equals("Player"))
         {
             if(transform.parent.name == "HoverBunda")
             {
@@ -18,7 +18,7 @@ public class PortalController : MonoBehaviour
             }
             else
             {
-                FindObjectOfType<TransitionController>().LoadScene(1);
+                FindFirstObjectByType<TransitionController>().LoadSceneAsync(1);
             }
         }
     }

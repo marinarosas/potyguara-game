@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,6 +13,7 @@ public class TransitionController : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        //StartCoroutine(LoadSceneAsync(2));
     }
 
     // Update is called once per frame
@@ -38,6 +40,15 @@ public class TransitionController : MonoBehaviour
         if(SceneManager.GetActiveScene().buildIndex == 0)
         {
             player.transform.GetChild(3).gameObject.SetActive(false);
+        }
+    }
+
+    public IEnumerator LoadSceneAsync(int sceneIndex)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
+        while(!asyncLoad.isDone)
+        {
+            yield return null;
         }
     }
 
