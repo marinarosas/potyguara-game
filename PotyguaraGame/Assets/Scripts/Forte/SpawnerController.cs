@@ -18,21 +18,21 @@ public class SpawnerController : MonoBehaviour
     public Transform destinyLevel2;
     public Transform destinyLevel3;
     public Transform slot;
-
-    private int currentLevel = 1;
-    private int wallsDestroyed = 0;
     private List<Transform> spawnRandowZombie = new List<Transform>();
 
     [Header("General")]
-    private bool initLevel = false;
+    private bool levelIsRunning = false;
     private GameObject player;
     private int currentAmount;
+    private int currentLevel = 1;
+    private int wallsDestroyed = 0;
     public void setWallsDestroyed()
     {
         wallsDestroyed++;
     }
     private void Start()
     {
+        FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
         player = GameObject.FindGameObjectWithTag("Player");
         for (var ii = 0; ii < destinyLevel.childCount; ii++)
         {
@@ -47,6 +47,11 @@ public class SpawnerController : MonoBehaviour
     public int GetCurrentLevel()
     {
         return currentLevel;
+    }
+
+    public void SetLevelIsRunning(bool value)
+    {
+        levelIsRunning = value;
     }
 
     public Transform GetIAPoint()
@@ -72,16 +77,24 @@ public class SpawnerController : MonoBehaviour
             }
         }
     }
+
+    public Transform GetSlotEnemies()
+    {
+        return slot;
+    }
     public void SetLevel()
     {
         GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
+        
         finishUI.SetActive(false);
         if (currentLevel == 1)
         {
+            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
             NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
         }
         if (currentLevel == 2)
         {
+            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
             SetDestinyRandow(2);
             FindFirstObjectByType<GameForteController>().ResetCount();
             FindFirstObjectByType<HeightController>().NewHeight(18.6f);
@@ -90,6 +103,7 @@ public class SpawnerController : MonoBehaviour
         }
         if (currentLevel == 3)
         {
+            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis peguem o Macgaiver. Se a vida dele chegar a zero, ele morre e você perde!!!");
             SetDestinyRandow(3);
             FindFirstObjectByType<GameForteController>().ResetCount();
             FindFirstObjectByType<HeightController>().NewHeight(8.35f);
@@ -100,7 +114,7 @@ public class SpawnerController : MonoBehaviour
 
     public void SetSpawn()
     {
-        initLevel = true;
+        levelIsRunning = true;
         if(FindFirstObjectByType<GameForteController>().getMode() == 0)
         {
             if (currentLevel == 1)
@@ -115,7 +129,7 @@ public class SpawnerController : MonoBehaviour
             }
             if (currentLevel == 3)
             {
-                currentAmount = 7;
+                currentAmount = 6;
                 InitSpawner(spawnRandowZombie);
             }
         }
@@ -142,15 +156,17 @@ public class SpawnerController : MonoBehaviour
     {
         if (wallsDestroyed >= 13 && currentLevel == 1)
         {
-            initLevel = false;
+            levelIsRunning = false;
             GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
             finishUI.SetActive(true);
             FindFirstObjectByType<GameForteController>().GameOver();
 
         }
-        if (slot.childCount == 0 && initLevel)
+        if (slot.childCount == 0 && levelIsRunning)
         {
-            initLevel = false;
+            levelIsRunning = false;
+            if (currentLevel == 1)
+                FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
             GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
             finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
 
@@ -171,6 +187,7 @@ public class SpawnerController : MonoBehaviour
             if(currentLevel < 3)
             {
                 currentLevel++;
+                FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
             }
         }
     }
@@ -212,7 +229,7 @@ public class SpawnerController : MonoBehaviour
 
     IEnumerator TimeForSpawn(Transform point, GameObject prefab)
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5f);
         Instantiate(prefab, point.position, Quaternion.identity, slot);
     }
 }

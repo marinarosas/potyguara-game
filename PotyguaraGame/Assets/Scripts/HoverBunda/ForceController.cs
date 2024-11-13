@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using UnityEngine.XR;
@@ -19,8 +18,7 @@ public class ForceController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rig = GetComponent<Rigidbody>();   
-        rig = GetComponent<Rigidbody>();   
+        rig = GetComponent<Rigidbody>();  
     }
 
     // Update is called once per frame

@@ -4,36 +4,47 @@ using UnityEngine.AI;
 
 public class ZumbiController : MonoBehaviour
 {
-    private Transform player;
+    private Transform player = null;
     private NavMeshAgent navMesh;
     //public AudioClip attackEnemy;
 
     private float velocityWalking = 0.6f, velocityPersecution = 3f;
     private float distanceFollow = 30f, distanceAttack = 3f;
 
-    private float timeForAttack = 1.5f;
     private float distanceForPlayer;
     private bool isDead = false;
+    private SpawnerController spawner;
     private Animator ani;
 
     // Start is called before the first frame update
     void Start()
     {
+        spawner = FindFirstObjectByType<SpawnerController>();
         navMesh = GetComponent<NavMeshAgent>();
         ani = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        Walking();
     }
 
     // Update is called once per frame
     void Update()
     {
-        SpawnerController spawner = FindFirstObjectByType<SpawnerController>();
-        if(spawner.GetCurrentLevel() == 3)
+        if (player == null)
         {
-            player = GameObject.Find("Alvo").transform;
+            if(spawner.GetCurrentLevel() == 2)
+            {
+                player = GameObject.FindWithTag("Player").transform;
+            }
+            if (spawner.GetCurrentLevel() == 3)
+            {
+                player = GameObject.Find("Target").transform;
+            }
+            if (spawner.GetCurrentLevel() == 1)
+            {
+                WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
+                player = walls[Random.Range(0, walls.Length - 1)].transform;
+            }
         }
-        if(FindFirstObjectByType<GameForteController>().getMode() == 0)
+
+        if (FindFirstObjectByType<GameForteController>().getMode() == 0)
         {
             distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
 
@@ -42,15 +53,14 @@ public class ZumbiController : MonoBehaviour
                 if(distanceForPlayer < distanceFollow)
                 {
                     Follow();
+                    if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
+                    {
+                        Attack();
+                    }
                 }
                 else
                 {
                     Walking();
-                }
-
-                if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
-                {
-                    Attack();
                 }
             }
         }  
@@ -82,6 +92,7 @@ public class ZumbiController : MonoBehaviour
     {
         ani.SetBool("IsWalking", false);
         ani.SetBool("IsRunning", false);
+        ani.SetBool("isShouting", false);
         navMesh.acceleration = 0f;
         navMesh.speed = 0f;
     }
@@ -90,7 +101,7 @@ public class ZumbiController : MonoBehaviour
     {
         ani.SetBool("IsWalking", false);
         ani.SetBool("IsRunning", true);
-        navMesh.acceleration = 7f;
+        navMesh.acceleration = 8f;
         navMesh.speed = velocityPersecution;
         navMesh.destination = player.position;
     }
@@ -100,11 +111,18 @@ public class ZumbiController : MonoBehaviour
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
         // End Game
-        FindFirstObjectByType<GameForteController>().GameOver();
+        if(spawner.GetCurrentLevel() != 3)
+            FindFirstObjectByType<GameForteController>().GameOver();
     }
 
     private void DestroyZumbi()
     {
         Destroy(gameObject);
+    }
+
+    public void ChangeTarget()
+    {
+        WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
+        player = walls[Random.Range(0, walls.Length - 1)].transform;
     }
 }

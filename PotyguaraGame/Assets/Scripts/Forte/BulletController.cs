@@ -7,7 +7,7 @@ public class BulletController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag.Equals("Hand"))
+        if (collision.gameObject.CompareTag("Head"))
         {
             Debug.Log("Acertou a cabeça");
 
@@ -26,7 +26,7 @@ public class BulletController : MonoBehaviour
             Invoke("DestroyBullet", 2f);
         }
 
-        if (collision.gameObject.tag.Equals("Body"))
+        if (collision.gameObject.CompareTag("Body"))
         {
             Debug.Log("Acertou o corpo");
 
