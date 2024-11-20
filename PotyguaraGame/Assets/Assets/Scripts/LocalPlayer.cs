@@ -5,6 +5,7 @@ using UnityEngine;
 public class LocalPlayer : MonoBehaviour
 {
     NetworkManager nm;
+    private int health = 7;
     private int pontuacionGameForte = 0;
     private bool isTheBeginningScene = true;
     public string playerId {
@@ -45,5 +46,13 @@ public class LocalPlayer : MonoBehaviour
     public void setRanking(int value)
     {
         pontuacionGameForte = value;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("CannonBall"))
+        {
+            health--;
+        }
     }
 }

@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WaypointsFree;
 using static UnityEngine.Rendering.DebugUI;
 using Button = UnityEngine.UI.Button;
 
 public class SpawnerController : MonoBehaviour
 {
     [Header("Normal Mode")]
-    public Transform destinyLevel;
     public GameObject prefabNavio;
-    private List<Transform> destinyRandowNavio = new List<Transform>();
+    public WaypointsGroup waypointsGroup;
+    public GameObject cannons;
 
     [Header("Zombie Mode")]
     public GameObject prefabZumbi;
@@ -23,6 +24,7 @@ public class SpawnerController : MonoBehaviour
     [Header("General")]
     private bool levelIsRunning = false;
     private GameObject player;
+    private GameObject finishUI;
     private int currentAmount;
     private int currentLevel = 1;
     private int wallsDestroyed = 0;
@@ -33,11 +35,8 @@ public class SpawnerController : MonoBehaviour
     private void Start()
     {
         FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
-        player = GameObject.FindGameObjectWithTag("Player");
-        for (var ii = 0; ii < destinyLevel.childCount; ii++)
-        {
-            destinyRandowNavio.Add(destinyLevel.GetChild(ii));
-        }
+        player = GameObject.FindWithTag("Player");
+        finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
         for (var ii = 0; ii < destinyLevel1.childCount; ii++)
         {
             spawnRandowZombie.Add(destinyLevel1.GetChild(ii));
@@ -53,12 +52,6 @@ public class SpawnerController : MonoBehaviour
     {
         levelIsRunning = value;
     }
-
-    public Transform GetIAPoint()
-    {
-        return destinyRandowNavio[Random.Range(0, destinyRandowNavio.Count - 1)];
-    }
-
     public void SetDestinyRandow(int value)
     {
         spawnRandowZombie.Clear();
@@ -77,38 +70,41 @@ public class SpawnerController : MonoBehaviour
             }
         }
     }
-
-    public Transform GetSlotEnemies()
-    {
-        return slot;
-    }
     public void SetLevel()
     {
-        GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
-        
         finishUI.SetActive(false);
-        if (currentLevel == 1)
+        if (FindFirstObjectByType<GameForteController>().getMode() == 1)
         {
-            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
-            NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
-        }
-        if (currentLevel == 2)
-        {
-            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
-            SetDestinyRandow(2);
-            FindFirstObjectByType<GameForteController>().ResetCount();
-            FindFirstObjectByType<HeightController>().NewHeight(18.6f);
-            UpdateLevelBar();
+            cannons.SetActive(true);
+            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você deve destruir a frota de navios invasores utilizando os canhões. Se aproxime deles e pressioner o Trigger para atirar!!!");
+            FindFirstObjectByType<HeightController>().NewHeight(19.6f);
             NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
         }
-        if (currentLevel == 3)
+        else
         {
-            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis peguem o Macgaiver. Se a vida dele chegar a zero, ele morre e você perde!!!");
-            SetDestinyRandow(3);
-            FindFirstObjectByType<GameForteController>().ResetCount();
-            FindFirstObjectByType<HeightController>().NewHeight(8.35f);
-            UpdateLevelBar();
-            NextLevel(90f, new Vector3(710.36f, 8.35f, 401.15f));
+            if (currentLevel == 1)
+            {
+                FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
+                NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
+            }
+            if (currentLevel == 2)
+            {
+                FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
+                SetDestinyRandow(2);
+                FindFirstObjectByType<GameForteController>().ResetCount();
+                FindFirstObjectByType<HeightController>().NewHeight(18.6f);
+                UpdateLevelBar();
+                NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
+            }
+            if (currentLevel == 3)
+            {
+                FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis peguem o Macgaiver. Se a vida dele chegar a zero, ele morre e você perde!!!");
+                SetDestinyRandow(3);
+                FindFirstObjectByType<GameForteController>().ResetCount();
+                FindFirstObjectByType<HeightController>().NewHeight(8.35f);
+                UpdateLevelBar();
+                NextLevel(90f, new Vector3(710.36f, 8.35f, 401.15f));
+            }
         }
     }
 
@@ -135,8 +131,8 @@ public class SpawnerController : MonoBehaviour
         }
         else
         {
-            currentAmount = 3;
-            InitSpawner(destinyRandowNavio);
+            currentAmount = 4;
+            InitSpawner(waypointsGroup.waypoints);
         }
     }
 
@@ -145,49 +141,89 @@ public class SpawnerController : MonoBehaviour
         player.transform.position = initialPosition;
         player.transform.eulerAngles = new Vector3(0, angulationY, 0);
     }
-
+   
     private void UpdateLevelBar()
     {
         GameObject.FindGameObjectWithTag("Level").GetComponent<Image>().fillAmount = 0.35f * currentLevel;
         GameObject.FindGameObjectWithTag("Level").transform.GetChild(2).GetComponent<Text>().text = currentLevel + "";
     }
 
+    public void CleanSlot()
+    {
+        foreach(Transform enemy in slot)
+        {
+            Destroy(enemy.gameObject);
+        }
+    }
+
     private void Update()
     {
-        if (wallsDestroyed >= 13 && currentLevel == 1)
+        if (FindFirstObjectByType<GameForteController>().getMode() == 1)
         {
-            levelIsRunning = false;
-            GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
-            finishUI.SetActive(true);
-            FindFirstObjectByType<GameForteController>().GameOver();
+            if (levelIsRunning)
+            {
+                Transform timer = GameObject.FindWithTag("Time").transform;
+                if (timer.GetChild(0).GetComponent<Text>().text == "0")
+                {
+                    foreach(Transform enemy in slot)
+                    {
+                        Destroy(enemy.gameObject);
+                    }
+                    timer.gameObject.SetActive(false);
+                    timer.GetComponent<Image>().fillAmount = 1f;
+                    levelIsRunning = false;
+                    finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
+                    finishUI.transform.GetChild(3).gameObject.SetActive(false);
+                    finishUI.transform.GetChild(6).gameObject.SetActive(true);
 
+                    finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentPoints() + "";
+                    FindFirstObjectByType<GameForteController>().SetTotalPoints();
+                    finishUI.SetActive(true);
+                    finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+                }
+                else
+                {
+                    if(slot.childCount == 0)
+                        FindFirstObjectByType<SpawnerController>().SetSpawn();
+                }
+            }
         }
-        if (slot.childCount == 0 && levelIsRunning)
+        else
         {
-            levelIsRunning = false;
-            if (currentLevel == 1)
-                FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
-            GameObject finishUI = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
-            finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
+            if (wallsDestroyed >= 13 && currentLevel == 1)
+            {
+                levelIsRunning = false;
+                finishUI.SetActive(true);
+                FindFirstObjectByType<GameForteController>().GameOver();
+            }
+            if (slot.childCount == 0 && levelIsRunning)
+            {
+                levelIsRunning = false;
+                if (currentLevel == 1)
+                    FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
 
-            if (currentLevel == 3)
-            {
-                finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Ver Ranking";
-                finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
-                finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(Ranking);
-            }
-            else
-            {
-                finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
-            }
-            finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentPoints() + "";
-            FindFirstObjectByType<GameForteController>().SetTotalPoints();
-            finishUI.SetActive(true);
-            finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
-            if(currentLevel < 3)
-            {
-                currentLevel++;
-                FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
+                finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
+
+                if (currentLevel == 3)
+                {
+                    finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Ver Ranking";
+                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
+                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(Ranking);
+                }
+                else
+                {
+                    finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
+                }
+
+                if (currentLevel < 3)
+                {
+                    currentLevel++;
+                    FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
+                }
+                finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentPoints() + "";
+                FindFirstObjectByType<GameForteController>().SetTotalPoints();
+                finishUI.SetActive(true);
+                finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             }
         }
     }
@@ -210,26 +246,24 @@ public class SpawnerController : MonoBehaviour
         FindFirstObjectByType<RankingController>().ShowRanking();
     }
 
-    private void InitSpawner(List<Transform> points)
+    private void InitSpawner(List<Waypoint> waypoints)
     {
         for (int ii = 0; ii < currentAmount; ii++)
         {
-            int numInt = Random.Range(0, points.Count-1);
-            GameObject prefab = FindFirstObjectByType<GameForteController>().getMode() == 1 ? prefabNavio : prefabZumbi;
-            if (ii == 0)
-            {
-                Instantiate(prefab, points[numInt].position, Quaternion.identity, slot);
-            }
+            int numInt = Random.Range(0, waypoints.Count - 1);
+            GameObject navio = Instantiate(prefabNavio, waypoints[numInt].position, Quaternion.identity, slot);
+            if(ii==0)
+                navio.GetComponent<WaypointsTraveler>().StartIndex = ii;
             else
-            {
-                StartCoroutine(TimeForSpawn(points[numInt], prefab));
-            }
+                navio.GetComponent<WaypointsTraveler>().StartIndex = ii+1 > waypoints.Count-1 ? waypoints.Count-1 : ii+1;
         }
     }
 
-    IEnumerator TimeForSpawn(Transform point, GameObject prefab)
-    {
-        yield return new WaitForSeconds(5f);
-        Instantiate(prefab, point.position, Quaternion.identity, slot);
+    private void InitSpawner(List<Transform> points) {
+        for (int ii = 0; ii < currentAmount; ii++)
+        {
+            int numInt = Random.Range(0, points.Count-1);
+            Instantiate(prefabZumbi, points[numInt].position, Quaternion.identity, slot);
+        }
     }
 }

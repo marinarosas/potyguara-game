@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HeightController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class HeightController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        transform.position = GameObject.Find("InitialPosition").transform.position;
         height = player.transform.position.y;
     }
 

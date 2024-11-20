@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameForteController : MonoBehaviour
 {
     [Header("Timer")]
     private bool startTimer = false;
-    private float count = 10;
+    private float count;
     private GameObject timer;
 
     [Header("Pontuation")]
@@ -41,11 +42,31 @@ public class GameForteController : MonoBehaviour
 
     public void ResetCount()
     {
-        count = 10;
+        if (gameMode == 0)
+        {
+            timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
+            count = 10;
+        }
+        else
+        {
+            timer.transform.GetChild(0).GetComponent<Text>().text = 120 + "";
+            count = 120;
+        }
     }
 
     public void setStartMode(int value)
     {
+        timer = GameObject.FindWithTag("Time");
+        if (value == 0)
+        {
+            timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
+            count = 10;
+        }
+        else
+        {
+            timer.transform.GetChild(0).GetComponent<Text>().text = 120 + "";
+            count = 120;
+        }
         gameMode = value;
     }
 
@@ -61,22 +82,17 @@ public class GameForteController : MonoBehaviour
         Transform finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0);
         finishUI.GetChild(1).GetComponent<Text>().text = "Você Perdeu!!!";
         finishUI.GetChild(3).GetChild(0).GetComponent<Text>().text = "Repetir Nivel";
-        finishUI.GetChild(3).GetComponent<Button>().onClick.AddListener(ResetLevel);
+        finishUI.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(ResetLevel);
 
         finishUI.gameObject.SetActive(true);
     }
 
     public void DestroyEnemiesRemanecentes()
     {
-        Transform slot = FindFirstObjectByType<SpawnerController>().GetSlotEnemies();
-        for (int ii = 0; ii < slot.childCount; ii++)
-        {
-            Destroy(slot.GetChild(ii).gameObject);
-        }
+        FindFirstObjectByType<SpawnerController>().CleanSlot();
         GameObject finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
-        finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveListener(ResetLevel);
+        finishUI.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.RemoveListener(ResetLevel);
     }
-
 
     public void ChangeStateWalls(bool value)
     {
@@ -101,22 +117,30 @@ public class GameForteController : MonoBehaviour
     {
         try
         {
-            if (currentLevel == 1)
+            if (gameMode == 0)
             {
-                MenuLevel1.SetActive(true);
-                ChangeStateWalls(false);
+                if (currentLevel == 1)
+                {
+                    MenuLevel1.SetActive(true);
+                    ChangeStateWalls(false);
+                }
+
+                if (currentLevel == 2)
+                {
+                    MenuLevel2.SetActive(true);
+                }
+                if (currentLevel == 3)
+                {
+                    ResetLevelThree();
+                }
+                DestroyEnemiesRemanecentes();
             }
-             
-            if (currentLevel == 2)
+            else
             {
-                MenuLevel2.SetActive(true);
+                FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
+                FindFirstObjectByType<SpawnerController>().CleanSlot();
             }
-            if (currentLevel == 3)
-            {
-                ResetLevelThree();
-            }
-            FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false); 
-            DestroyEnemiesRemanecentes();
+            FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
         }
         catch (Exception e)
         {
@@ -141,29 +165,32 @@ public class GameForteController : MonoBehaviour
 
     public void ResetGame()
     {
+        player.GetComponent<HeightController>().NewHeight(8.2f);
         player.transform.position = new Vector3(809.36f, 8.2f, 400.38f);
     }
 
     public void InitTimer()
     {
         // timer bar
-        timer = GameObject.FindGameObjectWithTag("Time");
         if (count > 0)
         {
             count -= Time.deltaTime;
             timer.transform.GetChild(0).GetComponent<Text>().text = count.ToString("F0");
-            timer.GetComponent<Image>().fillAmount -= Time.deltaTime / 9.6f;
+            timer.GetComponent<Image>().fillAmount -= Time.deltaTime / (gameMode == 1 ? 119.6f : 9.6f);
             if (count <= 0)
             {
                 count = 0;
                 startTimer = false;
-                FindFirstObjectByType<SpawnerController>().SetSpawn();
-                if (currentLevel == 1)
+                if (gameMode == 0)
                 {
-                    ManageWalls(true);
+                    FindFirstObjectByType<SpawnerController>().SetSpawn();
+                    if (currentLevel == 1)
+                    {
+                        ManageWalls(true);
+                    }
+                    timer.SetActive(false);
+                    timer.GetComponent<Image>().fillAmount = 1f;
                 }
-                timer.SetActive(false);
-                timer.GetComponent<Image>().fillAmount = 1f;
             }
         }
     }
