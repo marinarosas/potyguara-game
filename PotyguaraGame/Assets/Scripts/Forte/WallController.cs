@@ -37,7 +37,7 @@ public class WallController : MonoBehaviour
                     parent = parent.parent;
                 }
                 parent.GetComponent<ZumbiController>().ChangeTarget();
-                FindFirstObjectByType<SpawnerController>().setWallsDestroyed();
+                FindFirstObjectByType<SpawnerController>().SetWallsDestroyed();
             }
         }
     }

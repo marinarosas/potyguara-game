@@ -21,7 +21,7 @@ public class CannonBallController : MonoBehaviour
     {
         if(collision.gameObject.layer == 10 && !isNavio)
         {
-            FindFirstObjectByType<GameForteController>().SetCurrentPoints(1);
+            FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
             transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             visualEffect.Reinit();
             visualEffect.Play();

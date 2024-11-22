@@ -44,7 +44,7 @@ public class ZumbiController : MonoBehaviour
             }
         }
 
-        if (FindFirstObjectByType<GameForteController>().getMode() == 0)
+        if (FindFirstObjectByType<GameForteController>().GetMode() == 0)
         {
             distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
 
@@ -78,13 +78,13 @@ public class ZumbiController : MonoBehaviour
     public void Dead()
     {
         navMesh.isStopped = true;
+        ani.SetBool("IsWalking", false);
+        ani.SetBool("IsRunning", false);
         if (!isDead)
         {
             ani.SetBool("IsDead", true);
+            isDead = true;
         }
-        ani.SetBool("IsWalking", false);
-        ani.SetBool("IsRunning", false);
-        isDead = true;
         Invoke("DestroyZumbi", 4f);
     }
 

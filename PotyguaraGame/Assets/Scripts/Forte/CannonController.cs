@@ -1,5 +1,7 @@
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 public class CannonController : MonoBehaviour
 {
@@ -35,7 +37,9 @@ public class CannonController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.Space) && canShoot)
+            PotyPlayer.Instance.inputDeviceRight.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValueL);
+            PotyPlayer.Instance.inputDeviceLeft.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValueR);
+            if ((triggerValueL > 0.1f || triggerValueR > 0.1f) && canShoot)
             {
                 Invoke("NewCanonBall", 0.2f);
                 canShoot = false;

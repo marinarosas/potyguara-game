@@ -7,48 +7,53 @@ public class BulletController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Head"))
-        {
-            Debug.Log("Acertou a cabeça");
-
-            var parent = collision.gameObject.transform.parent;
-            while (parent.gameObject.layer != 7)
+        /*if (collision.gameObject.CompareTag("Zumbi"))
+        { 
+            if(!MarkedPontuacion)
             {
-                parent = parent.parent;
-            }
-            parent.gameObject.GetComponent<ZumbiController>().Dead();
-
-            if (!MarkedPontuacion)
-            {
-                FindFirstObjectByType<GameForteController>().SetCurrentPoints(2);
+                collision.gameObject.GetComponent<ZumbiController>().Dead();
+                FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
                 MarkedPontuacion = true;
+                Destroy(gameObject);
             }
-            Invoke("DestroyBullet", 2f);
-        }
+        }*/
 
-        if (collision.gameObject.CompareTag("Body"))
-        {
-            Debug.Log("Acertou o corpo");
+       if (collision.gameObject.CompareTag("Head"))
+       {
+           Debug.Log("Acertou a cabeça");
 
-            var parent = collision.gameObject.transform.parent;
-            while(parent.gameObject.layer != 7)
-            {
-                parent = parent.parent;
-            }
-            parent.gameObject.GetComponent<ZumbiController>().Dead();
+           var parent = collision.gameObject.transform.parent;
+           while (parent.gameObject.layer != 7)
+           {
+               parent = parent.parent;
+           }
+           parent.gameObject.GetComponent<ZumbiController>().Dead();
 
-            if (!MarkedPontuacion)
-            {
-                FindFirstObjectByType<GameForteController>().SetCurrentPoints(1);
-                MarkedPontuacion = true;
-            }
-            Invoke("DestroyBullet", 2f);
-        }
-    }
+           if (!MarkedPontuacion)
+           {
+               FindFirstObjectByType<GameForteController>().SetCurrentScore(2);
+               MarkedPontuacion = true;
+           }
+            Destroy(gameObject);
+       }
 
-    void DestroyBullet()
-    {
-        MarkedPontuacion = false;
-        Destroy(gameObject);
+       if (collision.gameObject.CompareTag("Body"))
+       {
+           Debug.Log("Acertou o corpo");
+
+           var parent = collision.gameObject.transform.parent;
+           while(parent.gameObject.layer != 7)
+           {
+               parent = parent.parent;
+           }
+           parent.gameObject.GetComponent<ZumbiController>().Dead();
+
+           if (!MarkedPontuacion)
+           {
+               FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
+               MarkedPontuacion = true;
+           }
+            Destroy(gameObject);
+       }
     }
 }

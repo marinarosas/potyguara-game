@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class GameForteController : MonoBehaviour
 {
@@ -13,14 +12,14 @@ public class GameForteController : MonoBehaviour
     private float count;
     private GameObject timer;
 
-    [Header("Pontuation")]
+    [Header("Score")]
     private int currentPoints = 0;
     private int totalPoints = 0;
 
     [Header("Menus")]
-    public GameObject MenuLevel1;
-    public GameObject MenuLevel2;
-    public GameObject MenuLevel3;
+    public GameObject handMenuLevel1;
+    public GameObject handMenuLevel2;
+    public GameObject handMenuLevel3;
 
     [Header("General")]
     private int currentLevel;
@@ -29,7 +28,7 @@ public class GameForteController : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindWithTag("Player");
     }
 
     private void Update()
@@ -54,9 +53,10 @@ public class GameForteController : MonoBehaviour
         }
     }
 
-    public void setStartMode(int value)
+    public void SetStartMode(int value)
     {
-        timer = GameObject.FindWithTag("Time");
+        Transform mainCamera = GameObject.FindWithTag("MainCamera").transform;
+        timer = mainCamera.GetChild(0).Find("Timer").gameObject;
         if (value == 0)
         {
             timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
@@ -70,7 +70,7 @@ public class GameForteController : MonoBehaviour
         gameMode = value;
     }
 
-    public int getMode()
+    public int GetMode()
     {
         return gameMode;
     }
@@ -82,16 +82,16 @@ public class GameForteController : MonoBehaviour
         Transform finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0);
         finishUI.GetChild(1).GetComponent<Text>().text = "Você Perdeu!!!";
         finishUI.GetChild(3).GetChild(0).GetComponent<Text>().text = "Repetir Nivel";
-        finishUI.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(ResetLevel);
+        finishUI.GetChild(3).GetComponent<Button>().onClick.AddListener(ResetLevel);
 
         finishUI.gameObject.SetActive(true);
     }
 
-    public void DestroyEnemiesRemanecentes()
+    public void DestroyRemainingEnemies()
     {
         FindFirstObjectByType<SpawnerController>().CleanSlot();
         GameObject finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
-        finishUI.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.RemoveListener(ResetLevel);
+        finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveListener(ResetLevel);
     }
 
     public void ChangeStateWalls(bool value)
@@ -104,15 +104,6 @@ public class GameForteController : MonoBehaviour
         ManageWalls(value);
     }
 
-    public void SetInformes(string message)
-    {
-        Transform mainCamera = GameObject.FindWithTag("MainCamera").transform;
-        Transform informes = mainCamera.GetChild(2).GetChild(0).GetChild(2);
-        informes.GetComponent<TextMeshProUGUI>().text = message;
-        informes.parent.parent.gameObject.SetActive(true);
-        informes.parent.parent.GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(6f, informes.parent.parent.gameObject);
-    }
-
     private void ResetLevel()
     {
         try
@@ -121,23 +112,24 @@ public class GameForteController : MonoBehaviour
             {
                 if (currentLevel == 1)
                 {
-                    MenuLevel1.SetActive(true);
+                    handMenuLevel1.SetActive(true);
+                    handMenuLevel1.GetComponent<FadeController>().FadeIn();
                     ChangeStateWalls(false);
                 }
 
                 if (currentLevel == 2)
                 {
-                    MenuLevel2.SetActive(true);
+                    handMenuLevel2.SetActive(true);
+                    handMenuLevel1.GetComponent<FadeController>().FadeIn();
                 }
                 if (currentLevel == 3)
                 {
                     ResetLevelThree();
                 }
-                DestroyEnemiesRemanecentes();
+                DestroyRemainingEnemies();
             }
             else
-            {
-                FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
+            { 
                 FindFirstObjectByType<SpawnerController>().CleanSlot();
             }
             FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
@@ -155,7 +147,7 @@ public class GameForteController : MonoBehaviour
             Transform target = GameObject.Find("Target").transform;
             target.GetComponent<TargetController>().health = 100;
             target.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = 100 + "";
-            MenuLevel3.SetActive(true);
+            handMenuLevel3.SetActive(true);
         }
         catch (Exception e)
         {
@@ -214,12 +206,12 @@ public class GameForteController : MonoBehaviour
         startTimer = true;
     }
 
-    public void SetCurrentPoints(int value)
+    public void SetCurrentScore(int value)
     {
         currentPoints += value;
     }
 
-    public int GetCurrrentPoints()
+    public int GetCurrrentScore()
     {
         return currentPoints;
     }

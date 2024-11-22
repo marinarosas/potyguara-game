@@ -28,7 +28,7 @@ public class SpawnerController : MonoBehaviour
     private int currentAmount;
     private int currentLevel = 1;
     private int wallsDestroyed = 0;
-    public void setWallsDestroyed()
+    public void SetWallsDestroyed()
     {
         wallsDestroyed++;
     }
@@ -73,10 +73,10 @@ public class SpawnerController : MonoBehaviour
     public void SetLevel()
     {
         finishUI.SetActive(false);
-        if (FindFirstObjectByType<GameForteController>().getMode() == 1)
+        if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
         {
             cannons.SetActive(true);
-            FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você deve destruir a frota de navios invasores utilizando os canhões. Se aproxime deles e pressioner o Trigger para atirar!!!");
+            FindFirstObjectByType<PotyPlayerController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores utilizando os canhões. Se aproxime deles e pressioner o Trigger para atirar!!!");
             FindFirstObjectByType<HeightController>().NewHeight(19.6f);
             NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
         }
@@ -84,12 +84,13 @@ public class SpawnerController : MonoBehaviour
         {
             if (currentLevel == 1)
             {
-                FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
+                FindFirstObjectByType<PotyPlayerController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
             if (currentLevel == 2)
             {
-                FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
+                FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
+                FindFirstObjectByType<PotyPlayerController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(18.6f);
@@ -98,7 +99,8 @@ public class SpawnerController : MonoBehaviour
             }
             if (currentLevel == 3)
             {
-                FindFirstObjectByType<GameForteController>().SetInformes("Olá jogador(a), para esse nível você não deve deixar que os zumbis peguem o Macgaiver. Se a vida dele chegar a zero, ele morre e você perde!!!");
+                FindFirstObjectByType<GameForteController>().handMenuLevel3.SetActive(true);
+                FindFirstObjectByType<PotyPlayerController>().CreateReport("Proteja o Mcgaiver!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis peguem o Mcgaiver. Se a vida dele chegar a zero, ele morre e você perde!!!");
                 SetDestinyRandow(3);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(8.35f);
@@ -111,7 +113,7 @@ public class SpawnerController : MonoBehaviour
     public void SetSpawn()
     {
         levelIsRunning = true;
-        if(FindFirstObjectByType<GameForteController>().getMode() == 0)
+        if(FindFirstObjectByType<GameForteController>().GetMode() == 0)
         {
             if (currentLevel == 1)
             {
@@ -158,7 +160,7 @@ public class SpawnerController : MonoBehaviour
 
     private void Update()
     {
-        if (FindFirstObjectByType<GameForteController>().getMode() == 1)
+        if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
         {
             if (levelIsRunning)
             {
@@ -176,7 +178,7 @@ public class SpawnerController : MonoBehaviour
                     finishUI.transform.GetChild(3).gameObject.SetActive(false);
                     finishUI.transform.GetChild(6).gameObject.SetActive(true);
 
-                    finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentPoints() + "";
+                    finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     finishUI.SetActive(true);
                     finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
@@ -220,7 +222,7 @@ public class SpawnerController : MonoBehaviour
                     currentLevel++;
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
                 }
-                finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentPoints() + "";
+                finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                 FindFirstObjectByType<GameForteController>().SetTotalPoints();
                 finishUI.SetActive(true);
                 finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
