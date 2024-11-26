@@ -1,4 +1,3 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.InputSystem;
@@ -30,7 +29,7 @@ public class CannonController : MonoBehaviour
     {
         GameObject cannonBall = Instantiate(canonBallPrefab, attach.position, attach.parent.rotation);
         float force = Random.Range(3000f, 7500f);
-        cannonBall.GetComponent<Rigidbody>().linearVelocity = attach.forward * force * Time.deltaTime;
+        cannonBall.GetComponent<Rigidbody>().velocity = attach.forward * force * Time.deltaTime;
     }
 
     private void OnTriggerStay(Collider other)
