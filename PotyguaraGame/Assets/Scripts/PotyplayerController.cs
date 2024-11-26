@@ -37,6 +37,18 @@ public class PotyPlayerController : MonoBehaviour
         CreateReport("Bem-vindo(a) " + potyPlayer.nickname, "Esse é o PotyguaraVerse, um ambiente imersivo no qual você poderá curtir shows, interagir com outros jogadores e jogar jogos criados com base em grandes pontos turisticos de Natal");
     }
 
+    public float GetTriggerLeftButton()
+    {
+        potyPlayer.GetLeftController().TryGetFeatureValue(CommonUsages.trigger, out float triggerValueL);
+        return triggerValueL;
+    }
+
+    public float GetTriggerRightButton()
+    {
+        potyPlayer.GetRightController().TryGetFeatureValue(CommonUsages.trigger, out float triggerValueR);
+        return triggerValueR;
+    }
+
     public void CreateReport(string title, string message)
     {
         reportTxt.GetChild(0).GetComponent<TextMeshProUGUI>().text = title;

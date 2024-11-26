@@ -6,9 +6,11 @@ public class CannonController : MonoBehaviour
 {
     public GameObject canonBallPrefab;
     public Transform attach;
+    private float triggerL;
+    private float triggerR;
 
     private bool canShoot = true;
-    private float timeBetweenShoots = 0.7f;
+    private float timeBetweenShoots = 0.3f;
     private float count = 0;
 
     void Update()
@@ -28,7 +30,7 @@ public class CannonController : MonoBehaviour
     void NewCanonBall()
     {
         GameObject cannonBall = Instantiate(canonBallPrefab, attach.position, attach.parent.rotation);
-        float force = Random.Range(3000f, 7500f);
+        float force = Random.Range(2500f, 7000f);
         cannonBall.GetComponent<Rigidbody>().velocity = attach.forward * force * Time.deltaTime;
     }
 
@@ -36,11 +38,11 @@ public class CannonController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            PotyPlayer.Instance.inputDeviceRight.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValueL);
-            PotyPlayer.Instance.inputDeviceLeft.TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float triggerValueR);
-            if ((triggerValueL > 0.1f || triggerValueR > 0.1f) && canShoot)
+            triggerL = FindFirstObjectByType<PotyPlayerController>().GetTriggerLeftButton();
+            triggerR = FindFirstObjectByType<PotyPlayerController>().GetTriggerRightButton();
+            if ((triggerL > 0.1f || triggerR > 0.1f || Input.GetKeyDown(KeyCode.Space)) && canShoot)
             {
-                Invoke("NewCanonBall", 0.2f);
+                NewCanonBall();
                 canShoot = false;
             }
         }
