@@ -9,6 +9,8 @@ public class PotyPlayerController : MonoBehaviour
     private PotyPlayer potyPlayer;
     //private Report report;
     private NetworkManager nm;
+
+    public static PotyPlayerController Instance = null;
     public string PlayerId
     {
         get
@@ -27,6 +29,15 @@ public class PotyPlayerController : MonoBehaviour
     void Awake()
     {
         nm = NetworkManager.Instance;
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

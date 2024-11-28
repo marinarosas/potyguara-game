@@ -21,15 +21,21 @@ public class GameForteController : MonoBehaviour
     public GameObject handMenuLevel2;
     public GameObject handMenuLevel3;
 
+    [Header("Buttons")]
+    public Button normalMode;
+    public Button zombieMode;
+
     [Header("General")]
     private int currentLevel;
     private int gameMode = -1;
-    private GameObject player;
 
-    private void Start()
-    {
-        player = GameObject.FindWithTag("Player");
-    }
+    [Header("Player")]
+    private Transform player;
+    private Transform mainCamera;
+    private SimpleShoot leftGunController;
+    private SimpleShoot rightGunController;
+    private LeftHandController leftController;
+    private RightHandController rightController;
 
     private void Update()
     {
@@ -37,6 +43,49 @@ public class GameForteController : MonoBehaviour
         {
             InitTimer();
         }
+    }
+
+    public void SetLeftHand()
+    {
+        mainCamera = GameObject.FindWithTag("MainCamera").transform;
+        leftController = FindFirstObjectByType<LeftHandController>();
+        leftGunController = FindFirstObjectByType<LeftHandController>().gameObject.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
+
+        leftController.ChangeHand();
+        leftGunController.setLeftHand();
+        mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
+        mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
+        leftGunController.Reload();
+    }
+
+    public void SetRightHand()
+    {
+        mainCamera = GameObject.FindWithTag("MainCamera").transform;
+        rightController = FindFirstObjectByType<RightHandController>();
+        rightGunController = FindFirstObjectByType<RightHandController>().gameObject.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
+
+        rightController.ChangeHand();
+        rightGunController.setLeftHand();
+        mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
+        mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
+        rightGunController.Reload();
+    }
+
+    public void NextLevel()
+    {
+        FindFirstObjectByType<SpawnerController>().SetLevel();
+        FindFirstObjectByType<LeftHandController>().ResetHand();
+        FindFirstObjectByType<RightHandController>().ResetHand();
+    }
+
+    public Button GetZombieModeButton()
+    {
+        return zombieMode;
+    }
+
+    public Button GetNormalModeButton()
+    {
+        return zombieMode;
     }
 
     public void ResetCount()
@@ -157,8 +206,8 @@ public class GameForteController : MonoBehaviour
 
     public void ResetGame()
     {
-        player.GetComponent<HeightController>().NewHeight(8.2f);
-        player.transform.position = new Vector3(809.36f, 8.2f, 400.38f);
+        FindFirstObjectByType<HeightController>().NewHeight(8.2f);
+        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
     }
 
     public void InitTimer()
