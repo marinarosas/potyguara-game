@@ -13,11 +13,11 @@ public class PotyPlayer : MonoBehaviour
     public InputDevice inputDeviceRight;
     private GameObject skin;
 
-    public PotyPlayer(string nick, InputDevice leftHand, InputDevice rightHand, GameObject skinStandard)
+    public PotyPlayer(string nick, /*InputDevice leftHand, InputDevice rightHand,*/ GameObject skinStandard)
     {
         nickname = nick;
-        inputDeviceLeft = leftHand;
-        inputDeviceRight = rightHand;
+        //inputDeviceLeft = leftHand;
+        //inputDeviceRight = rightHand;
         skin = skinStandard;
     }
 

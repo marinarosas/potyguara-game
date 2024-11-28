@@ -12,9 +12,20 @@ public class CannonController : MonoBehaviour
     private bool canShoot = true;
     private float timeBetweenShoots = 0.3f;
     private float count = 0;
+    private bool playerInArea = false;
 
     void Update()
     {
+        //triggerL = FindFirstObjectByType<PotyPlayerController>().GetTriggerLeftButton();
+        //triggerR = FindFirstObjectByType<PotyPlayerController>().GetTriggerRightButton();
+
+        if(playerInArea)
+            if ((/*triggerL > 0.1f || triggerR > 0.1f ||*/ Input.GetKeyDown(KeyCode.Space)) && canShoot)
+            {
+                NewCanonBall();
+                canShoot = false;
+            }
+
         if (!canShoot)
         {
             count += Time.deltaTime;
@@ -38,13 +49,15 @@ public class CannonController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            triggerL = FindFirstObjectByType<PotyPlayerController>().GetTriggerLeftButton();
-            triggerR = FindFirstObjectByType<PotyPlayerController>().GetTriggerRightButton();
-            if ((triggerL > 0.1f || triggerR > 0.1f || Input.GetKeyDown(KeyCode.Space)) && canShoot)
-            {
-                NewCanonBall();
-                canShoot = false;
-            }
+            playerInArea = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            playerInArea = false;
         }
     }
 }

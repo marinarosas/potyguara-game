@@ -31,9 +31,9 @@ public class PotyPlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InputDevice inputDeviceLeft = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
-        InputDevice inputDeviceRight = FindFirstObjectByType<RightHandController>().GetTargetDevice();
-        potyPlayer = new PotyPlayer("Bianca", inputDeviceLeft, inputDeviceRight, new GameObject());
+        //InputDevice inputDeviceLeft = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
+        //InputDevice inputDeviceRight = FindFirstObjectByType<RightHandController>().GetTargetDevice();
+        potyPlayer = new PotyPlayer("Bianca", /*inputDeviceLeft, inputDeviceRight,*/ new GameObject());
         CreateReport("Bem-vindo(a) " + potyPlayer.nickname, "Esse é o PotyguaraVerse, um ambiente imersivo no qual você poderá curtir shows, interagir com outros jogadores e jogar jogos criados com base em grandes pontos turisticos de Natal");
     }
 
