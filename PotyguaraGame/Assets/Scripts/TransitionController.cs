@@ -26,7 +26,8 @@ public class TransitionController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Start();
+        if(!isSkip)
+            Start();
     }
 
     private void Start()
@@ -46,16 +47,8 @@ public class TransitionController : MonoBehaviour
             if(FindFirstObjectByType<GameForteController>().GetMode() == 0)
             {
                 FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
-                /*FindObjectOfType<SpawnerController>().SetLevel();
-                GameObject.Find("PontaNegra").SetActive(false);
-                GameObject.Find("MainMenu").GetComponent<FadeController>().FadeOut();
-                GameObject.Find("MainMenu").SetActive(false);*/
             }else if(FindFirstObjectByType<GameForteController>().GetMode() == 1)
             {
-                /*FindObjectOfType<SpawnerController>().SetSpawn();
-                GameObject.Find("PontaNegra").SetActive(false);
-                GameObject.Find("MainMenu").GetComponent<FadeController>().FadeOut();
-                GameObject.Find("MainMenu").SetActive(false);*/
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
             }
             isSkip = false;
@@ -113,7 +106,7 @@ public class TransitionController : MonoBehaviour
     {
         tempMode = 0;
         isSkip = true;
-        SceneManager.LoadScene("ForteDosReisMagos");
+        SceneManager.LoadScene(2);
     }
 
     public bool GetIsSkip()
@@ -125,7 +118,7 @@ public class TransitionController : MonoBehaviour
     {
         tempMode = 1;
         isSkip = true;
-        SceneManager.LoadScene("ForteDosReisMagos");
+        SceneManager.LoadScene(2);
     }
     public void ExitGame()
     {
