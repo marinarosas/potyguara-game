@@ -94,6 +94,7 @@ public class SkinSystemEditor : Editor
             if (GUILayout.Button("Reset"))
             {
                 currentSkin = skins.GetArrayElementAtIndex(0);
+                _skinSystem.disableMeshes();
                 _skinSystem.changeMesh(0); //reset
                 _skinSystem.currentSkin = _skinSystem.skins[0];
                 Debug.Log("Skin system reseted for this character");
@@ -112,21 +113,47 @@ public class SkinSystemEditor : Editor
     private void Arrows(ArrowType type)
     {
         SkinSystem _skinSystem = (SkinSystem)target;
+        int currentIndex = _skinSystem.getIndex();
+        int skinCount = skins.arraySize;
+        int materialIndex = _skinSystem.getMaterialIndex();
+        int materialCount = _skinSystem.currentSkin.materialsSize();
 
-        if (GUILayout.Button("<", GUILayout.Width(45), GUILayout.Height(45))){
-            if(type == ArrowType.Mesh)
+        if (type == ArrowType.Mesh)
+        {
+            GUI.enabled = currentIndex > 0;
+        }
+        else if (type == ArrowType.Material)
+        {
+            GUI.enabled = materialIndex > 0;
+        }
+
+        if (GUILayout.Button("<", GUILayout.Width(45), GUILayout.Height(45)))
+        {
+            if (type == ArrowType.Mesh)
                 _skinSystem.changeMesh(DIRECTION.Decrease);
             else
                 _skinSystem.changeMaterial(DIRECTION.Decrease);
         }
-        else
-        if (GUILayout.Button(">", GUILayout.Width(45), GUILayout.Height(45))){
+
+        if (type == ArrowType.Mesh)
+        {
+            GUI.enabled = currentIndex < skinCount - 1;
+        }
+        else if (type == ArrowType.Material)
+        {
+            GUI.enabled = materialIndex < materialCount - 1;
+        }
+
+        if (GUILayout.Button(">", GUILayout.Width(45), GUILayout.Height(45)))
+        {
             if (type == ArrowType.Mesh)
                 _skinSystem.changeMesh(DIRECTION.Increase);
             else
                 _skinSystem.changeMaterial(DIRECTION.Increase);
         }
-        EditorUtility.SetDirty(_skinSystem);
 
+        EditorUtility.SetDirty(_skinSystem);
+        GUI.enabled = true;
     }
+
 }

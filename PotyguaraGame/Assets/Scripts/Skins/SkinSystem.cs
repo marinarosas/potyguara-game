@@ -67,11 +67,6 @@ public class SkinSystem : MonoBehaviour{
         return defaultSkin;
     }
 
-    private void FixedUpdate()
-    {
-        //Debug.Log(currentSkin.getName());
-    }
-
     #region publicFunctions
 
     public bool changeMesh(DIRECTION direction)
@@ -103,8 +98,13 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
+    public void disableMeshes()
+    {
+        for (int i = 0; i < skins.Count; i++)
+            if (i != indexSkin)
+                skins[i].skinMesh.gameObject?.SetActive(false);
+    }
 
-    //TODO: VERIFICAO SE MUDOU!!!
     public void changeMesh(int index)
     {
         if (oldIndexSkin == index)
@@ -140,6 +140,7 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
+    public int getIndex() => indexSkin;
     public int getMaterialIndex() => indexMaterial;
 
     #endregion
