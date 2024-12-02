@@ -30,7 +30,6 @@ public class GameForteController : MonoBehaviour
     private int gameMode = -1;
 
     [Header("Player")]
-    private Transform player;
     private Transform mainCamera;
     private SimpleShoot leftGunController;
     private SimpleShoot rightGunController;
@@ -169,7 +168,7 @@ public class GameForteController : MonoBehaviour
                 if (currentLevel == 2)
                 {
                     handMenuLevel2.SetActive(true);
-                    handMenuLevel1.GetComponent<FadeController>().FadeIn();
+                    handMenuLevel2.GetComponent<FadeController>().FadeIn();
                 }
                 if (currentLevel == 3)
                 {

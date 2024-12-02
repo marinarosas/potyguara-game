@@ -165,7 +165,8 @@ public class SpawnerController : MonoBehaviour
         {
             if (levelIsRunning)
             {
-                Transform timer = GameObject.FindWithTag("Time").transform;
+                Transform timer = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(2);
+                timer.gameObject.SetActive(true);
                 if (timer.GetChild(0).GetComponent<Text>().text == "0")
                 {
                     foreach(Transform enemy in slot)
@@ -205,7 +206,7 @@ public class SpawnerController : MonoBehaviour
                 if (currentLevel == 1)
                     FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
 
-                finishUI.transform.GetChild(1).GetComponent<Text>().text = "Você ganhou, Parabéns!!!";
+                finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
 
                 if (currentLevel == 3)
                 {
