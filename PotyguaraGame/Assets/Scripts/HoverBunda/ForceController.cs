@@ -41,7 +41,6 @@ public class ForceController : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Finish"))
         {
-            rig.linearDamping = 0.9f;
         }
     }
 }

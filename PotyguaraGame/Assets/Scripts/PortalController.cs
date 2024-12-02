@@ -8,11 +8,7 @@ public class PortalController : MonoBehaviour
     {
         if(other.gameObject.Equals("Player"))
         {
-            if(transform.parent.name == "HoverBunda")
-            {
-                FindObjectOfType<TransitionController>().LoadScene(3);
-            }
-            else if(transform.parent.name == "ForteDosReis")
+            if(transform.parent.Equals("ForteDosReis"))
             {
                 FindObjectOfType<TransitionController>().LoadScene(2);
             }

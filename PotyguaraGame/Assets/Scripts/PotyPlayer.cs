@@ -13,26 +13,11 @@ public class PotyPlayer : MonoBehaviour
     public InputDevice inputDeviceRight;
     private GameObject skin;
 
-    public static PotyPlayer Instance = null;
-
-    private void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-    }
-
-    public PotyPlayer(string nick, InputDevice leftHand, InputDevice rightHand, GameObject skinStandard)
+    public PotyPlayer(string nick, /*InputDevice leftHand, InputDevice rightHand,*/ GameObject skinStandard)
     {
         nickname = nick;
-        inputDeviceLeft = leftHand;
-        inputDeviceRight = rightHand;
+        //inputDeviceLeft = leftHand;
+        //inputDeviceRight = rightHand;
         skin = skinStandard;
     }
 
@@ -49,5 +34,15 @@ public class PotyPlayer : MonoBehaviour
     public void SetScoreNormalMode(int value)
     {
         normalModeGameForteScore = value;
+    }
+
+    public InputDevice GetLeftController()
+    {
+        return inputDeviceLeft;
+    }
+
+    public InputDevice GetRightController()
+    {
+        return inputDeviceRight;
     }
 }

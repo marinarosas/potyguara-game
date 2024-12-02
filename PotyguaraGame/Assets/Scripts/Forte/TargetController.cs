@@ -9,7 +9,6 @@ public class TargetController : MonoBehaviour
     public bool receivedDamage = false;
     public float timeout = 2;
 
-
     private void Update()
     {
         if (receivedDamage)
@@ -25,7 +24,6 @@ public class TargetController : MonoBehaviour
             }
         }
     }
-
 
     private void OnCollisionEnter(Collision collision)
     {

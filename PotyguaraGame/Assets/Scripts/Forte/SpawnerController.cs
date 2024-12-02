@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using WaypointsFree;
@@ -103,9 +104,9 @@ public class SpawnerController : MonoBehaviour
                 FindFirstObjectByType<PotyPlayerController>().CreateReport("Proteja o Mcgaiver!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis peguem o Mcgaiver. Se a vida dele chegar a zero, ele morre e você perde!!!");
                 SetDestinyRandow(3);
                 FindFirstObjectByType<GameForteController>().ResetCount();
-                FindFirstObjectByType<HeightController>().NewHeight(8.35f);
+                FindFirstObjectByType<HeightController>().NewHeight(8.4f);
                 UpdateLevelBar();
-                NextLevel(90f, new Vector3(710.36f, 8.35f, 401.15f));
+                NextLevel(90f, new Vector3(710.36f, 8.4f, 401.15f));
             }
         }
     }
@@ -204,7 +205,7 @@ public class SpawnerController : MonoBehaviour
                 if (currentLevel == 1)
                     FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
 
-                finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
+                finishUI.transform.GetChild(1).GetComponent<Text>().text = "Você ganhou, Parabéns!!!";
 
                 if (currentLevel == 3)
                 {
@@ -216,6 +217,8 @@ public class SpawnerController : MonoBehaviour
                 {
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
                 }
+
+                finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().NextLevel);
 
                 if (currentLevel < 3)
                 {

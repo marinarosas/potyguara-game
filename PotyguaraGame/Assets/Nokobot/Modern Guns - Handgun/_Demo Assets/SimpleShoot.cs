@@ -69,18 +69,18 @@ public class SimpleShoot : MonoBehaviour
             nextTimeForFire = 0f;
         }
 
-        if (isLeft)
+        /*if (isLeft)
         {
            targetDevice = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight)
         {
             targetDevice = FindFirstObjectByType<RightHandController>().GetTargetDevice();
-        }
+        }*/
         if (isRight != false || isLeft != false)
         {
-            targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (triggerValue > 0.1f |! Input.GetKeyDown(KeyCode.F))
+            //targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+            if (/*triggerValue > 0.1f ||*/ Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {
@@ -116,8 +116,6 @@ public class SimpleShoot : MonoBehaviour
         currentBullets = maxBullets;
         bullets.text = currentBullets.ToString();
     }
-
-
 
     //This function creates the bullet behavior
     void Shoot()

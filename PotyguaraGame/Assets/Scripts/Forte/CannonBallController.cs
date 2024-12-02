@@ -3,13 +3,12 @@ using UnityEngine.VFX;
 
 public class CannonBallController : MonoBehaviour
 {
-    private VisualEffect visualEffect;
+    private ParticleSystem visualEffect;
     private bool isNavio = false;
     public bool wasInstantiatedForNavio { get; set; } = false;
     void Awake()
     {
-        visualEffect = transform.GetChild(0).GetComponent<VisualEffect>();
-        visualEffect.Stop();
+        visualEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
     }
 
     public void SetIsNavio(bool value)
@@ -23,14 +22,12 @@ public class CannonBallController : MonoBehaviour
         {
             FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
             transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            visualEffect.Reinit();
             visualEffect.Play();
             Destroy(gameObject, 1f);
         }
         if(collision.gameObject.layer == 11)
         {
             transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            visualEffect.Reinit();
             visualEffect.Play();
             Destroy(gameObject, 1f);
         }

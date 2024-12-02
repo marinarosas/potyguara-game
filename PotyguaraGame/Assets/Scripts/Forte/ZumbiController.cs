@@ -62,6 +62,9 @@ public class ZumbiController : MonoBehaviour
                 {
                     Walking();
                 }
+                if(spawner.GetCurrentLevel() == 1)
+                    if (distanceForPlayer < 0.5f)
+                        ChangeTarget();
             }
         }  
     }
@@ -120,7 +123,7 @@ public class ZumbiController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void ChangeTarget()
+    private void ChangeTarget()
     {
         WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
         player = walls[Random.Range(0, walls.Length - 1)].transform;

@@ -12,8 +12,11 @@ public class HeightController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        transform.position = GameObject.Find("InitialPosition").transform.position;
-        height = player.transform.position.y;
+        if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
+        {
+            player.transform.position = GameObject.Find("InitialPosition").transform.position;
+            height = player.transform.position.y;
+        }
     }
 
     public void NewHeight(float value)

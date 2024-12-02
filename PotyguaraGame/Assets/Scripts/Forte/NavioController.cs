@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Receiver.Primitives;
@@ -37,7 +36,7 @@ public class NavioController : MonoBehaviour
                 GameObject cannonBall = Instantiate(cannonBallPrefab, t.position, t.rotation);
                 cannonBall.GetComponent<CannonBallController>().SetIsNavio(true);
                 cannonBall.GetComponent<CannonBallController>().wasInstantiatedForNavio = true;
-                cannonBall.GetComponent<Rigidbody>().linearVelocity = t.forward * force * Time.deltaTime;
+                cannonBall.GetComponent<Rigidbody>().velocity = t.forward * force * Time.deltaTime;
                 Destroy(cannonBall, 5f);
             }
         }
