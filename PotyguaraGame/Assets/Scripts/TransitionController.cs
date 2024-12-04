@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,6 +33,11 @@ public class TransitionController : MonoBehaviour
 
     private void Start()
     {
+        AudioListener[] list = FindObjectsByType<AudioListener>(FindObjectsSortMode.InstanceID);
+        foreach(AudioListener listener in list)
+        {
+            Debug.Log(listener.gameObject.name);
+        }
         player = GameObject.FindGameObjectWithTag("Player");
         initialPosition = GameObject.Find("InitialPosition").transform.position;
         FindFirstObjectByType<HeightController>().NewHeight(initialPosition.y);
@@ -60,13 +66,34 @@ public class TransitionController : MonoBehaviour
         }
     }
 
-    public IEnumerator LoadSceneAsync(int sceneIndex)
+    public void LoadSceneAsync(int sceneIndex)
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
-        while(!asyncLoad.isDone)
+        StartCoroutine(LoadSceneAsyncRoutine(sceneIndex));
+    }
+
+    IEnumerator LoadSceneAsyncRoutine(int sceneIndex)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+
+        while (!operation.isDone)
         {
+            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            
             yield return null;
         }
+    }
+
+    public void LoadSceneWithTime(int sceneIndex, int time)
+    {
+        StartCoroutine(GoToSceneRoutine(sceneIndex, time));
+    }
+
+    IEnumerator GoToSceneRoutine(int sceneIndex, int time)
+    {
+        yield return new WaitForSeconds(time);
+
+        //Launch the new scene
+        SceneManager.LoadScene(sceneIndex);
     }
 
     public void LoadScene(int number)

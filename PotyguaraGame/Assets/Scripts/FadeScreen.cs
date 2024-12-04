@@ -6,18 +6,11 @@ public class FadeScreen : MonoBehaviour
 {
     public bool fadeOnStart = true;
     public float fadeDuration = 2;
-    public Color fadeColor;
-    public AnimationCurve fadeCurve;
-    public string colorPropertyName = "_Color";
-    private Renderer rend;
-    private bool fadeIsRunning = false;
+    public CanvasGroup cg;
 
     // Start is called before the first frame update
     void Start()
     {
-        rend = GetComponent<Renderer>();
-        //rend.enabled = false;
-
         if (fadeOnStart)
             FadeIn();
     }
@@ -26,36 +19,42 @@ public class FadeScreen : MonoBehaviour
     {
         Fade(1, 0);
     }
-    
-    public void FadeOut()
+    public void FadeOut(int index)
     {
-        Fade(0, 1);
+        Fade(0, 1, index);
     }
 
     public void Fade(float alphaIn, float alphaOut)
     {
-        StartCoroutine(FadeRoutine(alphaIn,alphaOut));
+        StartCoroutine(FadeInRoutine(cg, alphaIn, alphaOut));
+    }
+    public void Fade(float alphaIn, float alphaOut, int index)
+    {
+        StartCoroutine(FadeOutRoutine(cg, alphaIn, alphaOut, index));
     }
 
-    public IEnumerator FadeRoutine(float alphaIn,float alphaOut)
+    public IEnumerator FadeInRoutine(CanvasGroup canvasGroup, float alphaIn, float alphaOut)
     {
-        rend.enabled = true;
+        float timer = 0;
+        while (timer <= fadeDuration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = 0;
+    }
 
+    public IEnumerator FadeOutRoutine(CanvasGroup canvasGroup, float alphaIn,float alphaOut, int index)
+    {
         float timer = 0;
         while(timer <= fadeDuration)
         {
-            Color newColor = fadeColor;
-            newColor.a = Mathf.Lerp(alphaIn, alphaOut, fadeCurve.Evaluate(timer / fadeDuration));
-
+            canvasGroup.alpha = Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration);
+            Debug.Log(Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration));
             timer += Time.deltaTime;
+            yield return null;
         }
-
-        Color newColor2 = fadeColor;
-        newColor2.a = alphaOut;
-        rend.material.SetColor(colorPropertyName, newColor2);
-
-        if(alphaOut == 0)
-            rend.enabled = false;
-        yield return null;
+        FindFirstObjectByType<TransitionController>().LoadSceneAsync(index);
     }
 }
