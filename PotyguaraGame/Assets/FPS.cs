@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class FPSCounter : MonoBehaviour
+public class FPS : MonoBehaviour
 {
     TextMeshProUGUI text;
     // Start is called before the first frame update
