@@ -15,7 +15,6 @@ public class HeightController : MonoBehaviour
         // Faz FadeIn se não for a primeira cena
         if(SceneManager.GetActiveScene().buildIndex != 0)
         {
-            Debug.Log("FadeIn - PontaNegra");
             FindFirstObjectByType<FadeScreen>().FadeIn();
         }
         // Se não for Atalhos de Menu, coloca o player na posição inicial da Cena

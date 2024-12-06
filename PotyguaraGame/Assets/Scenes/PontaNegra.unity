@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.11867006, g: 0.18316743, b: 0.32951242, a: 1}
+  m_IndirectSpecularColor: {r: 0.11884698, g: 0.18339385, b: 0.3297491, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1876,7 +1876,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -7269,7 +7269,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8133062445618125695, guid: f4ed1cf2fa549e8448e20098304dc197, type: 3}
+  - {fileID: 2100000, guid: 265f840c87b320e40990e5c37c19d257, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17489,7 +17489,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -19281,7 +19281,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -23533,7 +23533,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -24255,6 +24255,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: light
       objectReference: {fileID: 0}
+    - target: {fileID: 2357032366448933416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2565889672700604679, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_RootOrder
       value: 37
@@ -24322,6 +24326,10 @@ PrefabInstance:
     - target: {fileID: 6633555358833096416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_TagString
       value: light
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165772204734570994, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28929,7 +28937,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -31503,7 +31511,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -38475,7 +38483,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -40932,7 +40940,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -42039,7 +42047,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -42269,6 +42277,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: light
       objectReference: {fileID: 0}
+    - target: {fileID: 2357032366448933416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2565889672700604679, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_RootOrder
       value: 34
@@ -42328,6 +42340,10 @@ PrefabInstance:
     - target: {fileID: 6633555358833096416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_TagString
       value: light
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165772204734570994, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -44809,7 +44825,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -47673,6 +47689,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: light
       objectReference: {fileID: 0}
+    - target: {fileID: 2357032366448933416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2565889672700604679, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_RootOrder
       value: 27
@@ -47732,6 +47752,10 @@ PrefabInstance:
     - target: {fileID: 6633555358833096416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_TagString
       value: light
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165772204734570994, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -51762,7 +51786,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -51990,7 +52014,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -53676,7 +53700,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -57795,6 +57819,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: light
       objectReference: {fileID: 0}
+    - target: {fileID: 2357032366448933416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2565889672700604679, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_RootOrder
       value: 22
@@ -57854,6 +57882,10 @@ PrefabInstance:
     - target: {fileID: 6633555358833096416, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
       propertyPath: m_TagString
       value: light
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165772204734570994, guid: a19d30d0ea07c0d4f8ceffb445b84c8b, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58532,28 +58564,8 @@ PrefabInstance:
     - {fileID: 219717571031276664, guid: 82e49077354d22443b83ade4780324f4, type: 3}
     - {fileID: 7903193197212689714, guid: 82e49077354d22443b83ade4780324f4, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3067544809895918488, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1289459844177836011}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82e49077354d22443b83ade4780324f4, type: 3}
---- !u!1 &1289459844177836010 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3067544809895918488, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-  m_PrefabInstance: {fileID: 1289459844177836009}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1289459844177836011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1289459844177836010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 459fbc29f5427304b937a440ddfbdec0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7773824424785518117
 PrefabInstance:
   m_ObjectHideFlags: 0
