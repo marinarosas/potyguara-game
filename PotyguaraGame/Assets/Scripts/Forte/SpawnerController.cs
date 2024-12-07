@@ -179,6 +179,7 @@ public class SpawnerController : MonoBehaviour
                     finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
                     finishUI.transform.GetChild(3).gameObject.SetActive(false);
                     finishUI.transform.GetChild(6).gameObject.SetActive(true);
+                    finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
 
                     finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();

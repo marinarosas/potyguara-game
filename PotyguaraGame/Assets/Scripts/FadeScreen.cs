@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FadeScreen : MonoBehaviour
 {
@@ -14,7 +15,15 @@ public class FadeScreen : MonoBehaviour
         if (fadeOnStart)
             FadeIn();
     }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
+    {
+        FadeIn();
+    }
     public void FadeIn()
     {
         Fade(1, 0);
