@@ -28,9 +28,9 @@ public class GameForteController : MonoBehaviour
     [Header("General")]
     private int currentLevel;
     private int gameMode = -1;
+    public GameObject portal;
 
     [Header("Player")]
-    private Transform player;
     private Transform mainCamera;
     private SimpleShoot leftGunController;
     private SimpleShoot rightGunController;
@@ -69,6 +69,12 @@ public class GameForteController : MonoBehaviour
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         rightGunController.Reload();
+    }
+
+    public void SetInitScene()
+    {
+        portal.SetActive(true);
+        zombieMode.gameObject.transform.parent.gameObject.SetActive(true);
     }
 
     public void NextLevel()
@@ -169,7 +175,7 @@ public class GameForteController : MonoBehaviour
                 if (currentLevel == 2)
                 {
                     handMenuLevel2.SetActive(true);
-                    handMenuLevel1.GetComponent<FadeController>().FadeIn();
+                    handMenuLevel2.GetComponent<FadeController>().FadeIn();
                 }
                 if (currentLevel == 3)
                 {
@@ -180,6 +186,7 @@ public class GameForteController : MonoBehaviour
             else
             { 
                 FindFirstObjectByType<SpawnerController>().CleanSlot();
+
             }
             FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
         }
@@ -208,6 +215,8 @@ public class GameForteController : MonoBehaviour
     {
         FindFirstObjectByType<HeightController>().NewHeight(8.2f);
         GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
+        GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
+        SetInitScene();
     }
 
     public void InitTimer()

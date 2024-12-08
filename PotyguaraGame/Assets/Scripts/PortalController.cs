@@ -10,7 +10,7 @@ public class PortalController : MonoBehaviour
         {
             if(transform.parent.Equals("ForteDosReis"))
             {
-                FindObjectOfType<TransitionController>().LoadScene(2);
+                FindObjectOfType<TransitionController>().LoadSceneAsync(2);
             }
             else
             {

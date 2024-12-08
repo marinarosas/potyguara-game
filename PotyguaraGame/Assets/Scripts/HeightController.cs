@@ -12,6 +12,7 @@ public class HeightController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        // Se não for Atalhos de Menu, coloca o player na posição inicial da Cena
         if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
         {
             player.transform.position = GameObject.Find("InitialPosition").transform.position;
@@ -46,6 +47,7 @@ public class HeightController : MonoBehaviour
     {
         return insideLift;
     }
+
     public void FixedHeight(GameObject obj)
     {
         obj.transform.position = new Vector3(obj.transform.position.x, height, obj.transform.position.z);

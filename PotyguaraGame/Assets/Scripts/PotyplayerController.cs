@@ -5,9 +5,7 @@ using UnityEngine.XR;
 public class PotyPlayerController : MonoBehaviour
 {
     public Transform reportTxt;
-
     private PotyPlayer potyPlayer;
-    //private Report report;
     private NetworkManager nm;
 
     public static PotyPlayerController Instance = null;
@@ -36,6 +34,7 @@ public class PotyPlayerController : MonoBehaviour
         }
         else
         {
+            Instance.gameObject.transform.eulerAngles = transform.eulerAngles;
             Destroy(gameObject);
         }
     }

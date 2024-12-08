@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
 
 public class TransitionController : MonoBehaviour
 {
@@ -26,11 +27,17 @@ public class TransitionController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Start();
+        if(!isSkip)
+            Start();
     }
 
     private void Start()
     {
+        AudioListener[] list = FindObjectsByType<AudioListener>(FindObjectsSortMode.InstanceID);
+        foreach(AudioListener listener in list)
+        {
+            Debug.Log(listener.gameObject.name);
+        }
         player = GameObject.FindGameObjectWithTag("Player");
         initialPosition = GameObject.Find("InitialPosition").transform.position;
         FindFirstObjectByType<HeightController>().NewHeight(initialPosition.y);
@@ -46,16 +53,8 @@ public class TransitionController : MonoBehaviour
             if(FindFirstObjectByType<GameForteController>().GetMode() == 0)
             {
                 FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
-                /*FindObjectOfType<SpawnerController>().SetLevel();
-                GameObject.Find("PontaNegra").SetActive(false);
-                GameObject.Find("MainMenu").GetComponent<FadeController>().FadeOut();
-                GameObject.Find("MainMenu").SetActive(false);*/
             }else if(FindFirstObjectByType<GameForteController>().GetMode() == 1)
             {
-                /*FindObjectOfType<SpawnerController>().SetSpawn();
-                GameObject.Find("PontaNegra").SetActive(false);
-                GameObject.Find("MainMenu").GetComponent<FadeController>().FadeOut();
-                GameObject.Find("MainMenu").SetActive(false);*/
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
             }
             isSkip = false;
@@ -67,13 +66,34 @@ public class TransitionController : MonoBehaviour
         }
     }
 
-    public IEnumerator LoadSceneAsync(int sceneIndex)
+    public void LoadSceneAsync(int sceneIndex)
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
-        while(!asyncLoad.isDone)
+        StartCoroutine(LoadSceneAsyncRoutine(sceneIndex));
+    }
+
+    IEnumerator LoadSceneAsyncRoutine(int sceneIndex)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+
+        while (!operation.isDone)
         {
+            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            
             yield return null;
         }
+    }
+
+    public void LoadSceneWithTime(int sceneIndex, int time)
+    {
+        StartCoroutine(GoToSceneRoutine(sceneIndex, time));
+    }
+
+    IEnumerator GoToSceneRoutine(int sceneIndex, int time)
+    {
+        yield return new WaitForSeconds(time);
+
+        //Launch the new scene
+        SceneManager.LoadScene(sceneIndex);
     }
 
     public void LoadScene(int number)
@@ -113,7 +133,7 @@ public class TransitionController : MonoBehaviour
     {
         tempMode = 0;
         isSkip = true;
-        SceneManager.LoadScene("ForteDosReisMagos");
+        SceneManager.LoadScene(2);
     }
 
     public bool GetIsSkip()
@@ -125,7 +145,7 @@ public class TransitionController : MonoBehaviour
     {
         tempMode = 1;
         isSkip = true;
-        SceneManager.LoadScene("ForteDosReisMagos");
+        SceneManager.LoadScene(2);
     }
     public void ExitGame()
     {

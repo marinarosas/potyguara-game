@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1956518399}
-  m_IndirectSpecularColor: {r: 0.57198924, g: 0.39076263, b: 0.23241182, a: 1}
+  m_IndirectSpecularColor: {r: 0.7070594, g: 0.40122652, b: 0.2258985, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -138,7 +138,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!65 &60726665
 BoxCollider:
@@ -188,18 +188,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 570472173}
-    - target: {fileID: 15539943428082574, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadScene
-      objectReference: {fileID: 0}
     - target: {fileID: 613779204486524443, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 570472173}
-    - target: {fileID: 613779204486524443, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TeleporGameForteNormalMode
-      objectReference: {fileID: 0}
     - target: {fileID: 2099821127245145545, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -248,58 +240,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 570472173}
-    - target: {fileID: 2410867957875175181, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TeleportEnterShow
-      objectReference: {fileID: 0}
     - target: {fileID: 6506847411615180395, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 570472173}
-    - target: {fileID: 6506847411615180395, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadScene
-      objectReference: {fileID: 0}
     - target: {fileID: 6699602207482966615, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 570472173}
-    - target: {fileID: 6699602207482966615, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TeleportGallery
-      objectReference: {fileID: 0}
     - target: {fileID: 7449701865020884405, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 570472173}
-    - target: {fileID: 7449701865020884405, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TeleportGameForteZombieMode
-      objectReference: {fileID: 0}
-    - target: {fileID: 9017929322438294169, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9017929322438294169, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1080527532}
-    - target: {fileID: 9017929322438294169, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 1080527532}
-    - target: {fileID: 9017929322438294169, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResetHand
-      objectReference: {fileID: 0}
-    - target: {fileID: 9017929322438294169, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RightHandController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 9017929322438294169, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: RightHandController, Assembly-CSharp
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -364,7 +316,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!65 &712324994
 BoxCollider:
@@ -419,7 +371,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &884461070
 RectTransform:
@@ -487,7 +439,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 570472173}
         m_TargetAssemblyTypeName: TransitionController, Assembly-CSharp
-        m_MethodName: LoadScene
+        m_MethodName: LoadSceneAsync
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -553,7 +505,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1070245784
 MonoBehaviour:
@@ -659,17 +611,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
---- !u!114 &1080527532 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5009404920098338303, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-  m_PrefabInstance: {fileID: 488989012}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff211f1b25d6ace46bd4898f7f1c9906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1148634605
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +628,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1148634606
 RectTransform:
@@ -1007,7 +948,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!65 &1751582950
 BoxCollider:
@@ -1061,7 +1002,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1758530961
 RectTransform:
@@ -1194,7 +1135,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!65 &1764579229
 BoxCollider:
@@ -1305,7 +1246,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1928125119
 RectTransform:
@@ -1459,7 +1400,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -1557,7 +1498,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &2034889575
 RectTransform:
@@ -1633,7 +1574,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &2115909501
 MeshCollider:
