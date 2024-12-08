@@ -97,6 +97,7 @@ public class SkinSystemEditor : Editor
                 _skinSystem.disableMeshes();
                 _skinSystem.changeMesh(0); //reset
                 _skinSystem.currentSkin = _skinSystem.skins[0];
+                _skinSystem.resetMaterial();
                 Debug.Log("Skin system reseted for this character");
 
                 serializedObject.Update();

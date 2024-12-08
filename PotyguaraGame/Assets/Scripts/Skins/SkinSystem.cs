@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum DIRECTION { Decrease, Increase }
 
+
 [System.Serializable]
 public class Skin{
     private int id;
@@ -30,6 +31,7 @@ public class Skin{
     public string getMaterialName(int index) => skinMaterials[index].name;
 }
 
+
 [System.Serializable]
 public class SkinMaterial
 {
@@ -39,7 +41,7 @@ public class SkinMaterial
 
 
 public class SkinSystem : MonoBehaviour{
-    [SerializeField] private GameObject defaultSkin = null;
+    [SerializeField] private Skin defaultSkin = null;
     [SerializeField] public List<Skin> skins;
     [SerializeField] public Skin currentSkin;
     
@@ -60,14 +62,24 @@ public class SkinSystem : MonoBehaviour{
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+
+        defaultSkin = skins[0];
     }
 
-    public GameObject GetSkinDefault()
+
+    #region publicFunctions
+
+    public void disableMeshes()
+    {
+        for (int i = 0; i < skins.Count; i++)
+            if (i != indexSkin)
+                skins[i].skinMesh.gameObject?.SetActive(false);
+    }
+
+    public Skin GetSkinDefault()
     {
         return defaultSkin;
     }
-
-    #region publicFunctions
 
     public bool changeMesh(DIRECTION direction)
     {
@@ -84,8 +96,7 @@ public class SkinSystem : MonoBehaviour{
 
                 currentSkin = skins[indexSkin];
 
-                indexMaterial = 0;
-                skins[indexSkin].changeMaterial(indexMaterial);
+                resetMaterial();
 
                 return true;
             }
@@ -98,26 +109,24 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
-    public void disableMeshes()
-    {
-        for (int i = 0; i < skins.Count; i++)
-            if (i != indexSkin)
-                skins[i].skinMesh.gameObject?.SetActive(false);
-    }
-
     public void changeMesh(int index)
     {
-        if (oldIndexSkin == index)
-            return;
+        try {
+            if (oldIndexSkin == index)
+                return;
 
-        oldIndexSkin = index;
-        skins[indexSkin].toogleVisible(false);
-        indexSkin = index;
-        skins[indexSkin].toogleVisible(true);
-        currentSkin = skins[indexSkin];
+            oldIndexSkin = index;
+            skins[indexSkin].toogleVisible(false);
+            indexSkin = index;
+            skins[indexSkin].toogleVisible(true);
+            currentSkin = skins[indexSkin];
 
-        indexMaterial = 0;
-        skins[indexSkin].changeMaterial(indexMaterial);
+            resetMaterial();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error when trying to change skins: {ex.Message}");
+        }
     }
 
     public bool changeMaterial(DIRECTION direction)
@@ -138,6 +147,12 @@ public class SkinSystem : MonoBehaviour{
             Debug.LogError($"Error when trying to change material ({direction}): {ex.Message}");
             return false;
         }
+    }
+
+    public void resetMaterial()
+    {
+        indexMaterial = 0;
+        currentSkin.changeMaterial(indexMaterial);
     }
 
     public int getIndex() => indexSkin;
