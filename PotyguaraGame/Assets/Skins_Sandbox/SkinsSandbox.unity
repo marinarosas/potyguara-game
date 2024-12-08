@@ -38,11 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-<<<<<<< HEAD
   m_IndirectSpecularColor: {r: 0.1821635, g: 0.22786357, b: 0.3073731, a: 1}
-=======
-  m_IndirectSpecularColor: {r: 0.18199824, g: 0.22766401, b: 0.307131, a: 1}
->>>>>>> fa59ce0cb46ae196a3ff136c4579a90fb6bc7269
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1867,6 +1863,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 104394667}
+  - {fileID: 1687158391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &871116254
@@ -2195,7 +2192,13 @@ VisualEffect:
         m_Name: BloodVelocity
         m_Overridden: 0
     m_Vector4f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 0.5840786, y: 0, z: 0, w: 0}
+        m_Name: New Color
+        m_Overridden: 1
+      - m_Value: {x: 0.58431375, y: 0, z: 0, w: 1}
+        m_Name: FluidColor
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -2221,12 +2224,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687158388}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 808176835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1879234475
 GameObject:
@@ -2355,4 +2358,3 @@ SceneRoots:
   - {fileID: 1088492422}
   - {fileID: 871116258}
   - {fileID: 808176835}
-  - {fileID: 1687158391}

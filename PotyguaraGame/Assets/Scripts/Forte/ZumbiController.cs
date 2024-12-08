@@ -21,7 +21,7 @@ public class ZumbiController : MonoBehaviour
     {
         spawner = FindFirstObjectByType<SpawnerController>();
         navMesh = GetComponent<NavMeshAgent>();
-        ani = GetComponent<Animator>();
+        ani = gameObject.transform.GetChild(0).GetComponent<Animator>();
     }
 
     // Update is called once per frame

@@ -1,10 +1,10 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEditorInternal;
 using System.Collections.Generic;
 
 enum ArrowType { Mesh, Material }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(SkinSystem))]
 public class SkinSystemEditor : Editor
 {
@@ -158,3 +158,4 @@ public class SkinSystemEditor : Editor
     }
 
 }
+#endif
