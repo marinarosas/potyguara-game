@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 public class ZumbiController : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class ZumbiController : MonoBehaviour
     private bool isDead = false;
     private SpawnerController spawner;
     private Animator ani;
+
+    [SerializeField] private VisualEffect blood;
 
     // Start is called before the first frame update
     void Start()
@@ -127,5 +130,18 @@ public class ZumbiController : MonoBehaviour
     {
         WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
         player = walls[Random.Range(0, walls.Length - 1)].transform;
+    }
+
+    public void TriggerBleedEffect()
+    {
+        if (blood == null){
+            Debug.LogWarning("VisualEffect 'blood' não está atribuído.");
+            return;
+        }
+
+        //setar posicao do tiro
+
+        blood.transform.LookAt(player.position);
+        blood.SendEvent("Bleeding");
     }
 }
