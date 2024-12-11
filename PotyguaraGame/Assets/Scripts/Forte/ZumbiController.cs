@@ -34,7 +34,7 @@ public class ZumbiController : MonoBehaviour
         {
             if(spawner.GetCurrentLevel() == 2)
             {
-                player = GameObject.FindWithTag("Player").transform;
+                player = GameObject.FindWithTag("PlayerStabilized").transform;
             }
             if (spawner.GetCurrentLevel() == 3)
             {
@@ -88,10 +88,10 @@ public class ZumbiController : MonoBehaviour
         ani.SetBool("IsRunning", false);
         if (!isDead)
         {
-            ani.SetBool("IsDead", true);
+            //ani.SetBool("IsDead", true);
             isDead = true;
         }
-        Invoke("DestroyZumbi", 4f);
+        Invoke("DestroyZumbi", 200f);
     }
 
     void Idle()
@@ -132,16 +132,30 @@ public class ZumbiController : MonoBehaviour
         player = walls[Random.Range(0, walls.Length - 1)].transform;
     }
 
-    public void TriggerBleedEffect()
+    public void TriggerBleedEffect(Vector3 contactPosition)
     {
         if (blood == null){
             Debug.LogWarning("VisualEffect 'blood' não está atribuído.");
             return;
         }
 
-        //setar posicao do tiro
-
+        blood.transform.localPosition = contactPosition;
         blood.transform.LookAt(player.position);
         blood.SendEvent("Bleeding");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            ContactPoint contact = collision.contacts[0];
+            Vector3 hitPoint = contact.point;
+            //Debug.Log("Ponto de impacto global: " + hitPoint);
+
+            Vector3 hitPointLocal = transform.InverseTransformPoint(hitPoint);
+            //Debug.Log("Ponto de impacto local: " + hitPointLocal);
+
+            TriggerBleedEffect(hitPointLocal);
+        }
     }
 }
