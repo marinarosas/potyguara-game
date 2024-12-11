@@ -7,7 +7,7 @@ public class ZumbiController : MonoBehaviour
 {
     private Transform player = null;
     private NavMeshAgent navMesh;
-    //public AudioClip attackEnemy;
+    private bool MarkedPontuacion = false;
 
     private float velocityWalking = 0.6f, velocityPersecution = 3f;
     private float distanceFollow = 30f, distanceAttack = 3f;
@@ -24,7 +24,7 @@ public class ZumbiController : MonoBehaviour
     {
         spawner = FindFirstObjectByType<SpawnerController>();
         navMesh = GetComponent<NavMeshAgent>();
-        ani = gameObject.transform.GetChild(0).GetComponent<Animator>();
+        ani = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class ZumbiController : MonoBehaviour
         {
             if(spawner.GetCurrentLevel() == 2)
             {
-                player = GameObject.FindWithTag("PlayerStabilized").transform;
+                player = GameObject.FindWithTag("Player").transform;
             }
             if (spawner.GetCurrentLevel() == 3)
             {
@@ -49,7 +49,7 @@ public class ZumbiController : MonoBehaviour
 
         if (FindFirstObjectByType<GameForteController>().GetMode() == 0)
         {
-            distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
+            distanceForPlayer = Vector3.Distance(player.transform.position, transform.parent.position);
 
             if (!isDead)
             {
@@ -88,10 +88,9 @@ public class ZumbiController : MonoBehaviour
         ani.SetBool("IsRunning", false);
         if (!isDead)
         {
-            //ani.SetBool("IsDead", true);
+            ani.SetBool("IsDead", true);
             isDead = true;
         }
-        Invoke("DestroyZumbi", 200f);
     }
 
     void Idle()
@@ -121,9 +120,9 @@ public class ZumbiController : MonoBehaviour
             FindFirstObjectByType<GameForteController>().GameOver();
     }
 
-    private void DestroyZumbi()
+    public void DestroyZumbi()
     {
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 
     private void ChangeTarget()
@@ -139,7 +138,7 @@ public class ZumbiController : MonoBehaviour
             return;
         }
 
-        blood.transform.localPosition = contactPosition;
+        blood.transform.position = contactPosition;
         blood.transform.LookAt(player.position);
         blood.SendEvent("Bleeding");
     }
@@ -148,14 +147,21 @@ public class ZumbiController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            ContactPoint contact = collision.contacts[0];
-            Vector3 hitPoint = contact.point;
-            //Debug.Log("Ponto de impacto global: " + hitPoint);
+            if (!MarkedPontuacion)
+            {
+                FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
+                MarkedPontuacion = true;
 
-            Vector3 hitPointLocal = transform.InverseTransformPoint(hitPoint);
-            //Debug.Log("Ponto de impacto local: " + hitPointLocal);
+                ContactPoint contact = collision.contacts[0];
+                Vector3 hitPoint = contact.point;
+                //Debug.Log("Ponto de impacto global: " + hitPoint);
 
-            TriggerBleedEffect(hitPointLocal);
+                Vector3 hitPointLocal = collision.gameObject.transform.InverseTransformPoint(hitPoint);
+                //Debug.Log("Ponto de impacto local: " + hitPointLocal);
+                GetComponent<ZumbiController>().Dead();
+                TriggerBleedEffect(hitPointLocal);
+                Destroy(collision.gameObject);
+            }
         }
     }
 }
