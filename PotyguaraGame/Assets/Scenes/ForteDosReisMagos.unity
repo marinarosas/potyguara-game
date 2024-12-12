@@ -2920,7 +2920,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &256936290
 Transform:
@@ -3937,10 +3937,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 584958116}
-    - target: {fileID: 789104800461683856, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: far clip plane
-      value: 1000
-      objectReference: {fileID: 0}
     - target: {fileID: 2099821127245145545, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 808.4
@@ -3985,70 +3981,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2142702231314931345, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_VertexColorAlwaysGammaSpace
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2410867957875175181, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 584958116}
-    - target: {fileID: 5100256809656313619, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: line
-      value: 
-      objectReference: {fileID: 8472904789707144285, guid: 4b1fb9129e762484b934cf0866e096dd, type: 3}
-    - target: {fileID: 5453304177353732013, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_Antialiasing
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5453304177353732013, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5821349834917142378, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_TagString
-      value: PlayerStabilized
-      objectReference: {fileID: 0}
     - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 1095202640}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 298681167}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 298681167}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 298681167}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SetActive
-      objectReference: {fileID: 0}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6370092705104469354, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6506847411615180395, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -4057,28 +3997,15 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 584958116}
-    - target: {fileID: 6781090812630252151, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: line
-      value: 
-      objectReference: {fileID: 8472904789707144285, guid: 4b1fb9129e762484b934cf0866e096dd, type: 3}
     - target: {fileID: 7449701865020884405, guid: 82e49077354d22443b83ade4780324f4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 584958116}
-    - target: {fileID: 9017929322438294169, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 926610881}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82e49077354d22443b83ade4780324f4, type: 3}
---- !u!1 &298681167 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1711420340843993071, guid: 82e49077354d22443b83ade4780324f4, type: 3}
-  m_PrefabInstance: {fileID: 298681166}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &299038705
 GameObject:
   m_ObjectHideFlags: 0
@@ -7839,7 +7766,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &722578456
 Transform:
@@ -12971,7 +12898,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1297860648
 Transform:
@@ -15868,7 +15795,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &1930911615
 Transform:

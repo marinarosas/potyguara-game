@@ -20,7 +20,7 @@ public class SimpleShoot : MonoBehaviour
     [SerializeField] private bool canShoot = true; // booleano para saber se pode ou não atirar
 
     [Header("Prefab Refrences")]
-    public GameObject line;
+    //public GameObject line;
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
     public GameObject muzzleFlashPrefab;
@@ -132,12 +132,12 @@ public class SimpleShoot : MonoBehaviour
         }
         RaycastHit hitInfo;
         bool hasHit = Physics.Raycast(barrelLocation.position, barrelLocation.forward, out hitInfo, 100);
-        if (line)
+        /*if (line)
         {
             GameObject liner = Instantiate(line);
             liner.GetComponent<LineRenderer>().SetPositions(new Vector3[] {barrelLocation.position, hasHit ? hitInfo.point : barrelLocation.position + barrelLocation.forward*100});
             Destroy(liner, 0.5f);
-        }
+        }*/
         //cancels if there's no bullet prefeb
         if (!bulletPrefab)
         { return; }

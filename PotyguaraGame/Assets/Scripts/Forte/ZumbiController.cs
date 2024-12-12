@@ -163,5 +163,10 @@ public class ZumbiController : MonoBehaviour
                 Destroy(collision.gameObject);
             }
         }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            FindFirstObjectByType<GameForteController>().GameOver();
+        }
     }
 }

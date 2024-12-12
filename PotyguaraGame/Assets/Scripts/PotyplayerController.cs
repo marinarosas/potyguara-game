@@ -79,7 +79,8 @@ public class PotyPlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("CannonBall"))
         {
-           
+            FindFirstObjectByType<GameForteController>().GameOver();
         }
+
     }
 }
