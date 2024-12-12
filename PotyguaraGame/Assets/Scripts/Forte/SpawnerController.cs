@@ -18,7 +18,6 @@ public class SpawnerController : MonoBehaviour
     public GameObject prefabZumbi;
     public Transform destinyLevel1;
     public Transform destinyLevel2;
-    public Transform destinyLevel3;
     public Transform slot;
     private List<Transform> spawnRandowZombie = new List<Transform>();
 

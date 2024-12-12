@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.VFX;
@@ -9,7 +10,7 @@ public class ZumbiController : MonoBehaviour
     private NavMeshAgent navMesh;
     private bool MarkedPontuacion = false;
 
-    private float velocityWalking = 0.6f, velocityPersecution = 3f;
+    private float velocityWalking = 0.7f, velocityPersecution = 3f;
     private float distanceFollow = 30f, distanceAttack = 3f;
 
     private float distanceForPlayer;
@@ -24,8 +25,9 @@ public class ZumbiController : MonoBehaviour
     {
         spawner = FindFirstObjectByType<SpawnerController>();
         navMesh = GetComponent<NavMeshAgent>();
-        ani = GetComponent<Animator>();
+        ani = transform.GetChild(0).GetComponent<Animator>();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -49,7 +51,7 @@ public class ZumbiController : MonoBehaviour
 
         if (FindFirstObjectByType<GameForteController>().GetMode() == 0)
         {
-            distanceForPlayer = Vector3.Distance(player.transform.position, transform.parent.position);
+            distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
 
             if (!isDead)
             {
@@ -113,6 +115,7 @@ public class ZumbiController : MonoBehaviour
 
     void Attack()
     {
+
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
         // End Game
