@@ -200,9 +200,6 @@ public class GameForteController : MonoBehaviour
     {
         try
         {
-            Transform target = GameObject.Find("Target").transform;
-            target.GetComponent<TargetController>().health = 100;
-            target.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = 100 + "";
             handMenuLevel3.SetActive(true);
         }
         catch (Exception e)

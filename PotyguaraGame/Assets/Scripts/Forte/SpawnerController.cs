@@ -64,10 +64,6 @@ public class SpawnerController : MonoBehaviour
         }
         if (value == 3)
         {
-            for (var ii = 0; ii < destinyLevel3.childCount; ii++)
-            {
-                spawnRandowZombie.Add(destinyLevel3.GetChild(ii));
-            }
         }
     }
     public void SetLevel()
