@@ -18,14 +18,12 @@ public class ZumbiController : MonoBehaviour
     private SpawnerController spawner;
     private Animator ani;
 
-    [SerializeField] private VisualEffect blood;
-
     // Start is called before the first frame update
     void Start()
     {
         spawner = FindFirstObjectByType<SpawnerController>();
-        navMesh = GetComponent<NavMeshAgent>();
-        ani = transform.GetChild(0).GetComponent<Animator>();
+        navMesh = transform.parent.GetComponent<NavMeshAgent>();
+        ani = GetComponent<Animator>();
     }
 
 
@@ -37,10 +35,6 @@ public class ZumbiController : MonoBehaviour
             if(spawner.GetCurrentLevel() == 2)
             {
                 player = GameObject.FindWithTag("Player").transform;
-            }
-            if (spawner.GetCurrentLevel() == 3)
-            {
-                player = GameObject.Find("Target").transform;
             }
             if (spawner.GetCurrentLevel() == 1)
             {
@@ -134,36 +128,17 @@ public class ZumbiController : MonoBehaviour
         player = walls[Random.Range(0, walls.Length - 1)].transform;
     }
 
-    public void TriggerBleedEffect(Vector3 contactPosition)
-    {
-        if (blood == null){
-            Debug.LogWarning("VisualEffect 'blood' não está atribuído.");
-            return;
-        }
-
-        blood.transform.position = contactPosition;
-        blood.transform.LookAt(player.position);
-        blood.SendEvent("Bleeding");
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
             if (!MarkedPontuacion)
             {
+                collision.gameObject.transform.GetChild(1).GetComponent<VisualEffect>().SendEvent("Bleeding");
                 FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
                 MarkedPontuacion = true;
-
-                ContactPoint contact = collision.contacts[0];
-                Vector3 hitPoint = contact.point;
-                //Debug.Log("Ponto de impacto global: " + hitPoint);
-
-                Vector3 hitPointLocal = collision.gameObject.transform.InverseTransformPoint(hitPoint);
-                //Debug.Log("Ponto de impacto local: " + hitPointLocal);
                 GetComponent<ZumbiController>().Dead();
-                TriggerBleedEffect(hitPointLocal);
-                Destroy(collision.gameObject);
+                Destroy(collision.gameObject, 0.5f);
             }
         }
 

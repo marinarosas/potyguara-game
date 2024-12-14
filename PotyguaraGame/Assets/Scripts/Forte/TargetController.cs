@@ -5,22 +5,12 @@ using UnityEngine.UI;
 
 public class TargetController : MonoBehaviour
 {
+    private Animator ani;
     public bool receivedDamage = false;
-    [SerializeField] private Vector3 startPoint;
-    [SerializeField] private Vector3 endPoint;
-    [SerializeField] private float speed = 0.3f;
-    void Start()
+
+    private void Start()
     {
-        startPoint = transform.position;
-        endPoint = new Vector3(transform.position.x, transform.position.y, 390.1875f);
-    }
-    void Update()
-    {
-        if (startPoint != null && endPoint != null)
-        {
-            float pp = Mathf.PingPong(Time.deltaTime * speed, 1f);
-            transform.position = new Vector3(transform.position.x, transform.position.y, Mathf.Lerp(startPoint.z, endPoint.z, 5f));
-        }
+        ani = GetComponent<Animator>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -29,6 +19,9 @@ public class TargetController : MonoBehaviour
         {
             if (!receivedDamage)
             {
+                collision.gameObject.transform.GetChild(2).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = "0";
+                collision.gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+                collision.gameObject.transform.GetChild(2).gameObject.SetActive(true);
                 receivedDamage = true;
             }
         }
