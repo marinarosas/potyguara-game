@@ -5,17 +5,15 @@ using UnityEngine.VFX;
 
 public class BloodVisualEffectController : MonoBehaviour
 {
-    [SerializeField] private VisualEffect blood;
+    private VisualEffect blood;
 
-    public void stopEffect()
+    void Start()
     {
-        gameObject.SetActive(false);
-    }
-
-    public void playEffect()
-    {
-        gameObject.SetActive(true);
-        blood.SendEvent("Bleeding");
+        //blood = GetComponent<VisualEffect>();
+        //if (blood != null)
+        //    blood.gameObject.SetActive(false);
+        //else
+        //    Debug.LogWarning("VisualEffect reference is missing on " + gameObject.name);
     }
 
 }

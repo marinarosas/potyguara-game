@@ -86,6 +86,10 @@ public class ZumbiController : MonoBehaviour
         {
             ani.SetBool("IsDead", true);
             isDead = true;
+            if (transform.childCount > 0){
+                Transform firstChild = transform.GetChild(0);
+                firstChild.tag = "Untagged";
+            }//CONSIDERAR MORTO PRAS PAREDES
         }
     }
 
@@ -134,11 +138,12 @@ public class ZumbiController : MonoBehaviour
         {
             if (!MarkedPontuacion)
             {
-                collision.gameObject.GetComponent<BloodVisualEffectController>().playEffect();
+                collision.gameObject.GetComponent<BulletController>().playEffect();
+                collision.gameObject.GetComponent<BulletController>().StartBloodEffect(2f, 0.5f);
                 FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
                 MarkedPontuacion = true;
                 GetComponent<ZumbiController>().Dead();
-                Destroy(collision.gameObject, 0.5f);
+                Destroy(collision.gameObject, 3f);
             }
         }
 

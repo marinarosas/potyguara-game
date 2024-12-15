@@ -22,16 +22,28 @@ public class WallController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(receivedDamage)
+        Collider[] collisions = Physics.OverlapSphere(transform.position, 1f);
+
+        bool hasBodyCollision = false;
+        foreach (Collider collision in collisions){
+            if (collision.CompareTag("Body")){
+                hasBodyCollision = true;
+                break;
+            }
+        }
+
+        if (!hasBodyCollision)
+            receivedDamage = false;
+
+        if (receivedDamage)
             material.SetFloat("_isDamage", 1.0f);
         else
             material.SetFloat("_isDamage", 0.0f);
-
     }
 
     public void resetWall()
     {
-        //gameObject.GetComponent<MeshRenderer>().material = normalWall;
+        material.SetFloat("_isDamage", 0.0f);
     }
     private void OnCollisionEnter(Collision collision)
     {

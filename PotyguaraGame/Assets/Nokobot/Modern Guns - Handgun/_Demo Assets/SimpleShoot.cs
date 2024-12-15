@@ -145,7 +145,7 @@ public class SimpleShoot : MonoBehaviour
         // Create a bullet and add force on it in direction of the barrel
         GameObject bullet = Instantiate(bulletPrefab, barrelLocation.position, barrelLocation.rotation);
         bullet.GetComponent<Rigidbody>().AddForce(barrelLocation.forward * shotPower);
-        bullet.GetComponent<BloodVisualEffectController>().stopEffect();
+        //bullet.GetComponent<BloodVisualEffectController>().stopEffect();
 
     }
 
