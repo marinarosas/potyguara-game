@@ -134,7 +134,7 @@ public class ZumbiController : MonoBehaviour
         {
             if (!MarkedPontuacion)
             {
-                collision.gameObject.transform.GetChild(1).GetComponent<VisualEffect>().SendEvent("Bleeding");
+                collision.gameObject.GetComponent<BloodVisualEffectController>().playEffect();
                 FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
                 MarkedPontuacion = true;
                 GetComponent<ZumbiController>().Dead();

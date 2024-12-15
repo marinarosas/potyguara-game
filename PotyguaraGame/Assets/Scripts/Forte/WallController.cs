@@ -2,27 +2,36 @@ using UnityEngine;
 
 public class WallController : MonoBehaviour
 {
-    public Material damageWall;
-    public Material normalWall;
+    public Material forceField;
     private bool receivedDamage = false;
+    private Renderer wallRenderer;
+    private Material material;
 
     public void setDamage(bool value)
     {
         receivedDamage = value;
     }
 
+    private void Start()
+    {
+        forceField = new Material(forceField);
+        wallRenderer = GetComponent<Renderer>();
+        material = wallRenderer.material;
+    }
+
     // Update is called once per frame
     void Update()
     {
         if(receivedDamage)
-        {
-            gameObject.GetComponent<MeshRenderer>().material = damageWall;
-        }
+            material.SetFloat("_isDamage", 1.0f);
+        else
+            material.SetFloat("_isDamage", 0.0f);
+
     }
 
     public void resetWall()
     {
-        gameObject.GetComponent<MeshRenderer>().material = normalWall;
+        //gameObject.GetComponent<MeshRenderer>().material = normalWall;
     }
     private void OnCollisionEnter(Collision collision)
     {
