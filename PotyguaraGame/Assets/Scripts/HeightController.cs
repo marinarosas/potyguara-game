@@ -15,8 +15,10 @@ public class HeightController : MonoBehaviour
         // Se não for Atalhos de Menu, coloca o player na posição inicial da Cena
         if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
         {
-            player.transform.position = GameObject.Find("InitialPosition").transform.position;
+            Transform initialPosition = GameObject.Find("InitialPosition").transform;
+            player.transform.position = initialPosition.position;
             height = player.transform.position.y;
+            player.transform.eulerAngles = new Vector3(0, initialPosition.eulerAngles.y, 0);
         }
     }
 

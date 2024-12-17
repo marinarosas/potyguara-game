@@ -52,7 +52,7 @@ public class GameForteController : MonoBehaviour
         leftGunController = FindFirstObjectByType<LeftHandController>().gameObject.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
 
         leftController.ChangeHand();
-        leftGunController.setLeftHand();
+        leftGunController.setLeftHand(true);
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         leftGunController.Reload();
@@ -65,7 +65,7 @@ public class GameForteController : MonoBehaviour
         rightGunController = FindFirstObjectByType<RightHandController>().gameObject.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
 
         rightController.ChangeHand();
-        rightGunController.setLeftHand();
+        rightGunController.setLeftHand(true);
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         rightGunController.Reload();

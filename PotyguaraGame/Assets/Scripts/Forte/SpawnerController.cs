@@ -96,7 +96,7 @@ public class SpawnerController : MonoBehaviour
             if (currentLevel == 3)
             {
                 FindFirstObjectByType<GameForteController>().handMenuLevel3.SetActive(true);
-                FindFirstObjectByType<PotyPlayerController>().CreateReport("Acerte os Alvos!!!", "Olá jogador(a), para esse nível você deve destruir todos os alvos que surgirem até o tempo esgotar. Quanto mais alvos destruidos, maior sua pontuação final!!!");
+                FindFirstObjectByType<PotyPlayerController>().CreateReport("Acerte os Alvos!!!", "Olá jogador(a), para esse nível você deve destruir todos os alvos que surgirem até o tempo esgotar. Use o gatilho do controle esquerdo para atirar nos navios. Quanto mais alvos destruidos, maior sua pontuação final!!!");
                 SetDestinyRandow(3);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(8.4f);

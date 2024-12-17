@@ -47,14 +47,14 @@ public class SimpleShoot : MonoBehaviour
         Reload();
     }
 
-    public void setLeftHand()
+    public void setLeftHand(bool value)
     {
-        isLeft = true;
+        isLeft = value;
     }
 
-    public void setRightHand()
+    public void setRightHand(bool value)
     {
-        isRight = true;
+        isRight = value;
     }
 
     void Update()
@@ -71,21 +71,22 @@ public class SimpleShoot : MonoBehaviour
 
         if (isLeft)
         {
-           //targetDevice = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
+           targetDevice = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight)
         {
-            //targetDevice = FindFirstObjectByType<RightHandController>().GetTargetDevice();
+            targetDevice = FindFirstObjectByType<RightHandController>().GetTargetDevice();
         }
         if (isRight != false || isLeft != false)
         {
-            //targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (/*triggerValue > 0.1f ||*/ Input.GetKeyDown(KeyCode.F))
+            targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+            if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {
                     if (canShoot)
                     {
+                        gunAnimator.SetTrigger("Fire");
                         //Calls animation on the gun that has the relevant animation events that will fire
                         if (isRight)
                         {
@@ -95,7 +96,6 @@ public class SimpleShoot : MonoBehaviour
                         {
                             FindFirstObjectByType<LeftHandController>().AnimationFinger();
                         }
-                        gunAnimator.SetTrigger("Fire");
                         canShoot = false;
                     }
                 }

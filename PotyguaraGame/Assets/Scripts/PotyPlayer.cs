@@ -9,15 +9,11 @@ public class PotyPlayer : MonoBehaviour
 
     private int normalModeGameForteScore = 0;
     private int zombieModeGameForteScore = 0;
-    public InputDevice inputDeviceLeft;
-    public InputDevice inputDeviceRight;
     private GameObject skin;
 
-    public PotyPlayer(string nick, /*InputDevice leftHand, InputDevice rightHand,*/ GameObject skinStandard)
+    public PotyPlayer(string nick, GameObject skinStandard)
     {
         nickname = nick;
-        //inputDeviceLeft = leftHand;
-        //inputDeviceRight = rightHand;
         skin = skinStandard;
     }
 
@@ -36,13 +32,4 @@ public class PotyPlayer : MonoBehaviour
         normalModeGameForteScore = value;
     }
 
-    public InputDevice GetLeftController()
-    {
-        return inputDeviceLeft;
-    }
-
-    public InputDevice GetRightController()
-    {
-        return inputDeviceRight;
-    }
 }

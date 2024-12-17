@@ -33,11 +33,6 @@ public class TransitionController : MonoBehaviour
 
     private void Start()
     {
-        AudioListener[] list = FindObjectsByType<AudioListener>(FindObjectsSortMode.InstanceID);
-        foreach(AudioListener listener in list)
-        {
-            Debug.Log(listener.gameObject.name);
-        }
         player = GameObject.FindGameObjectWithTag("Player");
         initialPosition = GameObject.Find("InitialPosition").transform.position;
         FindFirstObjectByType<HeightController>().NewHeight(initialPosition.y);
@@ -50,10 +45,10 @@ public class TransitionController : MonoBehaviour
         if (isSkip && SceneManager.GetActiveScene().buildIndex == 2)
         {
             FindFirstObjectByType<GameForteController>().SetStartMode(tempMode);
-            if(FindFirstObjectByType<GameForteController>().GetMode() == 0)
+            if(tempMode == 0)
             {
                 FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
-            }else if(FindFirstObjectByType<GameForteController>().GetMode() == 1)
+            }else if(tempMode == 1)
             {
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
             }

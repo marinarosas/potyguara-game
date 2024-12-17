@@ -5,9 +5,6 @@ using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.XR;
 
-using UnityEngine.XR.Interaction.Toolkit.Inputs;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
-
 public class RightHandController : MonoBehaviour
 {
     public Animator ani;

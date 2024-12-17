@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class PotyPlayerController : MonoBehaviour
 {
@@ -27,36 +28,22 @@ public class PotyPlayerController : MonoBehaviour
     void Awake()
     {
         nm = NetworkManager.Instance;
-        if(Instance == null)
+        /*if(Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Instance.gameObject.transform.eulerAngles = transform.eulerAngles;
+            //Instance.gameObject.transform.eulerAngles = transform.eulerAngles;
             Destroy(gameObject);
-        }
+        }*/
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //InputDevice inputDeviceLeft = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
-        //InputDevice inputDeviceRight = FindFirstObjectByType<RightHandController>().GetTargetDevice();
-        potyPlayer = new PotyPlayer("Bianca", /*inputDeviceLeft, inputDeviceRight,*/ new GameObject());
-        CreateReport("Bem-vindo(a) " + potyPlayer.nickname, "Esse é o PotyguaraVerse, um ambiente imersivo no qual você poderá curtir shows, interagir com outros jogadores e jogar jogos criados com base em grandes pontos turisticos de Natal");
-    }
-
-    public float GetTriggerLeftButton()
-    {
-        potyPlayer.GetLeftController().TryGetFeatureValue(CommonUsages.trigger, out float triggerValueL);
-        return triggerValueL;
-    }
-
-    public float GetTriggerRightButton()
-    {
-        potyPlayer.GetRightController().TryGetFeatureValue(CommonUsages.trigger, out float triggerValueR);
-        return triggerValueR;
+        potyPlayer = new PotyPlayer("Bianca", new GameObject());
+        //CreateReport("Bem-vindo(a) " + potyPlayer.nickname, "Esse é o PotyguaraVerse, um ambiente imersivo no qual você poderá curtir shows, interagir com outros jogadores e jogar jogos criados com base em grandes pontos turisticos de Natal");
     }
 
     public void CreateReport(string title, string message)
