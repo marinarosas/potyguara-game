@@ -6,9 +6,9 @@ public class PortalController : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.Equals("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            if(transform.parent.Equals("ForteDosReis"))
+            if (transform.parent.name.Equals("ForteDosReis"))
             {
                 FindObjectOfType<TransitionController>().LoadSceneAsync(2);
             }

@@ -97,7 +97,7 @@ public class SpawnerController : MonoBehaviour
             {
                 FindFirstObjectByType<GameForteController>().handMenuLevel3.SetActive(true);
                 FindFirstObjectByType<PotyPlayerController>().CreateReport("Acerte os Alvos!!!", "Olá jogador(a), para esse nível você deve destruir todos os alvos que surgirem até o tempo esgotar. Quanto mais alvos destruidos, maior sua pontuação final!!!");
-                //SetDestinyRandow(3);
+                SetDestinyRandow(3);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(8.4f);
                 UpdateLevelBar();
@@ -143,7 +143,7 @@ public class SpawnerController : MonoBehaviour
     private void UpdateLevelBar()
     {
         GameObject.FindGameObjectWithTag("Level").GetComponent<Image>().fillAmount = 0.35f * currentLevel;
-        GameObject.FindGameObjectWithTag("Level").transform.GetChild(2).GetComponent<Text>().text = currentLevel + "";
+        GameObject.FindGameObjectWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel+"";
     }
 
     public void CleanSlot()
@@ -190,11 +190,12 @@ public class SpawnerController : MonoBehaviour
         }
         else
         {
-            if (wallsDestroyed >= 13 && currentLevel == 1)
+            if (wallsDestroyed >= 20 && currentLevel == 1)
             {
+                wallsDestroyed = 0;
                 levelIsRunning = false;
-                finishUI.SetActive(true);
                 FindFirstObjectByType<GameForteController>().GameOver();
+                return;
             }
             if (slot.childCount == 0 && levelIsRunning)
             {
@@ -204,20 +205,37 @@ public class SpawnerController : MonoBehaviour
 
                 finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
 
-                if (currentLevel == 3)
+                if (currentLevel == 2)
                 {
-                    finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Ver Ranking";
+                    // ver ranking
+                    /*finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Ver Ranking";
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(Ranking);
+                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(Ranking);*/
+
+                    finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Menu Principal";
+                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
+                    currentLevel = 1;
+                    LeftHandController leftHand = FindFirstObjectByType<LeftHandController>();
+                    RightHandController rightHand = FindFirstObjectByType<RightHandController>();
+                    if (leftHand.GetHand())
+                    {
+                        leftHand.ResetHand();
+                    }
+                    if (rightHand.GetHand())
+                    {
+                        leftHand.ResetHand();
+                    }
+                    FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
+                    GameObject.FindGameObjectWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
+                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
                 }
                 else
                 {
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
+                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().NextLevel);
                 }
 
-                finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().NextLevel);
-
-                if (currentLevel < 3)
+                if (currentLevel < 2)
                 {
                     currentLevel++;
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);

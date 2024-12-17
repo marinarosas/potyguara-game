@@ -6,12 +6,18 @@ using UnityEngine;
 using UnityEngine.XR;
 
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class RightHandController : MonoBehaviour
 {
     public Animator ani;
+    public bool isRight = false;
     private List<InputDevice> devices = new List<InputDevice>();
 
+    public bool GetHand()
+    {
+        return isRight;
+    }
     public void ChangeHand()
     {
         InputDeviceCharacteristics rightHandCharacteristics = InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
@@ -22,6 +28,7 @@ public class RightHandController : MonoBehaviour
         GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual>().enabled = false;
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(2).gameObject.SetActive(false);
+        isRight = true;
     }
 
     public void ResetHand()

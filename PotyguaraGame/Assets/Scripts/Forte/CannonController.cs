@@ -41,7 +41,7 @@ public class CannonController : MonoBehaviour
     void NewCanonBall()
     {
         GameObject cannonBall = Instantiate(canonBallPrefab, attach.position, attach.parent.rotation);
-        float force = Random.Range(2500f, 7000f);
+        float force = Random.Range(2000f, 6600f);
         cannonBall.GetComponent<Rigidbody>().velocity = attach.forward * force * Time.deltaTime;
     }
 

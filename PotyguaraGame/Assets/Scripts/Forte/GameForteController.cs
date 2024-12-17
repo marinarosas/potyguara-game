@@ -145,8 +145,6 @@ public class GameForteController : MonoBehaviour
     public void DestroyRemainingEnemies()
     {
         FindFirstObjectByType<SpawnerController>().CleanSlot();
-        GameObject finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
-        finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveListener(ResetLevel);
     }
 
     public void ChangeStateWalls(bool value)
@@ -166,20 +164,23 @@ public class GameForteController : MonoBehaviour
             if (gameMode == 0)
             {
                 if (currentLevel == 1)
-                {
-                    handMenuLevel1.SetActive(true);
-                    handMenuLevel1.GetComponent<FadeController>().FadeIn();
-                    ChangeStateWalls(false);
-                }
+                    ResetLevelOne();
 
                 if (currentLevel == 2)
-                {
-                    handMenuLevel2.SetActive(true);
-                    handMenuLevel2.GetComponent<FadeController>().FadeIn();
-                }
+                    ResetLevelTwo();
+
                 if (currentLevel == 3)
-                {
                     ResetLevelThree();
+
+                LeftHandController leftHand = FindFirstObjectByType<LeftHandController>();
+                RightHandController rightHand = FindFirstObjectByType<RightHandController>();   
+                if (leftHand.GetHand())
+                {
+                    leftHand.ResetHand();
+                }
+                if (rightHand.GetHand())
+                {
+                    leftHand.ResetHand();
                 }
                 DestroyRemainingEnemies();
             }
@@ -208,8 +209,43 @@ public class GameForteController : MonoBehaviour
         }
     }
 
+    private void ResetLevelOne()
+    {
+        try
+        {
+            FindFirstObjectByType<SpawnerController>().SetLevel();
+            FindFirstObjectByType<GameForteController>().ResetCount();
+            handMenuLevel1.SetActive(true);
+            handMenuLevel1.GetComponent<FadeController>().FadeIn();
+            ChangeStateWalls(false);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro when reset level one: " + e);
+        }
+    }
+
+    private void ResetLevelTwo()
+    {
+        try
+        {
+            FindFirstObjectByType<PotyPlayerController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
+            FindFirstObjectByType<GameForteController>().ResetCount();
+            FindFirstObjectByType<SpawnerController>().NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
+            handMenuLevel2.SetActive(true);
+            handMenuLevel2.GetComponent<FadeController>().FadeIn();
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Erro when reset level two: " + e);
+        }
+    }
+
+
     public void ResetGame()
     {
+        Transform finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0);
+        finishUI.gameObject.SetActive(false);
         FindFirstObjectByType<HeightController>().NewHeight(8.2f);
         GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
         GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);

@@ -9,14 +9,16 @@ public class LeftHandController : MonoBehaviour
     public Animator ani;
     public bool controlMenu = false;
     public bool changedStatus = false;
+    public bool isLeft = false;
     private List<InputDevice> devices = new List<InputDevice>();
 
     private void Update()
     {
         InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
-        devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
-        if (Ybutton || Input.GetKeyDown(KeyCode.M)) // Y button pressed
+        
+        //    devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
+        if (/*Ybutton ||*/ Input.GetKeyDown(KeyCode.M)) // Y button pressed
         {
             GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
             if(menu != null)
@@ -37,6 +39,11 @@ public class LeftHandController : MonoBehaviour
         changedStatus = !changedStatus;
     }
 
+    public bool GetHand()
+    {
+        return isLeft;
+    }
+
     public void ChangeHand()
     {
         InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
@@ -47,6 +54,7 @@ public class LeftHandController : MonoBehaviour
         GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual>().enabled = false;
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(2).gameObject.SetActive(false);
+        isLeft = true;
     }
 
     public void ResetHand()

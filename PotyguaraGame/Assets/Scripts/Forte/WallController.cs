@@ -49,14 +49,9 @@ public class WallController : MonoBehaviour
     {
         if (!receivedDamage)
         {
-            if (collision.gameObject.CompareTag("Head") || collision.gameObject.CompareTag("Body"))
+            if (collision.gameObject.CompareTag("Body"))
             {
                 setDamage(true);
-                var parent = collision.gameObject.transform.parent;
-                while (parent.gameObject.layer != 7)
-                {
-                    parent = parent.parent;
-                }
                 FindFirstObjectByType<SpawnerController>().SetWallsDestroyed();
             }
         }
