@@ -1,14 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class Report : MonoBehaviour
 {
-    public string title;
-    public string message;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI description;
 
-    public Report(string title, string message)
+    public void UpdateTitle(string message)
     {
-        this.title = title;
-        this.message = message;
+        title.text = message;
+    }
+    public void UpdateDescription(string message)
+    {
+        description.text = message;
     }
 }
