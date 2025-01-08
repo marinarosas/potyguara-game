@@ -18,16 +18,25 @@ public class ForceController : MonoBehaviour
     float targetRotationR;
     // Variáveis para controlar a rotação
     private float currentRotation = 0f;
+    private Transform board;
 
     bool isLeft = false;
     bool isRight = false;
+
+    private bool gameStarted = false;
 
     public InputActionAsset input;
 
     // Start is called before the first frame update
     void Start()
     {
-        input.FindActionMap("XRI Head").FindAction("Rotation");
+        //input.FindActionMap("XRI Head").FindAction("Rotation");
+        board = GameObject.Find("board").transform;
+    }
+
+    public void SetBoolean()
+    {
+        gameStarted = true;
     }
 
     // Update is called once per frame
@@ -66,15 +75,21 @@ public class ForceController : MonoBehaviour
 
     void Update()
     {
+        if (gameStarted)
+        {
+            board.transform.position = new Vector3(540f, 56.2f, -509f);
+            board.transform.rotation = new Quaternion(0, -0.361624479f, 0, 0.932323813f);
+            GetComponent<ConstantForce>().relativeForce = new Vector3(5f, 0f, 5f);
+        }
         // A rotação da cabeça normalmente vem do XRNode.Head
         // Obtém a rotação da cabeça em relação ao mundo
-        Quaternion headRotation = GetHeadRotation();
+        //Quaternion headRotation = GetHeadRotation();
 
         // Exemplo de como usar a rotação: aplica a rotação da cabeça a um objeto
-        transform.rotation = headRotation;
+        //transform.rotation = headRotation;
 
         // Para debug, você pode imprimir a rotação
-        Debug.Log("Head Rotation: " + headRotation.eulerAngles);
+        //Debug.Log("Head Rotation: " + headRotation.eulerAngles);
     }
 
     // Função para obter a rotação da cabeça

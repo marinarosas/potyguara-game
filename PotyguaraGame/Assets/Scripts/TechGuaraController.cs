@@ -6,7 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class TechGuaraController : MonoBehaviour
 {
-    public Report report;
+    private Report report;
+
+    void Start()
+    {
+        report = transform.GetChild(0).GetComponent<Report>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
