@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LightController : MonoBehaviour
 {
-    public GameObject diretionalLight;
     private GameObject[] lights;
     // Start is called before the first frame update
     void Start()
@@ -15,15 +14,14 @@ public class LightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 rotation = diretionalLight.transform.eulerAngles;
-        if(rotation.x >= 186 && rotation.x < 350)
+        if(FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 18)
         {
             foreach (var light in lights)
             {
                 light.GetComponent<Light>().enabled = true;
             }
         }
-        else
+        else if(FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 5 && FindFirstObjectByType<DayController>().GetCurrentTime().Hour < 18)
         {
             foreach (var light in lights)
             {
