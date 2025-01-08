@@ -36,6 +36,6 @@ public class DayController : MonoBehaviour
         float sunAngle = (hours / 24f) * 360f;
         //lightGeneral.Rotate(Vector3.right * (sunAngle-90f) * rotationSpeed * Time.deltaTime);
 
-        lightGeneral.rotation = Quaternion.Euler(sunAngle - 82f, 170f, 0f);
+        lightGeneral.rotation = Quaternion.Euler(sunAngle - 81f, 170f, 0f);
     }
 }
