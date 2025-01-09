@@ -20,21 +20,20 @@ public class RightHandController : MonoBehaviour
         InputDeviceCharacteristics rightHandCharacteristics = InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(rightHandCharacteristics, devices);
 
-        GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor>().enabled = false;
-        GetComponent<LineRenderer>().enabled = false;
-        GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual>().enabled = false;
-        transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(2).gameObject.SetActive(false);
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(3).gameObject.SetActive(false);
+        transform.GetChild(4).gameObject.SetActive(true);
         isRight = true;
     }
 
     public void ResetHand()
     {
-        GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor>().enabled = true;
-        GetComponent<LineRenderer>().enabled = true;
-        GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual>().enabled = true;
-        transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(2).gameObject.SetActive(true);
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
+        transform.GetChild(3).gameObject.SetActive(true);
+        transform.GetChild(4).gameObject.SetActive(false);
+        isRight = false;
     }
 
     public InputDevice GetTargetDevice()
