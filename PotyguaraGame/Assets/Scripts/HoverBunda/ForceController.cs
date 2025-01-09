@@ -8,8 +8,6 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class ForceController : MonoBehaviour
 {
-    // Velocidade de rotação
-
     [SerializeField] private InputActionAsset inputActions; 
     private InputAction leftJoystick;
     private InputAction rightJoystick;
