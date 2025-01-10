@@ -5940,7 +5940,6 @@ GameObject:
   - component: {fileID: 5258424356435695839}
   - component: {fileID: 1920853913941898773}
   - component: {fileID: 2375779279306053642}
-  - component: {fileID: 2037189512192036050}
   m_Layer: 5
   m_Name: Menu
   m_TagString: MainMenu
@@ -6072,18 +6071,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b53b12dc6fb279e49aba35a06cbb8108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2037189512192036050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1617637461689842559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 454f133ea7862f544bc1d962b29f60d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1766643038090338111
@@ -6873,8 +6860,11 @@ MonoBehaviour:
   m_StartingGroupMembers:
   - {fileID: 2959686872493292198}
   - {fileID: 6452143483752561986}
+  - {fileID: 7665461920484385543}
   m_StartingInteractionOverridesMap:
   - groupMember: {fileID: 2959686872493292198}
+    overrideGroupMembers: []
+  - groupMember: {fileID: 7665461920484385543}
     overrideGroupMembers:
     - {fileID: 6452143483752561986}
 --- !u!114 &3336623297005606105
@@ -7387,6 +7377,7 @@ GameObject:
   - component: {fileID: 869000114650884882}
   - component: {fileID: 2527707327236498071}
   - component: {fileID: 1014512622303722929}
+  - component: {fileID: 5915494924214080489}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -7402,7 +7393,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3848225861924626212}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.39}
   m_LocalScale: {x: 0.66666657, y: 0.6666667, z: 0.66666657}
   m_ConstrainProportionsScale: 0
@@ -7524,6 +7515,19 @@ MonoBehaviour:
   m_AimAssistRequiredSpeed: 0.25
   m_AimAssistPercent: 0.8
   m_AimAssistMaxSpeedPercent: 10
+--- !u!114 &5915494924214080489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3848225861924626212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade3b775b07c41349b9293cb1928e733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateServerTimesPerSecond: 10
 --- !u!1 &3860769521647288887
 GameObject:
   m_ObjectHideFlags: 0
@@ -10070,7 +10074,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6431091459473092671
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11909,6 +11913,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 8007933095215344802}
     m_Modifications:
     - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
+      propertyPath: m_LineType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_Handedness
       value: 1
       objectReference: {fileID: 0}
@@ -11920,6 +11928,14 @@ PrefabInstance:
       propertyPath: m_RayOriginTransform
       value: 
       objectReference: {fileID: 7190270554684309537}
+    - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
+      propertyPath: m_RaycastMask.m_Bits
+      value: 2147484161
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
+      propertyPath: m_BlockUIOnInteractableSelection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_SelectInput.m_InputActionReferenceValue
       value: 
@@ -12490,6 +12506,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1809855425873032645}
     m_Modifications:
     - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
+      propertyPath: m_LineType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_Handedness
       value: 2
       objectReference: {fileID: 0}
@@ -12503,7 +12523,7 @@ PrefabInstance:
       objectReference: {fileID: 5888203519233153188}
     - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_RaycastMask.m_Bits
-      value: 2147483681
+      value: 2147484161
       objectReference: {fileID: 0}
     - target: {fileID: 2761784063978902503, guid: c1800acf6366418a9b5f610249000331, type: 3}
       propertyPath: m_SelectInput.m_InputActionReferenceValue

@@ -5,7 +5,6 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class PotyPlayerController : MonoBehaviour
 {
-    public Transform reportTxt;
     private PotyPlayer potyPlayer;
     private NetworkManager nm;
 
@@ -43,15 +42,6 @@ public class PotyPlayerController : MonoBehaviour
     void Start()
     {
         potyPlayer = new PotyPlayer("Bianca", new GameObject());
-        //CreateReport("Bem-vindo(a) " + potyPlayer.nickname, "Esse é o PotyguaraVerse, um ambiente imersivo no qual você poderá curtir shows, interagir com outros jogadores e jogar jogos criados com base em grandes pontos turisticos de Natal");
-    }
-
-    public void CreateReport(string title, string message)
-    {
-        reportTxt.GetChild(0).GetComponent<TextMeshProUGUI>().text = title;
-        reportTxt.GetChild(2).GetComponent<TextMeshProUGUI>().text = message;
-        reportTxt.parent.gameObject.SetActive(true);
-        reportTxt.parent.GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(6f, reportTxt.parent.gameObject);
     }
 
     public void SetScore(int value, int gameMode)

@@ -72,7 +72,7 @@ public class SpawnerController : MonoBehaviour
         if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
         {
             cannons.SetActive(true);
-            FindFirstObjectByType<PotyPlayerController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores utilizando os canhões. Se aproxime deles e pressioner o gatilho para atirar!!!");
+            FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores utilizando os canhões. Se aproxime deles e pressioner o gatilho para atirar!!!");
             FindFirstObjectByType<HeightController>().NewHeight(19.6f);
             NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
         }
@@ -80,13 +80,13 @@ public class SpawnerController : MonoBehaviour
         {
             if (currentLevel == 1)
             {
-                FindFirstObjectByType<PotyPlayerController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
             if (currentLevel == 2)
             {
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
-                FindFirstObjectByType<PotyPlayerController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(18.6f);
@@ -96,7 +96,7 @@ public class SpawnerController : MonoBehaviour
             if (currentLevel == 3)
             {
                 FindFirstObjectByType<GameForteController>().handMenuLevel3.SetActive(true);
-                FindFirstObjectByType<PotyPlayerController>().CreateReport("Acerte os Alvos!!!", "Olá jogador(a), para esse nível você deve destruir todos os alvos que surgirem até o tempo esgotar. Use o gatilho do controle esquerdo para atirar nos navios. Quanto mais alvos destruidos, maior sua pontuação final!!!");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Acerte os Alvos!!!", "Olá jogador(a), para esse nível você deve destruir todos os alvos que surgirem até o tempo esgotar. Use o gatilho do controle esquerdo para atirar nos navios. Quanto mais alvos destruidos, maior sua pontuação final!!!");
                 SetDestinyRandow(3);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(8.4f);

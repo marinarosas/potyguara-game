@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DayController : MonoBehaviour
 {
@@ -30,12 +31,15 @@ public class DayController : MonoBehaviour
 
     void Update()
     {
-        currentTime = System.DateTime.Now;
-        GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
-        float hours = currentTime.Hour + (currentTime.Minute / 60f) + (currentTime.Second / 3600f);
-        float sunAngle = (hours / 24f) * 360f;
-        //lightGeneral.Rotate(Vector3.right * (sunAngle-90f) * rotationSpeed * Time.deltaTime);
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            currentTime = System.DateTime.Now;
+            GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
+            float hours = currentTime.Hour + (currentTime.Minute / 60f) + (currentTime.Second / 3600f);
+            float sunAngle = (hours / 24f) * 360f;
+            //lightGeneral.Rotate(Vector3.right * (sunAngle-90f) * rotationSpeed * Time.deltaTime);
 
-        lightGeneral.rotation = Quaternion.Euler(sunAngle - 81f, 170f, 0f);
+            lightGeneral.rotation = Quaternion.Euler(sunAngle - 81f, 170f, 0f);
+        }
     }
 }

@@ -11,6 +11,7 @@ public class TechGuaraController : MonoBehaviour
     void Start()
     {
         report = transform.GetChild(0).GetComponent<Report>();
+        transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(5f, transform.GetChild(0).gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -53,5 +54,12 @@ public class TechGuaraController : MonoBehaviour
                     "apenas o mais rápido cruzará a linha de chegada!");
             }
         }
+    }
+
+    public void CreateReport(string title, string description)
+    {
+        transform.GetChild(0).GetComponent<FadeController>().FadeOutForFadeIn(3f);
+        report.UpdateTitle(title);
+        report.UpdateDescription(description); 
     }
 }

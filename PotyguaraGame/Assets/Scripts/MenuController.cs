@@ -32,7 +32,7 @@ public class MenuController : MonoBehaviour
         }
         if (!updatedMenu)
         {
-            if(SceneManager.GetActiveScene().buildIndex == 1)
+            if(SceneManager.GetActiveScene().buildIndex == 2) // ponta Negra
             {
                 transform.GetChild(0).GetComponent<Button>().interactable = false;
                 transform.GetChild(1).GetComponent<Button>().onClick.AddListener(GoToGallery);
@@ -41,7 +41,7 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(4).GetComponent<Button>().onClick.AddListener(ExitGame);
                 updatedMenu = true;
             }
-            if(SceneManager.GetActiveScene().buildIndex == 2)
+            if(SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
             {
                 transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
                 transform.GetChild(1).GetComponent<Button>().interactable = false;
@@ -50,7 +50,7 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(4).GetComponent<Button>().onClick.AddListener(ExitGame);
                 updatedMenu = true;
             }
-            if (SceneManager.GetActiveScene().buildIndex == 3)
+            if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
             {
                 transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
                 transform.GetChild(1).GetComponent<Button>().interactable = false;
@@ -70,6 +70,11 @@ public class MenuController : MonoBehaviour
     void LoadForte()
     {
         transitionController.LoadSceneAsync(3);
+    }
+
+    void LoadHoverBunda()
+    {
+        transitionController.LoadSceneAsync(4);
     }
 
     void GoToGallery()

@@ -229,7 +229,7 @@ public class GameForteController : MonoBehaviour
     {
         try
         {
-            FindFirstObjectByType<PotyPlayerController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
+            FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
             FindFirstObjectByType<GameForteController>().ResetCount();
             FindFirstObjectByType<SpawnerController>().NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
             handMenuLevel2.SetActive(true);
