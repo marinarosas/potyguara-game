@@ -12,7 +12,7 @@ public class FadeScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (fadeOnStart)
+        if (fadeOnStart && SceneManager.GetActiveScene().buildIndex != 5)
             FadeIn();
     }
     private void OnEnable()
@@ -28,18 +28,15 @@ public class FadeScreen : MonoBehaviour
     {
         Fade(1, 0);
     }
-    public void FadeOut(int index)
+
+    private void OnDisable()
     {
-        Fade(0, 1, index);
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void Fade(float alphaIn, float alphaOut)
     {
         StartCoroutine(FadeInRoutine(cg, alphaIn, alphaOut));
-    }
-    public void Fade(float alphaIn, float alphaOut, int index)
-    {
-        StartCoroutine(FadeOutRoutine(cg, alphaIn, alphaOut, index));
     }
 
     public IEnumerator FadeInRoutine(CanvasGroup canvasGroup, float alphaIn, float alphaOut)
@@ -52,18 +49,5 @@ public class FadeScreen : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = 0;
-    }
-
-    public IEnumerator FadeOutRoutine(CanvasGroup canvasGroup, float alphaIn,float alphaOut, int index)
-    {
-        float timer = 0;
-        while(timer <= fadeDuration)
-        {
-            canvasGroup.alpha = Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration);
-            Debug.Log(Mathf.Lerp(alphaIn, alphaOut, timer / fadeDuration));
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        FindFirstObjectByType<TransitionController>().LoadSceneAsync(index);
     }
 }

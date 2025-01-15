@@ -13,6 +13,7 @@ public class TransitionController : MonoBehaviour
     private Vector3 initialPosition;
     private bool isSkip = false;
     private int tempMode;
+    private int tempSceneIndex = -1;
 
     public static TransitionController Instance;
 
@@ -61,9 +62,15 @@ public class TransitionController : MonoBehaviour
         }
     }
 
+    public int GetTempIndex()
+    {
+        return tempSceneIndex;
+    }
+
     public void LoadSceneAsync(int sceneIndex)
     {
-        StartCoroutine(LoadSceneAsyncRoutine(sceneIndex));
+        tempSceneIndex = sceneIndex;
+        StartCoroutine(LoadSceneAsyncRoutine(5));
     }
 
     IEnumerator LoadSceneAsyncRoutine(int sceneIndex)
