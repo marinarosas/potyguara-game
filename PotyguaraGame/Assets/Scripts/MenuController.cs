@@ -10,15 +10,23 @@ public class MenuController : MonoBehaviour
     // galeria
     // enter show
     // Forte dos Reis
+    // Game Forte
+    // Game Forte Zombie Mode
     // Hover Bunda
     // Sair do Jogo
 
     private bool updatedMenu = false;
     private int currentScene;
     private TransitionController transitionController;
+    [SerializeField] private List<Sprite> galleryImages;
 
     void Start()
     {
+        int count = 0;
+        foreach (var image in galleryImages) { 
+            transform.GetChild(count).GetComponent<Image>().sprite = image;
+            count++;
+        }
         currentScene = SceneManager.GetActiveScene().buildIndex;
         transitionController = FindFirstObjectByType<TransitionController>();
     }
@@ -37,7 +45,10 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(1).GetComponent<Button>().onClick.AddListener(GoToGallery);
                 transform.GetChild(2).GetComponent<Button>().onClick.AddListener(GoToShow);
                 transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
-                transform.GetChild(4).GetComponent<Button>().onClick.AddListener(ExitGame);
+                transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
+                transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
+                transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
+                transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
                 updatedMenu = true;
             }
             if(SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
@@ -46,7 +57,10 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(1).GetComponent<Button>().interactable = false;
                 transform.GetChild(2).GetComponent<Button>().interactable = false;
                 transform.GetChild(3).GetComponent<Button>().interactable = false;
-                transform.GetChild(4).GetComponent<Button>().onClick.AddListener(ExitGame);
+                transform.GetChild(4).GetComponent<Button>().interactable = false;
+                transform.GetChild(5).GetComponent<Button>().interactable = false;
+                transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
+                transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
                 updatedMenu = true;
             }
             if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
@@ -55,7 +69,10 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(1).GetComponent<Button>().interactable = false;
                 transform.GetChild(2).GetComponent<Button>().interactable = false;
                 transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
-                transform.GetChild(4).GetComponent<Button>().onClick.AddListener(ExitGame);
+                transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
+                transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
+                transform.GetChild(6).GetComponent<Button>().interactable = false;
+                transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
                 updatedMenu = true;
             }
         }
@@ -79,6 +96,16 @@ public class MenuController : MonoBehaviour
     void GoToGallery()
     {
         transitionController.TeleportGallery();
+    }
+
+    void GoToGameForte()
+    {
+        transitionController.TeleporGameForteNormalMode();
+    }
+
+    void GoToGameForteZombieMode()
+    {
+        transitionController.TeleportGameForteZombieMode();
     }
 
     void GoToShow()

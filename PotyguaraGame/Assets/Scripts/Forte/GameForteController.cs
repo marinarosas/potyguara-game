@@ -19,7 +19,6 @@ public class GameForteController : MonoBehaviour
     [Header("Menus")]
     public GameObject handMenuLevel1;
     public GameObject handMenuLevel2;
-    public GameObject handMenuLevel3;
 
     [Header("Buttons")]
     public Button normalMode;
@@ -49,7 +48,7 @@ public class GameForteController : MonoBehaviour
     {
         mainCamera = GameObject.FindWithTag("MainCamera").transform;
         leftController = FindFirstObjectByType<LeftHandController>();
-        leftGunController = FindFirstObjectByType<LeftHandController>().gameObject.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
+        leftGunController = leftController.gameObject.transform.GetChild(3).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
 
         leftController.ChangeHand();
         leftGunController.setLeftHand(true);
@@ -62,7 +61,7 @@ public class GameForteController : MonoBehaviour
     {
         mainCamera = GameObject.FindWithTag("MainCamera").transform;
         rightController = FindFirstObjectByType<RightHandController>();
-        rightGunController = FindFirstObjectByType<RightHandController>().gameObject.transform.GetChild(0).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
+        rightGunController = rightController.gameObject.transform.GetChild(3).GetChild(2).GetChild(1).GetComponent<SimpleShoot>();
 
         rightController.ChangeHand();
         rightGunController.setLeftHand(true);
@@ -169,9 +168,6 @@ public class GameForteController : MonoBehaviour
                 if (currentLevel == 2)
                     ResetLevelTwo();
 
-                if (currentLevel == 3)
-                    ResetLevelThree();
-
                 LeftHandController leftHand = FindFirstObjectByType<LeftHandController>();
                 RightHandController rightHand = FindFirstObjectByType<RightHandController>();   
                 if (leftHand.GetHand())
@@ -194,18 +190,6 @@ public class GameForteController : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("Erro when reset level: " + e);
-        }
-    }
-
-    private void ResetLevelThree()
-    {
-        try
-        {
-            handMenuLevel3.SetActive(true);
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Erro when reset level three: " + e);
         }
     }
 
@@ -244,6 +228,8 @@ public class GameForteController : MonoBehaviour
 
     public void ResetGame()
     {
+        FindFirstObjectByType<LeftHandController>().ResetHand();
+        FindFirstObjectByType<RightHandController>().ResetHand();
         Transform finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0);
         finishUI.gameObject.SetActive(false);
         FindFirstObjectByType<HeightController>().NewHeight(8.2f);

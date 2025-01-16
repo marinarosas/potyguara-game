@@ -62,9 +62,6 @@ public class SpawnerController : MonoBehaviour
                 spawnRandowZombie.Add(destinyLevel2.GetChild(ii));
             }
         }
-        if (value == 3)
-        {
-        }
     }
     public void SetLevel()
     {
@@ -93,16 +90,6 @@ public class SpawnerController : MonoBehaviour
                 UpdateLevelBar();
                 NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
             }
-            if (currentLevel == 3)
-            {
-                FindFirstObjectByType<GameForteController>().handMenuLevel3.SetActive(true);
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Acerte os Alvos!!!", "Olá jogador(a), para esse nível você deve destruir todos os alvos que surgirem até o tempo esgotar. Use o gatilho do controle esquerdo para atirar nos navios. Quanto mais alvos destruidos, maior sua pontuação final!!!");
-                SetDestinyRandow(3);
-                FindFirstObjectByType<GameForteController>().ResetCount();
-                FindFirstObjectByType<HeightController>().NewHeight(8.4f);
-                UpdateLevelBar();
-                NextLevel(90f, new Vector3(710.36f, 8.4f, 401.15f));
-            }
         }
     }
 
@@ -119,11 +106,6 @@ public class SpawnerController : MonoBehaviour
             if (currentLevel == 2)
             {
                 currentAmount = 9;
-                InitSpawner(spawnRandowZombie);
-            }
-            if (currentLevel == 3)
-            {
-                currentAmount = 6;
                 InitSpawner(spawnRandowZombie);
             }
         }

@@ -34,7 +34,7 @@ public class TransitionController : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindWithTag("Player");
         initialPosition = GameObject.Find("InitialPosition").transform.position;
         FindFirstObjectByType<HeightController>().NewHeight(initialPosition.y);
         player.transform.position = initialPosition;
@@ -135,7 +135,7 @@ public class TransitionController : MonoBehaviour
     {
         tempMode = 0;
         isSkip = true;
-        SceneManager.LoadScene(2);
+        SceneManager.LoadSceneAsync(3);
     }
 
     public bool GetIsSkip()
@@ -147,7 +147,7 @@ public class TransitionController : MonoBehaviour
     {
         tempMode = 1;
         isSkip = true;
-        SceneManager.LoadScene(2);
+        SceneManager.LoadSceneAsync(3);
     }
     public void ExitGame()
     {

@@ -41,9 +41,9 @@ public class LiftController : MonoBehaviour
     {
         if(currentFloor != value)
         {
-            //player.parent = transform;
-            //Transform floor = transform.GetChild(6);
-            //player.GetComponent<HeightController>().NewHeight(floor.position.y+3.74f);
+            player.parent = transform;
+            Transform floor = transform.GetChild(6);
+            player.GetComponent<HeightController>().NewHeight(floor.position.y);
             if(value == 0)
             {
                 ani.Play("DownTerreo");
