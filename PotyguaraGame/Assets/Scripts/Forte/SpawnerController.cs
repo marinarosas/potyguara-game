@@ -62,6 +62,13 @@ public class SpawnerController : MonoBehaviour
                 spawnRandowZombie.Add(destinyLevel2.GetChild(ii));
             }
         }
+        else
+        {
+            for (var ii = 0; ii < destinyLevel1.childCount; ii++)
+            {
+                spawnRandowZombie.Add(destinyLevel1.GetChild(ii));
+            }
+        }
     }
     public void SetLevel()
     {
@@ -77,6 +84,7 @@ public class SpawnerController : MonoBehaviour
         {
             if (currentLevel == 1)
             {
+                SetDestinyRandow(1);
                 FindFirstObjectByType<TechGuaraController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
@@ -124,7 +132,7 @@ public class SpawnerController : MonoBehaviour
    
     private void UpdateLevelBar()
     {
-        GameObject.FindGameObjectWithTag("Level").GetComponent<Image>().fillAmount = 0.35f * currentLevel;
+        GameObject.FindGameObjectWithTag("Level").GetComponent<Image>().fillAmount = 0.5f * currentLevel;
         GameObject.FindGameObjectWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel+"";
     }
 
@@ -183,7 +191,7 @@ public class SpawnerController : MonoBehaviour
             {
                 levelIsRunning = false;
                 if (currentLevel == 1)
-                    FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
+                    //FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
 
                 finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
 
@@ -197,6 +205,7 @@ public class SpawnerController : MonoBehaviour
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Menu Principal";
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
                     currentLevel = 1;
+  
                     LeftHandController leftHand = FindFirstObjectByType<LeftHandController>();
                     RightHandController rightHand = FindFirstObjectByType<RightHandController>();
                     if (leftHand.GetHand())

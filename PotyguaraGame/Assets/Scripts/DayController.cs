@@ -13,7 +13,7 @@ public class DayController : MonoBehaviour
     private string city = "Natal";
     private string url;
     public float precip_mm;    
-    public int cloud;        
+    public int clouds;        
 
     private DateTime currentTime;
     private Transform sun;
@@ -64,10 +64,10 @@ public class DayController : MonoBehaviour
                 WeatherResponse weather = JsonUtility.FromJson<WeatherResponse>(jsonResponse);
 
                 precip_mm = weather.current.precip_mm;
-                cloud = weather.current.cloud;
+                clouds = weather.current.cloud;
 
-                Debug.Log("Umidade: " + precip_mm);
-                Debug.Log("Cobertura de Nuvens: " + cloud);
+                Debug.Log("Precipitação: " + precip_mm);
+                Debug.Log("Cobertura de Nuvens: " + clouds);
             }
             else
             {
@@ -114,7 +114,7 @@ public class DayController : MonoBehaviour
                 sun.GetComponent<Light>().enabled = true;
                 RenderSettings.sun = sun.GetComponent<Light>();
                 sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
-                skyBox.SetFloat("_AtmosphereThickness", 2);
+                skyBox.SetFloat("_AtmosphereThickness", 1.8f);
             }
             if(currentTime.Hour >= 4 && currentTime.Hour < 16)
             {
