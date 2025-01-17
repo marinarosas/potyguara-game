@@ -5,7 +5,7 @@ using UnityEngine.VFX;
 
 public class BulletController : MonoBehaviour
 {
-    private float timeToDestroy = 5.5f;
+    private float timeToDestroy = 10f;
     [SerializeField] private VisualEffect BloodVisualEffectController;
     [SerializeField] private CanvasGroup bloodOnScreeen;
     private Coroutine currentCoroutine;

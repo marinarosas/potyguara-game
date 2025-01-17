@@ -14,11 +14,11 @@ public class LeftHandController : MonoBehaviour
 
     private void Update()
     {
-        InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
+        /*InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
 
-        devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
-        if (Ybutton || Input.GetKeyDown(KeyCode.M)) // Y button pressed
+        devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);*/
+        if (/*Ybutton ||*/ Input.GetKeyDown(KeyCode.M)) // Y button pressed
         {
             GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
             if (menu != null)

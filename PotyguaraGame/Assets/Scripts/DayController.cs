@@ -4,23 +4,30 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class DayController : MonoBehaviour
 {
+    private string apiKey = "b88f7145e1044e2cbed01332251701";
+    private string city = "Natal";
+    private string url;
+    public float precip_mm;    
+    public int cloud;        
+
     private DateTime currentTime;
     private Transform sun;
     private Transform moon;
     private bool teste = true;
     private Material skyBox;
-    //private float currentRotation = 0f;
-    //public float smoothTime = 90f;
-    // manhã 5h até 13h
-    // tarde 13h até 18h
-    // noite 18h até 5h
 
     void Start()
     {
+        url = $"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}&aqi=no";
+
+        // Faz a requisição à API
+        StartCoroutine(GetWeatherData());
+
         if (SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 0)
         {
             sun = GameObject.FindWithTag("Sun").transform;
@@ -33,9 +40,53 @@ public class DayController : MonoBehaviour
     float dayLenght = 86400f;
     float rotationSpeed;
 
+    public float GetPrecip()
+    {
+        return precip_mm;
+    }
+
     public DateTime GetCurrentTime()
     {
         return currentTime;
+    }
+
+    IEnumerator GetWeatherData()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            // Verifica se houve algum erro
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                // Parse do JSON retornado
+                string jsonResponse = request.downloadHandler.text;
+                WeatherResponse weather = JsonUtility.FromJson<WeatherResponse>(jsonResponse);
+
+                precip_mm = weather.current.precip_mm;
+                cloud = weather.current.cloud;
+
+                Debug.Log("Umidade: " + precip_mm);
+                Debug.Log("Cobertura de Nuvens: " + cloud);
+            }
+            else
+            {
+                Debug.LogError("Erro na requisição: " + request.error);
+            }
+        }
+    }
+    // Definição da classe para parse do JSON
+    [System.Serializable]
+    public class WeatherResponse
+    {
+        public CurrentWeather current;
+    }
+
+    [System.Serializable]
+    public class CurrentWeather
+    {
+        public float precip_mm;      // precipitação em milimetros
+        public int cloud;         // Cobertura de nuvens (%)
     }
 
     void Update()
@@ -54,27 +105,31 @@ public class DayController : MonoBehaviour
                 sunAngle = (hours / 24f) * 180f;
                 moon.GetComponent<Light>().enabled = true;
                 RenderSettings.sun = moon.GetComponent<Light>();
-                moon.rotation = Quaternion.Euler(sunAngle - 81f, 170f, 0f);
+                moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 0.2f);
             }
             if(currentTime.Hour >= 16 && currentTime.Hour < 18)
             {
+                rotationSpeed = 360f / dayLenght;
                 sun.GetComponent<Light>().enabled = true;
                 RenderSettings.sun = sun.GetComponent<Light>();
-                sun.rotation = Quaternion.Euler(sunAngle - 81f, 170f, 0f);
+                sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 2);
             }
             if(currentTime.Hour >= 4 && currentTime.Hour < 16)
             {
+                rotationSpeed = 360f / dayLenght;
                 sun.GetComponent<Light>().enabled = true;
                 RenderSettings.sun = sun.GetComponent<Light>();
-                sun.rotation = Quaternion.Euler(sunAngle - 81f, 170f, 0f);
+                sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 0.8f);
             }
             if(currentTime.Hour < 4)
             {
+                rotationSpeed = 180f / dayLenght;
+                sunAngle = (hours / 24f) * 180f;
                 RenderSettings.sun = moon.GetComponent<Light>();
-                moon.rotation = Quaternion.Euler(sunAngle - 81f, 170f, 0f);
+                moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 0.2f);
             }
         }

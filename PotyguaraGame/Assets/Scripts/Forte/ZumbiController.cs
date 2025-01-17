@@ -138,6 +138,7 @@ public class ZumbiController : MonoBehaviour
         {
             if (!MarkedPontuacion)
             {
+                Debug.Log("Acertou!!");
                 collision.gameObject.GetComponent<BulletController>().playEffect();
                 collision.gameObject.GetComponent<BulletController>().StartBloodEffect(2f, 0.5f);
                 FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
