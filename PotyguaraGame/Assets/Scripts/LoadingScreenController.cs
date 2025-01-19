@@ -22,7 +22,7 @@ public class LoadingScreenController : MonoBehaviour
     {
 
         slider.value = 0;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
 
