@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FadeController : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class FadeController : MonoBehaviour
     private bool fadeIn = false;
     private bool fadeOut = false;
     private GameObject obj;
+    private Animator animator;
 
     private void Start()
     {
@@ -29,6 +31,13 @@ public class FadeController : MonoBehaviour
 
     public void FadeInForFadeOut(float time)
     {
+        FadeIn();
+        Invoke("FadeOut", time);
+    }
+
+    public void FadeInForFadeOutWithAnimator(float time, Animator ani)
+    {
+        animator = ani;
         FadeIn();
         Invoke("FadeOut", time);
     }
@@ -75,6 +84,13 @@ public class FadeController : MonoBehaviour
                 fadeOut = false;
                 if (this.obj != null)
                     this.obj.SetActive(false);
+                if (SceneManager.GetActiveScene().buildIndex == 2) // ponta negra
+                {
+                    if(animator.GetCurrentAnimatorStateInfo(0).IsName("DownTerreo"))
+                        FindFirstObjectByType<HeightController>().NewHeight(1.9f);
+                    else
+                        FindFirstObjectByType<HeightController>().NewHeight(12f);
+                }
             }
         }
     }

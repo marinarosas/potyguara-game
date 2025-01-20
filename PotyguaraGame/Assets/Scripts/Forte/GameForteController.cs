@@ -235,6 +235,8 @@ public class GameForteController : MonoBehaviour
         finishUI.gameObject.SetActive(false);
         FindFirstObjectByType<HeightController>().NewHeight(8.2f);
 
+        ResetCount();
+
         GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
         GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
         SetInitScene();

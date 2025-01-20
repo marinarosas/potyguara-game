@@ -19,38 +19,31 @@ public class LiftController : MonoBehaviour
         rightDoor = transform.GetChild(1).gameObject;
     }
 
-    private void Update()
-    {
-    }
-
     public void OpenTheDoors()
     {
         leftDoor.GetComponent<Animator>().Play("OpenLeft");
         rightDoor.GetComponent<Animator>().Play("OpenRight");
-        player.GetComponent<HeightController>().NewHeight(player.transform.position.y);
     }
 
     public void CloseTheDoors()
     {
         leftDoor.GetComponent<Animator>().Play("CloseLeft");
         rightDoor.GetComponent<Animator>().Play("CloseRight");
-        player.GetComponent<HeightController>().NewHeight(player.transform.position.y);
     }
 
     public void ChangeFloor(int value)
     {
         if(currentFloor != value)
         {
-            player.parent = transform;
-            Transform floor = transform.GetChild(6);
-            player.GetComponent<HeightController>().NewHeight(floor.position.y);
-            if(value == 0)
+            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(3f, ani);
+            FindObjectOfType<HeightController>().SetBool(true);
+            if (value == 0)
             {
                 ani.Play("DownTerreo");
             }
             else
             {
-                ani.Play("MoveUpFirstFloor");
+                ani.Play("MoveUpTerreo");
             }
             currentFloor = value;
         }

@@ -75,14 +75,15 @@ public class DayController : MonoBehaviour
             }
         }
     }
+
     // Definição da classe para parse do JSON
-    [System.Serializable]
+    [Serializable]
     public class WeatherResponse
     {
         public CurrentWeather current;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class CurrentWeather
     {
         public float precip_mm;      // precipitação em milimetros

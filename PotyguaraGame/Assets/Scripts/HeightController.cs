@@ -7,7 +7,7 @@ public class HeightController : MonoBehaviour
 {
     [SerializeField] private float height = 0f;
     private GameObject player;
-    private bool insideLift = false;
+    public bool insideLift = false;
     // Start is called before the first frame update
     void Start()
     {

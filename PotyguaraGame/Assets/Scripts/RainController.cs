@@ -82,7 +82,7 @@ public class RainController : MonoBehaviour
                 {
                     WindZone.transform.rotation = Quaternion.Euler(Random.Range(-30.0f, 30.0f), Random.Range(0.0f, 360.0f), 0.0f);
                 }
-                nextWindTime = Time.time + UnityEngine.Random.Range(WindChangeInterval.x, WindChangeInterval.y);
+                nextWindTime = Time.time + Random.Range(WindChangeInterval.x, WindChangeInterval.y);
                 audioSourceWind.Play((WindZone.windMain / WindSpeedRange.z) * WindSoundVolumeModifier);
             }
         }

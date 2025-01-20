@@ -36,7 +36,6 @@ public class TransitionController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         initialPosition = GameObject.Find("InitialPosition").transform.position;
-        FindFirstObjectByType<HeightController>().NewHeight(initialPosition.y);
         player.transform.position = initialPosition;
     }
 
