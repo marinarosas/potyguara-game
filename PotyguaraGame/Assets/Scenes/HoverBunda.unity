@@ -70531,9 +70531,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f934e569cc209e742ae4360d375be84a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1934492857}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f934e569cc209e742ae4360d375be84a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1934492863}
   m_SourcePrefab: {fileID: 100100000, guid: f934e569cc209e742ae4360d375be84a, type: 3}
 --- !u!1 &1753930159
 GameObject:
@@ -75706,7 +75703,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.01
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -75721,7 +75718,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &1934492856
 MonoBehaviour:
@@ -75736,9 +75733,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  speed: 5
-  turnSpeed: 2.5
-  gravityMultiplier: 0.75
+  "acelera\xE7\xE3o": 5
+  velocidadeMaxima: 10
 --- !u!65 &1934492857
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -75765,18 +75761,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f934e569cc209e742ae4360d375be84a, type: 3}
   m_PrefabInstance: {fileID: 1725747238}
   m_PrefabAsset: {fileID: 0}
---- !u!75 &1934492863
-ConstantForce:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1934492850}
-  m_Enabled: 1
-  m_Force: {x: 0, y: 0, z: 0}
-  m_RelativeForce: {x: 4, y: 4, z: 4}
-  m_Torque: {x: 0, y: 0, z: 0}
-  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1 &1946487342
 GameObject:
   m_ObjectHideFlags: 0

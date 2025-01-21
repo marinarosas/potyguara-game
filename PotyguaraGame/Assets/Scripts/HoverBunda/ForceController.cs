@@ -12,50 +12,86 @@ public class ForceController : MonoBehaviour
     private InputAction leftJoystick;
     private InputAction rightJoystick;
 
-    public float speed = 10f;
-    public float turnSpeed = 5f;
-    public float gravityMultiplier = 1.5f;
-
     private Rigidbody rb;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
-
     private bool gameStarted = false;
+    private InputAction moveAction;
 
-   /* private void OnEnable()
-    {
-        var actionMap = inputActions.FindActionMap("Joysticks");
-        leftJoystick = actionMap.FindAction("Primary2DAxis");
-        rightJoystick = actionMap.FindAction("Secondary2DAxis");
+    public float aceleração = 5f;  // Aceleração constante do hoverboard
+    public float velocidadeMaxima = 10f;  // Limite de velocidade
 
-        leftJoystick.Enable();
-        rightJoystick.Enable();
-    }
+    /* private void OnEnable()
+     {
+         var actionMap = inputActions.FindActionMap("Joysticks");
+         leftJoystick = actionMap.FindAction("Primary2DAxis");
+         rightJoystick = actionMap.FindAction("Secondary2DAxis");
 
-    private void OnDisable()
-    {
-        leftJoystick.Disable();
-        leftJoystick.Disable();
-    }*/
+         leftJoystick.Enable();
+         rightJoystick.Enable();
+     }
+
+     private void OnDisable()
+     {
+         leftJoystick.Disable();
+         leftJoystick.Disable();
+     }*/
 
     public void SetBoolean()
     {
         gameStarted = true;
+        transform.position = new Vector3(540f, 56.2f, -509f);
+        transform.rotation = new Quaternion(0, -0.361624479f, 0, 0.932323813f);
     }
 
-    void Update()
+    /*void Update()
     {
         if (gameStarted)
         {
-            transform.position = new Vector3(540f, 56.2f, -509f);
-            transform.rotation = new Quaternion(0, -0.361624479f, 0, 0.932323813f);
+            if (rb.velocity.magnitude < velocidadeMaxima)
+            {
+                rb.AddForce(transform.forward * aceleração, ForceMode.Acceleration);
+            }
 
-            HandleMovement();
+            // Chame a função para alterar a direção do movimento
+            AlterarDirecao();
         }
+    }*/
+    public float forwardSpeed = 10f;  // Velocidade automática para frente
+    public float turnSpeed = 60f;     // Velocidade de rotação
+    public float hoverHeight = 2f;    // Altura de levitação
+    public float hoverForce = 10f;    // Força de sustentação
+
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;  // Desativar gravidade para efeito de levitação
+
+        // Configurar a ação do OpenXR para o thumbstick
+        moveAction = new InputAction("Move", binding: "<XRController>{LeftHand}/thumbstick");
+        moveAction.Enable();
     }
+
+    void FixedUpdate()
+    {
+        // Simular levitação usando Raycast
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -transform.up, out hit, hoverHeight))
+        {
+            float forceAmount = hoverForce * (1f - (hit.distance / hoverHeight));
+            rb.AddForce(Vector3.up * forceAmount, ForceMode.Acceleration);
+        }
+
+        // Movimento automático para frente
+        rb.velocity = transform.forward * forwardSpeed;
+
+        // Controle de direção via thumbstick do controle esquerdo
+        Vector2 input = moveAction.ReadValue<Vector2>();
+        float turn = input.x * turnSpeed * Time.fixedDeltaTime;
+        transform.Rotate(Vector3.up, turn);
+    }
+
+
 
     void HandleMovementWithOculus()
     {
@@ -67,20 +103,21 @@ public class ForceController : MonoBehaviour
 
         Vector3 rotation = new Vector3(0, rightInput.x, 0);
         transform.Rotate(rotation * Time.deltaTime, Space.World);
-
-        // Simulação de gravidade extra para evitar deslizar no ar
-        rb.AddForce(Vector3.down * gravityMultiplier, ForceMode.Acceleration);
     }
 
-    void HandleMovement()
+    void AlterarDirecao()
     {
-        // Movimento para frente baseado na inclinação
-        //Vector3 movement = transform.forward* speed;
-        //transform.Translate(movement * Time.deltaTime, Space.World);
-            
 
-        // Simulação de gravidade extra para evitar deslizar no ar
-        //rb.AddForce(Vector3.down * gravityMultiplier, ForceMode.Acceleration);
+        Vector2 leftInput = leftJoystick.ReadValue<Vector2>();
+        Vector2 rightInput = rightJoystick.ReadValue<Vector2>();
+
+        Vector3 direcao = new Vector3(leftInput.x, 0, leftInput.y).normalized;
+
+        if (direcao.magnitude > 0)
+        {
+            // Rotaciona o hoverboard para a direção do movimento
+            Quaternion novaRotacao = Quaternion.LookRotation(direcao);
+            transform.rotation = Quaternion.Slerp(transform.rotation, novaRotacao, Time.deltaTime * 10);
+        }
     }
-
 }
