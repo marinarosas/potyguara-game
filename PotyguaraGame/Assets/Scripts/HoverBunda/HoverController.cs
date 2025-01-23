@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HoverController : MonoBehaviour
 {
+
+    public GameObject player;
     private void Start()
     {
         GameObject player = GameObject.FindWithTag("Player");
@@ -13,6 +15,15 @@ public class HoverController : MonoBehaviour
     }
     public void StartHover()
     {
-        FindFirstObjectByType<ForceController>().SetBoolean();
+        Invoke("ModifyPositionOfPlayer", 2f);
+    }
+
+    public void ModifyPositionOfPlayer() {
+        GameObject point = GameObject.Find("PointOfStart");
+        if(point != null)
+        {
+            player.transform.position = point.transform.position;
+            player.transform.rotation = new Quaternion(0, -0.361624479f, 0, 0.932323813f);
+        }
     }
 }
