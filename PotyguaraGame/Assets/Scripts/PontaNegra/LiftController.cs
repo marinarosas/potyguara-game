@@ -38,14 +38,13 @@ public class LiftController : MonoBehaviour
             GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(3f, ani);
             FindObjectOfType<HeightController>().SetBool(true);
             if (value == 0)
-            {
                 ani.Play("DownTerreo");
-            }
             else
-            {
                 ani.Play("MoveUpTerreo");
-            }
+
             currentFloor = value;
         }
+        else
+            OpenTheDoors();
     }
 }

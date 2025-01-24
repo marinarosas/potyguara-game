@@ -28,6 +28,7 @@ public class SpawnerController : MonoBehaviour
     private int currentAmount;
     private int currentLevel = 1;
     private int wallsDestroyed = 0;
+
     public void SetWallsDestroyed()
     {
         wallsDestroyed++;
@@ -182,18 +183,18 @@ public class SpawnerController : MonoBehaviour
         }
         else
         {
-            /*if (wallsDestroyed >= 20 && currentLevel == 1)
+            if (wallsDestroyed >= 50 && currentLevel == 1)
             {
                 wallsDestroyed = 0;
                 levelIsRunning = false;
                 FindFirstObjectByType<GameForteController>().GameOver();
                 return;
-            }*/
+            }
             if (slot.childCount == 0 && levelIsRunning)
             {
                 levelIsRunning = false;
                 if (currentLevel == 1)
-                    //FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
+                    FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
 
                 finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
 

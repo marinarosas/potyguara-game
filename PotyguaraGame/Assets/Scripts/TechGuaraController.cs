@@ -12,7 +12,7 @@ public class TechGuaraController : MonoBehaviour
     {
         report = transform.GetChild(0).GetComponent<Report>();
         if(SceneManager.GetActiveScene().buildIndex != 4)
-            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(5f, transform.GetChild(0).gameObject);
+            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(6f, transform.GetChild(0).gameObject);
         else
             transform.GetChild(0).GetComponent<FadeController>().FadeIn();
     }

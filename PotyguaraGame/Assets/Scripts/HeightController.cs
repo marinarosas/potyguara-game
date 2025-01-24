@@ -12,6 +12,7 @@ public class HeightController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+
         // Se não for Atalhos de Menu, coloca o player na posição inicial da Cena
         if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
         {
