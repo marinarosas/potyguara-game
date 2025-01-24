@@ -151,9 +151,8 @@ public class GameForteController : MonoBehaviour
     {
         WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
         foreach (WallController wall in walls)
-        {
             wall.resetWall();
-        }
+
         ManageWalls(value);
     }
 
@@ -171,21 +170,17 @@ public class GameForteController : MonoBehaviour
 
                 LeftHandController leftHand = FindFirstObjectByType<LeftHandController>();
                 RightHandController rightHand = FindFirstObjectByType<RightHandController>();   
+
                 if (leftHand.GetHand())
-                {
                     leftHand.ResetHand();
-                }
                 if (rightHand.GetHand())
-                {
                     leftHand.ResetHand();
-                }
+
                 DestroyRemainingEnemies();
             }
             else
-            { 
                 FindFirstObjectByType<SpawnerController>().CleanSlot();
 
-            }
             FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
         }
         catch (Exception e)
@@ -237,6 +232,7 @@ public class GameForteController : MonoBehaviour
         FindFirstObjectByType<HeightController>().NewHeight(8.2f);
 
         ResetCount();
+        FindFirstObjectByType<RankingController>().ShowRanking();
 
         GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.4f, 400.38f);
         GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
@@ -259,9 +255,8 @@ public class GameForteController : MonoBehaviour
                 {
                     FindFirstObjectByType<SpawnerController>().SetSpawn();
                     if (currentLevel == 1)
-                    {
                         ManageWalls(true);
-                    }
+                    
                     timer.SetActive(false);
                     timer.GetComponent<Image>().fillAmount = 1f;
                 }
@@ -273,9 +268,7 @@ public class GameForteController : MonoBehaviour
     {
         Transform walls = GameObject.Find("Walls").transform;
         for (int ii = 0; ii < walls.childCount; ii++)
-        {
             walls.GetChild(ii).gameObject.SetActive(value);
-        }
     }
 
     public void SetCurrentLevel(int level)

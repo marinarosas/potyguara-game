@@ -9,8 +9,8 @@ public class DoorController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.transform.parent = transform.parent;
             Debug.Log("Entrou no elevador");
+            other.gameObject.transform.parent = transform.parent;
             FindObjectOfType<LiftController>().CloseTheDoors();
         }
     }
@@ -22,7 +22,7 @@ public class DoorController : MonoBehaviour
             Debug.Log("Saiu do elevador");
             other.gameObject.transform.parent = null;
             FindObjectOfType<LiftController>().CloseTheDoors();
-            FindObjectOfType<HeightController>().SetBool(false);
+            FindFirstObjectByType<HeightController>().SetBool(false);
         }
     }
 }

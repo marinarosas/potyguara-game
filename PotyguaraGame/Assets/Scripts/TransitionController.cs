@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 public class TransitionController : MonoBehaviour
 {
     private GameObject player;
-    private Vector3 initialPosition;
     private bool isSkip = false;
     private int tempMode;
     private int tempSceneIndex = -1;
@@ -35,12 +34,9 @@ public class TransitionController : MonoBehaviour
         {
             FindFirstObjectByType<GameForteController>().SetStartMode(tempMode);
             if(tempMode == 0)
-            {
                 FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
-            }else if(tempMode == 1)
-            {
+            else if(tempMode == 1)
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
-            }
             isSkip = false;
         }
 

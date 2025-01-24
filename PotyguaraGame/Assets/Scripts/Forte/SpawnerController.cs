@@ -200,11 +200,6 @@ public class SpawnerController : MonoBehaviour
 
                 if (currentLevel == 2)
                 {
-                    // ver ranking
-                    /*finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Ver Ranking";
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(Ranking);*/
-
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Menu Principal";
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
   
@@ -232,7 +227,7 @@ public class SpawnerController : MonoBehaviour
 
     public void Ranking()
     {
-        //finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameController>().GetTotalPoints() + "";
+        finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameForteController>().GetTotalPoints() + "";
 
         GameObject ranking = GameObject.FindGameObjectWithTag("Ranking");
         for(int ii = 0; ii < ranking.transform.childCount; ii++)

@@ -32,13 +32,9 @@ public class HeightController : MonoBehaviour
     void Update()
     {
         if (!insideLift)
-        {
             FixedHeight(player);
-        }
         else
-        {
             VariableHeight(player);
-        }
     }
 
     public void SetBool(bool value)
