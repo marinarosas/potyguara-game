@@ -21,11 +21,21 @@ public class LightController : MonoBehaviour
                 foreach (var light in lights)
                     light.GetComponent<Light>().enabled = true;
             }
-            else if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 5 && FindFirstObjectByType<DayController>().GetCurrentTime().Hour < 18)
+            else if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour > 5 && FindFirstObjectByType<DayController>().GetCurrentTime().Hour < 18)
             {
                 foreach (var light in lights)
                     light.GetComponent<Light>().enabled = false;
             }
+            else
+            { // <= 5 horas
+                foreach (var light in lights)
+                    light.GetComponent<Light>().enabled = true;
+            }
+        }
+        else
+        {
+            foreach (var light in lights)
+                light.GetComponent<Light>().enabled = false;
         }
     }
 }

@@ -88,7 +88,7 @@ public class FadeController : MonoBehaviour
                 {
                     if(animator.GetCurrentAnimatorStateInfo(0).IsName("DownTerreo"))
                         FindFirstObjectByType<HeightController>().NewHeight(1.9f);
-                    else
+                    else if(animator.GetCurrentAnimatorStateInfo(0).IsName("MoveUpTerreo"))
                         FindFirstObjectByType<HeightController>().NewHeight(12f);
                 }
             }

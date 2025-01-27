@@ -98,8 +98,8 @@ public class TransitionController : MonoBehaviour
     public void TeleportEnterShow()
     {
         player = GameObject.FindWithTag("Player");
-        FindFirstObjectByType<HeightController>().NewHeight(8.3f);
-        player.transform.position = new Vector3(177.8f, 8.3f, 111.95f);
+        FindFirstObjectByType<HeightController>().NewHeight(8.15f);
+        player.transform.position = new Vector3(177.8f, 8.15f, 111.95f);
         player.transform.eulerAngles = Vector3.zero;
     }
 

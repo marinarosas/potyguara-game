@@ -32,7 +32,10 @@ public class HeightController : MonoBehaviour
     void Update()
     {
         if (!insideLift)
-            FixedHeight(player);
+            if(FindFirstObjectByType<LiftShowController>().isInsideLift)
+                VariableHeight(player);
+            else
+                FixedHeight(player);
         else
             VariableHeight(player);
     }
