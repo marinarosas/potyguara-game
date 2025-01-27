@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.3635045, g: 0.6034794, b: 0.18561374, a: 1}
+  m_IndirectSpecularColor: {r: 0.36350355, g: 0.60347795, b: 0.18561304, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12819,9 +12819,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3867133296235288597, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_SmoothTurnEnabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5019242857164127628, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255143395940971288, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_SmoothTurnEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6653332619731122518, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_IsActive
@@ -71162,6 +71170,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 244902396986124067, guid: 5b7e23ef69cd1ec479a1ade8d684706a, type: 3}
+      propertyPath: m_ActiveInputMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 402676959149156907, guid: 5b7e23ef69cd1ec479a1ade8d684706a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 810.3

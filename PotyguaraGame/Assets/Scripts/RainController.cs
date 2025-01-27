@@ -181,8 +181,6 @@ public class RainController : MonoBehaviour
             Camera = Camera.main;
         }
 
-        precip = FindFirstObjectByType<DayController>().GetPrecip();
-
         audioSourceRainLight = new LoopingAudioSource(this, RainSoundLight);
         audioSourceRainMedium = new LoopingAudioSource(this, RainSoundMedium);
         audioSourceRainHeavy = new LoopingAudioSource(this, RainSoundHeavy);
@@ -210,6 +208,10 @@ public class RainController : MonoBehaviour
         }
 
 #endif
+        if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
+            precip = FindFirstObjectByType<DayController>().GetPrecip();
+        else
+            precip = 0;
 
         CheckForRainChange();
         UpdateWind();

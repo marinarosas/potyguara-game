@@ -16,9 +16,10 @@ public class LeftHandController : MonoBehaviour
     {
         InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
+        if(devices.Count != 0)
+            devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
 
-        devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
-        if (Ybutton || Input.GetKeyDown(KeyCode.M)) // Y button pressed
+        if (/*Ybutton ||*/ Input.GetKeyDown(KeyCode.M)) // Y button pressed
         {
             GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
             if (menu != null)

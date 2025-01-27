@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DayController : MonoBehaviour
 {
@@ -18,23 +19,22 @@ public class DayController : MonoBehaviour
     private DateTime currentTime;
     private Transform sun;
     private Transform moon;
-    private bool teste = true;
     private Material skyBox;
+    public Toggle toggleWeather;
 
     void Start()
     {
+        sun = GameObject.FindWithTag("Sun").transform;
+        moon = GameObject.FindWithTag("Moon").transform;
+        skyBox = RenderSettings.skybox;
         url = $"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}&aqi=no";
+        rotationSpeed = 360f / dayLenght;
+    }
 
+    void RequestAPIWeather()
+    {
         // Faz a requisição à API
         StartCoroutine(GetWeatherData());
-
-        if (SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 0)
-        {
-            sun = GameObject.FindWithTag("Sun").transform;
-            moon = GameObject.FindWithTag("Moon").transform;
-        }
-        rotationSpeed = 360f / dayLenght;
-        skyBox = RenderSettings.skybox;
     }
 
     float dayLenght = 86400f;
@@ -92,47 +92,65 @@ public class DayController : MonoBehaviour
 
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0 && sun != null && moon != null)
-        {
-            currentTime = DateTime.Now.ToLocalTime();
-            GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
-            float hours = currentTime.Hour + (currentTime.Minute / 60f) + (currentTime.Second / 3600f);
-            float sunAngle = (hours / 24f) * 360f;
-            //lightGeneral.Rotate(Vector3.right * (sunAngle-90f) * rotationSpeed * Time.deltaTime);
+        currentTime = DateTime.Now.ToLocalTime();
+        GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
 
-            if(currentTime.Hour >= 18)
+        if (toggleWeather.isOn)
+        {
+            InvokeRepeating("RequestAPIWeather", 0f, 3600f);
+
+            if (SceneManager.GetActiveScene().buildIndex == 5 || SceneManager.GetActiveScene().buildIndex == 1)
             {
-                rotationSpeed = 180f / dayLenght;
-                sunAngle = (hours / 24f) * 180f;
-                moon.GetComponent<Light>().enabled = true;
-                RenderSettings.sun = moon.GetComponent<Light>();
-                moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
-                skyBox.SetFloat("_AtmosphereThickness", 0.2f);
-            }
-            if(currentTime.Hour >= 16 && currentTime.Hour < 18)
-            {
-                rotationSpeed = 360f / dayLenght;
-                sun.GetComponent<Light>().enabled = true;
                 RenderSettings.sun = sun.GetComponent<Light>();
-                sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
-                skyBox.SetFloat("_AtmosphereThickness", 1.8f);
-            }
-            if(currentTime.Hour >= 4 && currentTime.Hour < 16)
-            {
-                rotationSpeed = 360f / dayLenght;
-                sun.GetComponent<Light>().enabled = true;
-                RenderSettings.sun = sun.GetComponent<Light>();
-                sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                sun.rotation= Quaternion.Euler(87.21f, 170f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 0.8f);
             }
-            if(currentTime.Hour < 4)
+
+            if (SceneManager.GetActiveScene().buildIndex != 0 && sun != null && moon != null)
             {
-                rotationSpeed = 180f / dayLenght;
-                sunAngle = (hours / 24f) * 180f;
-                RenderSettings.sun = moon.GetComponent<Light>();
-                moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
-                skyBox.SetFloat("_AtmosphereThickness", 0.2f);
+                float hours = currentTime.Hour + (currentTime.Minute / 60f) + (currentTime.Second / 3600f);
+                float sunAngle = (hours / 24f) * 360f;
+
+                if (currentTime.Hour >= 18)
+                {
+                    rotationSpeed = 180f / dayLenght;
+                    sunAngle = (hours / 24f) * 180f;
+                    moon.GetComponent<Light>().enabled = true;
+                    RenderSettings.sun = moon.GetComponent<Light>();
+                    moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    skyBox.SetFloat("_AtmosphereThickness", 0.2f);
+                }
+                if (currentTime.Hour >= 16 && currentTime.Hour < 18)
+                {
+                    rotationSpeed = 360f / dayLenght;
+                    sun.GetComponent<Light>().enabled = true;
+                    RenderSettings.sun = sun.GetComponent<Light>();
+                    sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    skyBox.SetFloat("_AtmosphereThickness", 1.8f);
+                }
+                if (currentTime.Hour >= 4 && currentTime.Hour < 16)
+                {
+                    rotationSpeed = 360f / dayLenght;
+                    sun.GetComponent<Light>().enabled = true;
+                    RenderSettings.sun = sun.GetComponent<Light>();
+                    sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    skyBox.SetFloat("_AtmosphereThickness", 0.8f);
+                }
+                if (currentTime.Hour < 4)
+                {
+                    rotationSpeed = 180f / dayLenght;
+                    sunAngle = (hours / 24f) * 180f;
+                    RenderSettings.sun = moon.GetComponent<Light>();
+                    moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    skyBox.SetFloat("_AtmosphereThickness", 0.2f);
+                }
             }
+        }
+        else
+        {
+            RenderSettings.sun = sun.GetComponent<Light>();
+            sun.rotation = Quaternion.Euler(87.21f, 170f, 0f);
+            skyBox.SetFloat("_AtmosphereThickness", 0.8f);
         }
     }
 }

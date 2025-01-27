@@ -14,18 +14,17 @@ public class LightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 18)
+        if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
         {
-            foreach (var light in lights)
+            if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 18)
             {
-                light.GetComponent<Light>().enabled = true;
+                foreach (var light in lights)
+                    light.GetComponent<Light>().enabled = true;
             }
-        }
-        else if(FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 5 && FindFirstObjectByType<DayController>().GetCurrentTime().Hour < 18)
-        {
-            foreach (var light in lights)
+            else if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 5 && FindFirstObjectByType<DayController>().GetCurrentTime().Hour < 18)
             {
-                light.GetComponent<Light>().enabled = false;
+                foreach (var light in lights)
+                    light.GetComponent<Light>().enabled = false;
             }
         }
     }
