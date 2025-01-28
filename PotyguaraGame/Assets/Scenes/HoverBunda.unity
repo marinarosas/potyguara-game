@@ -87487,10 +87487,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2119415989}
   - component: {fileID: 2119415988}
+  - component: {fileID: 2119415990}
   - component: {fileID: 2119415987}
   - component: {fileID: 2119415986}
   m_Layer: 0
-  m_Name: Wall
+  m_Name: WallOfDeceleration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87511,12 +87512,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 134.24435, y: 11.349479, z: 1.0003691}
+  m_Center: {x: -30.680923, y: 1.7601459, z: -0.00018495228}
 --- !u!23 &2119415987
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -87582,6 +87583,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 35.435, z: 0}
+--- !u!114 &2119415990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119415985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0732b6008198e1e4d99e38cc1f667daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plankRigidbody: {fileID: 1608667641}
+  deceleration: 5
+  minimumSpeed: 0.1
 --- !u!114 &2128179100 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 742272467831425975, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
