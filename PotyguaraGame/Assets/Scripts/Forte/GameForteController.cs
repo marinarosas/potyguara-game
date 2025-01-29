@@ -72,6 +72,7 @@ public class GameForteController : MonoBehaviour
 
     public void SetInitScene()
     {
+        GameObject.FindWithTag("Ranking").SetActive(true);
         portal.SetActive(true);
         zombieMode.gameObject.transform.parent.gameObject.SetActive(true);
     }
@@ -150,10 +151,9 @@ public class GameForteController : MonoBehaviour
     {
         WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
         foreach (WallController wall in walls)
-        {
             wall.resetWall();
-        }
-        //ManageWalls(value);
+
+        ManageWalls(value);
     }
 
     private void ResetLevel()
@@ -170,21 +170,17 @@ public class GameForteController : MonoBehaviour
 
                 LeftHandController leftHand = FindFirstObjectByType<LeftHandController>();
                 RightHandController rightHand = FindFirstObjectByType<RightHandController>();   
+
                 if (leftHand.GetHand())
-                {
                     leftHand.ResetHand();
-                }
                 if (rightHand.GetHand())
-                {
                     leftHand.ResetHand();
-                }
+
                 DestroyRemainingEnemies();
             }
             else
-            { 
                 FindFirstObjectByType<SpawnerController>().CleanSlot();
 
-            }
             FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
         }
         catch (Exception e)
@@ -235,7 +231,10 @@ public class GameForteController : MonoBehaviour
         finishUI.gameObject.SetActive(false);
         FindFirstObjectByType<HeightController>().NewHeight(8.2f);
 
-        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
+        ResetCount();
+        FindFirstObjectByType<RankingController>().ShowRanking();
+
+        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.4f, 400.38f);
         GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
         SetInitScene();
     }
@@ -256,9 +255,8 @@ public class GameForteController : MonoBehaviour
                 {
                     FindFirstObjectByType<SpawnerController>().SetSpawn();
                     if (currentLevel == 1)
-                    {
-                        //ManageWalls(true);
-                    }
+                        ManageWalls(true);
+                    
                     timer.SetActive(false);
                     timer.GetComponent<Image>().fillAmount = 1f;
                 }
@@ -266,14 +264,12 @@ public class GameForteController : MonoBehaviour
         }
     }
 
-    /*private void ManageWalls(bool value)
+    private void ManageWalls(bool value)
     {
         Transform walls = GameObject.Find("Walls").transform;
         for (int ii = 0; ii < walls.childCount; ii++)
-        {
             walls.GetChild(ii).gameObject.SetActive(value);
-        }
-    }*/
+    }
 
     public void SetCurrentLevel(int level)
     {

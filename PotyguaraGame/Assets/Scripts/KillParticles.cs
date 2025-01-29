@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KillParticles : MonoBehaviour
 {
-    private float onExitRemainingLifetime = 0f;
+    [SerializeField] private float onExitRemainingLifetime;
     private new ParticleSystem particleSystem;
     // Start is called before the first frame update
     void Start()

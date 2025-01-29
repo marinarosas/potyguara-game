@@ -82,7 +82,7 @@ public class RainController : MonoBehaviour
                 {
                     WindZone.transform.rotation = Quaternion.Euler(Random.Range(-30.0f, 30.0f), Random.Range(0.0f, 360.0f), 0.0f);
                 }
-                nextWindTime = Time.time + UnityEngine.Random.Range(WindChangeInterval.x, WindChangeInterval.y);
+                nextWindTime = Time.time + Random.Range(WindChangeInterval.x, WindChangeInterval.y);
                 audioSourceWind.Play((WindZone.windMain / WindSpeedRange.z) * WindSoundVolumeModifier);
             }
         }
@@ -181,8 +181,6 @@ public class RainController : MonoBehaviour
             Camera = Camera.main;
         }
 
-        precip = FindFirstObjectByType<DayController>().GetPrecip();
-
         audioSourceRainLight = new LoopingAudioSource(this, RainSoundLight);
         audioSourceRainMedium = new LoopingAudioSource(this, RainSoundMedium);
         audioSourceRainHeavy = new LoopingAudioSource(this, RainSoundHeavy);
@@ -210,6 +208,10 @@ public class RainController : MonoBehaviour
         }
 
 #endif
+        if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
+            precip = FindFirstObjectByType<DayController>().GetPrecip();
+        else
+            precip = 0;
 
         CheckForRainChange();
         UpdateWind();

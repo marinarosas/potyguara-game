@@ -28,6 +28,7 @@ public class SpawnerController : MonoBehaviour
     private int currentAmount;
     private int currentLevel = 1;
     private int wallsDestroyed = 0;
+
     public void SetWallsDestroyed()
     {
         wallsDestroyed++;
@@ -85,12 +86,14 @@ public class SpawnerController : MonoBehaviour
             if (currentLevel == 1)
             {
                 SetDestinyRandow(1);
+                FindFirstObjectByType<HeightController>().NewHeight(9.3f);
                 FindFirstObjectByType<TechGuaraController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
             if (currentLevel == 2)
             {
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
+                FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
                 FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
@@ -180,7 +183,7 @@ public class SpawnerController : MonoBehaviour
         }
         else
         {
-            if (wallsDestroyed >= 20 && currentLevel == 1)
+            if (wallsDestroyed >= 50 && currentLevel == 1)
             {
                 wallsDestroyed = 0;
                 levelIsRunning = false;
@@ -191,46 +194,29 @@ public class SpawnerController : MonoBehaviour
             {
                 levelIsRunning = false;
                 if (currentLevel == 1)
-                    //FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
+                    FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
 
                 finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
 
                 if (currentLevel == 2)
                 {
-                    // ver ranking
-                    /*finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Ver Ranking";
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(Ranking);*/
-
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Menu Principal";
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
-                    currentLevel = 1;
   
-                    LeftHandController leftHand = FindFirstObjectByType<LeftHandController>();
-                    RightHandController rightHand = FindFirstObjectByType<RightHandController>();
-                    if (leftHand.GetHand())
-                    {
-                        leftHand.ResetHand();
-                    }
-                    if (rightHand.GetHand())
-                    {
-                        leftHand.ResetHand();
-                    }
+                    currentLevel = 1;
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
-                    GameObject.FindGameObjectWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
+                    GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
+                    GameObject.FindWithTag("Level").SetActive(false);
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
                 }
                 else
                 {
+                    currentLevel++;
+                    FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().NextLevel);
                 }
 
-                if (currentLevel < 2)
-                {
-                    currentLevel++;
-                    FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
-                }
                 finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                 FindFirstObjectByType<GameForteController>().SetTotalPoints();
                 finishUI.SetActive(true);
@@ -241,7 +227,7 @@ public class SpawnerController : MonoBehaviour
 
     public void Ranking()
     {
-        //finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameController>().GetTotalPoints() + "";
+        finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameForteController>().GetTotalPoints() + "";
 
         GameObject ranking = GameObject.FindGameObjectWithTag("Ranking");
         for(int ii = 0; ii < ranking.transform.childCount; ii++)

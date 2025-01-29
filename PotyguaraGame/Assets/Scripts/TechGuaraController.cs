@@ -11,7 +11,10 @@ public class TechGuaraController : MonoBehaviour
     void Start()
     {
         report = transform.GetChild(0).GetComponent<Report>();
-        transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(5f, transform.GetChild(0).gameObject);
+        if(SceneManager.GetActiveScene().buildIndex != 4)
+            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(6f, transform.GetChild(0).gameObject);
+        else
+            transform.GetChild(0).GetComponent<FadeController>().FadeIn();
     }
 
     private void OnTriggerEnter(Collider other)

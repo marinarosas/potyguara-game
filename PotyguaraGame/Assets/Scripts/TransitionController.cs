@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 public class TransitionController : MonoBehaviour
 {
     private GameObject player;
-    private Vector3 initialPosition;
     private bool isSkip = false;
     private int tempMode;
     private int tempSceneIndex = -1;
@@ -25,19 +24,7 @@ public class TransitionController : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else
-        {
             Destroy(gameObject);
-        }
-        if(!isSkip)
-            Start();
-    }
-
-    private void Start()
-    {
-        player = GameObject.FindWithTag("Player");
-        initialPosition = GameObject.Find("InitialPosition").transform.position;
-        FindFirstObjectByType<HeightController>().NewHeight(initialPosition.y);
-        player.transform.position = initialPosition;
     }
 
     // Update is called once per frame
@@ -47,12 +34,9 @@ public class TransitionController : MonoBehaviour
         {
             FindFirstObjectByType<GameForteController>().SetStartMode(tempMode);
             if(tempMode == 0)
-            {
                 FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
-            }else if(tempMode == 1)
-            {
+            else if(tempMode == 1)
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
-            }
             isSkip = false;
         }
 
@@ -113,22 +97,24 @@ public class TransitionController : MonoBehaviour
 
     public void TeleportEnterShow()
     {
-        FindFirstObjectByType<HeightController>().NewHeight(7.8f);
-        player.transform.position = new Vector3(177.72f, 7.8f, 110.5f);
+        player = GameObject.FindWithTag("Player");
+        FindFirstObjectByType<HeightController>().NewHeight(8.15f);
+        player.transform.position = new Vector3(177.8f, 8.15f, 111.95f);
         player.transform.eulerAngles = Vector3.zero;
     }
 
     public void TeleportExitShow()
     {
-        FindFirstObjectByType<HeightController>().NewHeight(1.84f);
-        player.transform.position = new Vector3(177.72f, 1.84f, 72.92f);
+        FindFirstObjectByType<HeightController>().NewHeight(1.9f);
+        player.transform.position = new Vector3(177.5f, 1.9f, 72f);
     }
 
     public void TeleportGallery()
     {
-        FindFirstObjectByType<HeightController>().NewHeight(11.6f);
-        player.transform.position = new Vector3(205.4f, 11.6f, -6.8f);
-        player.transform.eulerAngles = new Vector3(0, -90, 0);
+        player = GameObject.FindWithTag("Player");
+        FindFirstObjectByType<HeightController>().NewHeight(1.9f);
+        player.transform.position = new Vector3(150.83f, 1.9f, 23.8f);
+        //player.transform.eulerAngles = new Vector3(0, -90, 0);
     }
 
     public void TeleportGameForteZombieMode()

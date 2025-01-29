@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1956518399}
-  m_IndirectSpecularColor: {r: 0.57243335, g: 0.3916046, b: 0.23295139, a: 1}
+  m_IndirectSpecularColor: {r: 0.57198924, g: 0.39076263, b: 0.23241182, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1400,8 +1400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb2115fd8b9cbc1aad0aea1fa062dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalPlayerPrefab: {fileID: 7134024963456918821, guid: 5b2fdfe909b829e48a9fa38ae15df335, type: 3}
-  RemotePlayerPrefab: {fileID: 2053191185312208376, guid: c5c12b4f55026da45ab6e5dbc2d7d5ea, type: 3}
+  LocalPlayerPrefab: {fileID: 3848225861924626212, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+  RemotePlayerPrefab: {fileID: 3848225861924626212, guid: 5bbf2e73a585e364ea180ae161dd170f, type: 3}
   serverAddress: wss://potyws.ffcloud.com.br
   playerId: 
 --- !u!4 &1617381615
@@ -1545,6 +1545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   height: 0
+  insideLift: 0
 --- !u!4 &1729224870
 Transform:
   m_ObjectHideFlags: 0
