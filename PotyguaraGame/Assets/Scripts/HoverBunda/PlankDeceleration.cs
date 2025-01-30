@@ -4,7 +4,7 @@ public class PlankDeceleration : MonoBehaviour
 {
     public Rigidbody plankRigidbody;
     public float deceleration = 5f;
-    public float minimumSpeed = 0.1f;
+    public float minimumSpeed = 0.7f;
     public GameObject menu;
 
     private bool isInDecelerationZone = false;
@@ -35,7 +35,7 @@ public class PlankDeceleration : MonoBehaviour
                 if (menu != null)
                 {
                     menu.SetActive(true);
-                    Debug.Log("Mostrar Menu");
+                    plankRigidbody.isKinematic = true;
                 }
             }
         }

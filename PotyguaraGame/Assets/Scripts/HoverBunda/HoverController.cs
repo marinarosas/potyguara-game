@@ -19,7 +19,8 @@ public class HoverController : MonoBehaviour
         if(point != null)
         {
             player.transform.position = point.transform.position;
-            player.transform.rotation = new Quaternion(0, -0.205623f, 0f, 0);
+            player.transform.eulerAngles = new Vector3(0f, -17.539f, 0f);
+            player.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 
