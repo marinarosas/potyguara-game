@@ -20,10 +20,10 @@ public class CannonController : MonoBehaviour
         {
             InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
             InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
+            if(devices.Count != 0)
+                devices[0].TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float trigger);
 
-            devices[0].TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float trigger);
-
-            if ((trigger > 0.1f || Input.GetKeyDown(KeyCode.Space)) && canShoot)
+            if ((/*trigger > 0.1f || */Input.GetKeyDown(KeyCode.Space)) && canShoot)
             {
                 NewCanonBall();
                 canShoot = false;

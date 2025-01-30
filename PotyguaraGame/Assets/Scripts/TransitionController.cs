@@ -33,10 +33,14 @@ public class TransitionController : MonoBehaviour
         if (isSkip && SceneManager.GetActiveScene().buildIndex == 2)
         {
             FindFirstObjectByType<GameForteController>().SetStartMode(tempMode);
-            if(tempMode == 0)
+            if (tempMode == 0)
+            {
                 FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
-            else if(tempMode == 1)
+            }
+            else if (tempMode == 1)
+            {
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
+            }
             isSkip = false;
         }
 
@@ -99,7 +103,8 @@ public class TransitionController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         FindFirstObjectByType<HeightController>().NewHeight(8.15f);
-        player.transform.position = new Vector3(177.8f, 8.15f, 111.95f);
+        FindFirstObjectByType<LiftShowController>().ani.Play("GoingToTheShow");
+        player.transform.position = new Vector3(177.8f, 8.15f, 113.15f);
         player.transform.eulerAngles = Vector3.zero;
     }
 

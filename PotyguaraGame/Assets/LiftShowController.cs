@@ -10,7 +10,7 @@ public class LiftShowController : MonoBehaviour
     public bool isGoingToShow = false;
     public bool isGoOutOfTheShow = false;
     Transform player;
-    private Animator ani;
+    public Animator ani;
 
     private int state = -1;
 

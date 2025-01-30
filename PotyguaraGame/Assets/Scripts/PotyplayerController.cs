@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -50,6 +52,14 @@ public class PotyPlayerController : MonoBehaviour
             potyPlayer.SetScoreZombieMode(value);
         else
             potyPlayer.SetScoreNormalMode(value);
+    }
+
+    private void Update()
+    {
+        if(SceneManager.GetActiveScene().buildIndex == 5)
+        {
+            GetComponent<XROrigin>().Camera.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

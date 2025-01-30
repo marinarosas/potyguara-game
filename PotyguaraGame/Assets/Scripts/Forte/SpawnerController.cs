@@ -59,16 +59,12 @@ public class SpawnerController : MonoBehaviour
         if (value == 2)
         {
             for (var ii = 0; ii < destinyLevel2.childCount; ii++)
-            {
                 spawnRandowZombie.Add(destinyLevel2.GetChild(ii));
-            }
         }
         else
         {
             for (var ii = 0; ii < destinyLevel1.childCount; ii++)
-            {
                 spawnRandowZombie.Add(destinyLevel1.GetChild(ii));
-            }
         }
     }
     public void SetLevel()
@@ -77,9 +73,10 @@ public class SpawnerController : MonoBehaviour
         if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
         {
             cannons.SetActive(true);
-            FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores utilizando os canhões. Se aproxime deles e pressioner o gatilho para atirar!!!");
-            FindFirstObjectByType<HeightController>().NewHeight(19.6f);
-            NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
+            FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores " +
+                "utilizando os canhões. Se aproxime deles e pressione o gatilho para atirar!!!", 7f, new Vector3(661.34f, 20.4f, 400.57f), 90f);
+            FindFirstObjectByType<HeightController>().NewHeight(20.2f);
+            NextLevel(90f, new Vector3(654.91f, 20.2f, 400.95f));
         }
         else
         {
@@ -87,19 +84,21 @@ public class SpawnerController : MonoBehaviour
             {
                 SetDestinyRandow(1);
                 FindFirstObjectByType<HeightController>().NewHeight(9.3f);
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. Se eles deixarem todas vermelhas, você perde!!!");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. " +
+                    "Se eles deixarem todas vermelhas, você perde!!!", 7f, new Vector3(749.7f, 10.07f, 400.54f), 90f);
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
             if (currentLevel == 2)
             {
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, " +
+                    "você morre!!!", 7f, new Vector3(661.34f, 20.4f, 400.57f), 90f);
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
-                FindFirstObjectByType<HeightController>().NewHeight(18.6f);
+                FindFirstObjectByType<HeightController>().NewHeight(20.2f);
                 UpdateLevelBar();
-                NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
+                NextLevel(90f, new Vector3(654.91f, 20.2f, 400.95f));
             }
         }
     }
@@ -142,9 +141,7 @@ public class SpawnerController : MonoBehaviour
     public void CleanSlot()
     {
         foreach(Transform enemy in slot)
-        {
             Destroy(enemy.gameObject);
-        }
     }
 
     private void Update()
