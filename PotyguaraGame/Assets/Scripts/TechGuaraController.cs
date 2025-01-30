@@ -7,12 +7,10 @@ using UnityEngine.SceneManagement;
 public class TechGuaraController : MonoBehaviour
 {
     private Report report;
-    private Vector3 initialPosition = new Vector3(804.1f, 10.07f, 400.5f);
 
     void Start()
     {
         report = transform.GetChild(0).GetComponent<Report>();
-        transform.position = initialPosition;
         if (SceneManager.GetActiveScene().buildIndex != 4)
             transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(10f, transform.GetChild(0).gameObject);
         else

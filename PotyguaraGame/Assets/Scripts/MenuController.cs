@@ -27,6 +27,11 @@ public class MenuController : MonoBehaviour
             transform.GetChild(count).GetComponent<Image>().sprite = image;
             count++;
         }
+
+        for (int ii = 0; ii < transform.childCount; ii++)
+        {
+            transform.GetChild(ii).gameObject.SetActive(true);
+        }
         currentScene = SceneManager.GetActiveScene().buildIndex;
         transitionController = FindFirstObjectByType<TransitionController>();
     }

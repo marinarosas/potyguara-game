@@ -72,6 +72,9 @@ public class GameForteController : MonoBehaviour
 
     public void SetInitScene()
     {
+        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.4f, 400.38f);
+        GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
+
         GameObject.FindWithTag("Ranking").SetActive(true);
         portal.SetActive(true);
         zombieMode.gameObject.transform.parent.gameObject.SetActive(true);
@@ -116,6 +119,7 @@ public class GameForteController : MonoBehaviour
         {
             timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
             count = 10;
+            
         }
         else
         {
@@ -174,7 +178,7 @@ public class GameForteController : MonoBehaviour
                 if (leftHand.GetHand())
                     leftHand.ResetHand();
                 if (rightHand.GetHand())
-                    leftHand.ResetHand();
+                    rightHand.ResetHand();
 
                 DestroyRemainingEnemies();
             }
@@ -233,9 +237,6 @@ public class GameForteController : MonoBehaviour
 
         ResetCount();
         FindFirstObjectByType<RankingController>().ShowRanking();
-
-        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.4f, 400.38f);
-        GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
         SetInitScene();
     }
 

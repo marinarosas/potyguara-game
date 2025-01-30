@@ -54,17 +54,6 @@ public class PotyPlayerController : MonoBehaviour
             potyPlayer.SetScoreNormalMode(value);
     }
 
-    private void Update()
-    {
-        /*if(SceneManager.GetActiveScene().buildIndex == 5)
-        {
-            XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
-            //GetComponent<XROrigin>().Camera.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        else
-            XRDevice.SetTrackingSpaceType(TrackingSpaceType.RoomScale);*/
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("CannonBall"))
