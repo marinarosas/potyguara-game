@@ -216,7 +216,6 @@ public class NetworkManager : MonoBehaviour
             // Se não existir, instanciar um novo jogador
             // Se existir, atualizar a posição do jogador
             foreach (var playerId in gameState.players.Keys) {
-                Debug.Log("Avaliando" + playerId);
 
                 // Se o jogador for o jogador local, não fazer nada
                 if (playerId == this.playerId) {
@@ -227,8 +226,6 @@ public class NetworkManager : MonoBehaviour
                     continue;
                 }
 
-
-                Debug.Log("Avaliando" + playerId + " - " + gameState.players[playerId]);
                 // Buscar o jogador na cena pelo playerId
                 GameObject playerObject = GameObject.Find(playerId);
 

@@ -30,23 +30,15 @@ public class TransitionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isSkip && SceneManager.GetActiveScene().buildIndex == 2)
+        if (isSkip && SceneManager.GetActiveScene().buildIndex == 3)
         {
             FindFirstObjectByType<GameForteController>().SetStartMode(tempMode);
             if (tempMode == 0)
-            {
                 FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
-            }
             else if (tempMode == 1)
-            {
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
-            }
-            isSkip = false;
-        }
 
-        if(SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            player.transform.GetChild(3).gameObject.SetActive(false);
+            isSkip = false;
         }
     }
 

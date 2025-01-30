@@ -91,7 +91,7 @@ public class GameForteController : MonoBehaviour
 
     public Button GetNormalModeButton()
     {
-        return zombieMode;
+        return normalMode;
     }
 
     public void ResetCount()

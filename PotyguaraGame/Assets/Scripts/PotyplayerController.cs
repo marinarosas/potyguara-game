@@ -56,10 +56,13 @@ public class PotyPlayerController : MonoBehaviour
 
     private void Update()
     {
-        if(SceneManager.GetActiveScene().buildIndex == 5)
+        /*if(SceneManager.GetActiveScene().buildIndex == 5)
         {
-            GetComponent<XROrigin>().Camera.transform.rotation = Quaternion.Euler(0, 0, 0);
+            XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
+            //GetComponent<XROrigin>().Camera.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
+        else
+            XRDevice.SetTrackingSpaceType(TrackingSpaceType.RoomScale);*/
     }
 
     private void OnCollisionEnter(Collision collision)
