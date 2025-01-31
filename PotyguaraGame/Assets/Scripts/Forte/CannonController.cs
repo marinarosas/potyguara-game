@@ -7,6 +7,7 @@ public class CannonController : MonoBehaviour
 {
     public GameObject canonBallPrefab;
     public Transform attach;
+    public AudioSource explosionSound;
 
     private bool canShoot = true;
     private float timeBetweenShoots = 0.3f;
@@ -20,11 +21,12 @@ public class CannonController : MonoBehaviour
         {
             InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
             InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
-            if(devices.Count != 0)
+            //if(devices.Count != 0)
                 devices[0].TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float trigger);
 
-            if ((/*trigger > 0.1f || */Input.GetKeyDown(KeyCode.Space)) && canShoot)
+            if ((trigger > 0.1f || Input.GetKeyDown(KeyCode.Space)) && canShoot)
             {
+                explosionSound.Play();
                 NewCanonBall();
                 canShoot = false;
             }
