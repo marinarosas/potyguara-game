@@ -34,6 +34,7 @@ public class PlankDeceleration : MonoBehaviour
                 isInDecelerationZone = false;
                 if (menu != null)
                 {
+
                     menu.SetActive(true);
                     plankRigidbody.isKinematic = true;
                 }

@@ -70,16 +70,6 @@ public class GameForteController : MonoBehaviour
         rightGunController.Reload();
     }
 
-    public void SetInitScene()
-    {
-        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.4f, 400.38f);
-        GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
-
-        GameObject.FindWithTag("Ranking").SetActive(true);
-        portal.SetActive(true);
-        zombieMode.gameObject.transform.parent.gameObject.SetActive(true);
-    }
-
     public void NextLevel()
     {
         FindFirstObjectByType<SpawnerController>().SetLevel();
@@ -238,6 +228,16 @@ public class GameForteController : MonoBehaviour
         ResetCount();
         FindFirstObjectByType<RankingController>().ShowRanking();
         SetInitScene();
+    }
+
+    private void SetInitScene()
+    {
+        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
+        GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
+
+        GameObject.FindWithTag("Ranking").SetActive(true);
+        portal.SetActive(true);
+        zombieMode.gameObject.transform.parent.gameObject.SetActive(true);
     }
 
     public void InitTimer()

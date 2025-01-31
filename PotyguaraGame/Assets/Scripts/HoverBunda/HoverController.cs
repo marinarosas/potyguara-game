@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HoverController : MonoBehaviour
 {
-    public GameObject player;
+    public GameObject board;
     private void Start()
     {
         StartPositionOfGame();
@@ -18,9 +18,10 @@ public class HoverController : MonoBehaviour
         GameObject point = GameObject.Find("PointOfStart");
         if(point != null)
         {
-            player.transform.position = point.transform.position;
-            player.transform.eulerAngles = new Vector3(0f, -17.539f, 0f);
-            player.GetComponent<Rigidbody>().isKinematic = false;
+            board.transform.position = point.transform.position;
+            board.transform.GetChild(0).eulerAngles = new Vector3(0f, point.transform.eulerAngles.y, 0f);
+            board.transform.eulerAngles = new Vector3(0f, point.transform.eulerAngles.y, 0f);
+            board.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 

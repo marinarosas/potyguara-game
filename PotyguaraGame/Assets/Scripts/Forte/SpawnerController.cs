@@ -74,7 +74,7 @@ public class SpawnerController : MonoBehaviour
         {
             cannons.SetActive(true);
             FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores " +
-                "utilizando os canhões. Se aproxime deles e pressione o gatilho para atirar!!!", 7f, new Vector3(661.34f, 20.4f, 400.57f), 90f);
+                "utilizando os canhões. Se aproxime deles e pressione o gatilho para atirar!!!", 7f, new Vector3(661.34f, 21.09f, 400.73f), 90f);
             FindFirstObjectByType<HeightController>().NewHeight(20.1f);
             NextLevel(90f, new Vector3(654.91f, 20.1f, 400.95f));
         }
@@ -94,7 +94,7 @@ public class SpawnerController : MonoBehaviour
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
                 FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, " +
-                    "você morre!!!", 7f, new Vector3(661.34f, 20.4f, 400.57f), 90f);
+                    "você morre!!!", 7f, new Vector3(661.34f, 21.09f, 400.73f), 90f);
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(20.1f);
@@ -198,14 +198,18 @@ public class SpawnerController : MonoBehaviour
 
                 if (currentLevel == 2)
                 {
-                    finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Menu Principal";
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
-  
+                    /*finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Menu Principal";
+                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();*/
+
+                    finishUI.transform.GetChild(3).gameObject.SetActive(false);
+                    finishUI.transform.GetChild(6).gameObject.SetActive(true);
+                    finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
+
                     currentLevel = 1;
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
                     GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
                     GameObject.FindWithTag("Level").SetActive(false);
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
+                    //finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
                 }
                 else
                 {

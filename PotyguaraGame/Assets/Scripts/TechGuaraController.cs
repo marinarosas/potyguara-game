@@ -18,6 +18,7 @@ public class TechGuaraController : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
+            transform.position = new Vector3(0f, 2f, -32.35f);
             report.UpdateTitle("Bem-vindo(a) ao Potyguara Verse!");
             report.UpdateDescription("Você acaba de entrar em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia," +
                 " e juntos vamos explorar esse universo cheio de novidades! No Potyguara Verse, você poderá participar de eventos incríveis, jogar minigames, visitar nossa loja exclusiva e muito mais.");
@@ -34,12 +35,14 @@ public class TechGuaraController : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
+            transform.position = new Vector3(177f, 3f, 76f);
             report.UpdateTitle("Praia de Ponta Negra");
             report.UpdateDescription("Você está na famosa Praia de Ponta Negra, uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. " +
                 "Aqui, você encontrará diversos eventos, como shows, exposições e o emocionante minigame Hoverbunda. Sinta-se livre para caminhar pela praia, explorar as atrações e aproveitar os eventos incríveis!");
         }
         if (SceneManager.GetActiveScene().buildIndex == 3)
         {
+            transform.position = new Vector3(803.81f, 10.37f, 400.28f);
             report.UpdateTitle("Forte dos Reis Magos");
             report.UpdateDescription("Agora, vamos à Fortaleza dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
                 "Aqui, você poderá jogar minigames inspirados em épocas passadas. Sabia que, durante as invasões holandesas, a cidade de Natal foi chamada de Nova Amsterdã? Explore os muros de pedra e descubra " +
@@ -47,6 +50,7 @@ public class TechGuaraController : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().buildIndex == 4)
         {
+            transform.position = new Vector3(584.61f, 53.4f, -559.51f);
             report.UpdateTitle("HoverBunda");
             report.UpdateDescription("Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
                 "apenas o mais rápido cruzará a linha de chegada!");

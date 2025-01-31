@@ -43,8 +43,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cfc8f18cb2c9fc74ba8542ba12ef8a1d, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -425,6 +425,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canonBallPrefab: {fileID: 5511179979275782164, guid: 34fa773449bb56f47a1d066db8e56f52, type: 3}
   attach: {fileID: 7416634273447988553}
+  explosionSound: {fileID: 0}
 --- !u!65 &1626888442289381137
 BoxCollider:
   m_ObjectHideFlags: 0
