@@ -27,6 +27,11 @@ public class MenuController : MonoBehaviour
             transform.GetChild(count).GetComponent<Image>().sprite = image;
             count++;
         }
+
+        for (int ii = 0; ii < transform.childCount; ii++)
+        {
+            transform.GetChild(ii).gameObject.SetActive(true);
+        }
         currentScene = SceneManager.GetActiveScene().buildIndex;
         transitionController = FindFirstObjectByType<TransitionController>();
     }
@@ -41,7 +46,8 @@ public class MenuController : MonoBehaviour
         {
             if(SceneManager.GetActiveScene().buildIndex == 2) // ponta Negra
             {
-                transform.GetChild(0).GetComponent<Button>().interactable = false;
+                transform.GetChild(0).gameObject.SetActive(false);
+                //transform.GetChild(0).GetComponent<Button>().interactable = false;
                 transform.GetChild(1).GetComponent<Button>().onClick.AddListener(GoToGallery);
                 transform.GetChild(2).GetComponent<Button>().onClick.AddListener(GoToShow);
                 transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
@@ -54,11 +60,16 @@ public class MenuController : MonoBehaviour
             if(SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
             {
                 transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
-                transform.GetChild(1).GetComponent<Button>().interactable = false;
+                /*transform.GetChild(1).GetComponent<Button>().interactable = false;
                 transform.GetChild(2).GetComponent<Button>().interactable = false;
                 transform.GetChild(3).GetComponent<Button>().interactable = false;
                 transform.GetChild(4).GetComponent<Button>().interactable = false;
-                transform.GetChild(5).GetComponent<Button>().interactable = false;
+                transform.GetChild(5).GetComponent<Button>().interactable = false;*/
+                transform.GetChild(1).gameObject.SetActive(false);
+                transform.GetChild(2).gameObject.SetActive(false);
+                transform.GetChild(3).gameObject.SetActive(false);
+                transform.GetChild(4).gameObject.SetActive(false);
+                transform.GetChild(5).gameObject.SetActive(false);
                 transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
                 transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
                 updatedMenu = true;
@@ -66,12 +77,15 @@ public class MenuController : MonoBehaviour
             if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
             {
                 transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
-                transform.GetChild(1).GetComponent<Button>().interactable = false;
-                transform.GetChild(2).GetComponent<Button>().interactable = false;
+                /*transform.GetChild(1).GetComponent<Button>().interactable = false;
+                transform.GetChild(2).GetComponent<Button>().interactable = false;*/
+                transform.GetChild(1).gameObject.SetActive(false);
+                transform.GetChild(2).gameObject.SetActive(false);
                 transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
                 transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
                 transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
-                transform.GetChild(6).GetComponent<Button>().interactable = false;
+                transform.GetChild(6).gameObject.SetActive(false);
+                //transform.GetChild(6).GetComponent<Button>().interactable = false;
                 transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
                 updatedMenu = true;
             }

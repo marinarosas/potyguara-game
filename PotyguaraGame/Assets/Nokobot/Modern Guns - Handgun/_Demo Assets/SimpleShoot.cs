@@ -13,6 +13,8 @@ public class SimpleShoot : MonoBehaviour
     private bool isRight = false;
     private float timeout = 0.5f;
 
+    public AudioSource shotSound;
+    public AudioSource reloadSound;
     public TextMeshProUGUI bullets;
 
     [SerializeField] float nextTimeForFire = 0f; // tempo para o proximo tiro
@@ -87,21 +89,19 @@ public class SimpleShoot : MonoBehaviour
                     if (canShoot)
                     {
                         gunAnimator.SetTrigger("Fire");
+                        shotSound.Play();
                         //Calls animation on the gun that has the relevant animation events that will fire
                         if (isRight)
-                        {
                             FindFirstObjectByType<RightHandController>().AnimationFinger();
-                        }
                         else if (isLeft)
-                        {
                             FindFirstObjectByType<LeftHandController>().AnimationFinger();
-                        }
                         canShoot = false;
                     }
                 }
                 else
                 {
                     Reload();
+                    reloadSound.Play();
                 }
                 if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentBullets < 10){
                     Reload();

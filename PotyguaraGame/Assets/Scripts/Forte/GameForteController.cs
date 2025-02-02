@@ -70,13 +70,6 @@ public class GameForteController : MonoBehaviour
         rightGunController.Reload();
     }
 
-    public void SetInitScene()
-    {
-        GameObject.FindWithTag("Ranking").SetActive(true);
-        portal.SetActive(true);
-        zombieMode.gameObject.transform.parent.gameObject.SetActive(true);
-    }
-
     public void NextLevel()
     {
         FindFirstObjectByType<SpawnerController>().SetLevel();
@@ -91,7 +84,7 @@ public class GameForteController : MonoBehaviour
 
     public Button GetNormalModeButton()
     {
-        return zombieMode;
+        return normalMode;
     }
 
     public void ResetCount()
@@ -116,6 +109,7 @@ public class GameForteController : MonoBehaviour
         {
             timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
             count = 10;
+            
         }
         else
         {
@@ -174,7 +168,7 @@ public class GameForteController : MonoBehaviour
                 if (leftHand.GetHand())
                     leftHand.ResetHand();
                 if (rightHand.GetHand())
-                    leftHand.ResetHand();
+                    rightHand.ResetHand();
 
                 DestroyRemainingEnemies();
             }
@@ -209,7 +203,7 @@ public class GameForteController : MonoBehaviour
     {
         try
         {
-            FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!");
+            FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, você morre!!!", 7f);
             FindFirstObjectByType<GameForteController>().ResetCount();
             FindFirstObjectByType<SpawnerController>().NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
             handMenuLevel2.SetActive(true);
@@ -233,10 +227,17 @@ public class GameForteController : MonoBehaviour
 
         ResetCount();
         FindFirstObjectByType<RankingController>().ShowRanking();
-
-        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.4f, 400.38f);
-        GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
         SetInitScene();
+    }
+
+    private void SetInitScene()
+    {
+        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
+        GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
+
+        GameObject.FindWithTag("Ranking").SetActive(true);
+        portal.SetActive(true);
+        zombieMode.gameObject.transform.parent.gameObject.SetActive(true);
     }
 
     public void InitTimer()
