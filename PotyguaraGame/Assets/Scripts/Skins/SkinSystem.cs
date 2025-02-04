@@ -1,49 +1,19 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum DIRECTION { Decrease, Increase }
 
 
-[System.Serializable]
-public class Skin{
-    private int id;
-    [SerializeField] private string name;
-    [SerializeField] public SkinnedMeshRenderer skinMesh;
-
-    [SerializeField] private SkinMaterial[] skinMaterials;
-    //[SerializeField] private Tuple<Mesh, Material>[] acessories;
-
-    public string getName() => name;
-
-    public void toogleVisible(bool status) => skinMesh.gameObject?.SetActive(status);
-
-    public int materialsSize() => skinMaterials.Length;
-
-    public void changeMaterial(int materialIndex)
-    {
-        Material[] materials = skinMesh.sharedMaterials;
-        materials[0] = skinMaterials[materialIndex].material;
-        skinMesh.sharedMaterials = materials;
-    }
-
-    public string getMaterialName(int index) => skinMaterials[index].name;
-}
-
-
-[System.Serializable]
-public class SkinMaterial
-{
-    public string name;
-    public Material material;
-}
-
-
 public class SkinSystem : MonoBehaviour{
+    [SerializeField] public Transform rootBone;
+    [SerializeField] public Transform skinContainer;
+    [SerializeField] public GameObject hair, head, chest, belly, arms, forearms, hands, hips, legs, ankles, feet;
     [SerializeField] private Skin defaultSkin = null;
     [SerializeField] public List<Skin> skins;
-    [SerializeField] public Skin currentSkin;
+    [SerializeField] public Skin currentSkin = null;
     
     private int indexSkin = 0;
     private int oldIndexSkin = -1;
@@ -63,7 +33,7 @@ public class SkinSystem : MonoBehaviour{
         }
         DontDestroyOnLoad(gameObject);
 
-        defaultSkin = skins[0];
+        currentSkin = skins[0];
     }
 
 
@@ -73,7 +43,7 @@ public class SkinSystem : MonoBehaviour{
     {
         for (int i = 0; i < skins.Count; i++)
             if (i != indexSkin)
-                skins[i].skinMesh.gameObject?.SetActive(false);
+                skins[i].skinMeshes[0].gameObject?.SetActive(false);
     }
 
     public Skin GetSkinDefault()
@@ -87,16 +57,17 @@ public class SkinSystem : MonoBehaviour{
             if ((direction == DIRECTION.Decrease && indexSkin > 0) ||
                 (direction == DIRECTION.Increase && indexSkin < skins.Count - 1))
             {
-                skins[indexSkin].toogleVisible(false);
+                toggleVisibleMeshes(false);
 
                 indexSkin += (direction == DIRECTION.Increase) ? 1 : -1;
                 oldIndexSkin = indexSkin;
 
-                skins[indexSkin].toogleVisible(true);
+                toggleVisibleMeshes(true);
 
                 currentSkin = skins[indexSkin];
+                UpdateBodyMesh(skins[indexSkin]);
 
-                resetMaterial();
+                changeMaterial(0);
 
                 return true;
             }
@@ -109,6 +80,21 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
+    private void UpdateBodyMesh(Skin skin)
+    {
+        hair?.SetActive(skin.hasHair);
+        head?.SetActive(skin.hasHead);
+        chest?.SetActive(skin.hasChest);
+        belly?.SetActive(skin.hasBelly);
+        arms?.SetActive(skin.hasArms);
+        forearms?.SetActive(skin.hasForearms);
+        hands?.SetActive(skin.hasHands);
+        hips?.SetActive(skin.hasHips);
+        legs?.SetActive(skin.hasLegs);
+        ankles?.SetActive(skin.hasAnkles);
+        feet?.SetActive(skin.hasFeet);
+    }
+
     public void changeMesh(int index)
     {
         try {
@@ -116,12 +102,14 @@ public class SkinSystem : MonoBehaviour{
                 return;
 
             oldIndexSkin = index;
-            skins[indexSkin].toogleVisible(false);
+            toggleVisibleMeshes(false);
             indexSkin = index;
-            skins[indexSkin].toogleVisible(true);
+            toggleVisibleMeshes(true);
             currentSkin = skins[indexSkin];
 
-            resetMaterial();
+            UpdateBodyMesh(currentSkin);
+
+            changeMaterial(0);
         }
         catch (Exception ex)
         {
@@ -132,11 +120,11 @@ public class SkinSystem : MonoBehaviour{
     public bool changeMaterial(DIRECTION direction)
     {
         try{
-            if ((direction == DIRECTION.Decrease && indexMaterial > 0) || 
+            if ((direction == DIRECTION.Decrease && indexMaterial > 0) ||
                 (direction == DIRECTION.Increase && indexMaterial < currentSkin.materialsSize() - 1))
             {
                 indexMaterial += (direction == DIRECTION.Increase) ? 1 : -1;
-                currentSkin.changeMaterial(indexMaterial);
+                changeMaterial(indexMaterial);
 
                 return true;
             }
@@ -149,11 +137,55 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
-    public void resetMaterial()
+    public void changeMaterial(int index)
     {
-        indexMaterial = 0;
-        currentSkin.changeMaterial(indexMaterial);
+        if (index < 0)
+            index = 0;
+        StartCoroutine(changeMaterialDelayed(index));
     }
+
+    public void setMaterialIndex(int index) => indexMaterial = index;
+    
+    IEnumerator changeMaterialDelayed(int index)
+    {
+        yield return null;
+        if (skinContainer != null && skinContainer.childCount > 0)
+            foreach (Transform child in skinContainer.GetChild(0))
+                currentSkin.changeMaterial(child.gameObject, index);
+    }
+
+    private void toggleVisibleMeshes(bool state)
+    {
+        if (state)
+            StartCoroutine(DelayedCreateMeshes());
+        else
+            if (skinContainer.childCount > 0)
+                if (!Application.isPlaying)
+                    DestroyImmediate(skinContainer.GetChild(0).gameObject);
+                else
+                    Destroy(skinContainer.GetChild(0).gameObject);
+    }
+
+    IEnumerator DelayedCreateMeshes()
+    {
+        yield return null;
+        CreateMeshes();
+    }
+
+    private void CreateMeshes()
+    {
+        SkinnedMeshRenderer[] meshes = skins[indexSkin].getMeshes();
+        GameObject skinNameContainer = new GameObject(skins[indexSkin].getName());
+        skinNameContainer.transform.SetParent(skinContainer, true);
+        foreach (var mesh in meshes){
+            SkinnedMeshRenderer newMesh = Instantiate(mesh, rootBone.localPosition, Quaternion.identity, skinNameContainer.transform);
+            newMesh.bones = chest.GetComponent<SkinnedMeshRenderer>().bones;
+            newMesh.rootBone = rootBone;
+        }
+       
+    }
+
+    public string getSkinName(int index) => skins[index].getName();
 
     public int getIndex() => indexSkin;
     public int getMaterialIndex() => indexMaterial;
