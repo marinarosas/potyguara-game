@@ -5,8 +5,8 @@ using System.Collections.Generic;
 enum ArrowType { Mesh, Material }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(SkinSystem))]
-public class SkinSystemEditor : Editor
+[CustomEditor(typeof(EditSkin))]
+public class EditSystemEditor : Editor
 {
     #region SerializedProps
     SerializedProperty skins;
@@ -39,10 +39,14 @@ public class SkinSystemEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        SkinSystem _skinSystem = (SkinSystem)target;
+        EditSkin _editSkin = (EditSkin)target;
 
         //base.OnInspectorGUI();
         serializedObject.Update();
+
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((EditSkin)target), typeof(EditSkin), false);
+        EditorGUI.EndDisabledGroup();
 
         EditorGUILayout.PropertyField(rootBone, new GUIContent("Root bone - Rig armature"));
         EditorGUILayout.PropertyField(skinContainer, new GUIContent("Skin container"));
@@ -71,17 +75,17 @@ public class SkinSystemEditor : Editor
         List<string> skinNames = new List<string>();
             for (int i = 0; i < skins.arraySize; i++){
                 SerializedProperty skin = skins.GetArrayElementAtIndex(i);
-                string skinName = _skinSystem.getSkinName(i);
+                string skinName = _editSkin.getSkinName(i);
                 skinNames.Add(skinName);
             }
-            int selectedIndex = skinNames.IndexOf(_skinSystem.currentSkin.getName());
+            int selectedIndex = skinNames.IndexOf(_editSkin.currentSkin.getName());
             if (selectedIndex < 0) selectedIndex = 0;
             selectedIndex = EditorGUILayout.Popup(selectedIndex, skinNames.ToArray());
 
             if (selectedIndex >= 0 && selectedIndex < skinNames.Count)
             {
-                _skinSystem.changeMesh(selectedIndex);
-                EditorUtility.SetDirty(_skinSystem);
+                _editSkin.changeMesh(selectedIndex);
+                EditorUtility.SetDirty(_editSkin);
             }
         #endregion
 
@@ -106,11 +110,11 @@ public class SkinSystemEditor : Editor
         #endregion
 
         //CAMPO CONDICIONAL
-        if (_skinSystem.currentSkin.materialsSize() > 1)
+        if (_editSkin.currentSkin.materialsSize() > 1)
         {
             GUILayout.Space(10);
-            int index = _skinSystem.getMaterialIndex();
-            EditorGUILayout.LabelField("SELECT TEXTURE/COLOR: " + _skinSystem.currentSkin.getMaterialName(index), EditorStyles.boldLabel);
+            int index = _editSkin.getMaterialIndex();
+            EditorGUILayout.LabelField("SELECT TEXTURE/COLOR: " + _editSkin.currentSkin.getMaterialName(index), EditorStyles.boldLabel);
 
             GUILayout.BeginHorizontal();
             Arrows(ArrowType.Material);
@@ -119,33 +123,40 @@ public class SkinSystemEditor : Editor
         }
 
         GUILayout.Space(10);
-            GUILayout.Label("Reset skin system:", EditorStyles.boldLabel);
-            if (GUILayout.Button("Reset"))
-            {
-                currentSkin = skins.GetArrayElementAtIndex(0);
-                //_skinSystem.disableMeshes();
-                _skinSystem.changeMesh(0); //reset
-                _skinSystem.currentSkin = _skinSystem.skins[0];
-                _skinSystem.changeMaterial(0);
-                _skinSystem.setMaterialIndex(0);
-                Debug.Log("Skin system reseted for this character");
+        GUILayout.Label("Reset skin system:", EditorStyles.boldLabel);
+        if (GUILayout.Button("Reset"))
+        {
+            currentSkin = skins.GetArrayElementAtIndex(0);
+            //_editSkin.disableMeshes();
+            _editSkin.changeMesh(0); //reset
+            _editSkin.currentSkin = _editSkin.skins[0];
+            _editSkin.changeMaterial(0);
+            _editSkin.setMaterialIndex(0);
+            Debug.Log("Skin system reseted for this character");
 
-                serializedObject.Update();
-                serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(_skinSystem);
-            }
+            serializedObject.Update();
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(_editSkin);
+        }
 
-        EditorUtility.SetDirty(_skinSystem);
+        GUILayout.Space(10);
+        GUILayout.Label("Save skin:", EditorStyles.boldLabel);
+        if (GUILayout.Button("Save"))
+        {
+            _editSkin.saveSkin();
+        }
+
+        EditorUtility.SetDirty(_editSkin);
         serializedObject.ApplyModifiedProperties();
     }
 
     private void Arrows(ArrowType type)
     {
-        SkinSystem _skinSystem = (SkinSystem)target;
-        int currentIndex = _skinSystem.getIndex();
+        EditSkin _editSkin = (EditSkin)target;
+        int currentIndex = _editSkin.getIndex();
         int skinCount = skins.arraySize;
-        int materialIndex = _skinSystem.getMaterialIndex();
-        int materialCount = _skinSystem.currentSkin.materialsSize();
+        int materialIndex = _editSkin.getMaterialIndex();
+        int materialCount = _editSkin.currentSkin.materialsSize();
 
         if (type == ArrowType.Mesh)
         {
@@ -159,9 +170,9 @@ public class SkinSystemEditor : Editor
         if (GUILayout.Button("<", GUILayout.Width(45), GUILayout.Height(45)))
         {
             if (type == ArrowType.Mesh)
-                _skinSystem.changeMesh(DIRECTION.Decrease);
+                _editSkin.changeMesh(DIRECTION.Decrease);
             else
-                _skinSystem.changeMaterial(DIRECTION.Decrease);
+                _editSkin.changeMaterial(DIRECTION.Decrease);
         }
 
         if (type == ArrowType.Mesh)
@@ -176,12 +187,12 @@ public class SkinSystemEditor : Editor
         if (GUILayout.Button(">", GUILayout.Width(45), GUILayout.Height(45)))
         {
             if (type == ArrowType.Mesh)
-                _skinSystem.changeMesh(DIRECTION.Increase);
+                _editSkin.changeMesh(DIRECTION.Increase);
             else
-                _skinSystem.changeMaterial(DIRECTION.Increase);
+                _editSkin.changeMaterial(DIRECTION.Increase);
         }
 
-        EditorUtility.SetDirty(_skinSystem);
+        EditorUtility.SetDirty(_editSkin);
         Repaint();
         GUI.enabled = true;
     }

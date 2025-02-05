@@ -6,18 +6,16 @@ using UnityEngine;
 
 public enum DIRECTION { Decrease, Increase }
 
-
 public class SkinSystem : MonoBehaviour{
     [SerializeField] public Transform rootBone;
     [SerializeField] public Transform skinContainer;
     [SerializeField] public GameObject hair, head, chest, belly, arms, forearms, hands, hips, legs, ankles, feet;
-    [SerializeField] private Skin defaultSkin = null;
     [SerializeField] public List<Skin> skins;
     [SerializeField] public Skin currentSkin = null;
     
-    private int indexSkin = 0;
-    private int oldIndexSkin = -1;
-    private int indexMaterial = 0;
+    protected int indexSkin = 0;
+    protected int oldIndexSkin = -1;
+    protected int indexMaterial = 0;
 
     public static SkinSystem Instance = null;
 
@@ -44,11 +42,6 @@ public class SkinSystem : MonoBehaviour{
         for (int i = 0; i < skins.Count; i++)
             if (i != indexSkin)
                 skins[i].skinMeshes[0].gameObject?.SetActive(false);
-    }
-
-    public Skin GetSkinDefault()
-    {
-        return defaultSkin;
     }
 
     public bool changeMesh(DIRECTION direction)
@@ -80,21 +73,6 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
-    private void UpdateBodyMesh(Skin skin)
-    {
-        hair?.SetActive(skin.hasHair);
-        head?.SetActive(skin.hasHead);
-        chest?.SetActive(skin.hasChest);
-        belly?.SetActive(skin.hasBelly);
-        arms?.SetActive(skin.hasArms);
-        forearms?.SetActive(skin.hasForearms);
-        hands?.SetActive(skin.hasHands);
-        hips?.SetActive(skin.hasHips);
-        legs?.SetActive(skin.hasLegs);
-        ankles?.SetActive(skin.hasAnkles);
-        feet?.SetActive(skin.hasFeet);
-    }
-
     public void changeMesh(int index)
     {
         try {
@@ -117,6 +95,20 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
+    protected void UpdateBodyMesh(Skin skin){
+        hair?.SetActive(skin.hasHair);
+        head?.SetActive(skin.hasHead);
+        chest?.SetActive(skin.hasChest);
+        belly?.SetActive(skin.hasBelly);
+        arms?.SetActive(skin.hasArms);
+        forearms?.SetActive(skin.hasForearms);
+        hands?.SetActive(skin.hasHands);
+        hips?.SetActive(skin.hasHips);
+        legs?.SetActive(skin.hasLegs);
+        ankles?.SetActive(skin.hasAnkles);
+        feet?.SetActive(skin.hasFeet);
+    }
+
     public bool changeMaterial(DIRECTION direction)
     {
         try{
@@ -137,7 +129,7 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
-    public void changeMaterial(int index)
+    protected void changeMaterial(int index)
     {
         if (index < 0)
             index = 0;
@@ -154,7 +146,7 @@ public class SkinSystem : MonoBehaviour{
                 currentSkin.changeMaterial(child.gameObject, index);
     }
 
-    private void toggleVisibleMeshes(bool state)
+    protected void toggleVisibleMeshes(bool state)
     {
         if (state)
             StartCoroutine(DelayedCreateMeshes());
@@ -186,7 +178,6 @@ public class SkinSystem : MonoBehaviour{
     }
 
     public string getSkinName(int index) => skins[index].getName();
-
     public int getIndex() => indexSkin;
     public int getMaterialIndex() => indexMaterial;
 
