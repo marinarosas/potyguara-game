@@ -110,8 +110,16 @@ public class TransitionController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         FindFirstObjectByType<HeightController>().NewHeight(1.9f);
-        player.transform.position = new Vector3(150.83f, 1.9f, 23.8f);
+        player.transform.position = new Vector3(132.53f, 1.9f, 15.69f);
         //player.transform.eulerAngles = new Vector3(0, -90, 0);
+    }
+
+    public void TeleportMeditationRoom()
+    {
+        player = GameObject.FindWithTag("Player");
+        FindFirstObjectByType<HeightController>().NewHeight(1.9f);
+        player.transform.position = new Vector3(160.11f, 1.9f, 12.31f);
+        player.transform.eulerAngles = Vector3.zero;
     }
 
     public void TeleportGameForteZombieMode()

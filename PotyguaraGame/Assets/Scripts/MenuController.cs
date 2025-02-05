@@ -14,6 +14,7 @@ public class MenuController : MonoBehaviour
     // Game Forte Zombie Mode
     // Hover Bunda
     // Sair do Jogo
+    // Sala de Meditação
 
     private bool updatedMenu = false;
     private int currentScene;
@@ -55,6 +56,7 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
                 transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
                 transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+                transform.GetChild(8).GetComponent<Button>().onClick.AddListener(GoToMeditationRoom);
                 updatedMenu = true;
             }
             if(SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
@@ -72,6 +74,7 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(5).gameObject.SetActive(false);
                 transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
                 transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+                transform.GetChild(8).gameObject.SetActive(false);
                 updatedMenu = true;
             }
             if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
@@ -87,9 +90,15 @@ public class MenuController : MonoBehaviour
                 transform.GetChild(6).gameObject.SetActive(false);
                 //transform.GetChild(6).GetComponent<Button>().interactable = false;
                 transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+                transform.GetChild(8).gameObject.SetActive(false);
                 updatedMenu = true;
             }
         }
+    }
+
+    void GoToMeditationRoom()
+    {
+        transitionController.TeleportMeditationRoom();
     }
 
     void LoadPontaNegra()

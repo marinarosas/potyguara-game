@@ -14,28 +14,31 @@ public class LightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
+        if (FindFirstObjectByType<DayController>() != null)
         {
-            if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 18)
+            if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
             {
-                foreach (var light in lights)
-                    light.GetComponent<Light>().enabled = true;
+                if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 18)
+                {
+                    foreach (var light in lights)
+                        light.GetComponent<Light>().enabled = true;
+                }
+                else if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour > 5 && FindFirstObjectByType<DayController>().GetCurrentTime().Hour < 18)
+                {
+                    foreach (var light in lights)
+                        light.GetComponent<Light>().enabled = false;
+                }
+                else
+                { // <= 5 horas
+                    foreach (var light in lights)
+                        light.GetComponent<Light>().enabled = true;
+                }
             }
-            else if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour > 5 && FindFirstObjectByType<DayController>().GetCurrentTime().Hour < 18)
+            else
             {
                 foreach (var light in lights)
                     light.GetComponent<Light>().enabled = false;
             }
-            else
-            { // <= 5 horas
-                foreach (var light in lights)
-                    light.GetComponent<Light>().enabled = true;
-            }
-        }
-        else
-        {
-            foreach (var light in lights)
-                light.GetComponent<Light>().enabled = false;
         }
     }
 }

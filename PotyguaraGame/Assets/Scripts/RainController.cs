@@ -208,10 +208,13 @@ public class RainController : MonoBehaviour
         }
 
 #endif
-        if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
-            precip = FindFirstObjectByType<DayController>().GetPrecip();
-        else
-            precip = 0;
+        if (FindFirstObjectByType<DayController>() != null)
+        {
+            if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
+                precip = FindFirstObjectByType<DayController>().GetPrecip();
+            else
+                precip = 0;
+        }
 
         CheckForRainChange();
         UpdateWind();
