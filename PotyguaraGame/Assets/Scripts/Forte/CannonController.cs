@@ -52,7 +52,7 @@ public class CannonController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             playerInArea = true;
         }
@@ -60,7 +60,7 @@ public class CannonController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             playerInArea = false;
         }

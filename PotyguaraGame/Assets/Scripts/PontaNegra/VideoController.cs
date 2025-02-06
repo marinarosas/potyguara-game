@@ -13,7 +13,6 @@ public class VideoController : MonoBehaviour
         if (other.gameObject.tag.Equals("Player"))
         {
             video.Play();
-            FindObjectOfType<DragonController>().setStartDragon(true);
             for(int ii=0; ii < characters.childCount; ii++)
             {
                 characters.GetChild(ii).gameObject.SetActive(true);

@@ -9,9 +9,9 @@ public class LiftShowController : MonoBehaviour
     public bool isInsideLift = false;
     public bool isGoingToShow = false;
     public bool isGoOutOfTheShow = false;
-    Transform player;
-    public Animator ani;
 
+    private Transform player;
+    private Animator ani;
     private int state = -1;
 
     public Transform catraca1;
@@ -41,9 +41,29 @@ public class LiftShowController : MonoBehaviour
         player.parent = null;
         if (isInsideLift)
         {
-            FindFirstObjectByType<HeightController>().NewHeight(1.9f);
+            FindFirstObjectByType<HeightController>().NewHeight(1.85f);
             //player.transform.position = new Vector3(177.5f, 1.9f, 72f);
         }
+    }
+
+    public void GoToShow()
+    {
+        ani.Play("GoingToTheShow");
+    }
+
+    public void GoOutFromTheShow()
+    {
+        ani.Play("GoOutShow");
+    }
+
+    public void StartTrasition()
+    {
+        FindFirstObjectByType<PotyPlayerController>().HideControllers();
+    }
+
+    public void EndTransition()
+    {
+        FindFirstObjectByType<PotyPlayerController>().ShowControllers();
     }
 
     // Update is called once per frame
@@ -66,7 +86,7 @@ public class LiftShowController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
             isInsideLift = true;
@@ -76,7 +96,7 @@ public class LiftShowController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             isInsideLift = false;
             if(state==1)

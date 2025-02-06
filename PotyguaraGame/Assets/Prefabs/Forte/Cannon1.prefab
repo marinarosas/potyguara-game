@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cfc8f18cb2c9fc74ba8542ba12ef8a1d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.6
+  m_Volume: 0.55
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -395,6 +395,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d0d7799d86beb74a988b6450663897a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1626888442289381137}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d0d7799d86beb74a988b6450663897a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4331737654817147539}
   m_SourcePrefab: {fileID: 100100000, guid: 3d0d7799d86beb74a988b6450663897a, type: 3}
 --- !u!4 &6093738665096353712 stripped
 Transform:
@@ -425,7 +428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canonBallPrefab: {fileID: 5511179979275782164, guid: 34fa773449bb56f47a1d066db8e56f52, type: 3}
   attach: {fileID: 7416634273447988553}
-  explosionSound: {fileID: 0}
+  explosionSound: {fileID: 1260785647205853348}
 --- !u!65 &1626888442289381137
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -445,5 +448,32 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.9100833, y: 1.0668812, z: 1.3296237}
-  m_Center: {x: 0.20307133, y: 0.24441777, z: -0.7784715}
+  m_Size: {x: 0.9100833, y: 1.329444, z: 1.3511432}
+  m_Center: {x: 0.2030713, y: 0.3756958, z: -0.78923076}
+--- !u!54 &4331737654817147539
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7599416394908813946}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 122
+  m_CollisionDetection: 0

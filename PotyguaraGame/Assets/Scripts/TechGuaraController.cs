@@ -42,7 +42,7 @@ public class TechGuaraController : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().buildIndex == 3)
         {
-            transform.position = new Vector3(803.81f, 10.37f, 400.28f);
+            transform.position = new Vector3(803.68f, 10.31f, 400f);
             report.UpdateTitle("Forte dos Reis Magos");
             report.UpdateDescription("Agora, vamos à Fortaleza dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
                 "Aqui, você poderá jogar minigames inspirados em épocas passadas. Sabia que, durante as invasões holandesas, a cidade de Natal foi chamada de Nova Amsterdã? Explore os muros de pedra e descubra " +

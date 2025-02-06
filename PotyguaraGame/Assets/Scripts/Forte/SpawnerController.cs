@@ -74,9 +74,9 @@ public class SpawnerController : MonoBehaviour
         {
             cannons.SetActive(true);
             FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores " +
-                "utilizando os canhões. Se aproxime deles e pressione o gatilho para atirar!!!", 7f, new Vector3(661.34f, 21.09f, 400.73f), 90f);
-            FindFirstObjectByType<HeightController>().NewHeight(20.1f);
-            NextLevel(90f, new Vector3(654.91f, 20.1f, 400.95f));
+                "utilizando os canhões. Se aproxime deles e pressione o gatilho para atirar!!!", 7f, new Vector3(661.34f, 20.57f, 400.73f), 90f);
+            FindFirstObjectByType<HeightController>().NewHeight(19.7f);
+            NextLevel(90f, new Vector3(654.91f, 19.7f, 400.95f));
         }
         else
         {
@@ -85,7 +85,7 @@ public class SpawnerController : MonoBehaviour
                 SetDestinyRandow(1);
                 FindFirstObjectByType<HeightController>().NewHeight(9.3f);
                 FindFirstObjectByType<TechGuaraController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. " +
-                    "Se eles deixarem todas vermelhas, você perde!!!", 7f, new Vector3(749.7f, 10.07f, 400.54f), 90f);
+                    "Se eles deixarem todas vermelhas, você perde!!!", 7f, new Vector3(749.7f, 11.37f, 400.54f), 90f);
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
             if (currentLevel == 2)

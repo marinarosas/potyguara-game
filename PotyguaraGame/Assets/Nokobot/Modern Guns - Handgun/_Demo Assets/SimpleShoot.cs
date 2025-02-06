@@ -100,8 +100,8 @@ public class SimpleShoot : MonoBehaviour
                 }
                 else
                 {
-                    Reload();
                     reloadSound.Play();
+                    Reload();
                 }
                 if (Vector3.Angle(transform.up, Vector3.up) > 100 && currentBullets < 10){
                     Reload();

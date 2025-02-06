@@ -6,7 +6,7 @@ public class DetectorController : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             if (transform.name.Equals("Detector1"))
             {
@@ -23,7 +23,7 @@ public class DetectorController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             if (transform.name.Equals("Detector1"))
             {

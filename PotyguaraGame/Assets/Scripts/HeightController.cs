@@ -42,9 +42,7 @@ public class HeightController : MonoBehaviour
                     FixedHeight(player);
             }
             else
-            {
                 FixedHeight(player);
-            }
         }
         else
             VariableHeight(player);

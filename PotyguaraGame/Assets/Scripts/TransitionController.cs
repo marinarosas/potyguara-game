@@ -95,30 +95,30 @@ public class TransitionController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         FindFirstObjectByType<HeightController>().NewHeight(8.15f);
-        FindFirstObjectByType<LiftShowController>().ani.Play("GoingToTheShow");
+        FindFirstObjectByType<LiftShowController>().GoToShow();
         player.transform.position = new Vector3(177.8f, 8.15f, 113.15f);
         player.transform.eulerAngles = Vector3.zero;
     }
 
     public void TeleportExitShow()
     {
-        FindFirstObjectByType<HeightController>().NewHeight(1.9f);
-        player.transform.position = new Vector3(177.5f, 1.9f, 72f);
+        FindFirstObjectByType<HeightController>().NewHeight(1.85f);
+        player.transform.position = new Vector3(177.5f, 1.85f, 72f);
     }
 
     public void TeleportGallery()
     {
         player = GameObject.FindWithTag("Player");
-        FindFirstObjectByType<HeightController>().NewHeight(1.9f);
-        player.transform.position = new Vector3(132.53f, 1.9f, 15.69f);
+        FindFirstObjectByType<HeightController>().NewHeight(1.85f);
+        player.transform.position = new Vector3(132.53f, 1.85f, 15.69f);
         //player.transform.eulerAngles = new Vector3(0, -90, 0);
     }
 
     public void TeleportMeditationRoom()
     {
         player = GameObject.FindWithTag("Player");
-        FindFirstObjectByType<HeightController>().NewHeight(1.9f);
-        player.transform.position = new Vector3(160.11f, 1.9f, 12.31f);
+        FindFirstObjectByType<HeightController>().NewHeight(1.85f);
+        player.transform.position = new Vector3(160.11f, 1.85f, 12.31f);
         player.transform.eulerAngles = Vector3.zero;
     }
 

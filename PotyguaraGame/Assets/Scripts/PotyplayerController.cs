@@ -9,8 +9,6 @@ public class PotyPlayerController : MonoBehaviour
 {
     private PotyPlayer potyPlayer;
     private NetworkManager nm;
-
-    public static PotyPlayerController Instance = null;
     public string PlayerId
     {
         get
@@ -29,16 +27,6 @@ public class PotyPlayerController : MonoBehaviour
     void Awake()
     {
         nm = NetworkManager.Instance;
-        /*if(Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            //Instance.gameObject.transform.eulerAngles = transform.eulerAngles;
-            Destroy(gameObject);
-        }*/
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,12 +42,31 @@ public class PotyPlayerController : MonoBehaviour
             potyPlayer.SetScoreNormalMode(value);
     }
 
+    public void HideControllers()
+    {
+        Transform left = FindFirstObjectByType<LeftHandController>().gameObject.transform;
+        left.GetChild(1).gameObject.SetActive(false);
+        left.GetChild(2).gameObject.SetActive(false);
+
+        Transform right = FindFirstObjectByType<RightHandController>().gameObject.transform;
+        right.GetChild(1).gameObject.SetActive(false);
+        right.GetChild(2).gameObject.SetActive(false);
+    }
+
+    public void ShowControllers()
+    {
+        Transform left = FindFirstObjectByType<LeftHandController>().gameObject.transform;
+        left.GetChild(1).gameObject.SetActive(true);
+        left.GetChild(2).gameObject.SetActive(true);
+
+        Transform right = FindFirstObjectByType<RightHandController>().gameObject.transform;
+        right.GetChild(1).gameObject.SetActive(true);
+        right.GetChild(2).gameObject.SetActive(true);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("CannonBall"))
-        {
             FindFirstObjectByType<GameForteController>().GameOver();
-        }
-
     }
 }
