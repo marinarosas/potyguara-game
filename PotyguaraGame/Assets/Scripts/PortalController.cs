@@ -6,7 +6,7 @@ public class PortalController : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             if (transform.parent.name.Equals("ForteDosReis"))
             {
@@ -16,9 +16,14 @@ public class PortalController : MonoBehaviour
             {
                 FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
             }
-            else
+            else if(transform.parent.name.Equals("HoverBunda"))
             {
                 FindFirstObjectByType<TransitionController>().LoadSceneAsync(4);
+            }
+            else
+            {
+                FindFirstObjectByType<TransitionController>().TeleportMeditationRoom();
+                transform.parent.GetChild(0).gameObject.SetActive(true);
             }
         }
     }
