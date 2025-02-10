@@ -226,8 +226,8 @@ public class GameForteController : MonoBehaviour
         FindFirstObjectByType<HeightController>().NewHeight(8.2f);
 
         ResetCount();
-        FindFirstObjectByType<RankingController>().ShowRanking();
         SetInitScene();
+        //FindFirstObjectByType<RankingController>().ShowRanking();
     }
 
     private void SetInitScene()

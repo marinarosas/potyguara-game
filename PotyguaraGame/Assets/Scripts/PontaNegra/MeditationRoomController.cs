@@ -11,8 +11,9 @@ public class MeditationRoomController : MonoBehaviour
     private int countClasses = 1; // qnt de aulas
     private List<string> audioFiles = new List<string>(); // adiciona os files 
     private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios já adicionados para que não haja duplicatas
-    private AudioSource audioSource;
 
+    [SerializeField] private GameObject magicCircles;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private Font font;
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class MeditationRoomController : MonoBehaviour
                     string[] files = Directory.GetFiles(folderPath, "*.*");
                     foreach (string file in files)
                     {
-                        if ((file.EndsWith(".wav") || file.EndsWith(".mp3") || file.EndsWith(".ogg")) && !knownFiles.Contains(file))
+                        if ((file.EndsWith(".wav") || file.EndsWith(".MP3") || file.EndsWith(".ogg")) && !knownFiles.Contains(file))
                         {
                             audioFiles.Add(file);
                             knownFiles.Add(file);
@@ -96,6 +97,8 @@ public class MeditationRoomController : MonoBehaviour
 
     IEnumerator PlayClass(string filePath)
     {
+        magicCircles.SetActive(true);
+        transform.parent.parent.parent.parent.gameObject.SetActive(false);
         using (WWW www = new WWW("file://" + filePath))
         {
             yield return www;

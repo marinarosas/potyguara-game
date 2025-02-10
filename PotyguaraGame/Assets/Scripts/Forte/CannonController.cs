@@ -14,10 +14,15 @@ public class CannonController : MonoBehaviour
     private float count = 0;
     private bool playerInArea = false;
     private List<UnityEngine.XR.InputDevice> devices = new List<UnityEngine.XR.InputDevice>();
+    private Transform player;
 
+    void Start()
+    {
+        player = GameObject.FindWithTag("Player").transform;
+    }
     void Update()
     {
-        if (playerInArea)
+        if (/*playerInArea*/Vector3.Distance(transform.position, player.position) < 3f)
         {
             InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
             InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
@@ -46,7 +51,7 @@ public class CannonController : MonoBehaviour
     void NewCanonBall()
     {
         GameObject cannonBall = Instantiate(canonBallPrefab, attach.position, attach.parent.rotation);
-        float force = Random.Range(2000f, 6600f);
+        float force = Random.Range(2500f, 6600f);
         cannonBall.GetComponent<Rigidbody>().velocity = attach.forward * force * Time.deltaTime;
     }
 
