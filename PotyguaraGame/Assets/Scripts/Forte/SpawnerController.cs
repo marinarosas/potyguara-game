@@ -98,8 +98,6 @@ public class SpawnerController : MonoBehaviour
                 cannons.SetActive(false);
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
-                //FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, " +
-                //    "você morre!!!", 7f, new Vector3(661.34f, 21.09f, 400.73f), 90f);
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(20.1f);
@@ -161,9 +159,8 @@ public class SpawnerController : MonoBehaviour
                 if (timer.GetChild(0).GetComponent<Text>().text == "0")
                 {
                     foreach(Transform enemy in slot)
-                    {
                         Destroy(enemy.gameObject);
-                    }
+
                     timer.gameObject.SetActive(false);
                     timer.GetComponent<Image>().fillAmount = 1f;
                     levelIsRunning = false;
@@ -176,12 +173,11 @@ public class SpawnerController : MonoBehaviour
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     finishUI.SetActive(true);
                     finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+                    SendForRanking(1);
                 }
                 else
-                {
                     if(slot.childCount == 0)
                         FindFirstObjectByType<SpawnerController>().SetSpawn();
-                }
             }
         }
         else
@@ -211,6 +207,7 @@ public class SpawnerController : MonoBehaviour
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
                     GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
                     GameObject.FindWithTag("Level").SetActive(false);
+                    SendForRanking(0);
                 }
                 else
                 {
@@ -222,28 +219,17 @@ public class SpawnerController : MonoBehaviour
 
                 finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                 FindFirstObjectByType<GameForteController>().SetTotalPoints();
+                
                 finishUI.SetActive(true);
                 finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             }
         }
     }
 
-    public void Ranking()
+    public void SendForRanking(int mode)
     {
-        finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameForteController>().GetTotalPoints() + "";
-
-        GameObject ranking = GameObject.FindGameObjectWithTag("Ranking");
-        for(int ii = 0; ii < ranking.transform.childCount; ii++)
-        {
-            ranking.transform.GetChild(ii).gameObject.SetActive(true);
-        }
-        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints());
-        Invoke("ShowRanking", 0.7f);
-    }
-
-    private void ShowRanking()
-    {
-        FindFirstObjectByType<RankingController>().ShowRanking();
+        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints(), mode);
+        FindFirstObjectByType<RankingController>().gameObject.GetComponent<FadeController>().FadeIn();
     }
 
     private void InitSpawner(List<Waypoint> waypoints)

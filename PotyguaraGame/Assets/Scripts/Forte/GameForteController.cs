@@ -227,7 +227,6 @@ public class GameForteController : MonoBehaviour
 
         ResetCount();
         SetInitScene();
-        //FindFirstObjectByType<RankingController>().ShowRanking();
     }
 
     private void SetInitScene()

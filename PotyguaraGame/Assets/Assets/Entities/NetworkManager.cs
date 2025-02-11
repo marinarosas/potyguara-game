@@ -10,8 +10,6 @@ using TMPro;
 
 public class NetworkManager : MonoBehaviour
 {
-    //public GameObject CanvaWellcome;
-
     // Prefab do jogador local
     public GameObject LocalPlayerPrefab;
 
@@ -23,7 +21,8 @@ public class NetworkManager : MonoBehaviour
     // WebSocket para comunicação com o servidor
     private WebSocket ws;
 
-    private string ranking;
+    private string rankingZ = "";
+    private string rankingB = "";
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -81,21 +80,25 @@ public class NetworkManager : MonoBehaviour
             Debug.Log("Message received: " + e.Data);
             // Processar a mensagem recebida
             ProcessServerMessage(e.Data);
-        };
+        };                         
 
         // Depois de definir os eventos, conectar ao servidor
         ws.Connect();
     }
 
-    public string GetRanking()
+    public string GetRankingZombieMode()
     {
-        return ranking;
+        return rankingZ;
+    }
+
+    public string GetRankingBatalhaMode()
+    {
+        return rankingB;
     }
 
     NetworkManager() {
         gameState = new GameState();
     }
-    
     
     /// <summary>
     /// Processa a mensagem recebida do servidor
@@ -120,8 +123,6 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
-                    //CanvaWellcome.SetActive(true);
-                    //CanvaWellcome.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Conectado ao Servidor!!!";
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -138,11 +139,17 @@ public class NetworkManager : MonoBehaviour
                     // A mudança de posição dos jogadores é feita no método Update() que irá consultar o
                     // gameState para saber a posição dos jogadores e atualizar a posição dos objetos na cena.
                     gameState = response.gameState;
-                    // // mostrar o novo estado do jogo
+                    // mostrar o novo estado do jogo
                     break;
-                case "Ranking":
+                case "RankingZ":
                     Debug.Log("Recebi: " + response.parameters["ranking"]);
-                    ranking = response.parameters["ranking"];
+                    rankingZ = response.parameters["ranking"];
+                    FindObjectOfType<RankingController>().rankingUpdated = 0;
+                    break;
+                case "RankingB":
+                    Debug.Log("Recebi: " + response.parameters["ranking"]);
+                    rankingB = response.parameters["ranking"];
+                    FindObjectOfType<RankingController>().rankingUpdated = 1;
                     break;
                 default:
                     break;
@@ -185,15 +192,50 @@ public class NetworkManager : MonoBehaviour
         ws.Send(action.ToJson());
     }
 
-    internal void SendPontuacionForte(int totalPoints)
+    internal void SendPontuacionForte(int totalPoints, int mode)
+    {
+        if (mode == 0)
+        {
+            Action action = new Action()
+            {
+                type = "GameForteZ",
+                actor = this.playerId,
+                parameters = new Dictionary<string, string>()
+            {
+                { "pointing", totalPoints.ToString() }
+            }
+            };
+
+            // envia a pontuação final no jogo do Forte para o servidor
+            ws.Send(action.ToJson());
+        }
+        else
+        {
+            Action action = new Action()
+            {
+                type = "GameForteB",
+                actor = this.playerId,
+                parameters = new Dictionary<string, string>()
+            {
+                { "pointing", totalPoints.ToString() }
+            }
+            };
+
+            // envia a pontuação final no jogo do Forte para o servidor
+            ws.Send(action.ToJson());
+        }
+    }
+
+    internal void SendUpdateSkin(int skinIndex, int skinMaterial)
     {
         Action action = new Action()
         {
-            type = "GameForte",
+            type = "UpdateSkin",
             actor = this.playerId,
             parameters = new Dictionary<string, string>()
             {
-                { "pointing", totalPoints.ToString() }
+                { "index", skinIndex.ToString() },
+                { "material", skinMaterial.ToString() }
             }
         };
 

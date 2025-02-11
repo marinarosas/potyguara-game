@@ -16,20 +16,38 @@ public class LeftHandController : MonoBehaviour
     {
         InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
-        //if(devices.Count != 0)
-            devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
-
-        if (Ybutton || Input.GetKeyDown(KeyCode.M)) // Y button pressed
+        if (devices.Count != 0)
         {
-            GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
-            if (menu != null)
+            devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
+            if (Ybutton) // Y button pressed
             {
-                if (!changedStatus)
+                GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
+                if (menu != null)
                 {
-                    controlMenu = !controlMenu;
-                    menu.SetActive(controlMenu);
-                    changedStatus = true;
-                    Invoke("ChangeStatus", .3f);
+                    if (!changedStatus)
+                    {
+                        controlMenu = !controlMenu;
+                        menu.SetActive(controlMenu);
+                        changedStatus = true;
+                        Invoke("ChangeStatus", .3f);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.M)) // Y button pressed
+            {
+                GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
+                if (menu != null)
+                {
+                    if (!changedStatus)
+                    {
+                        controlMenu = !controlMenu;
+                        menu.SetActive(controlMenu);
+                        changedStatus = true;
+                        Invoke("ChangeStatus", .3f);
+                    }
                 }
             }
         }
