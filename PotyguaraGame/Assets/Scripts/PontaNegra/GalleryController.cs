@@ -11,8 +11,6 @@ public class GalleryController : MonoBehaviour
     void Start()
     {
         foreach(Image image in images)
-        {
             image.sprite = sprites[Random.Range(0, sprites.Count)];
-        }
     }
 }

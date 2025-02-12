@@ -25,15 +25,15 @@ public class MenuController : MonoBehaviour
     void Start()
     {
         int count = 0;
-        foreach (var image in galleryImages) { 
+        foreach (var image in galleryImages) 
+        { 
             transform.GetChild(count).GetComponent<Image>().sprite = image;
             count++;
         }
 
         for (int ii = 0; ii < transform.childCount; ii++)
-        {
             transform.GetChild(ii).gameObject.SetActive(true);
-        }
+
         currentScene = SceneManager.GetActiveScene().buildIndex;
         transitionController = FindFirstObjectByType<TransitionController>();
 

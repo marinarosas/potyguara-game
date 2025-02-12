@@ -3,12 +3,14 @@ using UnityEngine.VFX;
 
 public class CannonBallController : MonoBehaviour
 {
-    private ParticleSystem visualEffect;
+    private VisualEffect visualEffect;
     private bool isNavio = false;
     public bool wasInstantiatedForNavio { get; set; } = false;
+
     void Awake()
     {
-        visualEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
+        visualEffect = transform.GetChild(0).GetComponent<VisualEffect>();
+        visualEffect.Reinit();
     }
 
     public void SetIsNavio(bool value)

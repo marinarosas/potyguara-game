@@ -26,14 +26,24 @@ public class CannonController : MonoBehaviour
         {
             InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
             InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
-            //if(devices.Count != 0)
-                devices[0].TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float trigger);
-
-            if ((trigger > 0.1f || Input.GetKeyDown(KeyCode.Space)) && canShoot)
+            if (devices.Count != 0)
             {
-                explosionSound.Play();
-                NewCanonBall();
-                canShoot = false;
+                devices[0].TryGetFeatureValue(UnityEngine.XR.CommonUsages.trigger, out float trigger);
+                if (trigger > 0.1f && canShoot)
+                {
+                    explosionSound.Play();
+                    NewCanonBall();
+                    canShoot = false;
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Space) && canShoot)
+                {
+                    explosionSound.Play();
+                    NewCanonBall();
+                    canShoot = false;
+                }
             }
         }
         if (!canShoot)

@@ -11,6 +11,7 @@ public class MeditationRoomController : MonoBehaviour
     private int countClasses = 1; // qnt de aulas
     private List<string> audioFiles = new List<string>(); // adiciona os files 
     private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios já adicionados para que não haja duplicatas
+    private bool StartedClass = false;
 
     [SerializeField] private GameObject magicCircles;
     [SerializeField] private AudioSource audioSource;
@@ -18,8 +19,24 @@ public class MeditationRoomController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         StartCoroutine(CheckForNewFiles());
+    }
+
+    void Update()
+    {
+        if (audioSource != null)
+        {
+            if (!audioSource.isPlaying && StartedClass)
+            {
+                transform.parent.parent.parent.parent.parent.GetChild(0).gameObject.SetActive(true);
+                StartedClass = false;
+            }
+        }
+    }
+
+    public void StopClass()
+    {
+        audioSource.Stop();
     }
 
     #region checkingClasses
@@ -34,7 +51,7 @@ public class MeditationRoomController : MonoBehaviour
                     string[] files = Directory.GetFiles(folderPath, "*.*");
                     foreach (string file in files)
                     {
-                        if ((file.EndsWith(".wav") || file.EndsWith(".MP3") || file.EndsWith(".ogg")) && !knownFiles.Contains(file))
+                        if ((file.EndsWith(".wav") || file.EndsWith(".mp3") || file.EndsWith(".ogg")) && !knownFiles.Contains(file))
                         {
                             audioFiles.Add(file);
                             knownFiles.Add(file);
@@ -97,6 +114,7 @@ public class MeditationRoomController : MonoBehaviour
 
     IEnumerator PlayClass(string filePath)
     {
+        StartedClass = true;
         magicCircles.SetActive(true);
         transform.parent.parent.parent.parent.gameObject.SetActive(false);
         using (WWW www = new WWW("file://" + filePath))

@@ -439,54 +439,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 337615849}
   m_CullTransparentMesh: 1
---- !u!1 &552558965
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 552558967}
-  - component: {fileID: 552558966}
-  m_Layer: 0
-  m_Name: NetworkManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &552558966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 552558965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb2115fd8b9cbc1aad0aea1fa062dd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LocalPlayerPrefab: {fileID: 3848225861924626212, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
-  RemotePlayerPrefab: {fileID: 3848225861924626212, guid: 5bbf2e73a585e364ea180ae161dd170f, type: 3}
-  serverAddress: wss://potyws.ffcloud.com.br
-  playerId: 
---- !u!4 &552558967
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 552558965}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 178.82324, y: 2.942894, z: 53.665504}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &587268362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,6 +1402,63 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -117.873, y: 45.145}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1306168131
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4603102506583094278, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_Name
+      value: NetworkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 178.82324
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.942894
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 53.665504
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459850830079460643, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 93670b4918b197c4d81dee4e390b16dd, type: 3}
 --- !u!1 &1323710001
 GameObject:
   m_ObjectHideFlags: 0
@@ -2712,4 +2721,4 @@ SceneRoots:
   - {fileID: 935758343}
   - {fileID: 2112860476}
   - {fileID: 1560983822}
-  - {fileID: 552558967}
+  - {fileID: 1306168131}

@@ -93,10 +93,12 @@ public class TechGuaraController : MonoBehaviour
             if (audioSource.time >= 27.0)
             {
                 report.UpdateTitle("Complete seu Perfil!");
-                report.UpdateDescription("Antes de começarmos, vamos conhecer um pouco mais sobre você! Complete o seu perfil e crie o seu avatar para começar a sua jornada!");
+                report.UpdateDescription("Antes de começarmos, vamos conhecer um pouco mais sobre você! Crie o seu avatar para começar a sua jornada!");
             }
         }
     }
+
+    #region ReportConfig
     public void CreateReport(string title, string description, float duration)
     {
         transform.GetChild(0).gameObject.SetActive(true);
@@ -132,4 +134,5 @@ public class TechGuaraController : MonoBehaviour
         }
         return null;
     }
+    #endregion
 }

@@ -142,14 +142,13 @@ public class NetworkManager : MonoBehaviour
                     // mostrar o novo estado do jogo
                     break;
                 case "RankingZ":
-                    Debug.Log("Recebi: " + response.parameters["ranking"]);
+                    //Debug.Log("Recebi: " + response.parameters["ranking"]);
                     rankingZ = response.parameters["ranking"];
-                    FindObjectOfType<RankingController>().rankingUpdated = 0;
+                    Debug.Log("Recebi Zumbi: " + rankingZ);
                     break;
                 case "RankingB":
                     Debug.Log("Recebi: " + response.parameters["ranking"]);
                     rankingB = response.parameters["ranking"];
-                    FindObjectOfType<RankingController>().rankingUpdated = 1;
                     break;
                 default:
                     break;
@@ -285,6 +284,16 @@ public class NetworkManager : MonoBehaviour
                     gameState.players[playerId].position_y,
                     gameState.players[playerId].position_z
                 );
+            }
+
+            if (!rankingZ.Equals("")) {
+                FindObjectOfType<RankingController>().UpdateRanking(0);
+                rankingZ = "";
+            }
+            if (!rankingB.Equals(""))
+            {
+                FindObjectOfType<RankingController>().UpdateRanking(1);
+                rankingB = "";
             }
         }
     }

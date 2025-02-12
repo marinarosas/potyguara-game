@@ -218,9 +218,9 @@ public class RainController : MonoBehaviour
 
         CheckForRainChange();
         UpdateWind();
-        audioSourceRainLight.Update();
-        audioSourceRainMedium.Update();
-        audioSourceRainHeavy.Update();
+        //audioSourceRainLight.Update();
+        //audioSourceRainMedium.Update();
+        //audioSourceRainHeavy.Update();
     }
 
     public class LoopingAudioSource

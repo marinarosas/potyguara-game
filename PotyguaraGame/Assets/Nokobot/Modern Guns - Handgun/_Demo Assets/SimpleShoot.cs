@@ -81,8 +81,8 @@ public class SimpleShoot : MonoBehaviour
 
         if (isRight != false || isLeft != false)
         {
-           // targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (/*triggerValue > 0.1f ||*/ Input.GetKeyDown(KeyCode.F))
+            targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+            if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {

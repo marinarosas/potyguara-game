@@ -6,15 +6,6 @@ using UnityEngine.UI;
 
 public class RankingController : MonoBehaviour
 {
-    public int rankingUpdated = -1;
-    void Update()
-    {
-        if (rankingUpdated == 0)
-            UpdateRanking(0);
-        if(rankingUpdated == 1)
-            UpdateRanking(1);
-    }
-
     public void UpdateRanking(int mode)
     {
         string ranking = mode == 0 ? FindObjectOfType<NetworkManager>().GetRankingZombieMode() : FindObjectOfType<NetworkManager>().GetRankingBatalhaMode();
@@ -25,11 +16,13 @@ public class RankingController : MonoBehaviour
 
         for (int ii = 1; ii < 8; ii++)
         {
-            if (playersRanking[ii].Length > 1)
-                parent.GetChild(ii).GetComponent<Text>().text = playersRanking[ii] + "pt";
+            if (ii < playersRanking.Length)
+            {
+                if (playersRanking[ii].Length > 1)
+                    parent.GetChild(ii).GetComponent<Text>().text = playersRanking[ii] + "pt";
+            }
             else
-                parent.GetChild(ii).GetComponent<Text>().text = "-";
+                parent.GetChild(ii).GetComponent<Text>().text = "- : -";
         }
-        rankingUpdated = -1;
     }
 }

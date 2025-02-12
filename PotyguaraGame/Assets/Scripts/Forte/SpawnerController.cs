@@ -29,10 +29,6 @@ public class SpawnerController : MonoBehaviour
     private int currentLevel = 1;
     private int wallsDestroyed = 0;
 
-    public void SetWallsDestroyed()
-    {
-        wallsDestroyed++;
-    }
     private void Start()
     {
         FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
@@ -43,15 +39,17 @@ public class SpawnerController : MonoBehaviour
             spawnRandowZombie.Add(destinyLevel1.GetChild(ii));
     }
 
+    #region Levels
+    public void SetLevelIsRunning(bool value)
+    {
+        levelIsRunning = value;
+    }
+
     public int GetCurrentLevel()
     {
         return currentLevel;
     }
 
-    public void SetLevelIsRunning(bool value)
-    {
-        levelIsRunning = value;
-    }
     public void SetDestinyRandow(int value)
     {
         spawnRandowZombie.Clear();
@@ -107,46 +105,24 @@ public class SpawnerController : MonoBehaviour
         }
     }
 
-    public void SetSpawn()
-    {
-        levelIsRunning = true;
-        if(FindFirstObjectByType<GameForteController>().GetMode() == 0)
-        {
-            if (currentLevel == 1)
-            {
-                currentAmount = 12;
-                InitSpawner(spawnRandowZombie);
-            }
-            if (currentLevel == 2)
-            {
-                currentAmount = 9;
-                InitSpawner(spawnRandowZombie);
-            }
-        }
-        else
-        {
-            currentAmount = 4;
-            InitSpawner(waypointsGroup.waypoints);
-        }
-    }
-
     public void NextLevel(float angulationY, Vector3 initialPosition)
     {
         player.transform.position = initialPosition;
         player.transform.eulerAngles = new Vector3(0, angulationY, 0);
     }
-   
+
+    public void SendForRanking(int mode)
+    {
+        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints(), mode);
+        FindFirstObjectByType<RankingController>().gameObject.GetComponent<FadeController>().FadeIn();
+    }
+
     private void UpdateLevelBar()
     {
         GameObject.FindGameObjectWithTag("Level").GetComponent<Image>().fillAmount = 0.5f * currentLevel;
         GameObject.FindGameObjectWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel+"";
     }
-
-    public void CleanSlot()
-    {
-        foreach(Transform enemy in slot)
-            Destroy(enemy.gameObject);
-    }
+    #endregion
 
     private void Update()
     {
@@ -207,29 +183,58 @@ public class SpawnerController : MonoBehaviour
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
                     GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
                     GameObject.FindWithTag("Level").SetActive(false);
+                    FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     SendForRanking(0);
                 }
                 else
                 {
                     currentLevel++;
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
+                    FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().NextLevel);
                 }
 
                 finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
-                FindFirstObjectByType<GameForteController>().SetTotalPoints();
-                
                 finishUI.SetActive(true);
                 finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             }
         }
     }
 
-    public void SendForRanking(int mode)
+    public void SetWallsDestroyed()
     {
-        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints(), mode);
-        FindFirstObjectByType<RankingController>().gameObject.GetComponent<FadeController>().FadeIn();
+        wallsDestroyed++;
+    }
+
+    public void CleanSlot()
+    {
+        foreach (Transform enemy in slot)
+            Destroy(enemy.gameObject);
+    }
+
+    #region Spawners
+    public void SetSpawn()
+    {
+        levelIsRunning = true;
+        if (FindFirstObjectByType<GameForteController>().GetMode() == 0)
+        {
+            if (currentLevel == 1)
+            {
+                currentAmount = 12;
+                InitSpawner(spawnRandowZombie);
+            }
+            if (currentLevel == 2)
+            {
+                currentAmount = 9;
+                InitSpawner(spawnRandowZombie);
+            }
+        }
+        else
+        {
+            currentAmount = 4;
+            InitSpawner(waypointsGroup.waypoints);
+        }
     }
 
     private void InitSpawner(List<Waypoint> waypoints)
@@ -252,4 +257,5 @@ public class SpawnerController : MonoBehaviour
             Instantiate(prefabZumbi, points[numInt].position, Quaternion.identity, slot);
         }
     }
+    #endregion
 }
