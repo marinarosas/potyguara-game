@@ -95,7 +95,7 @@ public class RainController : MonoBehaviour
             audioSourceWind.Stop();
         }
 
-        audioSourceWind.Update();
+        //audioSourceWind.Update();
     }
 
     private void CheckForRainChange()

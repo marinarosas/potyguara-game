@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,64 +36,54 @@ public class MenuController : MonoBehaviour
         }
         currentScene = SceneManager.GetActiveScene().buildIndex;
         transitionController = FindFirstObjectByType<TransitionController>();
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if(currentScene != SceneManager.GetActiveScene().buildIndex)
+
+        if (SceneManager.GetActiveScene().buildIndex == 2) // ponta Negra
         {
-            updatedMenu = false;
+            transform.GetChild(0).gameObject.SetActive(false);
+            //transform.GetChild(0).GetComponent<Button>().interactable = false;
+            transform.GetChild(1).GetComponent<Button>().onClick.AddListener(GoToGallery);
+            transform.GetChild(2).GetComponent<Button>().onClick.AddListener(GoToShow);
+            transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
+            transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
+            transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
+            transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
+            transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+            transform.GetChild(8).GetComponent<Button>().onClick.AddListener(GoToMeditationRoom);
+            updatedMenu = true;
         }
-        if (!updatedMenu)
+        if (SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
         {
-            if(SceneManager.GetActiveScene().buildIndex == 2) // ponta Negra
-            {
-                transform.GetChild(0).gameObject.SetActive(false);
-                //transform.GetChild(0).GetComponent<Button>().interactable = false;
-                transform.GetChild(1).GetComponent<Button>().onClick.AddListener(GoToGallery);
-                transform.GetChild(2).GetComponent<Button>().onClick.AddListener(GoToShow);
-                transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
-                transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
-                transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
-                transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
-                transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
-                transform.GetChild(8).GetComponent<Button>().onClick.AddListener(GoToMeditationRoom);
-                updatedMenu = true;
-            }
-            if(SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
-            {
-                transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
-                /*transform.GetChild(1).GetComponent<Button>().interactable = false;
-                transform.GetChild(2).GetComponent<Button>().interactable = false;
-                transform.GetChild(3).GetComponent<Button>().interactable = false;
-                transform.GetChild(4).GetComponent<Button>().interactable = false;
-                transform.GetChild(5).GetComponent<Button>().interactable = false;*/
-                transform.GetChild(1).gameObject.SetActive(false);
-                transform.GetChild(2).gameObject.SetActive(false);
-                transform.GetChild(3).gameObject.SetActive(false);
-                transform.GetChild(4).gameObject.SetActive(false);
-                transform.GetChild(5).gameObject.SetActive(false);
-                transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
-                transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
-                transform.GetChild(8).gameObject.SetActive(false);
-                updatedMenu = true;
-            }
-            if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
-            {
-                transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
-                /*transform.GetChild(1).GetComponent<Button>().interactable = false;
-                transform.GetChild(2).GetComponent<Button>().interactable = false;*/
-                transform.GetChild(1).gameObject.SetActive(false);
-                transform.GetChild(2).gameObject.SetActive(false);
-                transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
-                transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
-                transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
-                transform.GetChild(6).gameObject.SetActive(false);
-                //transform.GetChild(6).GetComponent<Button>().interactable = false;
-                transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
-                transform.GetChild(8).gameObject.SetActive(false);
-                updatedMenu = true;
-            }
+            transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
+            /*transform.GetChild(1).GetComponent<Button>().interactable = false;
+            transform.GetChild(2).GetComponent<Button>().interactable = false;
+            transform.GetChild(3).GetComponent<Button>().interactable = false;
+            transform.GetChild(4).GetComponent<Button>().interactable = false;
+            transform.GetChild(5).GetComponent<Button>().interactable = false;*/
+            transform.GetChild(1).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject.SetActive(false);
+            transform.GetChild(3).gameObject.SetActive(false);
+            transform.GetChild(4).gameObject.SetActive(false);
+            transform.GetChild(5).gameObject.SetActive(false);
+            transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
+            transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+            transform.GetChild(8).gameObject.SetActive(false);
+            updatedMenu = true;
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
+        {
+            transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
+            /*transform.GetChild(1).GetComponent<Button>().interactable = false;
+            transform.GetChild(2).GetComponent<Button>().interactable = false;*/
+            transform.GetChild(1).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject.SetActive(false);
+            transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
+            transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
+            transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
+            transform.GetChild(6).gameObject.SetActive(false);
+            //transform.GetChild(6).GetComponent<Button>().interactable = false;
+            transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+            transform.GetChild(8).gameObject.SetActive(false);
+            updatedMenu = true;
         }
     }
 

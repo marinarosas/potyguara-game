@@ -38,10 +38,9 @@ public class SpawnerController : MonoBehaviour
         FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
         player = GameObject.FindWithTag("Player");
         finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
+
         for (var ii = 0; ii < destinyLevel1.childCount; ii++)
-        {
             spawnRandowZombie.Add(destinyLevel1.GetChild(ii));
-        }
     }
 
     public int GetCurrentLevel()
@@ -73,8 +72,11 @@ public class SpawnerController : MonoBehaviour
         if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
         {
             cannons.SetActive(true);
-            FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Olá jogador(a), para esse nível você deve destruir a frota de navios invasores " +
-                "utilizando os canhões. Se aproxime deles e pressione o gatilho para atirar!!!", 7f, new Vector3(661.34f, 20.57f, 400.73f), 90f);
+            AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoBatalhadoForte");
+            FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Na Batalha do Forte, você será um defensor da fortaleza durante uma época de invasões no século 15. Escolha um" +
+                " canhão e lute para proteger a fortaleza a todo custo! Prepare-se para desafios intensos enquanto vive momentos de pura " +
+                "estratégia e ação.", audio.clip.length, new Vector3(661.34f, 20.57f, 400.73f), 90f);
+            audio.Play();
             FindFirstObjectByType<HeightController>().NewHeight(19.7f);
             NextLevel(90f, new Vector3(654.91f, 19.7f, 400.95f));
         }
@@ -84,8 +86,11 @@ public class SpawnerController : MonoBehaviour
             {
                 SetDestinyRandow(1);
                 FindFirstObjectByType<HeightController>().NewHeight(9.3f);
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Proteja a Entrada do Forte!!!", "Olá jogador(a), para esse nível você deve evitar que os zumbis destruam as barreiras que o/a protegem. " +
-                    "Se eles deixarem todas vermelhas, você perde!!!", 7f, new Vector3(749.7f, 11.37f, 400.54f), 90f);
+                AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
+                    " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
+                    "sobrevivência!", audio.clip.length, new Vector3(749.7f, 11.37f, 400.54f), 90f);
+                audio.Play();
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
             if (currentLevel == 2)
@@ -93,8 +98,6 @@ public class SpawnerController : MonoBehaviour
                 cannons.SetActive(false);
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Olá jogador(a), para esse nível você não deve deixar que os zumbis cheguem até você. Se eles se aproximarem demais, " +
-                    "você morre!!!", 7f, new Vector3(661.34f, 21.09f, 400.73f), 90f);
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
                 FindFirstObjectByType<HeightController>().NewHeight(20.1f);
@@ -156,9 +159,8 @@ public class SpawnerController : MonoBehaviour
                 if (timer.GetChild(0).GetComponent<Text>().text == "0")
                 {
                     foreach(Transform enemy in slot)
-                    {
                         Destroy(enemy.gameObject);
-                    }
+
                     timer.gameObject.SetActive(false);
                     timer.GetComponent<Image>().fillAmount = 1f;
                     levelIsRunning = false;
@@ -171,12 +173,11 @@ public class SpawnerController : MonoBehaviour
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     finishUI.SetActive(true);
                     finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+                    SendForRanking(1);
                 }
                 else
-                {
                     if(slot.childCount == 0)
                         FindFirstObjectByType<SpawnerController>().SetSpawn();
-                }
             }
         }
         else
@@ -198,9 +199,6 @@ public class SpawnerController : MonoBehaviour
 
                 if (currentLevel == 2)
                 {
-                    /*finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Menu Principal";
-                    finishUI.transform.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();*/
-
                     finishUI.transform.GetChild(3).gameObject.SetActive(false);
                     finishUI.transform.GetChild(6).gameObject.SetActive(true);
                     finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
@@ -209,7 +207,7 @@ public class SpawnerController : MonoBehaviour
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
                     GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
                     GameObject.FindWithTag("Level").SetActive(false);
-                    //finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
+                    SendForRanking(0);
                 }
                 else
                 {
@@ -221,28 +219,17 @@ public class SpawnerController : MonoBehaviour
 
                 finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                 FindFirstObjectByType<GameForteController>().SetTotalPoints();
+                
                 finishUI.SetActive(true);
                 finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             }
         }
     }
 
-    public void Ranking()
+    public void SendForRanking(int mode)
     {
-        finishUI.transform.GetChild(5).GetComponent<Text>().text = FindObjectOfType<GameForteController>().GetTotalPoints() + "";
-
-        GameObject ranking = GameObject.FindGameObjectWithTag("Ranking");
-        for(int ii = 0; ii < ranking.transform.childCount; ii++)
-        {
-            ranking.transform.GetChild(ii).gameObject.SetActive(true);
-        }
-        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints());
-        Invoke("ShowRanking", 0.7f);
-    }
-
-    private void ShowRanking()
-    {
-        FindFirstObjectByType<RankingController>().ShowRanking();
+        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints(), mode);
+        FindFirstObjectByType<RankingController>().gameObject.GetComponent<FadeController>().FadeIn();
     }
 
     private void InitSpawner(List<Waypoint> waypoints)
