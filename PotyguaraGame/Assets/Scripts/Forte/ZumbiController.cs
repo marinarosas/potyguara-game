@@ -38,9 +38,8 @@ public class ZumbiController : MonoBehaviour
             }
             else if (spawner.GetCurrentLevel() == 1)
             {
-                //WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
-                //player = walls[Random.Range(0, walls.Length - 1)].transform;
-                player = GameObject.FindWithTag("Player").transform;
+                WallController[] walls = FindObjectsByType<WallController>(FindObjectsSortMode.InstanceID);
+                player = walls[Random.Range(0, walls.Length - 1)].transform;
             }
         }
 

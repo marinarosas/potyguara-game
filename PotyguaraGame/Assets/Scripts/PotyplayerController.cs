@@ -27,7 +27,7 @@ public class PotyPlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        potyPlayer = new PotyPlayer("Bianca", new GameObject());
+        //potyPlayer = new PotyPlayer("Bianca", new GameObject());
     }
 
     public void SetScore(int value, int gameMode)
@@ -58,6 +58,24 @@ public class PotyPlayerController : MonoBehaviour
         Transform right = FindFirstObjectByType<RightHandController>().gameObject.transform;
         right.GetChild(1).gameObject.SetActive(true);
         right.GetChild(2).gameObject.SetActive(true);
+    }
+
+    public void StorageSkin()
+    {
+        AvatarMenuController[] menus = FindObjectsByType<AvatarMenuController>(FindObjectsSortMode.InstanceID);
+
+        int skin = 0;
+        int material = 0;
+
+        foreach (AvatarMenuController menu in menus)
+        {
+            if (menu.gameObject.name.Equals("Skin"))
+                skin = menu.index;
+            else
+                material = menu.index;
+        }
+
+        FindFirstObjectByType<NetworkManager>().SendUpdateSkin(skin, material);
     }
 
     private void OnCollisionEnter(Collision collision)
