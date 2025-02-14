@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WallController : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class WallController : MonoBehaviour
     {
         material.SetFloat("_isDamage", 0.0f);
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!receivedDamage)
@@ -52,7 +54,7 @@ public class WallController : MonoBehaviour
             if (collision.gameObject.CompareTag("Body"))
             {
                 setDamage(true);
-                FindFirstObjectByType<SpawnerController>().SetWallsDestroyed();
+                GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount -= 0.05f;
             }
         }
     }

@@ -39,9 +39,7 @@ public class GameForteController : MonoBehaviour
     private void Update()
     {
         if (startTimer)
-        {
             InitTimer();
-        }
     }
 
     public void SetLeftHand()
@@ -52,8 +50,10 @@ public class GameForteController : MonoBehaviour
 
         leftController.ChangeHand();
         leftGunController.setLeftHand(true);
+        mainCamera.GetChild(0).GetChild(3).GetComponent<Image>().fillAmount = 1;
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
+        mainCamera.GetChild(0).GetChild(3).gameObject.SetActive(true);
         leftGunController.Reload();
     }
 
@@ -65,8 +65,10 @@ public class GameForteController : MonoBehaviour
 
         rightController.ChangeHand();
         rightGunController.setRightHand(true);
+        mainCamera.GetChild(0).GetChild(3).GetComponent<Image>().fillAmount = 1;
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
+        mainCamera.GetChild(0).GetChild(3).gameObject.SetActive(true);
         rightGunController.Reload();
     }
 
@@ -109,7 +111,6 @@ public class GameForteController : MonoBehaviour
         {
             timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
             count = 10;
-            
         }
         else
         {

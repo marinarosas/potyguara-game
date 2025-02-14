@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.VFX;
 
@@ -53,14 +54,11 @@ public class ZumbiController : MonoBehaviour
                 {
                     Follow();
                     if (distanceForPlayer <= distanceAttack) // for check if the enemy can attack the player
-                    {
                         Attack();
-                    }
                 }
                 else
-                {
                     Walking();
-                }
+
                 if(spawner.GetCurrentLevel() == 1)
                     if (distanceForPlayer < 0.5f)
                         ChangeTarget();
@@ -113,12 +111,8 @@ public class ZumbiController : MonoBehaviour
 
     void Attack()
     {
-
         navMesh.isStopped = true;
         ani.SetBool("isShouting", true);
-        // End Game
-        if(spawner.GetCurrentLevel() != 3)
-            FindFirstObjectByType<GameForteController>().GameOver();
     }
 
     public void DestroyZumbi()
@@ -148,9 +142,13 @@ public class ZumbiController : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("MainCamera"))
         {
-            FindFirstObjectByType<GameForteController>().GameOver();
+            float value = GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount;
+            if(value > 0)
+                GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount -= 0.1f;
+            else
+                FindFirstObjectByType<GameForteController>().GameOver();
         }
     }
 }

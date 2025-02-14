@@ -27,7 +27,6 @@ public class SpawnerController : MonoBehaviour
     private GameObject finishUI;
     private int currentAmount;
     private int currentLevel = 1;
-    private int wallsDestroyed = 0;
 
     private void Start()
     {
@@ -70,11 +69,14 @@ public class SpawnerController : MonoBehaviour
         if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
         {
             cannons.SetActive(true);
-            AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoBatalhadoForte");
-            FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Na Batalha do Forte, você será um defensor da fortaleza durante uma época de invasões no século 15. Escolha um" +
-                " canhão e lute para proteger a fortaleza a todo custo! Prepare-se para desafios intensos enquanto vive momentos de pura " +
-                "estratégia e ação.", audio.clip.length, new Vector3(661.34f, 20.57f, 400.73f), 90f);
-            audio.Play();
+            if (FindFirstObjectByType<PotyPlayerController>().toggleTutorial.isOn)
+            {
+                AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoBatalhadoForte");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Na Batalha do Forte, você será um defensor da fortaleza durante uma época de invasões no século 15. Escolha um" +
+                    " canhão e lute para proteger a fortaleza a todo custo! Prepare-se para desafios intensos enquanto vive momentos de pura " +
+                    "estratégia e ação.", audio.clip.length, new Vector3(661.34f, 20.57f, 400.73f), 90f);
+                audio.Play();
+            }
             FindFirstObjectByType<HeightController>().NewHeight(19.7f);
             NextLevel(90f, new Vector3(654.91f, 19.7f, 400.95f));
         }
@@ -84,11 +86,16 @@ public class SpawnerController : MonoBehaviour
             {
                 SetDestinyRandow(1);
                 FindFirstObjectByType<HeightController>().NewHeight(9.3f);
-                AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
-                    " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
-                    "sobrevivência!", audio.clip.length, new Vector3(749.7f, 11.37f, 400.54f), 90f);
-                audio.Play();
+
+                if (FindFirstObjectByType<PotyPlayerController>().toggleTutorial.isOn)
+                {
+                    AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
+                    FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
+                        " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
+                        "sobrevivência!", audio.clip.length, new Vector3(749.7f, 11.37f, 400.54f), 90f);
+                    audio.Play();
+                }
+
                 NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
             }
             if (currentLevel == 2)
@@ -119,8 +126,8 @@ public class SpawnerController : MonoBehaviour
 
     private void UpdateLevelBar()
     {
-        GameObject.FindGameObjectWithTag("Level").GetComponent<Image>().fillAmount = 0.5f * currentLevel;
-        GameObject.FindGameObjectWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel+"";
+        GameObject.FindWithTag("Level").GetComponent<Image>().fillAmount = 0.5f * currentLevel;
+        GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel+"";
     }
     #endregion
 
@@ -158,9 +165,8 @@ public class SpawnerController : MonoBehaviour
         }
         else
         {
-            if (wallsDestroyed >= 50 && currentLevel == 1)
+            if (GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount <= 0 && currentLevel == 1)
             {
-                wallsDestroyed = 0;
                 levelIsRunning = false;
                 FindFirstObjectByType<GameForteController>().GameOver();
                 return;
@@ -169,7 +175,10 @@ public class SpawnerController : MonoBehaviour
             {
                 levelIsRunning = false;
                 if (currentLevel == 1)
+                {
                     FindFirstObjectByType<GameForteController>().ChangeStateWalls(false);
+                    GameObject.Find("UIPlayer").transform.GetChild(3).gameObject.SetActive(false);
+                }
 
                 finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
 
@@ -182,6 +191,7 @@ public class SpawnerController : MonoBehaviour
                     currentLevel = 1;
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
                     GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
+                    finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                     GameObject.FindWithTag("Level").SetActive(false);
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     SendForRanking(0);
@@ -190,21 +200,16 @@ public class SpawnerController : MonoBehaviour
                 {
                     currentLevel++;
                     FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
+                    finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
                     finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().NextLevel);
                 }
 
-                finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                 finishUI.SetActive(true);
                 finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             }
         }
-    }
-
-    public void SetWallsDestroyed()
-    {
-        wallsDestroyed++;
     }
 
     public void CleanSlot()

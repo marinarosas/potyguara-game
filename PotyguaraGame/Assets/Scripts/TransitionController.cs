@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,7 @@ public class TransitionController : MonoBehaviour
     private bool isSkip = false;
     private int tempMode;
     private int tempSceneIndex = -1;
+    private bool isTheFirstAcess;
 
     public static TransitionController Instance;
 
@@ -27,6 +29,26 @@ public class TransitionController : MonoBehaviour
             Destroy(gameObject);
     }
 
+    public void UpdateMainMenu(bool value)
+    {
+        if (isTheFirstAcess != value)
+        {
+            if (value)
+            {
+                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
+                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(1));
+                GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Criar Perfil";
+            }
+            else
+            {
+                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
+                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(2));
+                GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Iniciar Jogo";
+            }
+            isTheFirstAcess = value;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -39,6 +61,20 @@ public class TransitionController : MonoBehaviour
                 FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
 
             isSkip = false;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (!isTheFirstAcess)
+            {
+                GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().DeletePerfil());
+                GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(true);
+            }
+            else
+            {
+                GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.RemoveAllListeners();
+                GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(false);
+            }
         }
     }
 
@@ -74,7 +110,6 @@ public class TransitionController : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        //Launch the new scene
         SceneManager.LoadScene(sceneIndex);
     }
 

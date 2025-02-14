@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.SceneManagement;
 
 public class LeftHandController : MonoBehaviour
 {
@@ -21,15 +22,18 @@ public class LeftHandController : MonoBehaviour
             devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
             if (Ybutton) // Y button pressed
             {
-                GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
-                if (menu != null)
+                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
                 {
-                    if (!changedStatus)
+                    GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
+                    if (menu != null)
                     {
-                        controlMenu = !controlMenu;
-                        menu.SetActive(controlMenu);
-                        changedStatus = true;
-                        Invoke("ChangeStatus", .3f);
+                        if (!changedStatus)
+                        {
+                            controlMenu = !controlMenu;
+                            menu.SetActive(controlMenu);
+                            changedStatus = true;
+                            Invoke("ChangeStatus", .3f);
+                        }
                     }
                 }
             }

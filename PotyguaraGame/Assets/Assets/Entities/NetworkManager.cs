@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.UI;
@@ -18,11 +20,13 @@ public class NetworkManager : MonoBehaviour
 
     // Endereço do servidor
     public string serverAddress = "wss://potyws.ffcloud.com.br";
+
     // WebSocket para comunicação com o servidor
     private WebSocket ws;
 
     private string rankingZ = "";
     private string rankingB = "";
+    private bool isTheFirstAcess = true;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -123,6 +127,7 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
+                    isTheFirstAcess = true;
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -149,6 +154,11 @@ public class NetworkManager : MonoBehaviour
                 case "RankingB":
                     Debug.Log("Recebi: " + response.parameters["ranking"]);
                     rankingB = response.parameters["ranking"];
+                    break;
+                case "Reconnection":
+                    this.playerId = response.parameters["playerId"];
+                    isTheFirstAcess = false;
+                    Debug.Log("Reconnectou!!!");
                     break;
                 default:
                     break;
@@ -242,6 +252,20 @@ public class NetworkManager : MonoBehaviour
         ws.Send(action.ToJson());
     }
 
+    internal void DeletePerfil(string playerId)
+    {
+        Action action = new Action()
+        {
+            type = "DeletePerfil",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+            }
+        };
+        ws.Send(action.ToJson());
+        FindFirstObjectByType<TransitionController>().ExitGame();
+    }
+
     /// <summary>
     /// Atualiza a posição dos jogadores na cena, de acordo com o gameState.
     /// Se um jogador não existir na cena, ele é instanciado.
@@ -295,6 +319,9 @@ public class NetworkManager : MonoBehaviour
                 FindObjectOfType<RankingController>().UpdateRanking(1);
                 rankingB = "";
             }
+
+            if(SceneManager.GetActiveScene().buildIndex == 0)
+                FindFirstObjectByType<TransitionController>().UpdateMainMenu(isTheFirstAcess);
         }
     }
 }

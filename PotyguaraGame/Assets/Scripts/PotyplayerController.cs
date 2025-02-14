@@ -1,10 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
 {
     private PotyPlayer potyPlayer;
     private NetworkManager nm;
+
+    public Toggle toggleTutorial;
     public string PlayerId
     {
         get
@@ -76,6 +79,11 @@ public class PotyPlayerController : MonoBehaviour
         }
 
         FindFirstObjectByType<NetworkManager>().SendUpdateSkin(skin, material);
+    }
+
+    public void DeletePerfil()
+    {
+        FindFirstObjectByType<NetworkManager>().DeletePerfil(PlayerId);
     }
 
     private void OnCollisionEnter(Collision collision)

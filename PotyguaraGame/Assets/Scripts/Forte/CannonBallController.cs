@@ -10,6 +10,11 @@ public class CannonBallController : MonoBehaviour
     void Awake()
     {
         visualEffect = transform.GetChild(0).GetComponent<VisualEffect>();
+    }
+    
+    void Start()
+    {
+        visualEffect.Stop();
         visualEffect.Reinit();
     }
 
