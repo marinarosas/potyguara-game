@@ -65,12 +65,12 @@ public class PotyPlayerController : MonoBehaviour
 
     public void StorageSkin()
     {
-        AvatarMenuController[] menus = FindObjectsByType<AvatarMenuController>(FindObjectsSortMode.InstanceID);
+        AvatarOptionController[] menus = FindObjectsByType<AvatarOptionController>(FindObjectsSortMode.InstanceID);
 
         int skin = 0;
         int material = 0;
 
-        foreach (AvatarMenuController menu in menus)
+        foreach (AvatarOptionController menu in menus)
         {
             if (menu.gameObject.name.Equals("Skin"))
                 skin = menu.index;

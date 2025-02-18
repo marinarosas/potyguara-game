@@ -129,7 +129,7 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
-    protected void changeMaterial(int index)
+    public void changeMaterial(int index)
     {
         if (index < 0)
             index = 0;
