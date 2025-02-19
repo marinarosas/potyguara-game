@@ -1,3 +1,4 @@
+using Steamworks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,6 @@ public class PotyPlayerController : MonoBehaviour
 {
     public PotyPlayer potyPlayer;
     private NetworkManager nm;
-    public Toggle toggleTutorial;
 
     public string PlayerId
     {
@@ -54,12 +54,8 @@ public class PotyPlayerController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Transform toggleTransform = GameObject.FindWithTag("MainMenu").transform.GetChild(0).GetChild(4);
-        if(toggleTransform != null)
-            toggleTutorial = toggleTransform.GetComponent<Toggle>();
         nm = NetworkManager.Instance;
     }
-
     public void SetScore(int value, int gameMode)
     {
         if(gameMode == 0)

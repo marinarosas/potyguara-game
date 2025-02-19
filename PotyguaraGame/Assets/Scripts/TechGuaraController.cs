@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,15 +8,25 @@ using UnityEngine.SceneManagement;
 public class TechGuaraController : MonoBehaviour
 {
     private Report report;
+    private bool modeTutorial = true;
     private AudioSource audioSource;
     [SerializeField] private List<AudioClip> audios;
 
+    public void SetMode(Boolean value)
+    {
+        modeTutorial = value;
+    }
+
+    public Boolean GetMode()
+    {
+        return modeTutorial;
+    }
     void Start()
     {
         audioSource = transform.GetChild(2).GetComponent<AudioSource>();
         report = transform.GetChild(0).GetComponent<Report>();
 
-        if (FindFirstObjectByType<PotyPlayerController>().toggleTutorial.isOn)
+        if (modeTutorial)
         {
             transform.gameObject.SetActive(true);
             if (SceneManager.GetActiveScene().buildIndex == 0)

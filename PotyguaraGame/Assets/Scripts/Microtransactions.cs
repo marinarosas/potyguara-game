@@ -8,7 +8,7 @@ public class Microtransaction : MonoBehaviour
 {
     [SerializeField] private string baseUrl = "http://127.0.0.1:3000"; // Set this to your API base URL
     [SerializeField] private string appId = "3181940"; // replace with your own appId
-    [SerializeField] private List<WWWForm> wWWForms;
+    [SerializeField] private List<WWWForm> wWWForms = new List<WWWForm>();
 
     // finish transaction callback
     protected Callback<MicroTxnAuthorizationResponse_t> m_MicroTxnAuthorizationResponse;

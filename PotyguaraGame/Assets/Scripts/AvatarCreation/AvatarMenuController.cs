@@ -47,12 +47,12 @@ public class AvatarMenuController : MonoBehaviour
         if (!SteamManager.Initialized)
             return;
 
-        PotyPlayerController.Instance.potyPlayer.nickname = SteamFriends.GetPersonaName();
-
+        //PotyPlayerController.Instance.potyPlayer.nickname = SteamFriends.GetPersonaName();
         string gender = options[(int)Option.GENDER].GetOption();
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
         FindFirstObjectByType<NetworkManager>().SendUpdateSkin(gender, skinIndex, variant);
+        FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
     }
 
 

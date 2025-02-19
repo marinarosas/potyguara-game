@@ -32,7 +32,7 @@ public class NetworkManager : MonoBehaviour
     private bool isTheFirstAcess = true;
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
-    private int currentDay;
+    private string currentDay;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -67,8 +67,11 @@ public class NetworkManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         ConnectToServer();
+    }
+    private void Start()
+    {
+        currentDay= DateTime.Today.DayOfWeek.ToString();
     }
 
     // Id do jogador local. É definido pelo servidor após a conexão com o evento "Wellcome"
@@ -150,9 +153,8 @@ public class NetworkManager : MonoBehaviour
                     // A mudança de posição dos jogadores é feita no método Update() que irá consultar o
                     // gameState para saber a posição dos jogadores e atualizar a posição dos objetos na cena.
                     gameState = response.gameState;
-                    // mostrar o novo estado do jogo
-                    currentDay = int.Parse(response.parameters["day"]);
-                    if(response.parameters["connection"].Equals("online"))
+                    // mostrar o novo estado do jogO
+                    if (response.parameters["connection"].Equals("online"))
                         playerIsConnected = true;
                     else
                         playerIsConnected = false;
@@ -286,21 +288,6 @@ public class NetworkManager : MonoBehaviour
         ws.Send(action.ToJson());
     }
 
-    internal void RequestCurrentPotycoins()
-    {
-        Action action = new Action()
-        {
-            type = "GetPotycoins",
-            actor = this.playerId,
-            parameters = new Dictionary<string, string>()
-            {
-            }
-        };
-
-        // envia a pontuação final no jogo do Forte para o servidor
-        ws.Send(action.ToJson());
-    }
-
     internal void DeletePerfil(string playerId)
     {
         Action action = new Action()
@@ -340,22 +327,22 @@ public class NetworkManager : MonoBehaviour
                 }
 
                 // Buscar o jogador na cena pelo playerId
-                GameObject playerObject = GameObject.Find(playerId);
+                //GameObject playerObject = GameObject.Find(playerId);
 
 
                 // Se o jogador não existir, instanciar um novo jogador
-                if (playerObject == null) {
-                    playerObject = Instantiate(RemotePlayerPrefab) as GameObject;
+                /*if (playerObject == null) {
+                    playerObject = Instantiate(LocalPlayerPrefab);
                     playerObject.name = playerId;
-                }
+                }*/
 
                 // Atualizar a posição do jogador
                 // TODO: implementar interpolação de movimento
-                playerObject.transform.position = new Vector3(
+                /*playerObject.transform.position = new Vector3(
                     gameState.players[playerId].position_x,
                     gameState.players[playerId].position_y,
                     gameState.players[playerId].position_z
-                );
+                );*/
             }
 
             if (!rankingZ.Equals("")) {
@@ -373,22 +360,32 @@ public class NetworkManager : MonoBehaviour
                 PotyPlayerController.Instance.potyPlayer.SetPotycoins(potycoin);
             }
 
-            int day = PotyPlayerController.Instance.potyPlayer.currentDay;
-            if (currentDay != day && playerIsConnected)
+            if (SceneManager.GetActiveScene().buildIndex == 2)
             {
-                GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-                Button button = GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetChild(5).GetComponent<Button>();
+                string day = DateTime.Today.DayOfWeek.ToString();
+                if (isTheFirstAcess)
+                {
+                    GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
+                    Button button = GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetChild(5).GetComponent<Button>();
 
-                if (button != null)
-                    canva.GetComponent<FadeController>().FadeIn();
+                    if (button != null)
+                        canva.GetComponent<FadeController>().FadeIn();
                     button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                }
+                else if (currentDay != day)
+                {
+                    GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
+                    Button button = GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetChild(5).GetComponent<Button>();
 
-                PotyPlayerController.Instance.potyPlayer.currentDay = currentDay;
+                    if (button != null)
+                        canva.GetComponent<FadeController>().FadeIn();
+                    button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                    currentDay = day;
+                }
             }
 
             if (SceneManager.GetActiveScene().buildIndex == 0)
                 FindFirstObjectByType<TransitionController>().UpdateMainMenu(isTheFirstAcess);
-
         }
     }
 }

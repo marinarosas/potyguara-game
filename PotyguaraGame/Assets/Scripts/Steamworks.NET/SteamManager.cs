@@ -125,8 +125,8 @@ public class SteamManager : MonoBehaviour {
 
 			return;
 		}
-
-		s_EverInitialized = true;
+        PotyPlayerController.Instance.potyPlayer = new PotyPlayer(SteamFriends.GetPersonaName());
+        s_EverInitialized = true;
 	}
 	
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.

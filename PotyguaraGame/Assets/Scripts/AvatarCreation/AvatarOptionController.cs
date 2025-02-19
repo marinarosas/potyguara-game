@@ -51,9 +51,9 @@ public class AvatarOptionController : MonoBehaviour
             case Option.GENDER:
                 return editSkin.name;
             case Option.SKIN:
-                return skins[index].ToString();
+                return index.ToString();
             case Option.VARIANT:
-                return materials[index].ToString();
+                return index.ToString();
             default:
                 return "";
         }

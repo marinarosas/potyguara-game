@@ -19,17 +19,22 @@ public class MenuController : MonoBehaviour
 
     private bool updatedMenu = false;
     private int currentScene;
+
+    public Toggle toggleTutorial;
+
     private TransitionController transitionController;
     [SerializeField] private List<Sprite> galleryImages;
 
     void Start()
     {
+        toggleTutorial.onValueChanged.AddListener(FindFirstObjectByType<TechGuaraController>().SetMode);
         int count = 0;
         foreach (var image in galleryImages) 
         { 
             transform.GetChild(count).GetComponent<Image>().sprite = image;
             count++;
         }
+
 
         for (int ii = 0; ii < transform.childCount; ii++)
             transform.GetChild(ii).gameObject.SetActive(true);
