@@ -16,7 +16,7 @@ public class Skin : ScriptableObject
 {
     [SerializeField] private string skinName;
     [SerializeField] public SkinnedMeshRenderer[] skinMeshes;
-    [SerializeField] private SkinMaterial[] skinMaterials;
+    public SkinMaterial[] skinMaterials;
     [SerializeField]
     public bool hasHair = true, hasHead = true, hasChest = true, hasBelly = true,
                                     hasArms = true, hasForearms = true, hasHands = true, hasHips = true,
