@@ -77,22 +77,8 @@ public class AvatarOptionController : MonoBehaviour
             index = 0;
         else
             index++;
-        pagination.UpdatePagination(index);
 
-
-        switch (option){
-            case Option.GENDER:
-                refreshGenders(index);
-                break;
-            case Option.SKIN:
-                editSkin.changeMesh(index);
-                menuController.SetVariantList(index, 0);
-                break;
-            case Option.VARIANT:
-                editSkin.changeMaterial(index);
-                break;
-        }
-        UpdateText();
+        SetOption();
     }
 
     void PreviousMenu<T>(List<T> menu)
@@ -101,21 +87,8 @@ public class AvatarOptionController : MonoBehaviour
             index = menu.Count - 1;
         else
             index--;
-        pagination.UpdatePagination(index);
 
-        switch (option){
-            case Option.GENDER:
-                refreshGenders(index);
-                break;
-            case Option.SKIN:
-                editSkin.changeMesh(index);
-                menuController.SetVariantList(index, 0);
-                break;
-            case Option.VARIANT:
-                editSkin.changeMaterial(index);
-                break;
-        }
-        UpdateText();
+        SetOption();
     }
 
     void SetOption()
@@ -130,6 +103,7 @@ public class AvatarOptionController : MonoBehaviour
             case Option.SKIN:
                 editSkin.changeMesh(index);
                 menuController.SetVariantList(index, 0);
+                editSkin.GetComponent<Animator>().Play("Look at yourself", -1, 0f);
                 break;
             case Option.VARIANT:
                 editSkin.changeMaterial(index);
@@ -137,6 +111,7 @@ public class AvatarOptionController : MonoBehaviour
         }
         UpdateText();
     }
+
     private void UpdateText()
     {
         switch (option)
