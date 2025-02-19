@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 46713ca58de687b4db4d9684c7021923
+guid: 75fd54f32f02844409689373d12b4c67
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
-  isPreloaded: 0
-  isOverridable: 1
+  isPreloaded: 1
+  isOverridable: 0
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
@@ -19,7 +19,6 @@ PluginImporter:
         Exclude Editor: 0
         Exclude Linux64: 0
         Exclude OSXUniversal: 0
-        Exclude WebGL: 1
         Exclude Win: 0
         Exclude Win64: 0
   - first:
@@ -32,21 +31,21 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        CPU: x86_64
+        CPU: AnyCPU
         DefaultValueInitialized: true
-        OS: Windows
+        OS: AnyOS
   - first:
       Standalone: Linux64
     second:
       enabled: 1
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Standalone: OSXUniversal
     second:
       enabled: 1
       settings:
-        CPU: x86_64
+        CPU: None
   - first:
       Standalone: Win
     second:
@@ -58,7 +57,7 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        CPU: x86_64
+        CPU: None
   userData: 
   assetBundleName: 
   assetBundleVariant: 

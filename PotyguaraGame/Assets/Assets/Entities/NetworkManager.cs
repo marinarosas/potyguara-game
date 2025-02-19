@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
+using System.Collections.Concurrent;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -26,7 +28,11 @@ public class NetworkManager : MonoBehaviour
 
     private string rankingZ = "";
     private string rankingB = "";
+
     private bool isTheFirstAcess = true;
+    private bool playerIsConnected = false;
+    private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
+    private int currentDay;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -145,9 +151,13 @@ public class NetworkManager : MonoBehaviour
                     // gameState para saber a posição dos jogadores e atualizar a posição dos objetos na cena.
                     gameState = response.gameState;
                     // mostrar o novo estado do jogo
+                    currentDay = int.Parse(response.parameters["day"]);
+                    if(response.parameters["connection"].Equals("online"))
+                        playerIsConnected = true;
+                    else
+                        playerIsConnected = false;
                     break;
                 case "RankingZ":
-                    //Debug.Log("Recebi: " + response.parameters["ranking"]);
                     rankingZ = response.parameters["ranking"];
                     Debug.Log("Recebi Zumbi: " + rankingZ);
                     break;
@@ -160,6 +170,11 @@ public class NetworkManager : MonoBehaviour
                     isTheFirstAcess = false;
                     Debug.Log("Reconnectou!!!");
                     break;
+                case "Potycoins":
+                    potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
+                    break;
+                case "CurrentDay":
+
                 default:
                     break;
             }
@@ -248,6 +263,37 @@ public class NetworkManager : MonoBehaviour
             }
         };
 
+        // envia a atualização da skin para o servidor
+        ws.Send(action.ToJson());
+    }
+
+    internal void UpdatePotycoins(int potycoins)
+    {
+        Action action = new Action()
+        {
+            type = "UpdatePotycoins",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+                {"potycoins", potycoins.ToString() },
+            }
+        };
+
+        // envia a pontuação final no jogo do Forte para o servidor
+        ws.Send(action.ToJson());
+    }
+
+    internal void RequestCurrentPotycoins()
+    {
+        Action action = new Action()
+        {
+            type = "GetPotycoins",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+            }
+        };
+
         // envia a pontuação final no jogo do Forte para o servidor
         ws.Send(action.ToJson());
     }
@@ -274,7 +320,6 @@ public class NetworkManager : MonoBehaviour
     void Update() {
         // A cada frame, verificar se precisa instanciar quantos RemotePlayerPrefab e
         // LocalPlayerPrefab forem necessários
-        //Debug.Log("Avaliando UPDATE" + gameState.ToString());
         if (gameState != null) {
 
             // Para cada jogador no gameState verificar se o jogador já existe na cena
@@ -320,8 +365,27 @@ public class NetworkManager : MonoBehaviour
                 rankingB = "";
             }
 
-            if(SceneManager.GetActiveScene().buildIndex == 0)
+            while (potycoins.TryDequeue(out int potycoin))
+            {
+                FindFirstObjectByType<PotyPlayerController>().potyPlayer.SetPotycoins(potycoin);
+            }
+
+            int day = FindFirstObjectByType<PotyPlayerController>().potyPlayer.currentDay;
+            if (currentDay != day && playerIsConnected)
+            {
+                GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
+                Button button = GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetChild(5).GetComponent<Button>();
+
+                if (button != null)
+                    canva.GetComponent<FadeController>().FadeIn();
+                    button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
+
+                FindFirstObjectByType<PotyPlayerController>().potyPlayer.currentDay = currentDay;
+            }
+
+            if (SceneManager.GetActiveScene().buildIndex == 0)
                 FindFirstObjectByType<TransitionController>().UpdateMainMenu(isTheFirstAcess);
+
         }
     }
 }

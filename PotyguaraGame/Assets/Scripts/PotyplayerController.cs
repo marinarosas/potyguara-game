@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
 {
-    private PotyPlayer potyPlayer;
+    public PotyPlayer potyPlayer;
     private NetworkManager nm;
-
     public Toggle toggleTutorial;
+
     public string PlayerId
     {
         get
@@ -22,15 +22,42 @@ public class PotyPlayerController : MonoBehaviour
     // Quantas vezes por segundo enviar a posição para o servidor
     public float updateServerTimesPerSecond = 10;
 
+    //  Singleton stuff
+    private static PotyPlayerController _instance;
+
+    public static PotyPlayerController Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<PotyPlayerController>();
+                if (_instance == null)
+                {
+                    GameObject obj = new GameObject("PotyPlayerController");
+                    _instance = obj.AddComponent<PotyPlayerController>();
+                }
+            }
+            return _instance;
+        }
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+        Transform toggleTransform = GameObject.FindWithTag("MainMenu").transform.GetChild(0).GetChild(4);
+        if(toggleTransform != null)
+            toggleTutorial = toggleTransform.GetComponent<Toggle>();
         nm = NetworkManager.Instance;
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //potyPlayer = new PotyPlayer("Bianca", new GameObject());
     }
 
     public void SetScore(int value, int gameMode)
@@ -84,6 +111,15 @@ public class PotyPlayerController : MonoBehaviour
     public void DeletePerfil()
     {
         FindFirstObjectByType<NetworkManager>().DeletePerfil(PlayerId);
+    }
+
+    public void UpdatePotycoins(int value, Button btn, GameObject canva)
+    {
+        potyPlayer.SetPotycoins(value);
+        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potyPlayer.GetPotycoins());
+        canva.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(canva);
+
+        btn.onClick.RemoveAllListeners();
     }
 
     private void OnCollisionEnter(Collision collision)
