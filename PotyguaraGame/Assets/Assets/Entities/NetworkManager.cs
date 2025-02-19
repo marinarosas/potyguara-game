@@ -226,6 +226,7 @@ public class NetworkManager : MonoBehaviour
                 actor = this.playerId,
                 parameters = new Dictionary<string, string>()
             {
+                { "nickname", PotyPlayerController.Instance.potyPlayer.nickname },
                 { "pointing", totalPoints.ToString() }
             }
             };
@@ -241,6 +242,7 @@ public class NetworkManager : MonoBehaviour
                 actor = this.playerId,
                 parameters = new Dictionary<string, string>()
             {
+                { "nickname", PotyPlayerController.Instance.potyPlayer.nickname },
                 { "pointing", totalPoints.ToString() }
             }
             };
@@ -250,7 +252,7 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    internal void SendUpdateSkin(int skinIndex, int skinMaterial)
+    internal void SendUpdateSkin(string skinGender, int skinIndex, int skinMaterial)
     {
         Action action = new Action()
         {
@@ -258,6 +260,7 @@ public class NetworkManager : MonoBehaviour
             actor = this.playerId,
             parameters = new Dictionary<string, string>()
             {
+                { "gender", skinGender},
                 { "index", skinIndex.ToString() },
                 { "material", skinMaterial.ToString() }
             }
@@ -367,10 +370,10 @@ public class NetworkManager : MonoBehaviour
 
             while (potycoins.TryDequeue(out int potycoin))
             {
-                FindFirstObjectByType<PotyPlayerController>().potyPlayer.SetPotycoins(potycoin);
+                PotyPlayerController.Instance.potyPlayer.SetPotycoins(potycoin);
             }
 
-            int day = FindFirstObjectByType<PotyPlayerController>().potyPlayer.currentDay;
+            int day = PotyPlayerController.Instance.potyPlayer.currentDay;
             if (currentDay != day && playerIsConnected)
             {
                 GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
@@ -378,9 +381,9 @@ public class NetworkManager : MonoBehaviour
 
                 if (button != null)
                     canva.GetComponent<FadeController>().FadeIn();
-                    button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
+                    button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
 
-                FindFirstObjectByType<PotyPlayerController>().potyPlayer.currentDay = currentDay;
+                PotyPlayerController.Instance.potyPlayer.currentDay = currentDay;
             }
 
             if (SceneManager.GetActiveScene().buildIndex == 0)

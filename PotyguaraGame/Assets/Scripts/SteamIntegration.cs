@@ -23,8 +23,6 @@ public class SteamIntegration : MonoBehaviour
 
     public void SendUsernameSteam()
     {
-        HAuthTicket ticket =  SteamUser.GetAuthTicketForWebApi("0AE12415B02F2D1A7FBC0093AE27FC2B");
-     
         Debug.Log(SteamFriends.GetPersonaName());
         CSteamID steamID = SteamUser.GetSteamID();
         

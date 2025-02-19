@@ -23,10 +23,6 @@ public class AvatarOptionController : MonoBehaviour
     private List<Skin> skins;
     private List<SkinMaterial> materials;
 
-    // puxar da AWS
-    //private List<string> skins = new List<string> { "padrão", "fantasma", "papai noel", "surfista", "alien" };
-    //private List<string> materials = new List<string> { "preto", "amarelo", "azul", "branco", "roxo", "verde" };
-
     private void Start()
     {
         switch (option)
@@ -45,6 +41,21 @@ public class AvatarOptionController : MonoBehaviour
                 left.onClick.AddListener(() => PreviousMenu(materials));
                 right.onClick.AddListener(() => NextMenu(materials));
                 break;
+        }
+    }
+
+    public string GetOption()
+    {
+        switch (option)
+        {
+            case Option.GENDER:
+                return editSkin.name;
+            case Option.SKIN:
+                return skins[index].ToString();
+            case Option.VARIANT:
+                return materials[index].ToString();
+            default:
+                return "";
         }
     }
 

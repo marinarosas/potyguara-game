@@ -1,3 +1,5 @@
+using Steamworks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +41,20 @@ public class AvatarMenuController : MonoBehaviour
         SetSkinList(skinIndex);
         SetVariantList(skinIndex, skinMaterial);
     }
+
+    public void SendChosenSkin()
+    {
+        if (!SteamManager.Initialized)
+            return;
+
+        PotyPlayerController.Instance.potyPlayer.nickname = SteamFriends.GetPersonaName();
+
+        string gender = options[(int)Option.GENDER].GetOption();
+        int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
+        int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
+        FindFirstObjectByType<NetworkManager>().SendUpdateSkin(gender, skinIndex, variant);
+    }
+
 
     public void SetGenderList(int bodyIndex)
     {

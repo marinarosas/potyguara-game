@@ -90,24 +90,6 @@ public class PotyPlayerController : MonoBehaviour
         right.GetChild(2).gameObject.SetActive(true);
     }
 
-    public void StorageSkin()
-    {
-        AvatarOptionController[] menus = FindObjectsByType<AvatarOptionController>(FindObjectsSortMode.InstanceID);
-
-        int skin = 0;
-        int material = 0;
-
-        foreach (AvatarOptionController menu in menus)
-        {
-            if (menu.gameObject.name.Equals("Skin"))
-                skin = menu.index;
-            else
-                material = menu.index;
-        }
-
-        FindFirstObjectByType<NetworkManager>().SendUpdateSkin(skin, material);
-    }
-
     public void DeletePerfil()
     {
         FindFirstObjectByType<NetworkManager>().DeletePerfil(PlayerId);
