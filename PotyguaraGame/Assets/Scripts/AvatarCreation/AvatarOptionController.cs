@@ -131,7 +131,7 @@ public class AvatarOptionController : MonoBehaviour
                 label.text = editSkin.name;
                 break;
             case Option.SKIN:
-                label.text = skins[index].name;
+                label.text = skins[index].getName();
                 break;
             case Option.VARIANT:
                 label.text = materials[index].name;
