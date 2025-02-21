@@ -141,7 +141,7 @@ public class SpawnerController : MonoBehaviour
                 timer.gameObject.SetActive(true);
                 if (timer.GetChild(0).GetComponent<Text>().text == "0")
                 {
-                    foreach(Transform enemy in slot)
+                    foreach (Transform enemy in slot)
                         Destroy(enemy.gameObject);
 
                     timer.gameObject.SetActive(false);
@@ -151,6 +151,14 @@ public class SpawnerController : MonoBehaviour
                     finishUI.transform.GetChild(3).gameObject.SetActive(false);
                     finishUI.transform.GetChild(6).gameObject.SetActive(true);
                     finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
+                    Achievement.Instance.partidas_defesaForte++;
+
+                    if(Achievement.Instance.partidas_defesaForte == 50)
+                        Achievement.Instance.UnclockAchievement("guerreiro_fortaleza");
+                    if(Achievement.Instance.partidas_defesaForte == 100)
+                        Achievement.Instance.UnclockAchievement("maquina_guerra");
+
+                    Achievement.Instance.SetStat("navios_levas", Achievement.Instance.ships_levas);
 
                     finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();
@@ -159,8 +167,20 @@ public class SpawnerController : MonoBehaviour
                     SendForRanking(1);
                 }
                 else
-                    if(slot.childCount == 0)
-                        FindFirstObjectByType<SpawnerController>().SetSpawn();
+                    if (slot.childCount == 0)
+                {
+                    Achievement.Instance.ships_levas++;
+
+                    if (Achievement.Instance.partidas_defesaForte == 1)
+                        Achievement.Instance.UnclockAchievement("defensor");
+                    if (Achievement.Instance.partidas_defesaForte == 3)
+                        Achievement.Instance.UnclockAchievement("capitan_fortaleza");
+                    if (Achievement.Instance.partidas_defesaForte == 7)
+                        Achievement.Instance.UnclockAchievement("mao_de_martelo");
+
+                    Achievement.Instance.SetStat("navios_levas", Achievement.Instance.ships_levas);
+                    FindFirstObjectByType<SpawnerController>().SetSpawn();
+                }
             }
         }
         else
@@ -184,6 +204,8 @@ public class SpawnerController : MonoBehaviour
 
                 if (currentLevel == 2)
                 {
+                    Achievement.Instance.UnclockAchievement("end_line");
+
                     finishUI.transform.GetChild(3).gameObject.SetActive(false);
                     finishUI.transform.GetChild(6).gameObject.SetActive(true);
                     finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);

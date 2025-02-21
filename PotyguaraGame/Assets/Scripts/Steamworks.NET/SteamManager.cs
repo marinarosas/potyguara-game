@@ -125,7 +125,7 @@ public class SteamManager : MonoBehaviour {
 
 			return;
 		}
-        PotyPlayerController.Instance.potyPlayer = new PotyPlayer(SteamFriends.GetPersonaName());
+
         s_EverInitialized = true;
 	}
 	

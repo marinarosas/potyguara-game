@@ -132,7 +132,7 @@ public class GameForteController : MonoBehaviour
         Transform finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0);
         finishUI.GetChild(1).GetComponent<Text>().text = "Você Perdeu!!!";
         finishUI.GetChild(3).GetChild(0).GetComponent<Text>().text = "Repetir Nivel";
-        finishUI.GetChild(3).GetComponent<Button>().onClick.AddListener(ResetLevel);
+        finishUI.GetChild(3).GetComponent<Button>().onClick.AddListener(()=> ResetLevel(finishUI.gameObject));
 
         finishUI.gameObject.SetActive(true);
     }
@@ -151,7 +151,7 @@ public class GameForteController : MonoBehaviour
         ManageWalls(value);
     }
 
-    private void ResetLevel()
+    private void ResetLevel(GameObject finishUI)
     {
         try
         {
@@ -175,7 +175,7 @@ public class GameForteController : MonoBehaviour
             }
             else
                 FindFirstObjectByType<SpawnerController>().CleanSlot();
-
+            finishUI.gameObject.SetActive(true);
             FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
         }
         catch (Exception e)
@@ -188,6 +188,11 @@ public class GameForteController : MonoBehaviour
     {
         try
         {
+            if (Achievement.Instance.isFirstDeadInZombieMode)
+            {
+                Achievement.Instance.UnclockAchievement("player_dead");
+                Achievement.Instance.isFirstDeadInZombieMode = false;
+            }
             FindFirstObjectByType<SpawnerController>().SetLevel();
             FindFirstObjectByType<GameForteController>().ResetCount();
             handMenuLevel1.SetActive(true);

@@ -80,6 +80,7 @@ public class ZumbiController : MonoBehaviour
         navMesh.isStopped = true;
         ani.SetBool("IsWalking", false);
         ani.SetBool("IsRunning", false);
+
         if (!isDead)
         {
             ani.SetBool("IsDead", true);
@@ -136,6 +137,15 @@ public class ZumbiController : MonoBehaviour
                 collision.gameObject.GetComponent<BulletController>().playEffect();
                 collision.gameObject.GetComponent<BulletController>().StartBloodEffect(2f, 0.5f);
                 FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
+                Achievement.Instance.zombies++;
+
+                if (Achievement.Instance.partidas_defesaForte == 100)
+                    Achievement.Instance.UnclockAchievement("kill_100");
+                if (Achievement.Instance.partidas_defesaForte == 200)
+                    Achievement.Instance.UnclockAchievement("zumbinator");
+
+                Achievement.Instance.SetStat("zombies", Achievement.Instance.zombies);
+
                 MarkedPontuacion = true;
                 GetComponent<ZumbiController>().Dead();
                 Destroy(collision.gameObject, 3f);
