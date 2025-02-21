@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
 {
-    public PotyPlayer potyPlayer;
+    public PotyPlayer potyPlayer = null;
     private NetworkManager nm;
 
     public string PlayerId

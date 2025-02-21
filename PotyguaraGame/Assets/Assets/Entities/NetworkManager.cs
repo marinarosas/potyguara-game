@@ -11,6 +11,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using System.Collections.Concurrent;
+using Steamworks;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -136,6 +137,11 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
+
+                    if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
+                        return;
+
+                    PotyPlayerController.Instance.potyPlayer = new PotyPlayer(SteamFriends.GetPersonaName());
                     isTheFirstAcess = true;
                     break;
                 case "GameState":

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using UnityEngine.XR;
 using InputDevice = UnityEngine.XR.InputDevice;
 
@@ -9,6 +10,8 @@ public class PotyPlayer : MonoBehaviour
 
     private int normalModeGameForteScore = 0;
     private int zombieModeGameForteScore = 0;
+    private int positionRankingZombieMode;
+    private int positionRankingNormalMode;
     private Skin skin;
     private int potycoins=0;
 
@@ -30,6 +33,14 @@ public class PotyPlayer : MonoBehaviour
     public int GetPotycoins()
     {
         return potycoins;
+    }
+
+    public void SetPositionRanking(int value, int mode)
+    {
+        if (mode == 0)
+            positionRankingZombieMode = value;
+        else
+            positionRankingNormalMode = value;
     }
 
     public void SetScoreZombieMode(int value)

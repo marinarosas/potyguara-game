@@ -63,6 +63,11 @@ public class NavioController : MonoBehaviour
 
     public void Death()
     {
+        if (Achievement.Instance.isFirstShip)
+        {
+            Achievement.Instance.UnclockAchievement("first_ship");
+            Achievement.Instance.isFirstShip = false;
+        }
         Destroy(transform.parent.gameObject, 0.5f);
     }
 

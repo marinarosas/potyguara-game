@@ -18,6 +18,16 @@ public class HoverController : MonoBehaviour
         GameObject point = GameObject.Find("PointOfStart");
         if(point != null)
         {
+            Achievement.Instance.partidas_hover++;
+            if (Achievement.Instance.partidas_defesaForte == 1)
+                Achievement.Instance.UnclockAchievement("first_hover");
+            if (Achievement.Instance.partidas_defesaForte == 50)
+                Achievement.Instance.UnclockAchievement("50tou");
+            if (Achievement.Instance.partidas_defesaForte == 100)
+                Achievement.Instance.UnclockAchievement("centenario");
+
+            Achievement.Instance.SetStat("partidas_hover", Achievement.Instance.ships_levas);
+
             board.transform.position = point.transform.position;
             board.transform.GetChild(0).eulerAngles = new Vector3(0f, point.transform.eulerAngles.y, 0f);
             board.transform.eulerAngles = new Vector3(0f, point.transform.eulerAngles.y, 0f);

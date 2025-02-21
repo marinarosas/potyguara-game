@@ -47,7 +47,8 @@ public class AvatarMenuController : MonoBehaviour
         if (!SteamManager.Initialized)
             return;
 
-        //PotyPlayerController.Instance.potyPlayer.nickname = SteamFriends.GetPersonaName();
+        Achievement.Instance.UnclockAchievement("criando_vida");
+
         string gender = options[(int)Option.GENDER].GetOption();
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
