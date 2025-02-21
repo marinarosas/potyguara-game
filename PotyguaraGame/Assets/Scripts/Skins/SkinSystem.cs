@@ -9,7 +9,7 @@ public enum DIRECTION { Decrease, Increase }
 public class SkinSystem : MonoBehaviour{
     [SerializeField] public Transform rootBone;
     [SerializeField] public Transform skinContainer;
-    [SerializeField] public GameObject hair, head, chest, belly, arms, forearms, hands, hips, legs, ankles, feet;
+    [SerializeField] public GameObject hair, head, chest, belly, arms, forearms, hands, hips, legs, ankles, feet, beard;
     [SerializeField] public List<Skin> skins;
     [SerializeField] public Skin currentSkin = null;
     
@@ -100,6 +100,7 @@ public class SkinSystem : MonoBehaviour{
         head?.SetActive(skin.hasHead);
         chest?.SetActive(skin.hasChest);
         belly?.SetActive(skin.hasBelly);
+        beard?.SetActive(skin.hasBeard);
         arms?.SetActive(skin.hasArms);
         forearms?.SetActive(skin.hasForearms);
         hands?.SetActive(skin.hasHands);

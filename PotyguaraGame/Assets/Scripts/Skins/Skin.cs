@@ -18,7 +18,7 @@ public class Skin : ScriptableObject
     [SerializeField] public SkinnedMeshRenderer[] skinMeshes;
     public SkinMaterial[] skinMaterials;
     [SerializeField]
-    public bool hasHair = true, hasHead = true, hasChest = true, hasBelly = true,
+    public bool hasHair = true, hasBeard = false, hasHead = true, hasChest = true, hasBelly = true,
                                     hasArms = true, hasForearms = true, hasHands = true, hasHips = true,
                                     hasLegs = true, hasAnkles = true, hasFeet = true;
 

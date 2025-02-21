@@ -11,7 +11,7 @@ public class EditSystemEditor : Editor
     #region SerializedProps
     SerializedProperty skins;
     SerializedProperty currentSkin;
-    SerializedProperty hair, head, chest, belly, arms, forearms, hands, hips, legs, ankles, feet;
+    SerializedProperty hair, head, chest, belly, arms, forearms, hands, hips, legs, ankles, feet, beard;
     SerializedProperty skinContainer, rootBone;
 
     #endregion
@@ -31,6 +31,7 @@ public class EditSystemEditor : Editor
         legs = serializedObject.FindProperty("legs");
         ankles = serializedObject.FindProperty("ankles");
         feet = serializedObject.FindProperty("feet");
+        beard = serializedObject.FindProperty("beard");
 
         skinContainer = serializedObject.FindProperty("skinContainer");
         rootBone = serializedObject.FindProperty("rootBone");
@@ -54,6 +55,7 @@ public class EditSystemEditor : Editor
 
         EditorGUILayout.PropertyField(ankles, new GUIContent("ankles"));
         EditorGUILayout.PropertyField(arms, new GUIContent("arms"));
+        EditorGUILayout.PropertyField(beard, new GUIContent("beard"));
         EditorGUILayout.PropertyField(belly, new GUIContent("belly"));
         EditorGUILayout.PropertyField(chest, new GUIContent("chest"));
         EditorGUILayout.PropertyField(feet, new GUIContent("feet"));
