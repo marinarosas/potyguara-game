@@ -142,7 +142,6 @@ public class NetworkManager : MonoBehaviour
                         return;
 
                     PotyPlayerController.Instance.potyPlayer = new PotyPlayer(SteamFriends.GetPersonaName());
-                    isTheFirstAcess = true;
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -372,20 +371,27 @@ public class NetworkManager : MonoBehaviour
                 if (isTheFirstAcess)
                 {
                     GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-                    Button button = GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetChild(5).GetComponent<Button>();
+                    Button button = canva.transform.GetChild(5).GetComponent<Button>();
 
-                    if (button != null)
+                    if (button != null && canva != null)
+                    {
+                        canva.SetActive(true);
                         canva.GetComponent<FadeController>().FadeIn();
-                    button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                        button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                        isTheFirstAcess = false;
+                    }
                 }
                 else if (currentDay != day)
                 {
                     GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-                    Button button = GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetChild(5).GetComponent<Button>();
+                    Button button = canva.transform.GetChild(5).GetComponent<Button>();
 
-                    if (button != null)
+                    if (button != null && canva != null)
+                    {
+                        canva.SetActive(true);
                         canva.GetComponent<FadeController>().FadeIn();
-                    button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                        button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                    }
                     currentDay = day;
                 }
             }

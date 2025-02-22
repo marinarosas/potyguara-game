@@ -74,29 +74,29 @@ public class SpawnerController : MonoBehaviour
                 AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoBatalhadoForte");
                 FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Na Batalha do Forte, você será um defensor da fortaleza durante uma época de invasões no século 15. Escolha um" +
                     " canhão e lute para proteger a fortaleza a todo custo! Prepare-se para desafios intensos enquanto vive momentos de pura " +
-                    "estratégia e ação.", audio.clip.length, new Vector3(661.34f, 20.57f, 400.73f), 90f);
+                    "estratégia e ação.", audio.clip.length, new Vector3(665f, 20.44f, 400.36f), 90f);
                 audio.Play();
             }
-            FindFirstObjectByType<HeightController>().NewHeight(19.7f);
-            NextLevel(90f, new Vector3(654.91f, 19.7f, 400.95f));
+            FindFirstObjectByType<HeightController>().NewHeight(17.19f);
+            NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
         }
         else
         {
             if (currentLevel == 1)
             {
                 SetDestinyRandow(1);
-                FindFirstObjectByType<HeightController>().NewHeight(9.3f);
+                FindFirstObjectByType<HeightController>().NewHeight(7.98f);
 
                 if (FindFirstObjectByType<TechGuaraController>().GetMode())
                 {
                     AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
                     FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
                         " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
-                        "sobrevivência!", audio.clip.length, new Vector3(749.7f, 11.37f, 400.54f), 90f);
+                        "sobrevivência!", audio.clip.length, new Vector3(752.74f, 11.35f, 400.29f), 90f);
                     audio.Play();
                 }
 
-                NextLevel(90f, new Vector3(746.14f, 9.3f, 400.35f));
+                NextLevel(90f, new Vector3(749f, 7.98f, 400.44f));
             }
             if (currentLevel == 2)
             {
@@ -105,9 +105,9 @@ public class SpawnerController : MonoBehaviour
                 FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
                 SetDestinyRandow(2);
                 FindFirstObjectByType<GameForteController>().ResetCount();
-                FindFirstObjectByType<HeightController>().NewHeight(20.1f);
+                FindFirstObjectByType<HeightController>().NewHeight(17.19f);
                 UpdateLevelBar();
-                NextLevel(90f, new Vector3(654.91f, 20.1f, 400.95f));
+                NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
             }
         }
     }

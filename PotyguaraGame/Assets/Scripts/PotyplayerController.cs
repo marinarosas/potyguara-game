@@ -97,7 +97,7 @@ public class PotyPlayerController : MonoBehaviour
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potyPlayer.GetPotycoins());
         canva.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(canva);
 
-        btn.onClick.RemoveAllListeners();
+        //btn.onClick.RemoveAllListeners();
     }
 
     private void OnCollisionEnter(Collision collision)
