@@ -28,6 +28,7 @@ public class Achievement : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        ResetAchievement();
     }
 
     public void ResetAchievement()

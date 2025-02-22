@@ -17,7 +17,7 @@ public class SkinSystem : MonoBehaviour{
     protected int oldIndexSkin = -1;
     protected int indexMaterial = 0;
 
-    public static SkinSystem Instance = null;
+    /*public static SkinSystem Instance = null;
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class SkinSystem : MonoBehaviour{
 
         currentSkin = skins[0];
     }
-
+    */
 
     #region publicFunctions
 

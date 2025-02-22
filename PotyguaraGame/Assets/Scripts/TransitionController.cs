@@ -131,7 +131,7 @@ public class TransitionController : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         FindFirstObjectByType<HeightController>().NewHeight(8.15f);
         FindFirstObjectByType<LiftShowController>().GoToShow();
-        player.transform.position = new Vector3(177.8f, 8.15f, 113.15f);
+        player.transform.position = new Vector3(177.7f, 6.06f, 114.34f);
         player.transform.eulerAngles = Vector3.zero;
     }
 
