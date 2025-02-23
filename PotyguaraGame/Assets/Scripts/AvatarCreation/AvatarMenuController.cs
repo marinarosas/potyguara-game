@@ -49,7 +49,7 @@ public class AvatarMenuController : MonoBehaviour
 
         Achievement.Instance.UnclockAchievement("criando_vida");
 
-        string gender = options[(int)Option.GENDER].GetOption();
+        string gender = options[(int)Option.GENDER].GetOption(); //TODO: substitua por bodyIndex desse mesmo script
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
         FindFirstObjectByType<NetworkManager>().SendUpdateSkin(gender, skinIndex, variant);
@@ -71,5 +71,22 @@ public class AvatarMenuController : MonoBehaviour
     {
         materials = new List<SkinMaterial>(skins[skinIndex].skinMaterials);
         options[(int)Option.VARIANT].setList(skinMaterial);
+    }
+
+    public void refreshGenders(int index)
+    {
+        bodyIndex = index;
+        skinIndex = 0;
+        skinMaterial = 0;
+
+        editSkin = bodies[bodyIndex].GetComponent<SkinSystem>();
+        for (int i = 0; i < bodies.Count; i++)
+            bodies[i].SetActive(i == index);
+
+        SetSkinList(skinIndex);
+        SetVariantList(skinIndex, skinMaterial);
+        editSkin.changeMesh(skinIndex);
+        options[(int)Option.GENDER].refreshController();
+        options[(int)Option.GENDER].UpdateText();
     }
 }

@@ -59,9 +59,11 @@ public class AvatarOptionController : MonoBehaviour
         }
     }
 
+    public void refreshController() => editSkin = menuController.editSkin;
+
     public void setList(int index){
         this.index = index;
-        editSkin = menuController.editSkin;
+        refreshController();
         switch (option)
         {
             case Option.GENDER:
@@ -109,7 +111,7 @@ public class AvatarOptionController : MonoBehaviour
         switch (option)
         {
             case Option.GENDER:
-                refreshGenders(index);
+                menuController.refreshGenders(index);
                 break;
             case Option.SKIN:
                 editSkin.changeMesh(index);
@@ -123,7 +125,7 @@ public class AvatarOptionController : MonoBehaviour
         UpdateText();
     }
 
-    private void UpdateText()
+    public void UpdateText()
     {
         switch (option)
         {
@@ -137,12 +139,5 @@ public class AvatarOptionController : MonoBehaviour
                 label.text = materials[index].name;
                 break;
         }
-    }
-
-    public void refreshGenders(int index)
-    {
-        editSkin = bodies[index].GetComponent<SkinSystem>();
-        for (int i = 0; i < bodies.Count; i++)
-            bodies[i].SetActive(i == index);
     }
 }

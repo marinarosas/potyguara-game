@@ -100,7 +100,6 @@ public class SkinSystem : MonoBehaviour{
         head?.SetActive(skin.hasHead);
         chest?.SetActive(skin.hasChest);
         belly?.SetActive(skin.hasBelly);
-        beard?.SetActive(skin.hasBeard);
         arms?.SetActive(skin.hasArms);
         forearms?.SetActive(skin.hasForearms);
         hands?.SetActive(skin.hasHands);
@@ -108,6 +107,8 @@ public class SkinSystem : MonoBehaviour{
         legs?.SetActive(skin.hasLegs);
         ankles?.SetActive(skin.hasAnkles);
         feet?.SetActive(skin.hasFeet);
+        if (beard != null)
+            beard?.SetActive(skin.hasBeard);
     }
 
     public bool changeMaterial(DIRECTION direction)
