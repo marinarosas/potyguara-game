@@ -140,8 +140,6 @@ public class NetworkManager : MonoBehaviour
 
                     if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
                         return;
-
-                    PotyPlayerController.Instance.potyPlayer = new PotyPlayer(SteamFriends.GetPersonaName());
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -259,7 +257,7 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    internal void SendUpdateSkin(string skinGender, int skinIndex, int skinMaterial)
+    internal void SendUpdateSkin(int skinGender, int skinIndex, int skinMaterial)
     {
         Action action = new Action()
         {
@@ -267,7 +265,7 @@ public class NetworkManager : MonoBehaviour
             actor = this.playerId,
             parameters = new Dictionary<string, string>()
             {
-                { "gender", skinGender},
+                { "gender", skinGender.ToString()},
                 { "index", skinIndex.ToString() },
                 { "material", skinMaterial.ToString() }
             }
@@ -377,7 +375,7 @@ public class NetworkManager : MonoBehaviour
                     {
                         canva.SetActive(true);
                         canva.GetComponent<FadeController>().FadeIn();
-                        button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                        button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
                         isTheFirstAcess = false;
                     }
                 }

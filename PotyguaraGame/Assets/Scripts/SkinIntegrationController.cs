@@ -16,10 +16,15 @@ public class SkinIntegrationController : MonoBehaviour
     private void Start()
     {
         animator = transform.GetChild(2).GetComponent<Animator>();
-        if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5)
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5)
             transform.GetChild(2).gameObject.SetActive(false);
         else
+        {
+            transform.GetChild(2).GetComponent<EditSkin>().
             transform.GetChild(2).gameObject.SetActive(true);
+        }
+
+        
     }
 
     // Update is called once per frame
@@ -33,7 +38,13 @@ public class SkinIntegrationController : MonoBehaviour
         {
             animator.SetBool("isWalking", true);
         }*/
-
-        transform.GetChild(2).rotation = transform.rotation;
+        if (!animator.GetBool("isWalking"))
+        {
+            Transform mainCam = transform.GetChild(0).GetChild(0);
+            Transform avatar = transform.GetChild(2);
+            avatar.rotation = Quaternion.Euler(new Vector3(avatar.eulerAngles.x, mainCam.eulerAngles.y, avatar.eulerAngles.z));
+        }
+        else
+            transform.GetChild(2).rotation = transform.rotation;
     }
 }

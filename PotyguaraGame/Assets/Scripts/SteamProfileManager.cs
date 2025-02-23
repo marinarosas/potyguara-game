@@ -30,8 +30,7 @@ public class SteamProfileManager : MonoBehaviour
         if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
             return;
         if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
-            if(PotyPlayerController.Instance.potyPlayer != null)
-                qnt.text = PotyPlayerController.Instance.potyPlayer.GetPotycoins().ToString();
+                qnt.text = FindFirstObjectByType<PotyPlayerController>().potyPlayer.GetPotycoins().ToString();
     }
 
     void GetSteamAvatar(CSteamID steamID)

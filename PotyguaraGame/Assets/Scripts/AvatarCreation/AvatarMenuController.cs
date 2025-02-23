@@ -52,7 +52,17 @@ public class AvatarMenuController : MonoBehaviour
         string gender = options[(int)Option.GENDER].GetOption(); //TODO: substitua por bodyIndex desse mesmo script
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
-        FindFirstObjectByType<NetworkManager>().SendUpdateSkin(gender, skinIndex, variant);
+
+        if (gender.ToLower().Equals("masculino"))
+        {
+            FindFirstObjectByType<NetworkManager>().SendUpdateSkin(0, skinIndex, variant);
+            FindFirstObjectByType<PotyPlayerController>().potyPlayer.SetSkin(0, skinIndex, variant);
+        }
+        else
+        {
+            FindFirstObjectByType<NetworkManager>().SendUpdateSkin(1, skinIndex, variant);
+            FindFirstObjectByType<PotyPlayerController>().potyPlayer.SetSkin(1, skinIndex, variant);
+        }
         FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
     }
 

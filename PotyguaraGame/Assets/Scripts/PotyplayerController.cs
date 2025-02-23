@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
 {
-    public PotyPlayer potyPlayer = null;
+    public PotyPlayer potyPlayer = new PotyPlayer();
     private NetworkManager nm;
 
     public string PlayerId
@@ -23,45 +23,35 @@ public class PotyPlayerController : MonoBehaviour
     public float updateServerTimesPerSecond = 10;
 
     //  Singleton stuff
-    private static PotyPlayerController _instance;
+    public static PotyPlayerController Instance;
 
-    public static PotyPlayerController Instance
+    private void Awake()
     {
-        get
+        if (Instance == null)
         {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<PotyPlayerController>();
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject("PotyPlayerController");
-                    _instance = obj.AddComponent<PotyPlayerController>();
-                }
-            }
-            return _instance;
-        }
-    }
-
-    // Start is called before the first frame update
-    void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (_instance != this)
-        {
+        else
             Destroy(gameObject);
-        }
+
         nm = NetworkManager.Instance;
     }
+
     public void SetScore(int value, int gameMode)
     {
         if(gameMode == 0)
             potyPlayer.SetScoreZombieMode(value);
         else
             potyPlayer.SetScoreNormalMode(value);
+    }
+
+    private void Start()
+    {
+        if (!SteamManager.Initialized)
+            return;
+
+        potyPlayer.nickname = SteamFriends.GetPersonaName();
     }
 
     public void HideControllers()
@@ -96,8 +86,6 @@ public class PotyPlayerController : MonoBehaviour
         potyPlayer.SetPotycoins(value);
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potyPlayer.GetPotycoins());
         canva.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(canva);
-
-        //btn.onClick.RemoveAllListeners();
     }
 
     private void OnCollisionEnter(Collision collision)
