@@ -17,24 +17,6 @@ public class SkinSystem : MonoBehaviour{
     protected int oldIndexSkin = -1;
     protected int indexMaterial = 0;
 
-    /*public static SkinSystem Instance = null;
-
-    private void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-
-        currentSkin = skins[0];
-    }
-    */
-
     #region publicFunctions
 
     public void disableMeshes()
