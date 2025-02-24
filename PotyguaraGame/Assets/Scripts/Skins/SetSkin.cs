@@ -18,20 +18,19 @@ public class SetSkin : SkinSystem
 
     void Start()
     {
-        //TODO: puxar do server
+        int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
+        int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetVariant();
+        int skinGender = FindFirstObjectByType<PotyPlayerController>().GetGender();
 
-        //int skinIndex = ...
-        //int skinMaterial = ...
-        // -1 significa dado nao salvo
-        //bool serverHasSavedSkin = (skinIndex > -1 && skinMaterial > -1);
-        //if (skinContainer.childCount == 0 && serverHasSavedSkin)
-        //{
-        //    setSkin(skinIndex, skinMaterial);
-        //    Debug.Log("Recuperando skin...");
-        //}
+        bool serverHasSavedSkin = (skinIndex > -1 && skinMaterial > -1);
+        if (skinContainer.childCount == 0 && serverHasSavedSkin)
+        {
+            setSkin(skinGender, skinIndex, skinMaterial);
+            Debug.Log("Recuperando skin...");
+        }
     }
 
-    public void setSkin(int skinIndex, int skinMaterial)
+    public void setSkin(int skinGender, int skinIndex, int skinMaterial)
     {
         try
         {

@@ -145,15 +145,15 @@ public class Microtransaction : MonoBehaviour
                         {
                             if (Form.headers["itemId"].Equals("1001"))
                             {
-                                PotyPlayerController.Instance.potyPlayer.SetPotycoins(100);
+                                PotyPlayerController.Instance.SetPotycoins(100);
                             }else if (Form.headers["itemId"].Equals("1002")){
-                                PotyPlayerController.Instance.potyPlayer.SetPotycoins(250);
+                                PotyPlayerController.Instance.SetPotycoins(250);
                             }else if (Form.headers["itemId"].Equals("1003"))
                             {
-                                PotyPlayerController.Instance.potyPlayer.SetPotycoins(500);
+                                PotyPlayerController.Instance.SetPotycoins(500);
                             }else if (Form.headers["itemId"].Equals("1004"))
                             {
-                                PotyPlayerController.Instance.potyPlayer.SetPotycoins(1000);
+                                PotyPlayerController.Instance.SetPotycoins(1000);
                             }else if (Form.headers["itemId"].Equals("2002"))
                             {
 

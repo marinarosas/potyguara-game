@@ -56,12 +56,12 @@ public class AvatarMenuController : MonoBehaviour
         if (gender.ToLower().Equals("masculino"))
         {
             FindFirstObjectByType<NetworkManager>().SendUpdateSkin(0, skinIndex, variant);
-            FindFirstObjectByType<PotyPlayerController>().potyPlayer.SetSkin(0, skinIndex, variant);
+            FindFirstObjectByType<PotyPlayerController>().SetSkin(0, skinIndex, variant);
         }
         else
         {
             FindFirstObjectByType<NetworkManager>().SendUpdateSkin(1, skinIndex, variant);
-            FindFirstObjectByType<PotyPlayerController>().potyPlayer.SetSkin(1, skinIndex, variant);
+            FindFirstObjectByType<PotyPlayerController>().SetSkin(1, skinIndex, variant);
         }
         FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
     }
