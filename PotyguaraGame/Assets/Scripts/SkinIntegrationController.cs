@@ -8,23 +8,19 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class SkinIntegrationController : MonoBehaviour
 {
     public XRNode inputSource = XRNode.LeftHand; // Define qual controle será utilizado
-    public float speed = 1.5f; // Velocidade do movimento
 
     private Animator animator; // Referência ao Animator do avatar;
     private Vector2 inputAxis;
 
     private void Start()
     {
-        animator = transform.GetChild(2).GetComponent<Animator>();
+        Transform mainCam = transform.GetChild(0).GetChild(0);
+        Transform avatar = transform.GetChild(0).GetChild(5);
+        animator = transform.GetChild(0).GetChild(5).GetComponent<Animator>();
         if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5)
-            transform.GetChild(2).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild(5).gameObject.SetActive(false);
         else
-        {
-            transform.GetChild(2).GetComponent<EditSkin>().
-            transform.GetChild(2).gameObject.SetActive(true);
-        }
-
-        
+            transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -36,12 +32,13 @@ public class SkinIntegrationController : MonoBehaviour
         //bool isMoving = inputAxis.magnitude > 0.1f;
         /*if (animator != null)
         {
-            animator.SetBool("isWalking", true);
+            animator.SetBool("isWalking", isMoving);
         }*/
         if (!animator.GetBool("isWalking"))
         {
             Transform mainCam = transform.GetChild(0).GetChild(0);
-            Transform avatar = transform.GetChild(2);
+            Transform avatar = transform.GetChild(0).GetChild(5);
+
             avatar.rotation = Quaternion.Euler(new Vector3(avatar.eulerAngles.x, mainCam.eulerAngles.y, avatar.eulerAngles.z));
         }
         else

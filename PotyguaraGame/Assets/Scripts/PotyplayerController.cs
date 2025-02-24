@@ -5,7 +5,20 @@ using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
 {
-    public PotyPlayer potyPlayer = new PotyPlayer();
+    public string nickname { get; set; }
+
+    private int normalModeGameForteScore = 0;
+    private int zombieModeGameForteScore = 0;
+    private int positionRankingZombieMode;
+    private int positionRankingNormalMode;
+    private struct Skin
+    {
+        public int gender;
+        public int index;
+        public int variant;
+    }
+    private Skin skin;
+    private int potycoins = 0;
     private NetworkManager nm;
 
     public string PlayerId
@@ -41,9 +54,9 @@ public class PotyPlayerController : MonoBehaviour
     public void SetScore(int value, int gameMode)
     {
         if(gameMode == 0)
-            potyPlayer.SetScoreZombieMode(value);
+            SetScoreZombieMode(value);
         else
-            potyPlayer.SetScoreNormalMode(value);
+            SetScoreNormalMode(value);
     }
 
     private void Start()
@@ -51,7 +64,7 @@ public class PotyPlayerController : MonoBehaviour
         if (!SteamManager.Initialized)
             return;
 
-        potyPlayer.nickname = SteamFriends.GetPersonaName();
+        nickname = SteamFriends.GetPersonaName();
     }
 
     public void HideControllers()
@@ -83,9 +96,65 @@ public class PotyPlayerController : MonoBehaviour
 
     public void UpdatePotycoins(int value, Button btn, GameObject canva)
     {
-        potyPlayer.SetPotycoins(value);
-        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potyPlayer.GetPotycoins());
+        SetPotycoins(value);
+        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
         canva.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(canva);
+    }
+
+    public void SetSkin(int gender, int index, int variant)
+    {
+        skin.gender = gender;
+        skin.index = index;
+        skin.variant = variant;
+    }
+
+    public int GetGender()
+    {
+        return skin.gender;
+    }
+
+    public int GetIndex()
+    {
+        return skin.index;
+    }
+
+    public int GetVariant()
+    {
+        return skin.variant;
+    }
+
+    public void SetPotycoins(int value)
+    {
+        potycoins += value;
+    }
+
+    public void ConsumePotycoins(int value)
+    {
+        potycoins -= value;
+        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
+    }
+
+    public int GetPotycoins()
+    {
+        return potycoins;
+    }
+
+    public void SetPositionRanking(int value, int mode)
+    {
+        if (mode == 0)
+            positionRankingZombieMode = value;
+        else
+            positionRankingNormalMode = value;
+    }
+
+    public void SetScoreZombieMode(int value)
+    {
+        zombieModeGameForteScore = value;
+    }
+
+    public void SetScoreNormalMode(int value)
+    {
+        normalModeGameForteScore = value;
     }
 
     private void OnCollisionEnter(Collision collision)

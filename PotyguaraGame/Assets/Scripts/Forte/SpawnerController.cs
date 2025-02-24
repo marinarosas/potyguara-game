@@ -63,53 +63,54 @@ public class SpawnerController : MonoBehaviour
                 spawnRandowZombie.Add(destinyLevel1.GetChild(ii));
         }
     }
-    public void SetLevel()
+
+    public void SetLevelZombieMode()
     {
         finishUI.SetActive(false);
-        if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
+        if (currentLevel == 1)
         {
-            cannons.SetActive(true);
+            SetDestinyRandow(1);
+            FindFirstObjectByType<HeightController>().NewHeight(7.98f);
+
             if (FindFirstObjectByType<TechGuaraController>().GetMode())
             {
-                AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoBatalhadoForte");
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Na Batalha do Forte, você será um defensor da fortaleza durante uma época de invasões no século 15. Escolha um" +
-                    " canhão e lute para proteger a fortaleza a todo custo! Prepare-se para desafios intensos enquanto vive momentos de pura " +
-                    "estratégia e ação.", audio.clip.length, new Vector3(665f, 20.44f, 400.36f), 90f);
+                AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
+                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
+                    " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
+                    "sobrevivência!", audio.clip.length, new Vector3(752.74f, 11.35f, 400.29f), 90f);
                 audio.Play();
             }
+
+            NextLevel(90f, new Vector3(749f, 7.98f, 400.44f));
+        }
+        if (currentLevel == 2)
+        {
+            cannons.SetActive(false);
+            FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
+            FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
+            SetDestinyRandow(2);
+            FindFirstObjectByType<GameForteController>().ResetCount();
             FindFirstObjectByType<HeightController>().NewHeight(17.19f);
+            UpdateLevelBar();
             NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
         }
-        else
+    }
+
+    public void SetLevelNormalMode()
+    {
+        finishUI.SetActive(false);
+        cannons.SetActive(true);
+        if (FindFirstObjectByType<TechGuaraController>().GetMode())
         {
-            if (currentLevel == 1)
-            {
-                SetDestinyRandow(1);
-                FindFirstObjectByType<HeightController>().NewHeight(7.98f);
-
-                if (FindFirstObjectByType<TechGuaraController>().GetMode())
-                {
-                    AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
-                    FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
-                        " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
-                        "sobrevivência!", audio.clip.length, new Vector3(752.74f, 11.35f, 400.29f), 90f);
-                    audio.Play();
-                }
-
-                NextLevel(90f, new Vector3(749f, 7.98f, 400.44f));
-            }
-            if (currentLevel == 2)
-            {
-                cannons.SetActive(false);
-                FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
-                FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
-                SetDestinyRandow(2);
-                FindFirstObjectByType<GameForteController>().ResetCount();
-                FindFirstObjectByType<HeightController>().NewHeight(17.19f);
-                UpdateLevelBar();
-                NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
-            }
+            AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoBatalhadoForte");
+            FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Na Batalha do Forte, você será um defensor da fortaleza durante uma época de invasões no século 15. Escolha um" +
+                " canhão e lute para proteger a fortaleza a todo custo! Prepare-se para desafios intensos enquanto vive momentos de pura " +
+                "estratégia e ação.", audio.clip.length, new Vector3(665f, 20.44f, 400.36f), 90f);
+            audio.Play();
         }
+        FindFirstObjectByType<HeightController>().NewHeight(17.19f);
+        NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
+        SetSpawn();
     }
 
     public void NextLevel(float angulationY, Vector3 initialPosition)

@@ -231,7 +231,7 @@ public class NetworkManager : MonoBehaviour
                 actor = this.playerId,
                 parameters = new Dictionary<string, string>()
             {
-                { "nickname", PotyPlayerController.Instance.potyPlayer.nickname },
+                { "nickname", PotyPlayerController.Instance.nickname },
                 { "pointing", totalPoints.ToString() }
             }
             };
@@ -247,7 +247,7 @@ public class NetworkManager : MonoBehaviour
                 actor = this.playerId,
                 parameters = new Dictionary<string, string>()
             {
-                { "nickname", PotyPlayerController.Instance.potyPlayer.nickname },
+                { "nickname", PotyPlayerController.Instance.nickname },
                 { "pointing", totalPoints.ToString() }
             }
             };
@@ -360,7 +360,7 @@ public class NetworkManager : MonoBehaviour
 
             while (potycoins.TryDequeue(out int potycoin))
             {
-                PotyPlayerController.Instance.potyPlayer.SetPotycoins(potycoin);
+                PotyPlayerController.Instance.SetPotycoins(potycoin);
             }
 
             if (SceneManager.GetActiveScene().buildIndex == 2)

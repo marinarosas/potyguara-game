@@ -12,7 +12,8 @@ public class GameForteController : MonoBehaviour
     private float count;
     private GameObject timer;
 
-    [Header("Score")]
+    [Header("Ranking")]
+    public GameObject ranking;
     private int currentPoints = 0;
     private int totalPoints = 0;
 
@@ -74,7 +75,7 @@ public class GameForteController : MonoBehaviour
 
     public void NextLevel()
     {
-        FindFirstObjectByType<SpawnerController>().SetLevel();
+        FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
         FindFirstObjectByType<LeftHandController>().ResetHand();
         FindFirstObjectByType<RightHandController>().ResetHand();
     }
@@ -111,11 +112,44 @@ public class GameForteController : MonoBehaviour
         {
             timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
             count = 10;
+
+            int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+            if (potycoins >= 10)
+            {
+                handMenuLevel1.SetActive(true);
+                handMenuLevel1.GetComponent<FadeController>().FadeIn();
+                portal.SetActive(false);
+                ranking.GetComponent<FadeController>().FadeOut();
+                FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
+                FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
+                zombieMode.gameObject.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
+                mainCam.GetChild(6).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
+            }
         }
         else
         {
             timer.transform.GetChild(0).GetComponent<Text>().text = 120 + "";
             count = 120;
+
+            int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+            if (potycoins >= 10)
+            {
+                portal.SetActive(false);
+                ranking.GetComponent<FadeController>().FadeOut();
+                FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
+                FindFirstObjectByType<SpawnerController>().SetLevelNormalMode();
+                SetStartTimer();
+                normalMode.gameObject.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
+                mainCam.GetChild(6).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
+            }
         }
         gameMode = value;
     }
@@ -193,7 +227,7 @@ public class GameForteController : MonoBehaviour
                 Achievement.Instance.UnclockAchievement("player_dead");
                 Achievement.Instance.isFirstDeadInZombieMode = false;
             }
-            FindFirstObjectByType<SpawnerController>().SetLevel();
+            FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
             FindFirstObjectByType<GameForteController>().ResetCount();
             handMenuLevel1.SetActive(true);
             handMenuLevel1.GetComponent<FadeController>().FadeIn();
