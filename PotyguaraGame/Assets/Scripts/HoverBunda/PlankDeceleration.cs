@@ -11,7 +11,7 @@ public class PlankDeceleration : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == plankRigidbody.gameObject)
+        if (other.gameObject.CompareTag("Player"))
         {
             isInDecelerationZone = true;
         }
@@ -19,7 +19,7 @@ public class PlankDeceleration : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject == plankRigidbody.gameObject && isInDecelerationZone)
+        if (other.gameObject.CompareTag("Player") && isInDecelerationZone)
         {
             Vector3 currentVelocity = plankRigidbody.velocity;
             if (currentVelocity.magnitude > minimumSpeed)
@@ -34,7 +34,6 @@ public class PlankDeceleration : MonoBehaviour
                 isInDecelerationZone = false;
                 if (menu != null)
                 {
-
                     menu.SetActive(true);
                     plankRigidbody.isKinematic = true;
                 }
@@ -44,7 +43,7 @@ public class PlankDeceleration : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == plankRigidbody.gameObject)
+        if (other.gameObject.CompareTag("Player"))
         {
             isInDecelerationZone = false;
         }
