@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.UI;
 
-public enum Option { GENDER, SKIN, VARIANT };
+public enum Option { BODY, SKIN, VARIANT };
 
 public class AvatarOptionController : MonoBehaviour
 {
@@ -27,7 +27,7 @@ public class AvatarOptionController : MonoBehaviour
     {
         switch (option)
         {
-            case Option.GENDER:
+            case Option.BODY:
                 left.onClick.AddListener(() => PreviousMenu(bodies));
                 right.onClick.AddListener(() => NextMenu(bodies));
                 break;
@@ -48,7 +48,7 @@ public class AvatarOptionController : MonoBehaviour
     {
         switch (option)
         {
-            case Option.GENDER:
+            case Option.BODY:
                 return editSkin.name;
             case Option.SKIN:
                 return index.ToString();
@@ -66,7 +66,7 @@ public class AvatarOptionController : MonoBehaviour
         refreshController();
         switch (option)
         {
-            case Option.GENDER:
+            case Option.BODY:
                 bodies = menuController.bodies;
                 pagination.SetPagination(bodies.Count);
                 break;
@@ -110,13 +110,13 @@ public class AvatarOptionController : MonoBehaviour
 
         switch (option)
         {
-            case Option.GENDER:
-                menuController.refreshGenders(index);
+            case Option.BODY:
+                menuController.refreshBody(index);
                 break;
             case Option.SKIN:
                 editSkin.changeMesh(index);
                 menuController.SetVariantList(index, 0);
-                editSkin.GetComponent<Animator>().Play("Look at yourself", -1, 0f);
+                editSkin.GetComponent<Animator>().SetTrigger("look");
                 break;
             case Option.VARIANT:
                 editSkin.changeMaterial(index);
@@ -129,7 +129,7 @@ public class AvatarOptionController : MonoBehaviour
     {
         switch (option)
         {
-            case Option.GENDER:
+            case Option.BODY:
                 label.text = editSkin.name;
                 break;
             case Option.SKIN:

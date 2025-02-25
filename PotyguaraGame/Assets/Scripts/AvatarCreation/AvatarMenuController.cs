@@ -32,12 +32,12 @@ public class AvatarMenuController : MonoBehaviour
         skins = editSkin.skins;
         materials = new List<SkinMaterial> (skins[skinIndex].skinMaterials);
 
-        IniciateMenu(Option.GENDER, bodyIndex, skinIndex, skinMaterial);
+        IniciateMenu(Option.BODY, bodyIndex, skinIndex, skinMaterial);
     }
 
     public void IniciateMenu(Option option, int bodyIndex, int skinIndex, int skinMaterial)
     {
-        SetGenderList(bodyIndex);
+        SetBodyList(bodyIndex);
         SetSkinList(skinIndex);
         SetVariantList(skinIndex, skinMaterial);
     }
@@ -49,11 +49,11 @@ public class AvatarMenuController : MonoBehaviour
 
         Achievement.Instance.UnclockAchievement("criando_vida");
 
-        string gender = options[(int)Option.GENDER].GetOption(); //TODO: substitua por bodyIndex desse mesmo script
+        string BODY = options[(int)Option.BODY].GetOption(); //TODO: substitua por bodyIndex desse mesmo script
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
 
-        if (gender.ToLower().Equals("masculino"))
+        if (BODY.ToLower().Equals("masculino"))
         {
             FindFirstObjectByType<NetworkManager>().SendUpdateSkin(0, skinIndex, variant);
             FindFirstObjectByType<PotyPlayerController>().SetSkin(0, skinIndex, variant);
@@ -67,9 +67,9 @@ public class AvatarMenuController : MonoBehaviour
     }
 
 
-    public void SetGenderList(int bodyIndex)
+    public void SetBodyList(int bodyIndex)
     {
-        options[(int)Option.GENDER].setList(bodyIndex);
+        options[(int)Option.BODY].setList(bodyIndex);
     }
 
     public void SetSkinList(int skinIndex)
@@ -83,7 +83,7 @@ public class AvatarMenuController : MonoBehaviour
         options[(int)Option.VARIANT].setList(skinMaterial);
     }
 
-    public void refreshGenders(int index)
+    public void refreshBody(int index)
     {
         bodyIndex = index;
         skinIndex = 0;
@@ -96,7 +96,8 @@ public class AvatarMenuController : MonoBehaviour
         SetSkinList(skinIndex);
         SetVariantList(skinIndex, skinMaterial);
         editSkin.changeMesh(skinIndex);
-        options[(int)Option.GENDER].refreshController();
-        options[(int)Option.GENDER].UpdateText();
+        options[(int)Option.BODY].refreshController();
+        options[(int)Option.SKIN].refreshController();
+        options[(int)Option.BODY].UpdateText();
     }
 }
