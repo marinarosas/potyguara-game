@@ -12,7 +12,6 @@ public class PotyPlayerController : MonoBehaviour
     private int zombieModeGameForteScore = 0;
     private int positionRankingZombieMode;
     private int positionRankingNormalMode;
-    private HashSet<string> tickets;
     private struct Skin
     {
         public int gender;

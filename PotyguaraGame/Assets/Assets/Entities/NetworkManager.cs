@@ -12,6 +12,7 @@ using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using System.Collections.Concurrent;
 using Steamworks;
+using UnityEngine.Rendering;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class NetworkManager : MonoBehaviour
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private string currentDay;
-    private bool ticketsUpdated = false;
+    private List<string> tickets;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -176,8 +177,8 @@ public class NetworkManager : MonoBehaviour
                 case "Potycoins":
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
                     break;
-                case "Tickets":
-                    ticketsUpdated = true;
+                case "Ticket":
+                    tickets.Add(response.parameters["ticket"]);
                     break;
                 default:
                     break;
@@ -220,6 +221,19 @@ public class NetworkManager : MonoBehaviour
         ws.Send(action.ToJson());
     }
 
+    internal void CheckTickets(Transform content)
+    {
+        if (tickets.Count != 0)
+        {
+            for (int ii = 0; ii < tickets.Count; ii++)
+            {
+                if (tickets[ii] != "null")
+                    FindFirstObjectByType<MenuShowController>().UnclockShow(tickets[ii]);
+            }
+        }
+        tickets.Clear();
+    }
+
     internal void SendPontuacionForte(int totalPoints, int mode)
     {
         if (mode == 0)
@@ -256,14 +270,15 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    internal void RequestTickets()
+    internal void RequestTickets(string id)
     {
         Action action = new Action()
         {
-            type = "Tickets",
+            type = "Ticket",
             actor = this.playerId,
             parameters = new Dictionary<string, string>()
             {
+                { "id", id },
             }
         };
 
