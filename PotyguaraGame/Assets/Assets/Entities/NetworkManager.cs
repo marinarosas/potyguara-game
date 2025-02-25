@@ -30,10 +30,11 @@ public class NetworkManager : MonoBehaviour
     private string rankingZ = "";
     private string rankingB = "";
 
-    private bool isTheFirstAcess = true;
+    public bool isTheFirstAcess = true;
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private string currentDay;
+    private bool ticketsUpdated = false;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -137,9 +138,6 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
-
-                    if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
-                        return;
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -178,8 +176,9 @@ public class NetworkManager : MonoBehaviour
                 case "Potycoins":
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
                     break;
-                case "CurrentDay":
-
+                case "Tickets":
+                    ticketsUpdated = true;
+                    break;
                 default:
                     break;
             }
@@ -255,6 +254,21 @@ public class NetworkManager : MonoBehaviour
             // envia a pontuação final no jogo do Forte para o servidor
             ws.Send(action.ToJson());
         }
+    }
+
+    internal void RequestTickets()
+    {
+        Action action = new Action()
+        {
+            type = "Tickets",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+            }
+        };
+
+        // solicita a atualização dos tickets para o servidor
+        ws.Send(action.ToJson());
     }
 
     internal void SendUpdateSkin(int skinGender, int skinIndex, int skinMaterial)

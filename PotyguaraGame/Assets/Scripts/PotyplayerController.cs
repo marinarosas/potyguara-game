@@ -1,4 +1,5 @@
 using Steamworks;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class PotyPlayerController : MonoBehaviour
     private int zombieModeGameForteScore = 0;
     private int positionRankingZombieMode;
     private int positionRankingNormalMode;
+    private HashSet<string> tickets;
     private struct Skin
     {
         public int gender;
@@ -18,6 +20,7 @@ public class PotyPlayerController : MonoBehaviour
         public int variant;
     }
     private Skin skin;
+
     private int potycoins = 0;
     private NetworkManager nm;
 

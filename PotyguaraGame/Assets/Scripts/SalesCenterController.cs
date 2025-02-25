@@ -33,6 +33,11 @@ public class SalesCenterController : MonoBehaviour
         newButton.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = description;
         newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
     }
+
+    public Product[] GetShows()
+    {
+        return shows;
+    }
     
     public void UpdateSalesCenter(string category)
     {
@@ -61,7 +66,7 @@ public class SalesCenterController : MonoBehaviour
         }
     }
 
-    public void BuyProduct(string id, string description, string category)
+    private void BuyProduct(string id, string description, string category)
     {
         Microtransaction.Instance.InitSale(id, description, category);
     }
