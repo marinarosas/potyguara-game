@@ -10,11 +10,23 @@ public class TechGuaraController : MonoBehaviour
     private Report report;
     private bool modeTutorial = true;
     private AudioSource audioSource;
+    private string folderPath = Application.streamingAssetsPath + "Audio/Techyguara"; // qnt de aulas
     [SerializeField] private List<AudioClip> audios;
 
     public void SetMode(Boolean value)
     {
         modeTutorial = value;
+    }
+
+    IEnumerator PlayAudio(string filePath)
+    {
+        transform.parent.parent.parent.parent.gameObject.SetActive(false);
+        using (WWW www = new WWW("file://" + filePath))
+        {
+            yield return www;
+            audioSource.clip = www.GetAudioClip();
+            audioSource.Play();
+        }
     }
 
     public Boolean GetMode()

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class MeditationRoomController : MonoBehaviour
 {
-    private string folderPath = "Assets/MeditationClasses"; // qnt de aulas
+    private string folderPath = Application.streamingAssetsPath + "/MeditationClasses"; // qnt de aulas
     private int countClasses = 1; // qnt de aulas
     private List<string> audioFiles = new List<string>(); // adiciona os files 
     private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios já adicionados para que não haja duplicatas
