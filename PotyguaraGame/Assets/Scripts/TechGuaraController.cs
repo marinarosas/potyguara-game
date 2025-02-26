@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+using System.IO;
 
 public class TechGuaraController : MonoBehaviour
 {
     private Report report;
     private bool modeTutorial = true;
     private AudioSource audioSource;
-    private string folderPath = Application.streamingAssetsPath + "Audio/Techyguara"; // qnt de aulas
+    private string path;
     [SerializeField] private List<AudioClip> audios;
 
     public void SetMode(Boolean value)
@@ -20,12 +22,12 @@ public class TechGuaraController : MonoBehaviour
 
     IEnumerator PlayAudio(string filePath)
     {
-        transform.parent.parent.parent.parent.gameObject.SetActive(false);
-        using (WWW www = new WWW("file://" + filePath))
+        using (WWW www = new WWW(filePath))
         {
             yield return www;
             audioSource.clip = www.GetAudioClip();
             audioSource.Play();
+            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
         }
     }
 
@@ -43,12 +45,8 @@ public class TechGuaraController : MonoBehaviour
             transform.gameObject.SetActive(true);
             if (SceneManager.GetActiveScene().buildIndex == 0)
             {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar"))
-                        audioSource.clip = clip;
-                }
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+                path = Path.Combine(Application.streamingAssetsPath, "Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar.WAV");
+               
                 transform.position = new Vector3(0f, 2f, -32.35f);
                 report.UpdateTitle("Bem-vindo(a) ao Potyguara Verse!");
                 report.UpdateDescription("Você acaba de entrar em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia," +
@@ -56,24 +54,16 @@ public class TechGuaraController : MonoBehaviour
             }
             if (SceneManager.GetActiveScene().buildIndex == 1)
             {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.CriaçãodePerfil+Avatar"))
-                        audioSource.clip = clip;
-                }
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+                path = Path.Combine(Application.streamingAssetsPath, "Techyguara.CriaçãodePerfil+Avatar.WAV");
+    
                 report.UpdateTitle("Crie seu Avatar!");
                 report.UpdateDescription("Agora que você já se apresentou, é hora de criar seu avatar! Escolha suas características, como rosto, cabelo, roupas e acessórios para refletir sua personalidade no " +
                     "Potyguara Verse. Depois, você estará pronto para explorar este mundo como nunca antes!");
             }
             if (SceneManager.GetActiveScene().buildIndex == 2)
             {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.ApresentaçãoPraiadePontaNegra"))
-                        audioSource.clip = clip;
-                }
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+                path = Path.Combine(Application.streamingAssetsPath, "Techyguara.ApresentaçãoPraiadePontaNegra.WAV");
+               
                 transform.position = new Vector3(177f, 3f, 76f);
                 report.UpdateTitle("Praia de Ponta Negra");
                 report.UpdateDescription("Você está na famosa Praia de Ponta Negra, uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. " +
@@ -83,12 +73,8 @@ public class TechGuaraController : MonoBehaviour
             {
                 if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
                 {
-                    foreach (AudioClip clip in audios)
-                    {
-                        if (clip.name.Equals("Techyguara.ApresentaçãoFortalezaDosReisMagos"))
-                            audioSource.clip = clip;
-                    }
-                    transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+                    path = Path.Combine(Application.streamingAssetsPath, "Techyguara.ApresentaçãoFortalezaDosReisMagos.WAV");
+                   
                     transform.position = new Vector3(804.55f, 10.34f, 400.19f);
                     report.UpdateTitle("Forte dos Reis Magos");
                     report.UpdateDescription("Agora, vamos à Fortaleza dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
@@ -98,18 +84,14 @@ public class TechGuaraController : MonoBehaviour
             }
             if (SceneManager.GetActiveScene().buildIndex == 4)
             {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
-                        audioSource.clip = clip;
-                }
+                path = Path.Combine(Application.streamingAssetsPath, "Techyguara.ApresentaçãoHoverbunda.WAV");
                 transform.GetChild(0).GetComponent<FadeController>().FadeIn();
                 transform.position = new Vector3(584.61f, 53.4f, -559.51f);
                 report.UpdateTitle("HoverBunda");
                 report.UpdateDescription("Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
                     "apenas o mais rápido cruzará a linha de chegada!");
             }
-            audioSource.Play();
+            PlayAudio(path);
         }
         else
         {
