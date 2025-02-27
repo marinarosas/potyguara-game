@@ -14,10 +14,6 @@ public class DetectorController : MonoBehaviour
                 GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
                 menuShow.SetActive(true);
                 menuShow.GetComponent<FadeController>().FadeIn();
-                FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeIn();
-                GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
-                menuShow.SetActive(true);
-                menuShow.GetComponent<FadeController>().FadeIn();
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(1);
             }
             else if (transform.name.Equals("Detector2"))
@@ -37,8 +33,6 @@ public class DetectorController : MonoBehaviour
         {
             if (transform.name.Equals("Detector1"))
             {
-                GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
-                menuShow.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(menuShow);
                 GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
                 menuShow.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(menuShow);
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(1);

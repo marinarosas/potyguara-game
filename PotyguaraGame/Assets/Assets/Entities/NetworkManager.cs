@@ -32,7 +32,6 @@ public class NetworkManager : MonoBehaviour
     private string rankingB = "";
 
     public bool isTheFirstAcess = true;
-    public bool isTheFirstAcess = true;
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private string currentDay;
@@ -60,23 +59,6 @@ public class NetworkManager : MonoBehaviour
             return _instance;
         }
     }
-
-    internal void RequestTickets(string id)
-    {
-        Action action = new Action()
-        {
-            type = "Ticket",
-            actor = this.playerId,
-            parameters = new Dictionary<string, string>()
-            {
-                { "id", id },
-            }
-        };
-
-        // solicita a atualização dos tickets para o servidor
-        ws.Send(action.ToJson());
-    }
-
 
     internal void CheckTickets(Transform content)
     {
