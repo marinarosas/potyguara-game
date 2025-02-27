@@ -17,7 +17,8 @@ public class PotyPlayerController : MonoBehaviour
         public int index;
         public int variant;
     }
-    private Skin skin;
+    private Skin skin = new Skin();
+
     private int potycoins = 0;
     private NetworkManager nm;
 
@@ -48,6 +49,7 @@ public class PotyPlayerController : MonoBehaviour
         else
             Destroy(gameObject);
 
+        SetSkin(-1, -1, -1);
         nm = NetworkManager.Instance;
     }
 

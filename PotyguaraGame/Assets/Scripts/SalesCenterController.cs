@@ -33,7 +33,12 @@ public class SalesCenterController : MonoBehaviour
         newButton.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = description;
         newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
     }
-    
+
+    public Product[] GetShows()
+    {
+        return shows;
+    }
+
     public void UpdateSalesCenter(string category)
     {
         foreach (Transform child in content) {

@@ -2,7 +2,7 @@
 // This file is released into the public domain.
 // Where that dedication is not recognized you are granted a perpetual,
 // irrevocable license to copy and modify this file as you see fit.
-
+//
 // Version: 1.0.13
 
 #if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
@@ -126,9 +126,9 @@ public class SteamManager : MonoBehaviour {
 			return;
 		}
 
-        s_EverInitialized = true;
+		s_EverInitialized = true;
 	}
-	
+
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
 	protected virtual void OnEnable() {
 		if (s_instance == null) {
@@ -173,7 +173,7 @@ public class SteamManager : MonoBehaviour {
 		SteamAPI.RunCallbacks();
 	}
 #else
-	public static bool Initialized {
+    public static bool Initialized {
 		get {
 			return false;
 		}

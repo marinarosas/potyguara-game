@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class Microtransaction : MonoBehaviour
 {
-    [SerializeField] private string baseUrl = "http://127.0.0.1:3000"; // Set this to your API base URL
+    [SerializeField] private string baseUrl = "https://potysteam.ffcloud.com.br"; // Set this to your API base URL
     [SerializeField] private string appId = "3181940"; // replace with your own appId
     [SerializeField] private List<WWWForm> wWWForms = new List<WWWForm>();
 

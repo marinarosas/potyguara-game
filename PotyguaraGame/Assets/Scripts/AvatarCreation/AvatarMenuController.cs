@@ -58,20 +58,11 @@ public class AvatarMenuController : MonoBehaviour
 
         Achievement.Instance.UnclockAchievement("criando_vida");
 
-        string BODY = options[(int)Option.BODY].GetOption(); //TODO: substitua por bodyIndex desse mesmo script
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
 
-        if (BODY.ToLower().Equals("masculino"))
-        {
-            FindFirstObjectByType<NetworkManager>().SendUpdateSkin(0, skinIndex, variant);
-            FindFirstObjectByType<PotyPlayerController>().SetSkin(0, skinIndex, variant);
-        }
-        else
-        {
-            FindFirstObjectByType<NetworkManager>().SendUpdateSkin(1, skinIndex, variant);
-            FindFirstObjectByType<PotyPlayerController>().SetSkin(1, skinIndex, variant);
-        }
+        FindFirstObjectByType<NetworkManager>().SendUpdateSkin(bodyIndex, skinIndex, variant);
+        FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
         FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
     }
 

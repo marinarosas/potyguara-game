@@ -7,19 +7,23 @@ using UnityEngine.UI;
 
 public class MeditationRoomController : MonoBehaviour
 {
-    private string folderPath = "Assets/MeditationClasses"; // qnt de aulas
+    //private string folderPath = Path.Combine(Application.streamingAssetsPath, "Techyguara");
     private int countClasses = 1; // qnt de aulas
-    private List<string> audioFiles = new List<string>(); // adiciona os files 
-    private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios já adicionados para que não haja duplicatas
+    //private List<string> audioFiles = new List<string>(); // adiciona os files 
+    //private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios já adicionados para que não haja duplicatas
     private bool StartedClass = false;
 
     [SerializeField] private GameObject magicCircles;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private List<AudioClip> audios;
     [SerializeField] private Font font;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(CheckForNewFiles());
+        foreach (AudioClip clip in audios)
+        {
+            AddButton(clip);
+        }
     }
 
     void Update()
@@ -40,7 +44,7 @@ public class MeditationRoomController : MonoBehaviour
     }
 
     #region checkingClasses
-    public IEnumerator CheckForNewFiles()
+    /*public IEnumerator CheckForNewFiles()
     {
         while (true)
         {
@@ -67,11 +71,11 @@ public class MeditationRoomController : MonoBehaviour
             }
             yield return new WaitForSeconds(15);
         }
-    }
+    }*/
     #endregion
 
     #region ButtonCreation
-    public void AddButton(string filePath)
+    public void AddButton(AudioClip clip)
     {
         GameObject buttonGo = new GameObject("Aula" + countClasses);
         buttonGo.transform.SetParent(transform);
@@ -109,20 +113,16 @@ public class MeditationRoomController : MonoBehaviour
         text.color = new Color(0.9245283f, 0.3079158f, 0, 1);
         countClasses++;
 
-        button.onClick.AddListener(() => StartCoroutine(PlayClass(filePath)));
+        button.onClick.AddListener(() => PlayClass(clip));
     }
 
-    IEnumerator PlayClass(string filePath)
+    private void PlayClass(AudioClip clip)
     {
         StartedClass = true;
         magicCircles.SetActive(true);
         transform.parent.parent.parent.parent.gameObject.SetActive(false);
-        using (WWW www = new WWW("file://" + filePath))
-        {
-            yield return www;
-            audioSource.clip = www.GetAudioClip();
-            audioSource.Play();
-        }
+        audioSource.clip = clip;
+        audioSource.Play();
     }
     #endregion
 }

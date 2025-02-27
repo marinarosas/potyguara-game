@@ -30,10 +30,14 @@ public class NetworkManager : MonoBehaviour
     private string rankingZ = "";
     private string rankingB = "";
 
-    private bool isTheFirstAcess = true;
+    public bool isTheFirstAcess = true;
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private string currentDay;
+    private List<string> tickets;
+    private int gender = -1;
+    private int index = -1;
+    private int material = -1;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -53,6 +57,36 @@ public class NetworkManager : MonoBehaviour
             }
             return _instance;
         }
+    }
+
+    internal void RequestTickets(string id)
+    {
+        Action action = new Action()
+        {
+            type = "Ticket",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+                { "id", id },
+            }
+        };
+
+        // solicita a atualização dos tickets para o servidor
+        ws.Send(action.ToJson());
+    }
+
+
+    internal void CheckTickets(Transform content)
+    {
+        if (tickets.Count != 0)
+        {
+            for (int ii = 0; ii < tickets.Count; ii++)
+            {
+                if (tickets[ii] != "null")
+                    FindFirstObjectByType<MenuShowController>().UnclockShow(tickets[ii]);
+            }
+        }
+        tickets.Clear();
     }
 
     // Awake é chamado antes do Start, e é chamado apenas uma vez
@@ -178,8 +212,15 @@ public class NetworkManager : MonoBehaviour
                 case "Potycoins":
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
                     break;
-                case "CurrentDay":
-
+                case "Ticket":
+                    tickets.Add(response.parameters["ticket"]);
+                    break;
+                case "Skin":
+                    string[] skin = response.parameters["skin"].Split('|');
+                    gender = int.Parse(skin[2]);
+                    material = int.Parse(skin[1]);
+                    index = int.Parse(skin[0]);
+                    break;
                 default:
                     break;
             }
@@ -219,6 +260,11 @@ public class NetworkManager : MonoBehaviour
 
         // Enviar a ação para o servidor
         ws.Send(action.ToJson());
+    }
+
+    internal void UpdateSkin()
+    {
+        
     }
 
     internal void SendPontuacionForte(int totalPoints, int mode)
@@ -268,6 +314,21 @@ public class NetworkManager : MonoBehaviour
                 { "gender", skinGender.ToString()},
                 { "index", skinIndex.ToString() },
                 { "material", skinMaterial.ToString() }
+            }
+        };
+
+        // envia a atualização da skin para o servidor
+        ws.Send(action.ToJson());
+    }
+
+    internal void GetSkin()
+    {
+        Action action = new Action()
+        {
+            type = "GetSkin",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
             }
         };
 
@@ -360,7 +421,7 @@ public class NetworkManager : MonoBehaviour
 
             while (potycoins.TryDequeue(out int potycoin))
             {
-                PotyPlayerController.Instance.SetPotycoins(potycoin);
+                FindFirstObjectByType<PotyPlayerController>().SetPotycoins(potycoin);
             }
 
             if (SceneManager.GetActiveScene().buildIndex == 2)
@@ -388,7 +449,7 @@ public class NetworkManager : MonoBehaviour
                     {
                         canva.SetActive(true);
                         canva.GetComponent<FadeController>().FadeIn();
-                        button.onClick.AddListener(() => PotyPlayerController.Instance.UpdatePotycoins(50, button, canva));
+                        button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
                     }
                     currentDay = day;
                 }
@@ -396,6 +457,10 @@ public class NetworkManager : MonoBehaviour
 
             if (SceneManager.GetActiveScene().buildIndex == 0)
                 FindFirstObjectByType<TransitionController>().UpdateMainMenu(isTheFirstAcess);
+            if(index != -1 && gender != 0 && material != -1)
+            {
+                FindFirstObjectByType<TransitionController>();
+            }
         }
     }
 }

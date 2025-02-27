@@ -107,7 +107,7 @@ public class TechGuaraController : MonoBehaviour
 
     void Update()
     {
-        if(audioSource.isPlaying && SceneManager.GetActiveScene().buildIndex == 0)
+        if (audioSource.isPlaying && SceneManager.GetActiveScene().buildIndex == 0)
         {
             if (audioSource.time >= 27.0)
             {
@@ -125,7 +125,7 @@ public class TechGuaraController : MonoBehaviour
         transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(duration, transform.GetChild(0).gameObject);
 
         report.UpdateTitle(title);
-        report.UpdateDescription(description); 
+        report.UpdateDescription(description);
     }
 
     public void CreateReport(string title, string description, float duration, Vector3 pos, float direction)

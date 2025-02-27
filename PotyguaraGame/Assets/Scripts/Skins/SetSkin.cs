@@ -18,16 +18,7 @@ public class SetSkin : SkinSystem
 
     void Start()
     {
-        int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
-        int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetVariant();
-        int skinGender = FindFirstObjectByType<PotyPlayerController>().GetGender();
-
-        bool serverHasSavedSkin = (skinIndex > -1 && skinMaterial > -1);
-        if (skinContainer.childCount == 0 && serverHasSavedSkin)
-        {
-            setSkin(skinGender, skinIndex, skinMaterial);
-            Debug.Log("Recuperando skin...");
-        }
+        FindFirstObjectByType<NetworkManager>().GetSkin();
     }
 
     public void setSkin(int skinGender, int skinIndex, int skinMaterial)

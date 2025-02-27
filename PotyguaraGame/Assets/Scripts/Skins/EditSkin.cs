@@ -8,19 +8,20 @@ public class EditSkin : SkinSystem
         Debug.Log("Modo de edicao de skin");
     }
 
-    public void saveSkin() //TODO: Mudar retorno pra bool dps de pronta
+    public void saveSkin() 
     {
-    //    TODO: mandar pro server
-    //    try
-    //    {
-    //        indexSkin --> server
-    //        indexMaterial --> server
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Debug.LogError($"Error when trying to save skin: {ex.Message}");
-    //        return false;
-    //    }
-    //    return true;
+        /*try
+        {
+            int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
+            int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetVariant();
+            int skinGender = FindFirstObjectByType<PotyPlayerController>().GetGender();
+
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error when trying to save skin: {ex.Message}");
+            return false;
+        }
+        return true;*/
     }
 }
