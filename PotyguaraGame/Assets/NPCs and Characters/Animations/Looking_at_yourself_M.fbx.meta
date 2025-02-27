@@ -50,7 +50,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      hasAdditiveReferencePose: 1
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
@@ -58,32 +58,50 @@ ModelImporter:
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 0
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 1
       mirror: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves:
-      - name: Curve
+      - name: speedLook
         curve:
           serializedVersion: 2
           curve:
           - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
+            time: -0.00023337919
+            value: 0.49698108
+            inSlope: 0.92320096
+            outSlope: 0.92320096
             tangentMode: 34
             weightedMode: 0
             inWeight: 0
-            outWeight: 0
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.54462916
+            value: 0.9999987
+            inSlope: 0.000004681611
+            outSlope: 0.000004681611
+            tangentMode: 136
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.92838424
+            value: 0.99999976
+            inSlope: 0.0000022251731
+            outSlope: 0.0000022251731
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
           - serializedVersion: 3
             time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
+            value: 0.6084976
+            inSlope: -5.466704
+            outSlope: -5.466704
             tangentMode: 34
             weightedMode: 0
-            inWeight: 0
+            inWeight: 0.33333334
             outWeight: 0
           preInfinity: 2
           postInfinity: 2
@@ -224,8 +242,8 @@ ModelImporter:
         weight: 0
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    isReadable: 0
+      additiveReferencePoseFrame: 40
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1

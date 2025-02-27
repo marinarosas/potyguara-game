@@ -27,6 +27,15 @@ public class AvatarMenuController : MonoBehaviour
         //{
         //    setSkin(skinIndex, skinMaterial);
         //    Debug.Log("Recuperando skin...");
+        SkinSystem skinSystem = bodies[0].GetComponent<SkinSystem>();
+        if (skinSystem != null)
+        {
+            foreach (Transform child in skinSystem.skinContainer)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
 
         editSkin = bodies[bodyIndex].GetComponent<SkinSystem>();
         skins = editSkin.skins;
@@ -90,6 +99,9 @@ public class AvatarMenuController : MonoBehaviour
         skinMaterial = 0;
 
         editSkin = bodies[bodyIndex].GetComponent<SkinSystem>();
+        skins = editSkin.skins;
+        materials = new List<SkinMaterial>(skins[skinIndex].skinMaterials);
+
         for (int i = 0; i < bodies.Count; i++)
             bodies[i].SetActive(i == index);
 

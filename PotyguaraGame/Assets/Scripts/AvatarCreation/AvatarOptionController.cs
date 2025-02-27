@@ -84,6 +84,8 @@ public class AvatarOptionController : MonoBehaviour
         SetOption();
     }
 
+
+
     void NextMenu<T>(List<T> menu)
     {
         if (index == menu.Count - 1)
