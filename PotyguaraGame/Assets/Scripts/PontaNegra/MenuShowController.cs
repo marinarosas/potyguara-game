@@ -16,7 +16,7 @@ public class MenuShowController : MonoBehaviour
     private void Start()
     {
         Product[] shows = FindFirstObjectByType<SalesCenterController>().GetShows();
-        if(shows != null)
+        if (shows != null)
             foreach (Product show in shows)
                 AddNewButton(show.image);
 
@@ -41,7 +41,7 @@ public class MenuShowController : MonoBehaviour
     public void UnclockShow(string id)
     {
         Product[] shows = FindFirstObjectByType<SalesCenterController>().GetShows();
-        for(int ii=0; ii < shows.Length; ii++)
+        for (int ii = 0; ii < shows.Length; ii++)
         {
             if (shows[ii].id == id)
             {

@@ -173,7 +173,7 @@ public class SteamManager : MonoBehaviour {
 		SteamAPI.RunCallbacks();
 	}
 #else
-	public static bool Initialized {
+    public static bool Initialized {
 		get {
 			return false;
 		}

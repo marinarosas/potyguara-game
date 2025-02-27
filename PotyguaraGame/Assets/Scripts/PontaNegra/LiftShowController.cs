@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
+using UnityEngine.XR;
 
 public class LiftShowController : MonoBehaviour
 {
@@ -61,6 +61,20 @@ public class LiftShowController : MonoBehaviour
             FindFirstObjectByType<HeightController>().NewHeight(1.85f);
             //player.transform.position = new Vector3(177.5f, 1.9f, 72f);
         }
+    }
+
+    public void UnleashLift()
+    {
+        //transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
+        catraca1.GetChild(0).GetChild(0).gameObject.SetActive(false);
+        catraca2.GetChild(0).GetChild(0).gameObject.SetActive(false);
+    }
+
+    public void BlockLift()
+    {
+        //transform.GetChild(1).GetComponent<TeleportationArea>().enabled = true;
+        catraca1.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        catraca2.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
 
     public void GoToShow()

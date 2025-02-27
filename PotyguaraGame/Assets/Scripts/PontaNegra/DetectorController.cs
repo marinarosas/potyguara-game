@@ -14,13 +14,17 @@ public class DetectorController : MonoBehaviour
                 GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
                 menuShow.SetActive(true);
                 menuShow.GetComponent<FadeController>().FadeIn();
+                FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeIn();
+                GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
+                menuShow.SetActive(true);
+                menuShow.GetComponent<FadeController>().FadeIn();
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(1);
             }
             else if (transform.name.Equals("Detector2"))
             {
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(0);
             }
-            else if(transform.name.Equals("Puff"))
+            else if (transform.name.Equals("Puff"))
             {
                 GameObject.Find("Locomotion").SetActive(false);
             }
@@ -35,12 +39,15 @@ public class DetectorController : MonoBehaviour
             {
                 GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
                 menuShow.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(menuShow);
+                GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
+                menuShow.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(menuShow);
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(1);
             }
             else if (transform.name.Equals("Detector2"))
             {
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(0);
-            }else if (transform.name.Equals("Puff"))
+            }
+            else if (transform.name.Equals("Puff"))
             {
                 GameObject.Find("Player").transform.GetChild(1).gameObject.SetActive(true);
                 transform.parent.GetChild(0).gameObject.SetActive(true);

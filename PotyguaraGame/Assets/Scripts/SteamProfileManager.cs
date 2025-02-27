@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class SteamProfileManager : MonoBehaviour
 {
-    public Text qnt;
+    public TextMeshProUGUI qnt;
     public RawImage avatarImage; // Referência para exibir a foto de perfil
     // Start is called before the first frame update
     void Start()
@@ -19,7 +19,7 @@ public class SteamProfileManager : MonoBehaviour
         // Obtém a foto de perfil (avatar)
         GetSteamAvatar(SteamUser.GetSteamID());
 
-        if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 5 || SceneManager.GetActiveScene().buildIndex == 1)
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 5 || SceneManager.GetActiveScene().buildIndex == 1)
             gameObject.SetActive(false);
         else
             gameObject.SetActive(true);
@@ -30,7 +30,7 @@ public class SteamProfileManager : MonoBehaviour
         if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
             return;
         if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
-                qnt.text = FindFirstObjectByType<PotyPlayerController>().GetPotycoins().ToString();
+            qnt.text = FindFirstObjectByType<PotyPlayerController>().GetPotycoins().ToString();
     }
 
     void GetSteamAvatar(CSteamID steamID)

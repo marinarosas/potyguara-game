@@ -89,9 +89,9 @@ public class FadeController : MonoBehaviour
                     if (SceneManager.GetActiveScene().buildIndex == 2) // ponta negra
                     {
                         if (animator.GetCurrentAnimatorStateInfo(0).IsName("DownTerreo"))
-                            FindFirstObjectByType<HeightController>().NewHeight(1.9f);
+                            FindFirstObjectByType<HeightController>().NewHeight(0f);
                         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MoveUpTerreo"))
-                            FindFirstObjectByType<HeightController>().NewHeight(12f);
+                            FindFirstObjectByType<HeightController>().NewHeight(9.158f);
                     }
                 }
             }

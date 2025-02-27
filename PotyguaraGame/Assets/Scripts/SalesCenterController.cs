@@ -38,7 +38,7 @@ public class SalesCenterController : MonoBehaviour
     {
         return shows;
     }
-    
+
     public void UpdateSalesCenter(string category)
     {
         foreach (Transform child in content) {

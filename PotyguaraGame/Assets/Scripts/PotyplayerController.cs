@@ -18,7 +18,7 @@ public class PotyPlayerController : MonoBehaviour
         public int index;
         public int variant;
     }
-    private Skin skin;
+    private Skin skin = new Skin();
 
     private int potycoins = 0;
     private NetworkManager nm;
@@ -31,10 +31,10 @@ public class PotyPlayerController : MonoBehaviour
         }
     }
 
-    // variável para armazenar a úlltime vez que a posição foi enviada
+    // variï¿½vel para armazenar a ï¿½lltime vez que a posiï¿½ï¿½o foi enviada
     float lastSentPositionTime = 0;
 
-    // Quantas vezes por segundo enviar a posição para o servidor
+    // Quantas vezes por segundo enviar a posiï¿½ï¿½o para o servidor
     public float updateServerTimesPerSecond = 10;
 
     //  Singleton stuff
@@ -50,6 +50,7 @@ public class PotyPlayerController : MonoBehaviour
         else
             Destroy(gameObject);
 
+        SetSkin(-1, -1, -1);
         nm = NetworkManager.Instance;
     }
 

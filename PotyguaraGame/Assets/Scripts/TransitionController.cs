@@ -145,23 +145,23 @@ public class TransitionController : MonoBehaviour
 
     public void TeleportExitShow()
     {
-        FindFirstObjectByType<HeightController>().NewHeight(1.85f);
-        player.transform.position = new Vector3(177.5f, 1.85f, 72f);
+        FindFirstObjectByType<HeightController>().NewHeight(0f);
+        player.transform.position = new Vector3(177.5f, 0f, 72f);
     }
 
     public void TeleportGallery()
     {
         player = GameObject.FindWithTag("Player");
-        FindFirstObjectByType<HeightController>().NewHeight(1.85f);
-        player.transform.position = new Vector3(132.53f, 1.85f, 15.69f);
+        FindFirstObjectByType<HeightController>().NewHeight(0f);
+        player.transform.position = new Vector3(132.53f, 0f, 15.69f);
         //player.transform.eulerAngles = new Vector3(0, -90, 0);
     }
 
     public void TeleportMeditationRoom()
     {
         player = GameObject.FindWithTag("Player");
-        FindFirstObjectByType<HeightController>().NewHeight(1.85f);
-        player.transform.position = new Vector3(160.11f, 1.85f, 12.31f);
+        FindFirstObjectByType<HeightController>().NewHeight(0f);
+        player.transform.position = new Vector3(160.36f, 0f, 10.88f);
         player.transform.eulerAngles = Vector3.zero;
     }
 
