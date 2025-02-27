@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class MeditationRoomController : MonoBehaviour
@@ -10,7 +11,7 @@ public class MeditationRoomController : MonoBehaviour
     //private string folderPath = Path.Combine(Application.streamingAssetsPath, "Techyguara");
     private int countClasses = 1; // qnt de aulas
     //private List<string> audioFiles = new List<string>(); // adiciona os files 
-    //private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios já adicionados para que não haja duplicatas
+    //private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios jï¿½ adicionados para que nï¿½o haja duplicatas
     private bool StartedClass = false;
 
     [SerializeField] private GameObject magicCircles;
@@ -55,7 +56,7 @@ public class MeditationRoomController : MonoBehaviour
                     string[] files = Directory.GetFiles(folderPath, "*.*");
                     foreach (string file in files)
                     {
-                        if ((file.EndsWith(".wav") || file.EndsWith(".mp3") || file.EndsWith(".ogg")) && !knownFiles.Contains(file))
+                        if ((file.EndsWith(".WAV") || file.EndsWith(".mp3") || file.EndsWith(".ogg")) && !knownFiles.Contains(file))
                         {
                             audioFiles.Add(file);
                             knownFiles.Add(file);

@@ -12,6 +12,7 @@ using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using System.Collections.Concurrent;
 using Steamworks;
+using UnityEngine.Rendering;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class NetworkManager : MonoBehaviour
     private string rankingZ = "";
     private string rankingB = "";
 
+    public bool isTheFirstAcess = true;
     public bool isTheFirstAcess = true;
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
@@ -171,9 +173,6 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
-
-                    if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
-                        return;
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -301,6 +300,22 @@ public class NetworkManager : MonoBehaviour
             // envia a pontuação final no jogo do Forte para o servidor
             ws.Send(action.ToJson());
         }
+    }
+
+    internal void RequestTickets(string id)
+    {
+        Action action = new Action()
+        {
+            type = "Ticket",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+                { "id", id },
+            }
+        };
+
+        // solicita a atualização dos tickets para o servidor
+        ws.Send(action.ToJson());
     }
 
     internal void SendUpdateSkin(int skinGender, int skinIndex, int skinMaterial)

@@ -66,7 +66,7 @@ public class SalesCenterController : MonoBehaviour
         }
     }
 
-    public void BuyProduct(string id, string description, string category)
+    private void BuyProduct(string id, string description, string category)
     {
         Microtransaction.Instance.InitSale(id, description, category);
     }

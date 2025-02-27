@@ -145,21 +145,23 @@ public class Microtransaction : MonoBehaviour
                         {
                             if (Form.headers["itemId"].Equals("1001"))
                             {
-                                PotyPlayerController.Instance.SetPotycoins(100);
+                                FindFirstObjectByType<PotyPlayerController>().SetPotycoins(100);
                             }else if (Form.headers["itemId"].Equals("1002")){
-                                PotyPlayerController.Instance.SetPotycoins(250);
+                                FindFirstObjectByType<PotyPlayerController>().SetPotycoins(250);
                             }else if (Form.headers["itemId"].Equals("1003"))
                             {
-                                PotyPlayerController.Instance.SetPotycoins(500);
+                                FindFirstObjectByType<PotyPlayerController>().SetPotycoins(500);
                             }else if (Form.headers["itemId"].Equals("1004"))
                             {
-                                PotyPlayerController.Instance.SetPotycoins(1000);
-                            }else if (Form.headers["itemId"].Equals("2002"))
+                                FindFirstObjectByType<PotyPlayerController>().SetPotycoins(1000);
+                            }else if (Form.headers["itemId"].Equals("2001"))
+                            {
+                                FindFirstObjectByType<MenuShowController>().UnclockShow("2001");
+                            }else if (Form.headers["itemId"].Equals("3001"))
                             {
 
-                            }else if (Form.headers["itemId"].Equals("3002"))
+                            }else if (Form.headers["itemId"].Equals("3001"))
                             {
-
                             }
                         }
                     }

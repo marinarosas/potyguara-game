@@ -10,6 +10,7 @@ public class LiftShowController : MonoBehaviour
     public bool isInsideLift = false;
     public bool isGoingToShow = false;
     public bool isGoOutOfTheShow = false;
+    private bool hasTicket = false;
 
     private Transform player;
     private Animator ani;
@@ -22,7 +23,22 @@ public class LiftShowController : MonoBehaviour
     void Start()
     {
         ani = GetComponent<Animator>();
+        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
         player = GameObject.FindWithTag("Player").transform;
+    }
+
+    public void UnleashLift()
+    {
+        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
+        catraca1.GetChild(0).GetChild(0).gameObject.SetActive(false);
+        catraca2.GetChild(0).GetChild(0).gameObject.SetActive(false);
+    }
+
+    public void BlockLift()
+    {
+        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = true;
+        catraca1.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        catraca2.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
 
     public void OpenCatraca1()
@@ -103,9 +119,12 @@ public class LiftShowController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
-            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
-            isInsideLift = true;
-            player.parent = transform;
+            if (hasTicket)
+            {
+                GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
+                isInsideLift = true;
+                player.parent = transform;
+            }
         }
     }
 

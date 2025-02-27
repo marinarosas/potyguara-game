@@ -1,4 +1,5 @@
 using Steamworks;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,10 +31,10 @@ public class PotyPlayerController : MonoBehaviour
         }
     }
 
-    // variável para armazenar a úlltime vez que a posição foi enviada
+    // variï¿½vel para armazenar a ï¿½lltime vez que a posiï¿½ï¿½o foi enviada
     float lastSentPositionTime = 0;
 
-    // Quantas vezes por segundo enviar a posição para o servidor
+    // Quantas vezes por segundo enviar a posiï¿½ï¿½o para o servidor
     public float updateServerTimesPerSecond = 10;
 
     //  Singleton stuff
