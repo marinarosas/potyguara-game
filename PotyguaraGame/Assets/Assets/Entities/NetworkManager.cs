@@ -12,6 +12,7 @@ using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using System.Collections.Concurrent;
 using Steamworks;
+using UnityEngine.Rendering;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -30,10 +31,11 @@ public class NetworkManager : MonoBehaviour
     private string rankingZ = "";
     private string rankingB = "";
 
-    private bool isTheFirstAcess = true;
+    public bool isTheFirstAcess = true;
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private string currentDay;
+    private List<string> tickets;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -137,9 +139,6 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
-
-                    if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
-                        return;
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -178,8 +177,9 @@ public class NetworkManager : MonoBehaviour
                 case "Potycoins":
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
                     break;
-                case "CurrentDay":
-
+                case "Ticket":
+                    tickets.Add(response.parameters["ticket"]);
+                    break;
                 default:
                     break;
             }
@@ -221,6 +221,19 @@ public class NetworkManager : MonoBehaviour
         ws.Send(action.ToJson());
     }
 
+    internal void CheckTickets(Transform content)
+    {
+        if (tickets.Count != 0)
+        {
+            for (int ii = 0; ii < tickets.Count; ii++)
+            {
+                if (tickets[ii] != "null")
+                    FindFirstObjectByType<MenuShowController>().UnclockShow(tickets[ii]);
+            }
+        }
+        tickets.Clear();
+    }
+
     internal void SendPontuacionForte(int totalPoints, int mode)
     {
         if (mode == 0)
@@ -255,6 +268,22 @@ public class NetworkManager : MonoBehaviour
             // envia a pontuação final no jogo do Forte para o servidor
             ws.Send(action.ToJson());
         }
+    }
+
+    internal void RequestTickets(string id)
+    {
+        Action action = new Action()
+        {
+            type = "Ticket",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+                { "id", id },
+            }
+        };
+
+        // solicita a atualização dos tickets para o servidor
+        ws.Send(action.ToJson());
     }
 
     internal void SendUpdateSkin(int skinGender, int skinIndex, int skinMaterial)

@@ -29,7 +29,6 @@ public class HoverController : MonoBehaviour
             Achievement.Instance.SetStat("partidas_hover", Achievement.Instance.ships_levas);
 
             board.transform.position = point.transform.position;
-            board.transform.GetChild(0).eulerAngles = new Vector3(0f, point.transform.eulerAngles.y, 0f);
             board.transform.eulerAngles = new Vector3(0f, point.transform.eulerAngles.y, 0f);
             board.GetComponent<Rigidbody>().isKinematic = false;
         }
@@ -42,9 +41,9 @@ public class HoverController : MonoBehaviour
 
     public void StartPositionOfGame()
     {
-        GameObject player = GameObject.FindWithTag("Player");
+        board.GetComponent<Rigidbody>().isKinematic = true;
         Transform initialPosition = GameObject.Find("InitialPosition").transform;
-        player.transform.parent.position = initialPosition.position;
-        player.transform.parent.eulerAngles = new Vector3(0, initialPosition.eulerAngles.y, 0);
+        board.transform.position = initialPosition.position;
+        board.transform.eulerAngles = new Vector3(0, initialPosition.eulerAngles.y, 0);
     }
 }

@@ -1,4 +1,5 @@
 using Steamworks;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ public class PotyPlayerController : MonoBehaviour
         public int variant;
     }
     private Skin skin;
+
     private int potycoins = 0;
     private NetworkManager nm;
 
