@@ -62,7 +62,6 @@ public class AvatarMenuController : MonoBehaviour
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
 
         FindFirstObjectByType<NetworkManager>().SendUpdateSkin(bodyIndex, skinIndex, variant);
-        FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
         FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
     }
 

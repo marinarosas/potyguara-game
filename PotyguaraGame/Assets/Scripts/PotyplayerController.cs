@@ -12,14 +12,6 @@ public class PotyPlayerController : MonoBehaviour
     private int zombieModeGameForteScore = 0;
     private int positionRankingZombieMode;
     private int positionRankingNormalMode;
-    private struct Skin
-    {
-        public int gender;
-        public int index;
-        public int variant;
-    }
-    private Skin skin = new Skin();
-
     private int potycoins = 0;
     private NetworkManager nm;
 
@@ -50,7 +42,6 @@ public class PotyPlayerController : MonoBehaviour
         else
             Destroy(gameObject);
 
-        SetSkin(-1, -1, -1);
         nm = NetworkManager.Instance;
     }
 
@@ -102,28 +93,6 @@ public class PotyPlayerController : MonoBehaviour
         SetPotycoins(value);
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
         canva.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(canva);
-    }
-
-    public void SetSkin(int gender, int index, int variant)
-    {
-        skin.gender = gender;
-        skin.index = index;
-        skin.variant = variant;
-    }
-
-    public int GetGender()
-    {
-        return skin.gender;
-    }
-
-    public int GetIndex()
-    {
-        return skin.index;
-    }
-
-    public int GetVariant()
-    {
-        return skin.variant;
     }
 
     public void SetPotycoins(int value)
