@@ -32,6 +32,7 @@ public class NetworkManager : MonoBehaviour
     private string rankingB = "";
 
     public bool isTheFirstAcess = true;
+    public bool hasAvatar = false;
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private string currentDay;
@@ -86,11 +87,11 @@ public class NetworkManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        ConnectToServer();
     }
     private void Start()
     {
-        currentDay= DateTime.Today.DayOfWeek.ToString();
+        ConnectToServer();
+        currentDay = DateTime.Today.DayOfWeek.ToString();
     }
 
     // Id do jogador local. É definido pelo servidor após a conexão com o evento "Wellcome"
@@ -197,10 +198,10 @@ public class NetworkManager : MonoBehaviour
                     tickets.Add(response.parameters["ticket"]);
                     break;
                 case "Skin":
-                    string[] skin = response.parameters["skin"].Split('|');
-                    gender = int.Parse(skin[2]);
-                    material = int.Parse(skin[1]);
-                    index = int.Parse(skin[0]);
+                    gender = int.Parse(response.parameters["skinIndex"]);
+                    material = int.Parse(response.parameters["skinMaterial"]);
+                    index = int.Parse(response.parameters["skinGender"]);
+                    Debug.Log(gender + " " + material + " " + index);
                     break;
                 default:
                     break;
@@ -243,44 +244,42 @@ public class NetworkManager : MonoBehaviour
         ws.Send(action.ToJson());
     }
 
-    internal void UpdateSkin()
-    {
-        
-    }
-
     internal void SendPontuacionForte(int totalPoints, int mode)
     {
-        if (mode == 0)
+        if (ws != null)
         {
-            Action action = new Action()
+            if (mode == 0)
             {
-                type = "GameForteZ",
-                actor = this.playerId,
-                parameters = new Dictionary<string, string>()
+                Action action = new Action()
+                {
+                    type = "GameForteZ",
+                    actor = this.playerId,
+                    parameters = new Dictionary<string, string>()
             {
                 { "nickname", PotyPlayerController.Instance.nickname },
                 { "pointing", totalPoints.ToString() }
             }
-            };
+                };
 
-            // envia a pontuação final no jogo do Forte para o servidor
-            ws.Send(action.ToJson());
-        }
-        else
-        {
-            Action action = new Action()
+                // envia a pontuação final no jogo do Forte para o servidor
+                ws.Send(action.ToJson());
+            }
+            else
             {
-                type = "GameForteB",
-                actor = this.playerId,
-                parameters = new Dictionary<string, string>()
+                Action action = new Action()
+                {
+                    type = "GameForteB",
+                    actor = this.playerId,
+                    parameters = new Dictionary<string, string>()
             {
                 { "nickname", PotyPlayerController.Instance.nickname },
                 { "pointing", totalPoints.ToString() }
             }
-            };
+                };
 
-            // envia a pontuação final no jogo do Forte para o servidor
-            ws.Send(action.ToJson());
+                // envia a pontuação final no jogo do Forte para o servidor
+                ws.Send(action.ToJson());
+            }
         }
     }
 
@@ -297,7 +296,8 @@ public class NetworkManager : MonoBehaviour
         };
 
         // solicita a atualização dos tickets para o servidor
-        ws.Send(action.ToJson());
+        if(ws != null)
+            ws.Send(action.ToJson());
     }
 
     internal void SendUpdateSkin(int skinGender, int skinIndex, int skinMaterial)
@@ -313,24 +313,29 @@ public class NetworkManager : MonoBehaviour
                 { "material", skinMaterial.ToString() }
             }
         };
-
         // envia a atualização da skin para o servidor
-        ws.Send(action.ToJson());
+        if(ws != null)
+            ws.Send(action.ToJson());
+        hasAvatar = true;
     }
 
     internal void GetSkin()
     {
-        Action action = new Action()
+        if (hasAvatar)
         {
-            type = "GetSkin",
-            actor = this.playerId,
-            parameters = new Dictionary<string, string>()
+            Action action = new Action()
             {
-            }
-        };
+                type = "GetSkin",
+                actor = this.playerId,
+                parameters = new Dictionary<string, string>()
+                {
+                }
+            };
 
-        // envia a atualização da skin para o servidor
-        ws.Send(action.ToJson());
+            // envia a atualização da skin para o servidor
+            if (ws != null)
+                ws.Send(action.ToJson());
+        }
     }
 
     internal void UpdatePotycoins(int potycoins)
@@ -346,7 +351,8 @@ public class NetworkManager : MonoBehaviour
         };
 
         // envia a pontuação final no jogo do Forte para o servidor
-        ws.Send(action.ToJson());
+        if(ws != null)
+            ws.Send(action.ToJson());
     }
 
     internal void DeletePerfil(string playerId)
@@ -359,8 +365,11 @@ public class NetworkManager : MonoBehaviour
             {
             }
         };
-        ws.Send(action.ToJson());
-        FindFirstObjectByType<TransitionController>().ExitGame();
+        if (ws != null)
+        {
+            ws.Send(action.ToJson());
+            FindFirstObjectByType<TransitionController>().ExitGame();
+        }
     }
 
     /// <summary>
@@ -454,9 +463,12 @@ public class NetworkManager : MonoBehaviour
 
             if (SceneManager.GetActiveScene().buildIndex == 0)
                 FindFirstObjectByType<TransitionController>().UpdateMainMenu(isTheFirstAcess);
-            if(index != -1 && gender != 0 && material != -1)
+            if(index != -1 && gender != -1 && material != -1)
             {
-                FindFirstObjectByType<TransitionController>();
+                FindFirstObjectByType<SkinIntegrationController>().SetSkin(index, material, gender);
+                index = -1;
+                gender = -1;
+                material = -1;
             }
         }
     }

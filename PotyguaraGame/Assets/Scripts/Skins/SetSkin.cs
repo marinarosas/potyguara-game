@@ -7,13 +7,9 @@ public class SetSkin : MonoBehaviour
 {
     public List<GameObject> bodies;
 
-    void Start()
+    public void SetSkinAvatar(int skinIndex, int skinMaterial, int skinGender)
     {
-        int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
-        int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetVariant();
-        int skinGender = FindFirstObjectByType<PotyPlayerController>().GetGender();
-
-        bool serverHasSavedSkin = (skinIndex > -1 && skinMaterial > -1);
+        bool serverHasSavedSkin = (skinIndex > -1 && skinMaterial > -1 && skinGender > -1);
         if (serverHasSavedSkin)
         {
             try
@@ -29,6 +25,15 @@ public class SetSkin : MonoBehaviour
             {
                 Debug.LogError($"Error when trying to set skin: {ex.Message}");
             }
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(false);
+            SkinSystem editSkin = transform.GetChild(skinGender).GetComponent<SkinSystem>();
+            editSkin.changeMesh(0);
+            editSkin.changeMaterial(0);
+            Debug.Log("Recuperando skin... " + skinGender + " " + skinIndex + " " + skinMaterial);
         }
     }
 }

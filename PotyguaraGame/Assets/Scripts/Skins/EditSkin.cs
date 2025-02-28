@@ -10,18 +10,5 @@ public class EditSkin : SkinSystem
 
     public void saveSkin() 
     {
-        /*try
-        {
-            int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
-            int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetVariant();
-            int skinGender = FindFirstObjectByType<PotyPlayerController>().GetGender();
-
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"Error when trying to save skin: {ex.Message}");
-            return false;
-        }
-        return true;*/
     }
 }
