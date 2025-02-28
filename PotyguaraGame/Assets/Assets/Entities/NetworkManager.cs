@@ -32,14 +32,10 @@ public class NetworkManager : MonoBehaviour
     private string rankingB = "";
 
     public bool isTheFirstAcess = true;
-    public bool hasAvatar = false;
+
     private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
-    private string currentDay;
     private List<string> tickets;
-    private int gender = -1;
-    private int index = -1;
-    private int material = -1;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -91,7 +87,6 @@ public class NetworkManager : MonoBehaviour
     private void Start()
     {
         ConnectToServer();
-        currentDay = DateTime.Today.DayOfWeek.ToString();
     }
 
     // Id do jogador local. É definido pelo servidor após a conexão com o evento "Wellcome"
@@ -197,12 +192,6 @@ public class NetworkManager : MonoBehaviour
                 case "Ticket":
                     tickets.Add(response.parameters["ticket"]);
                     break;
-                case "Skin":
-                    gender = int.Parse(response.parameters["skinIndex"]);
-                    material = int.Parse(response.parameters["skinMaterial"]);
-                    index = int.Parse(response.parameters["skinGender"]);
-                    Debug.Log(gender + " " + material + " " + index);
-                    break;
                 default:
                     break;
             }
@@ -300,44 +289,6 @@ public class NetworkManager : MonoBehaviour
             ws.Send(action.ToJson());
     }
 
-    internal void SendUpdateSkin(int skinGender, int skinIndex, int skinMaterial)
-    {
-        Action action = new Action()
-        {
-            type = "UpdateSkin",
-            actor = this.playerId,
-            parameters = new Dictionary<string, string>()
-            {
-                { "gender", skinGender.ToString()},
-                { "index", skinIndex.ToString() },
-                { "material", skinMaterial.ToString() }
-            }
-        };
-        // envia a atualização da skin para o servidor
-        if(ws != null)
-            ws.Send(action.ToJson());
-        hasAvatar = true;
-    }
-
-    internal void GetSkin()
-    {
-        if (hasAvatar)
-        {
-            Action action = new Action()
-            {
-                type = "GetSkin",
-                actor = this.playerId,
-                parameters = new Dictionary<string, string>()
-                {
-                }
-            };
-
-            // envia a atualização da skin para o servidor
-            if (ws != null)
-                ws.Send(action.ToJson());
-        }
-    }
-
     internal void UpdatePotycoins(int potycoins)
     {
         Action action = new Action()
@@ -355,7 +306,7 @@ public class NetworkManager : MonoBehaviour
             ws.Send(action.ToJson());
     }
 
-    internal void DeletePerfil(string playerId)
+    internal void DeletePerfil()
     {
         Action action = new Action()
         {
@@ -430,46 +381,8 @@ public class NetworkManager : MonoBehaviour
                 FindFirstObjectByType<PotyPlayerController>().SetPotycoins(potycoin);
             }
 
-            if (SceneManager.GetActiveScene().buildIndex == 2)
-            {
-                string day = DateTime.Today.DayOfWeek.ToString();
-                if (isTheFirstAcess)
-                {
-                    GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-                    Button button = canva.transform.GetChild(5).GetComponent<Button>();
-
-                    if (button != null && canva != null)
-                    {
-                        canva.SetActive(true);
-                        canva.GetComponent<FadeController>().FadeIn();
-                        button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
-                        isTheFirstAcess = false;
-                    }
-                }
-                else if (currentDay != day)
-                {
-                    GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-                    Button button = canva.transform.GetChild(5).GetComponent<Button>();
-
-                    if (button != null && canva != null)
-                    {
-                        canva.SetActive(true);
-                        canva.GetComponent<FadeController>().FadeIn();
-                        button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
-                    }
-                    currentDay = day;
-                }
-            }
-
             if (SceneManager.GetActiveScene().buildIndex == 0)
                 FindFirstObjectByType<TransitionController>().UpdateMainMenu(isTheFirstAcess);
-            if(index != -1 && gender != -1 && material != -1)
-            {
-                FindFirstObjectByType<SkinIntegrationController>().SetSkin(index, material, gender);
-                index = -1;
-                gender = -1;
-                material = -1;
-            }
         }
     }
 }

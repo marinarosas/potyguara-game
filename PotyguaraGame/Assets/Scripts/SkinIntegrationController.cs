@@ -14,7 +14,7 @@ public class SkinIntegrationController : MonoBehaviour
 
     private void Start()
     {
-        FindObjectOfType<NetworkManager>().GetSkin();
+        SetSkin();
         Transform mainCam = transform.GetChild(0).GetChild(0);
         Transform avatar = transform.GetChild(0).GetChild(5);
         animator = transform.GetChild(0).GetChild(5).GetChild(0).GetComponent<Animator>();
@@ -24,10 +24,14 @@ public class SkinIntegrationController : MonoBehaviour
             transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
     }
 
-    public void SetSkin(int skinIndex, int skinMaterial, int skinGender)
+    public void SetSkin()
     {
+        int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
+        int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetMaterial();
+        int skinGender = FindFirstObjectByType<PotyPlayerController>().GetGender();
         Transform avatar = transform.GetChild(0).GetChild(5);
         avatar.GetComponent<SetSkin>().SetSkinAvatar(skinIndex, skinMaterial, skinGender);
+        animator = avatar.GetComponent<SetSkin>().UpdateAnimator();
     }
 
     // Update is called once per frame
