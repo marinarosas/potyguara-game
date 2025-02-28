@@ -41,14 +41,17 @@ public class SkinIntegrationController : MonoBehaviour
         {
             animator.SetBool("isWalking", isMoving);
         }*/
-        if (!animator.GetBool("isWalking"))
+        if (animator != null)
         {
-            Transform mainCam = transform.GetChild(0).GetChild(0);
-            Transform avatar = transform.GetChild(0).GetChild(5);
+            if (!animator.GetBool("isWalking"))
+            {
+                Transform mainCam = transform.GetChild(0).GetChild(0);
+                Transform avatar = transform.GetChild(0).GetChild(5);
 
-            avatar.rotation = Quaternion.Euler(new Vector3(avatar.eulerAngles.x, mainCam.eulerAngles.y, avatar.eulerAngles.z));
+                avatar.rotation = Quaternion.Euler(new Vector3(avatar.eulerAngles.x, mainCam.eulerAngles.y, avatar.eulerAngles.z));
+            }
+            else
+                transform.GetChild(2).rotation = transform.rotation;
         }
-        else
-            transform.GetChild(2).rotation = transform.rotation;
     }
 }

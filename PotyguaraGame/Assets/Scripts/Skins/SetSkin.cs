@@ -33,7 +33,6 @@ public class SetSkin : MonoBehaviour
             SkinSystem editSkin = transform.GetChild(skinGender).GetComponent<SkinSystem>();
             editSkin.changeMesh(0);
             editSkin.changeMaterial(0);
-            Debug.Log("Recuperando skin... " + skinGender + " " + skinIndex + " " + skinMaterial);
         }
     }
 }
