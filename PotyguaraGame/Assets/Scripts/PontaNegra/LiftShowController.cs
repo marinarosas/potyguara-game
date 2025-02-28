@@ -23,22 +23,8 @@ public class LiftShowController : MonoBehaviour
     void Start()
     {
         ani = GetComponent<Animator>();
-        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
+        //Transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
         player = GameObject.FindWithTag("Player").transform;
-    }
-
-    public void UnleashLift()
-    {
-        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
-        catraca1.GetChild(0).GetChild(0).gameObject.SetActive(false);
-        catraca2.GetChild(0).GetChild(0).gameObject.SetActive(false);
-    }
-
-    public void BlockLift()
-    {
-        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = true;
-        catraca1.GetChild(0).GetChild(0).gameObject.SetActive(true);
-        catraca2.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
 
     public void OpenCatraca1()
