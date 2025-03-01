@@ -71,7 +71,7 @@ public class BandController : MonoBehaviour
             float frequency = GetSpectrum(audioBand);
             //float mappedValue = mapValue(frequency, 0, 2);
             //if (volume < silenceThreshold) mappedValue = 0;
-            float mappedValue = mapValue(volume, 0, 2, 0, 100);
+            float mappedValue = mapValue(volume, 0, 3, 0, 100);
 
             audioBand.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
 
