@@ -6,6 +6,7 @@ using UnityEngine;
 public class SetSkin : MonoBehaviour
 {
     public List<GameObject> bodies;
+    private Animator currentAnimator;
 
     public void SetSkinAvatar(int skinIndex, int skinMaterial, int skinGender)
     {
@@ -18,6 +19,10 @@ public class SetSkin : MonoBehaviour
                     transform.GetChild(i).gameObject.SetActive(i == skinGender);
                 SkinSystem editSkin = transform.GetChild(skinGender).GetComponent<SkinSystem>();
                 editSkin.changeMesh(skinIndex);
+                if (skinGender == 0)
+                    currentAnimator = transform.GetChild(0).GetComponent<Animator>();
+                else
+                    currentAnimator = transform.GetChild(1).GetComponent<Animator>();
                 editSkin.changeMaterial(skinMaterial);
                 Debug.Log("Recuperando skin... "+ skinGender+" "+ skinIndex+" "+ skinMaterial);
             }
@@ -30,10 +35,14 @@ public class SetSkin : MonoBehaviour
         {
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(false);
-            SkinSystem editSkin = transform.GetChild(skinGender).GetComponent<SkinSystem>();
+            SkinSystem editSkin = transform.GetChild(0).GetComponent<SkinSystem>();
             editSkin.changeMesh(0);
             editSkin.changeMaterial(0);
-            Debug.Log("Recuperando skin... " + skinGender + " " + skinIndex + " " + skinMaterial);
         }
+    }
+
+    public Animator UpdateAnimator()
+    {
+        return currentAnimator;
     }
 }

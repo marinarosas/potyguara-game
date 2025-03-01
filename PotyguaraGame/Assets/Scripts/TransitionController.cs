@@ -78,7 +78,7 @@ public class TransitionController : MonoBehaviour
         {
             if (!isTheFirstAcess)
             {
-                GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().DeletePerfil());
+                GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.AddListener(NetworkManager.Instance.DeletePerfil);
                 GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(true);
             }
             else

@@ -14,7 +14,13 @@ public class PotyPlayerController : MonoBehaviour
     private int positionRankingNormalMode;
     private int potycoins = 0;
     private NetworkManager nm;
-
+    struct Skin
+    {
+        public int gender;
+        public int index;
+        public int material;
+    }
+    private Skin skin;
     public string PlayerId
     {
         get
@@ -45,20 +51,17 @@ public class PotyPlayerController : MonoBehaviour
         nm = NetworkManager.Instance;
     }
 
+    void Start()
+    {
+        SetSkin(-1, -1, -1);
+    }
+
     public void SetScore(int value, int gameMode)
     {
         if(gameMode == 0)
             SetScoreZombieMode(value);
         else
             SetScoreNormalMode(value);
-    }
-
-    private void Start()
-    {
-        if (!SteamManager.Initialized)
-            return;
-
-        nickname = SteamFriends.GetPersonaName();
     }
 
     public void HideControllers()
@@ -83,10 +86,16 @@ public class PotyPlayerController : MonoBehaviour
         right.GetChild(2).gameObject.SetActive(true);
     }
 
-    public void DeletePerfil()
+    public void SetSkin(int skinGender, int skinIndex, int skinMaterial)
     {
-        FindFirstObjectByType<NetworkManager>().DeletePerfil(PlayerId);
+        skin.gender = skinGender;
+        skin.index = skinIndex; 
+        skin.material = skinMaterial;   
     }
+
+    public int GetIndex() { return skin.index; }
+    public int GetGender() { return skin.gender; }
+    public int GetMaterial() { return skin.material; }
 
     public void UpdatePotycoins(int value, Button btn, GameObject canva)
     {
@@ -127,11 +136,5 @@ public class PotyPlayerController : MonoBehaviour
     public void SetScoreNormalMode(int value)
     {
         normalModeGameForteScore = value;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("CannonBall"))
-            FindFirstObjectByType<GameForteController>().GameOver();
     }
 }

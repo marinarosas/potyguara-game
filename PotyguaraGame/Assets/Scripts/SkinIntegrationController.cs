@@ -14,7 +14,7 @@ public class SkinIntegrationController : MonoBehaviour
 
     private void Start()
     {
-        FindObjectOfType<NetworkManager>().GetSkin();
+        SetSkin();
         Transform mainCam = transform.GetChild(0).GetChild(0);
         Transform avatar = transform.GetChild(0).GetChild(5);
         animator = transform.GetChild(0).GetChild(5).GetChild(0).GetComponent<Animator>();
@@ -24,10 +24,14 @@ public class SkinIntegrationController : MonoBehaviour
             transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
     }
 
-    public void SetSkin(int skinIndex, int skinMaterial, int skinGender)
+    public void SetSkin()
     {
+        int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
+        int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetMaterial();
+        int skinGender = FindFirstObjectByType<PotyPlayerController>().GetGender();
         Transform avatar = transform.GetChild(0).GetChild(5);
         avatar.GetComponent<SetSkin>().SetSkinAvatar(skinIndex, skinMaterial, skinGender);
+        animator = avatar.GetComponent<SetSkin>().UpdateAnimator();
     }
 
     // Update is called once per frame
@@ -41,14 +45,17 @@ public class SkinIntegrationController : MonoBehaviour
         {
             animator.SetBool("isWalking", isMoving);
         }*/
-        if (!animator.GetBool("isWalking"))
+        if (animator != null)
         {
-            Transform mainCam = transform.GetChild(0).GetChild(0);
-            Transform avatar = transform.GetChild(0).GetChild(5);
+            if (!animator.GetBool("isWalking"))
+            {
+                Transform mainCam = transform.GetChild(0).GetChild(0);
+                Transform avatar = transform.GetChild(0).GetChild(5);
 
-            avatar.rotation = Quaternion.Euler(new Vector3(avatar.eulerAngles.x, mainCam.eulerAngles.y, avatar.eulerAngles.z));
+                avatar.rotation = Quaternion.Euler(new Vector3(avatar.eulerAngles.x, mainCam.eulerAngles.y, avatar.eulerAngles.z));
+            }
+            else
+                transform.GetChild(2).rotation = transform.rotation;
         }
-        else
-            transform.GetChild(2).rotation = transform.rotation;
     }
 }

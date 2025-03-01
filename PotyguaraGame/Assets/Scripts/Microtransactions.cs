@@ -154,14 +154,42 @@ public class Microtransaction : MonoBehaviour
                             }else if (Form.headers["itemId"].Equals("1004"))
                             {
                                 FindFirstObjectByType<PotyPlayerController>().SetPotycoins(1000);
-                            }else if (Form.headers["itemId"].Equals("2001"))
+                            }else if (Form.headers["itemId"].Equals("2002"))
                             {
-                                FindFirstObjectByType<MenuShowController>().UnclockShow("2001");
-                            }else if (Form.headers["itemId"].Equals("3001"))
+                                FindFirstObjectByType<MenuShowController>().UnclockShow("2002");
+                            }else if (Form.headers["itemId"].Equals("3002"))
                             {
 
-                            }else if (Form.headers["itemId"].Equals("3001"))
+                            }else if (Form.headers["itemId"].Equals("3003"))
                             {
+                            }
+                            else if (Form.headers["itemId"].Equals("4002"))
+                            {
+
+                            }
+                            else if (Form.headers["itemId"].Equals("4003"))
+                            {
+
+                            }
+                            else if (Form.headers["itemId"].Equals("4004"))
+                            {
+
+                            }
+                            else if (Form.headers["itemId"].Equals("4005"))
+                            {
+
+                            }
+                            else if (Form.headers["itemId"].Equals("4006"))
+                            {
+
+                            }
+                            else if (Form.headers["itemId"].Equals("4007"))
+                            {
+
+                            }
+                            else if (Form.headers["itemId"].Equals("4008"))
+                            {
+
                             }
                         }
                     }
