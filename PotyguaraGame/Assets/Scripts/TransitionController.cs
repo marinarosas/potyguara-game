@@ -28,6 +28,15 @@ public class TransitionController : MonoBehaviour
         }
         else
             Destroy(gameObject);
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            GameObject.Find("Locomotion").SetActive(false);
+        }
+        else
+        {
+            GameObject.Find("Locomotion").SetActive(true);
+        }
     }
 
     public void UpdateMainMenu(bool value)

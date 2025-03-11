@@ -1,4 +1,3 @@
-using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using Steamworks;
 public class SteamProfileManager : MonoBehaviour
 {
     public TextMeshProUGUI qnt;

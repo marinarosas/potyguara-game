@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Steamworks;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using TMPro;
 using UnityEngine.XR;
+using Steamworks;
 
 public class SalesCenterController : MonoBehaviour
 {
@@ -82,7 +82,7 @@ public class SalesCenterController : MonoBehaviour
                 devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Bbutton);
                 if (Bbutton) // B button pressed
                 {
-                    GameObject menu = transform.GetChild(1).gameObject;
+                    GameObject menu = transform.GetChild(0).gameObject;
                     if (menu != null)
                     {
                         if (!changedStatus)
@@ -99,7 +99,7 @@ public class SalesCenterController : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Space)) // B button pressed
                 {
-                    GameObject menu = transform.GetChild(1).gameObject;
+                    GameObject menu = transform.GetChild(0).gameObject;
                     if (menu != null)
                     {
                         if (!changedStatus)

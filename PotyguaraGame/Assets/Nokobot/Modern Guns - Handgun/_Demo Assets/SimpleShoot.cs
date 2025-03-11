@@ -73,10 +73,10 @@ public class SimpleShoot : MonoBehaviour
 
         if (isLeft)
         {
-            //targetDevice = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
+            targetDevice = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight) { 
-            //targetDevice = FindFirstObjectByType<RightHandController>().GetTargetDevice();
+            targetDevice = FindFirstObjectByType<RightHandController>().GetTargetDevice();
         }
 
         if (isRight != false || isLeft != false)
