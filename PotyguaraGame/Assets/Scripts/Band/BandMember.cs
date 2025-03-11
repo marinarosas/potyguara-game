@@ -29,15 +29,9 @@ public class BandMember : MonoBehaviour
 
     protected void setBackingVocalMic()
     {
-        GameObject micPrefab = Resources.Load<GameObject>("MicrophonePrefab");
-
-        if (micPrefab != null)
-        {
-            Vector3 micPosition = transform.position + transform.forward * 0.4f;
-            GameObject micInstance = Instantiate(micPrefab, micPosition, transform.rotation);
-        }
-        else
-            Debug.LogError("Microphone backing vocal prefab not found in Resources.");
+        GameObject mic = transform.parent.gameObject.GetComponent<BandController>().micBackingVocal;
+        GameObject micInstance = Instantiate(mic, transform.parent);
+        micInstance.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z + 0.55f);
     }
 
     public void setAnimator(Animator anim)

@@ -17,6 +17,8 @@ public class BandController : MonoBehaviour
     [SerializeField] int silenceThreshold = 10;
     [SerializeField] private int numberOfSamples = 64;
 
+    [SerializeField] public GameObject micBackingVocal;
+
     [SerializeField] GameObject[] reactiveObjects;
     [Range(1f, 100f)]
     [SerializeField] private float smoothFactor = 4f;
@@ -80,7 +82,7 @@ public class BandController : MonoBehaviour
 
             foreach(var obj in reactiveObjects) {
                 Transform control = FindControl(obj.transform);
-                control.localScale = Vector3.Lerp(control.localScale, new Vector3(control.localScale.x, -mappedValue, control.localScale.z), Time.deltaTime * smoothFactor);
+                control.localScale = Vector3.Lerp(control.localScale, new Vector3(control.localScale.x, mappedValue, control.localScale.z), Time.deltaTime * smoothFactor);
             }
         }
     }
