@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Video;
 
 [Serializable]
 public class TimeEvent
@@ -14,6 +15,7 @@ public class TimeEvent
 public class BandController : MonoBehaviour
 {
     [SerializeField] private BandMember[] members;
+    [SerializeField] private VideoPlayer video;
     [SerializeField] int silenceThreshold = 10;
     [SerializeField] private int numberOfSamples = 64;
 
@@ -42,6 +44,11 @@ public class BandController : MonoBehaviour
         spectrum = new float[numberOfSamples];
 
         audioBand = GetComponent<AudioSource>();
+    }
+
+    public void StartShow()
+    {
+        video.Play();
         foreach (var member in members)
         {
             //bandMember.setTransform(gameObject.transform);
