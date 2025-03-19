@@ -6,16 +6,11 @@ public class CannonBallController : MonoBehaviour
     private VisualEffect visualEffect;
     private bool isNavio = false;
     public bool wasInstantiatedForNavio { get; set; } = false;
-
-    void Awake()
-    {
-        visualEffect = transform.GetChild(0).GetComponent<VisualEffect>();
-    }
     
     void Start()
     {
+        visualEffect = transform.GetChild(0).GetComponent<VisualEffect>();
         visualEffect.Stop();
-        visualEffect.Reinit();
     }
 
     public void SetIsNavio(bool value)
