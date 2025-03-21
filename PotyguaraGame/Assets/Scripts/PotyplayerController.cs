@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class PotyPlayerController : MonoBehaviour
     private int positionRankingNormalMode;
     private int potycoins = 0;
     private NetworkManager nm;
+
+    private bool potycoinContabilized = false;
     struct Skin
     {
         public int gender;
@@ -98,9 +101,25 @@ public class PotyPlayerController : MonoBehaviour
 
     public void UpdatePotycoins(int value, Button btn, GameObject canva)
     {
-        SetPotycoins(value);
+        if (!potycoinContabilized)
+        {
+            SetPotycoins(value);
+            potycoinContabilized = true;
+            StartCoroutine("ResetBoolean");
+        }
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
         canva.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(canva);
+    }
+
+    private IEnumerator ResetBoolean()
+    {
+        yield return new WaitForSeconds(2f);
+        potycoinContabilized = false;
+    }
+
+    public void GetPotycoinsOfTheServer(int value)
+    {
+        potycoins = value;
     }
 
     public void SetPotycoins(int value)

@@ -29,11 +29,10 @@ public class NetworkManager : MonoBehaviour
 
     private string rankingZ = "";
     private string rankingB = "";
-
     public bool isTheFirstAcess = true;
-
-    private bool playerIsConnected = false;
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
+    private ConcurrentQueue<int> pointingNormalMode = new ConcurrentQueue<int>();
+    private ConcurrentQueue<int> pointingZombieMode = new ConcurrentQueue<int>();
     private List<string> tickets;
 
     //  Singleton stuff
@@ -150,6 +149,8 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
+                    PlayerPrefs.SetString("id", this.playerId);
+                    PlayerPrefs.Save();
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -166,11 +167,6 @@ public class NetworkManager : MonoBehaviour
                     // A mudança de posição dos jogadores é feita no método Update() que irá consultar o
                     // gameState para saber a posição dos jogadores e atualizar a posição dos objetos na cena.
                     gameState = response.gameState;
-                    // mostrar o novo estado do jogO
-                    if (response.parameters["connection"].Equals("online"))
-                        playerIsConnected = true;
-                    else
-                        playerIsConnected = false;
                     break;
                 case "RankingZ":
                     rankingZ = response.parameters["ranking"];
@@ -183,10 +179,9 @@ public class NetworkManager : MonoBehaviour
                 case "Reconnection":
                     this.playerId = response.parameters["playerId"];
                     isTheFirstAcess = false;
-                    Debug.Log("Reconnectou!!!");
-                    break;
-                case "Potycoins":
-                    potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
+                    tickets.Add(response.parameters["pointingNormalMode"]);
+                    tickets.Add(response.parameters["pointingZombieMode"]);
+                    tickets.Add(response.parameters["potycoins"]);
                     break;
                 case "Ticket":
                     tickets.Add(response.parameters["ticket"]);
@@ -313,6 +308,7 @@ public class NetworkManager : MonoBehaviour
             actor = this.playerId,
             parameters = new Dictionary<string, string>()
             {
+
             }
         };
         if (ws != null)
@@ -320,6 +316,19 @@ public class NetworkManager : MonoBehaviour
             ws.Send(action.ToJson());
             FindFirstObjectByType<TransitionController>().ExitGame();
         }
+    }
+
+    internal void CreatePlayer()
+    {
+        Action action = new Action()
+        {
+            type = "CreatePlayer",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+                 {"serverAddress", serverAddress },
+            }
+        };
     }
 
     /// <summary>
@@ -377,7 +386,17 @@ public class NetworkManager : MonoBehaviour
 
             while (potycoins.TryDequeue(out int potycoin))
             {
-                FindFirstObjectByType<PotyPlayerController>().SetPotycoins(potycoin);
+                FindFirstObjectByType<PotyPlayerController>().GetPotycoinsOfTheServer(potycoin);
+            }
+
+            while (pointingNormalMode.TryDequeue(out int pointingNM))
+            {
+                FindFirstObjectByType<PotyPlayerController>().SetScoreNormalMode(pointingNM);
+            }
+
+            while (pointingZombieMode.TryDequeue(out int pointingZM))
+            {
+                FindFirstObjectByType<PotyPlayerController>().SetScoreZombieMode(pointingZM);
             }
 
             if (SceneManager.GetActiveScene().buildIndex == 0)
