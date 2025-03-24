@@ -51,8 +51,6 @@ public class BandController : MonoBehaviour
         video.Play();
         foreach (var member in members)
         {
-            //bandMember.setTransform(gameObject.transform);
-            member.setAnimator(member.GetComponent<Animator>());
             member.IniciateMember();
 
             if (member.getInstrument() == Instrument.VOCALS)
@@ -63,33 +61,37 @@ public class BandController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time - lastCheckTime >= checkInterval)
+        if (video.isPlaying)
         {
-            int volume = GetVolume(audioBand);
-            if (volume < silenceThreshold)
+            if (Time.time - lastCheckTime >= checkInterval)
             {
-                isSilence = true;
-                StartCoroutine(SetSilence(0.5f));
-            }
-            else if (isSilence)
-            {
-                StopAllCoroutines();
-                Play();
-            }
+                int volume = GetVolume(audioBand);
+                if (volume < silenceThreshold)
+                {
+                    isSilence = true;
+                    StartCoroutine(SetSilence(0.5f));
+                }
+                else if (isSilence)
+                {
+                    StopAllCoroutines();
+                    Play();
+                }
 
-            float frequency = GetSpectrum(audioBand);
-            //float mappedValue = mapValue(frequency, 0, 2);
-            //if (volume < silenceThreshold) mappedValue = 0;
-            float mappedValue = mapValue(volume, 0, 3, 0, 100);
+                float frequency = GetSpectrum(audioBand);
+                //float mappedValue = mapValue(frequency, 0, 2);
+                //if (volume < silenceThreshold) mappedValue = 0;
+                float mappedValue = mapValue(volume, 0, 3, 0, 100);
 
-            audioBand.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
+                audioBand.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
 
-            foreach (var timeEvent in vocalEvents)
-                timeAction(audioBand, timeEvent.min, timeEvent.sec, timeEvent.vocal);
+                foreach (var timeEvent in vocalEvents)
+                    timeAction(audioBand, timeEvent.min, timeEvent.sec, timeEvent.vocal);
 
-            foreach(var obj in reactiveObjects) {
-                Transform control = FindControl(obj.transform);
-                control.localScale = Vector3.Lerp(control.localScale, new Vector3(control.localScale.x, mappedValue, control.localScale.z), Time.deltaTime * smoothFactor);
+                foreach (var obj in reactiveObjects)
+                {
+                    Transform control = FindControl(obj.transform);
+                    control.localScale = Vector3.Lerp(control.localScale, new Vector3(control.localScale.x, mappedValue, control.localScale.z), Time.deltaTime * smoothFactor);
+                }
             }
         }
     }

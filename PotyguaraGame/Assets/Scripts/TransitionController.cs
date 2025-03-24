@@ -15,7 +15,7 @@ public class TransitionController : MonoBehaviour
     private int tempMode;
     private int tempSceneIndex = -1;
     private bool isForShowArea = false; 
-    private bool isTheFirstAcess;
+    private bool isTheFirstAcess = true;
 
     public static TransitionController Instance;
 
@@ -31,31 +31,31 @@ public class TransitionController : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
-            GameObject.Find("Locomotion").SetActive(false);
+            GameObject locomotion = GameObject.Find("Locomotion");
+            if (locomotion != null)
+                locomotion.SetActive(false);
         }
         else
         {
-            GameObject.Find("Locomotion").SetActive(true);
+            GameObject locomotion = GameObject.Find("Locomotion");
+            if(locomotion != null)
+               locomotion.SetActive(true);
         }
     }
 
     public void UpdateMainMenu(bool value)
     {
-        if (isTheFirstAcess != value)
+        if (value)
         {
-            if (value)
-            {
-                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
-                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(1));
-                GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Criar Perfil";
-            }
-            else
-            {
-                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
-                GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(2));
-                GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Iniciar Jogo";
-            }
-            isTheFirstAcess = value;
+            GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
+            GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(1));
+            GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Criar Perfil";
+        }
+        else
+        {
+            GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
+            GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(2));
+            GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Iniciar Jogo";
         }
     }
 
@@ -83,7 +83,7 @@ public class TransitionController : MonoBehaviour
             isForShowArea = false;
         }
 
-            if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             if (!isTheFirstAcess)
             {

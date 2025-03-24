@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,17 +15,11 @@ public class MenuController : MonoBehaviour
     // Sala de Meditação
     // Sair para o Menu
 
-    private bool updatedMenu = false;
-    private int currentScene;
-
-    public Toggle toggleTutorial;
-
     private TransitionController transitionController;
     [SerializeField] private List<Sprite> galleryImages;
 
     void Start()
     {
-        toggleTutorial.onValueChanged.AddListener(FindFirstObjectByType<TechGuaraController>().SetMode);
         int count = 0;
         foreach (var image in galleryImages) 
         { 
@@ -38,7 +31,6 @@ public class MenuController : MonoBehaviour
         for (int ii = 0; ii < transform.childCount; ii++)
             transform.GetChild(ii).gameObject.SetActive(true);
 
-        currentScene = SceneManager.GetActiveScene().buildIndex;
         transitionController = FindFirstObjectByType<TransitionController>();
 
         if (SceneManager.GetActiveScene().buildIndex == 2) // ponta Negra
@@ -51,7 +43,6 @@ public class MenuController : MonoBehaviour
             transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
             transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
             transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
-            updatedMenu = true;
         }
         if (SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
         {
@@ -63,7 +54,6 @@ public class MenuController : MonoBehaviour
             transform.GetChild(7).gameObject.SetActive(false);
             transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
             transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
-            updatedMenu = true;
         }
         if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
         {
@@ -75,7 +65,6 @@ public class MenuController : MonoBehaviour
             transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
             transform.GetChild(6).gameObject.SetActive(false);
             transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
-            updatedMenu = true;
         }
     }
 

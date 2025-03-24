@@ -95,7 +95,7 @@ public class RainController : MonoBehaviour
             audioSourceWind.Stop();
         }
 
-        //audioSourceWind.Update();
+        audioSourceWind.Update();
     }
 
     private void CheckForRainChange()
@@ -103,7 +103,7 @@ public class RainController : MonoBehaviour
         if (lastRainIntensityValue != precip)
         {
             lastRainIntensityValue = precip;
-            if (precip <= 0.01f)
+            if (precip <= 0.5f)
             {
                 if (audioSourceRainCurrent != null)
                 {
@@ -218,9 +218,9 @@ public class RainController : MonoBehaviour
 
         CheckForRainChange();
         UpdateWind();
-        //audioSourceRainLight.Update();
-        //audioSourceRainMedium.Update();
-        //audioSourceRainHeavy.Update();
+        audioSourceRainLight.Update();
+        audioSourceRainMedium.Update();
+        audioSourceRainHeavy.Update();
     }
 
     public class LoopingAudioSource

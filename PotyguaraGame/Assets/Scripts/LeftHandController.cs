@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LeftHandController : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class LeftHandController : MonoBehaviour
                             controlMenu = !controlMenu;
                             menu.SetActive(controlMenu);
                             changedStatus = true;
+                            GameObject.FindWithTag("MainCamera").transform.GetChild(6).gameObject.SetActive(!controlMenu);
                             Invoke("ChangeStatus", .3f);
                         }
                     }
@@ -42,15 +44,19 @@ public class LeftHandController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.M)) // Y button pressed
             {
-                GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
-                if (menu != null)
+                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
                 {
-                    if (!changedStatus)
+                    GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
+                    if (menu != null)
                     {
-                        controlMenu = !controlMenu;
-                        menu.SetActive(controlMenu);
-                        changedStatus = true;
-                        Invoke("ChangeStatus", .3f);
+                        if (!changedStatus)
+                        {
+                            controlMenu = !controlMenu;
+                            menu.SetActive(controlMenu);
+                            changedStatus = true;
+                            GameObject.FindWithTag("MainCamera").transform.GetChild(6).gameObject.SetActive(!controlMenu);
+                            Invoke("ChangeStatus", .3f);
+                        }
                     }
                 }
             }
@@ -102,7 +108,6 @@ public class LeftHandController : MonoBehaviour
     IEnumerator timeForStop()
     {
         yield return new WaitForSecondsRealtime(0.3f);
-
         ani.ResetTrigger("IsFire");
     }
 }

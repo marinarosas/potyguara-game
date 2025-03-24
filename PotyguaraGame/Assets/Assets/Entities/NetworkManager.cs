@@ -12,6 +12,9 @@ using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime;
 using System.Collections.Concurrent;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
+using System.IO;
+using Steamworks;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -29,10 +32,14 @@ public class NetworkManager : MonoBehaviour
 
     private string rankingZ = "";
     private string rankingB = "";
+
     public bool isTheFirstAcess = true;
+    private int modeGame;
+
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private ConcurrentQueue<int> pointingNormalMode = new ConcurrentQueue<int>();
     private ConcurrentQueue<int> pointingZombieMode = new ConcurrentQueue<int>();
+    private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
     private List<string> tickets;
 
     //  Singleton stuff
@@ -106,10 +113,15 @@ public class NetworkManager : MonoBehaviour
             Debug.Log("Message received: " + e.Data);
             // Processar a mensagem recebida
             ProcessServerMessage(e.Data);
-        };                         
+        };
 
         // Depois de definir os eventos, conectar ao servidor
         ws.Connect();
+
+        if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
+            return;
+
+        SendConnectionSignal(SteamFriends.GetPersonaName());
     }
 
     public string GetRankingZombieMode()
@@ -149,8 +161,6 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
-                    PlayerPrefs.SetString("id", this.playerId);
-                    PlayerPrefs.Save();
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -177,11 +187,21 @@ public class NetworkManager : MonoBehaviour
                     rankingB = response.parameters["ranking"];
                     break;
                 case "Reconnection":
-                    this.playerId = response.parameters["playerId"];
-                    isTheFirstAcess = false;
-                    tickets.Add(response.parameters["pointingNormalMode"]);
-                    tickets.Add(response.parameters["pointingZombieMode"]);
-                    tickets.Add(response.parameters["potycoins"]);
+                    this.playerId = response.parameters["playerID"];
+                    pointingNormalMode.Enqueue(int.Parse(response.parameters["pointingNormalMode"]));
+                    pointingZombieMode.Enqueue(int.Parse(response.parameters["pointingZombieMode"]));
+                    potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
+
+                    string skinS = response.parameters["skin"];
+                    string[] list = skinS.Split('|');
+                    Debug.Log("Primeiro item: " + int.Parse(list[0]));
+                    Debug.Log(list.Length);
+                    if (int.Parse(list[0]) != -1)
+                    {
+                        isTheFirstAcess = false;
+                        modeGame = int.Parse(response.parameters["mode"]);
+                        skin.Enqueue(response.parameters["skin"]);
+                    }
                     break;
                 case "Ticket":
                     tickets.Add(response.parameters["ticket"]);
@@ -220,6 +240,38 @@ public class NetworkManager : MonoBehaviour
                 {"position_x", position.x.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)},
                 {"position_y", position.y.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)},
                 {"position_z", position.z.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)}
+            }
+        };
+
+        // Enviar a ação para o servidor
+        ws.Send(action.ToJson());
+    }
+
+    internal void SendConnectionSignal(string nickname)
+    {
+        Action action = new Action()
+        {
+            type = "Connection",
+            actor = nickname,
+            parameters = new Dictionary<string, string>(){
+                { "serverAddress", serverAddress }
+            }
+        };
+
+        // Enviar a ação para o servidor
+        ws.Send(action.ToJson());
+    }
+
+    internal void SendSkin(int gender, int index, int material)
+    {
+        Action action = new Action()
+        {
+            type = "UpdateSkin",
+            actor = playerId,
+            parameters = new Dictionary<string, string>(){
+                { "gender", gender.ToString() },
+                { "index", index.ToString() },
+                { "material", material.ToString() }
             }
         };
 
@@ -318,19 +370,6 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    internal void CreatePlayer()
-    {
-        Action action = new Action()
-        {
-            type = "CreatePlayer",
-            actor = this.playerId,
-            parameters = new Dictionary<string, string>()
-            {
-                 {"serverAddress", serverAddress },
-            }
-        };
-    }
-
     /// <summary>
     /// Atualiza a posição dos jogadores na cena, de acordo com o gameState.
     /// Se um jogador não existir na cena, ele é instanciado.
@@ -356,14 +395,14 @@ public class NetworkManager : MonoBehaviour
                 }
 
                 // Buscar o jogador na cena pelo playerId
-                //GameObject playerObject = GameObject.Find(playerId);
+                GameObject playerObject = GameObject.Find(playerId);
 
 
                 // Se o jogador não existir, instanciar um novo jogador
-                /*if (playerObject == null) {
-                    playerObject = Instantiate(LocalPlayerPrefab);
+                if (playerObject == null) {
+                    playerObject = Instantiate(RemotePlayerPrefab) as GameObject;
                     playerObject.name = playerId;
-                }*/
+                }
 
                 // Atualizar a posição do jogador
                 // TODO: implementar interpolação de movimento
@@ -378,6 +417,7 @@ public class NetworkManager : MonoBehaviour
                 FindObjectOfType<RankingController>().UpdateRanking(0);
                 rankingZ = "";
             }
+
             if (!rankingB.Equals(""))
             {
                 FindObjectOfType<RankingController>().UpdateRanking(1);
@@ -387,6 +427,17 @@ public class NetworkManager : MonoBehaviour
             while (potycoins.TryDequeue(out int potycoin))
             {
                 FindFirstObjectByType<PotyPlayerController>().GetPotycoinsOfTheServer(potycoin);
+            }
+
+            while (skin.TryDequeue(out string skinString))
+            {
+                FindFirstObjectByType<TechGuaraController>().SetMode(modeGame == 0 ? true : false);
+                string[] list = skinString.Split('|');
+                int bodyIndex = int.Parse(list[0]);
+                int skinIndex = int.Parse(list[1]);
+                int variant = int.Parse(list[2]);
+
+                FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
             }
 
             while (pointingNormalMode.TryDequeue(out int pointingNM))

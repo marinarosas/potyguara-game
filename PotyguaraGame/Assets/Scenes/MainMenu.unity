@@ -187,6 +187,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Techguara
       objectReference: {fileID: 0}
+    - target: {fileID: 4932587092773127191, guid: e05be3ee73164da458cde532fa19e90a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7724064670364740051, guid: e05be3ee73164da458cde532fa19e90a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -679,7 +683,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1795374600}
   m_PlaneDistance: 500
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1595,6 +1599,11 @@ Transform:
   - {fileID: 712324995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &1795374600 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+  m_PrefabInstance: {fileID: 2113145454}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1928125118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,13 +1826,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956518398}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.896221, y: -0.09653636, z: 0.24014165, w: 0.36027867}
+  m_LocalRotation: {x: 0.22835083, y: 0, z: 0, w: 0.97357893}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 136.2, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.4, y: 0, z: 0}
 --- !u!114 &1956518401
 MonoBehaviour:
   m_ObjectHideFlags: 0

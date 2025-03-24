@@ -4,44 +4,58 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TechGuaraController : MonoBehaviour
 {
     private Report report;
-    private bool modeTutorial = true;
     private AudioSource audioSource;
+    private Toggle toggleTutorial;
     [SerializeField] private List<AudioClip> audios;
 
-    public void SetMode(Boolean value)
+    public bool GetMode()
     {
-        modeTutorial = value;
+        return toggleTutorial.isOn;
     }
-
-    public Boolean GetMode()
+    public void SetMode(bool value)
     {
-        return modeTutorial;
+        toggleTutorial.isOn = value;
+    }
+    private void InitialTutorial()
+    {
+        if (NetworkManager.Instance.isTheFirstAcess)
+        {
+            foreach (AudioClip clip in audios)
+            {
+                if (clip.name.Equals("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar"))
+                    audioSource.clip = clip;
+            }
+            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+            transform.position = new Vector3(0f, 2f, -32.35f);
+            report.UpdateTitle("Bem-vindo(a) ao Potyguara Verse!");
+            report.UpdateDescription("Você acaba de entrar em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia," +
+                " e juntos vamos explorar esse universo cheio de novidades! No Potyguara Verse, você poderá participar de eventos incríveis, jogar minigames, visitar nossa loja exclusiva e muito mais.");
+            audioSource.Play();
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
     }
     void Start()
     {
+        toggleTutorial = GameObject.FindWithTag("MainCamera").transform.GetChild(1).GetChild(0).GetChild(4).GetComponent<Toggle>();
         audioSource = transform.GetChild(2).GetComponent<AudioSource>();
         report = transform.GetChild(0).GetComponent<Report>();
 
-        if (modeTutorial)
+        if (toggleTutorial.isOn)
         {
-            transform.gameObject.SetActive(true);
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(true);
             if (SceneManager.GetActiveScene().buildIndex == 0)
-            {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar"))
-                        audioSource.clip = clip;
-                }
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
-                transform.position = new Vector3(0f, 2f, -32.35f);
-                report.UpdateTitle("Bem-vindo(a) ao Potyguara Verse!");
-                report.UpdateDescription("Você acaba de entrar em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia," +
-                    " e juntos vamos explorar esse universo cheio de novidades! No Potyguara Verse, você poderá participar de eventos incríveis, jogar minigames, visitar nossa loja exclusiva e muito mais.");
-            }
+                Invoke("InitialTutorial", 1.5f);
+
             if (SceneManager.GetActiveScene().buildIndex == 1)
             {
                 foreach (AudioClip clip in audios)
@@ -49,6 +63,7 @@ public class TechGuaraController : MonoBehaviour
                     if (clip.name.Equals("Techyguara.CriaçãodePerfil+Avatar"))
                         audioSource.clip = clip;
                 }
+                transform.GetChild(1).gameObject.SetActive(true);
                 transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
                 report.UpdateTitle("Crie seu Avatar!");
                 report.UpdateDescription("Agora que você já se apresentou, é hora de criar seu avatar! Escolha suas características, como rosto, cabelo, roupas e acessórios para refletir sua personalidade no " +
@@ -99,14 +114,16 @@ public class TechGuaraController : MonoBehaviour
             }
             audioSource.Play();
         }
-        else
-        {
-            transform.gameObject.SetActive(false);
-        }
     }
 
     void Update()
     {
+        if (!toggleTutorial.isOn) {
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
+            audioSource.Stop();
+        }
+
         if (audioSource.isPlaying && SceneManager.GetActiveScene().buildIndex == 0)
         {
             if (audioSource.time >= 27.0)
@@ -126,6 +143,7 @@ public class TechGuaraController : MonoBehaviour
 
         report.UpdateTitle(title);
         report.UpdateDescription(description);
+        transform.gameObject.SetActive(true);
     }
 
     public void CreateReport(string title, string description, float duration, Vector3 pos, float direction)

@@ -21,10 +21,9 @@ public class BandMember : MonoBehaviour
 
     public void IniciateMember()
     {
+        animator = GetComponent<Animator>();
         if (isBackingVocal && instrument != Instrument.VOCALS)
             setBackingVocalMic();
-        
-        Debug.Log("Iniciate "+ name + " - "+ instrument);
     }
 
     protected void setBackingVocalMic()
@@ -32,16 +31,6 @@ public class BandMember : MonoBehaviour
         GameObject mic = transform.parent.gameObject.GetComponent<BandController>().micBackingVocal;
         GameObject micInstance = Instantiate(mic, transform.parent);
         micInstance.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z + 0.55f);
-    }
-
-    public void setAnimator(Animator anim)
-    {
-        animator = anim;
-    }
-
-    void Update()
-    {
-        
     }
 
     public Instrument getInstrument() => instrument;

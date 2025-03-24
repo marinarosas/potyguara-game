@@ -14,17 +14,21 @@ public class SkinIntegrationController : MonoBehaviour
 
     private void Start()
     {
-        SetSkin();
         Transform mainCam = transform.GetChild(0).GetChild(0);
         Transform avatar = transform.GetChild(0).GetChild(5);
         animator = transform.GetChild(0).GetChild(5).GetChild(0).GetComponent<Animator>();
-        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5)
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5) { 
             transform.GetChild(0).GetChild(5).gameObject.SetActive(false);
+        }
         else
+        {
             transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
+            GetSkin();
+        }
+            
     }
 
-    public void SetSkin()
+    private void GetSkin()
     {
         int skinIndex = FindFirstObjectByType<PotyPlayerController>().GetIndex();
         int skinMaterial = FindFirstObjectByType<PotyPlayerController>().GetMaterial();

@@ -24,8 +24,11 @@ public class DayController : MonoBehaviour
 
     void Start()
     {
-        sun = GameObject.FindWithTag("Sun").transform;
-        moon = GameObject.FindWithTag("Moon").transform;
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
+        {
+            moon = GameObject.FindWithTag("Moon").transform;
+            sun = GameObject.FindWithTag("Sun").transform;
+        }
         skyBox = RenderSettings.skybox;
         url = $"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}&aqi=no";
         rotationSpeed = 360f / dayLenght;
@@ -93,13 +96,13 @@ public class DayController : MonoBehaviour
     void Update()
     {
         currentTime = DateTime.Now.ToLocalTime();
-        GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
+        //GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
 
         if (toggleWeather.isOn)
         {
             InvokeRepeating("RequestAPIWeather", 0f, 3600f);
 
-            if (SceneManager.GetActiveScene().buildIndex == 5 || SceneManager.GetActiveScene().buildIndex == 1)
+            if (SceneManager.GetActiveScene().buildIndex == 1)
             {
                 RenderSettings.sun = sun.GetComponent<Light>();
                 sun.rotation= Quaternion.Euler(87.21f, 170f, 0f);
@@ -139,9 +142,9 @@ public class DayController : MonoBehaviour
                 if (currentTime.Hour < 4)
                 {
                     rotationSpeed = 180f / dayLenght;
-                    sunAngle = (hours / 24f) * 180f;
+                    sunAngle = 100;
                     RenderSettings.sun = moon.GetComponent<Light>();
-                    moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    moon.rotation = Quaternion.Euler(sunAngle - 85f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 0.2f);
                 }
             }

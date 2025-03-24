@@ -12,13 +12,12 @@ public class HeightController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-
         // Se não for Atalhos de Menu, coloca o player na posição inicial da Cena
         if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
         {
             Transform initialPosition = GameObject.Find("InitialPosition").transform;
             player.transform.position = initialPosition.position;
-            height = player.transform.position.y;
+            FindFirstObjectByType<HeightController>().NewHeight(player.transform.position.y);
             player.transform.eulerAngles = new Vector3(0, initialPosition.eulerAngles.y, 0);
         }
     }
@@ -31,21 +30,24 @@ public class HeightController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!insideLift)
+        if (player != null)
         {
-            LiftShowController show = FindFirstObjectByType<LiftShowController>();
-            if (show != null)
+            if (!insideLift)
             {
-                if (show.isInsideLift)
-                    VariableHeight(player);
+                LiftShowController show = FindFirstObjectByType<LiftShowController>();
+                if (show != null)
+                {
+                    if (show.isInsideLift)
+                        VariableHeight(player);
+                    else
+                        FixedHeight(player);
+                }
                 else
                     FixedHeight(player);
             }
             else
-                FixedHeight(player);
+                VariableHeight(player);
         }
-        else
-            VariableHeight(player);
     }
 
     public void SetBool(bool value)

@@ -18,20 +18,12 @@ public class AvatarMenuController : MonoBehaviour
 
     private void Start()
     {
-        //TODO: aqui entra condicao pra puxar do banco ou deixar padrao (0)
-
-        // -1 significa dado nao salvo
-        //bool serverHasSavedSkin = (skinIndex > -1 && skinMaterial > -1);
-        //if (skinContainer.childCount == 0 && serverHasSavedSkin)
-        //{
-        //    setSkin(skinIndex, skinMaterial);
-        //    Debug.Log("Recuperando skin...");
         SkinSystem skinSystem = bodies[0].GetComponent<SkinSystem>();
         if (skinSystem != null)
         {
             foreach (Transform child in skinSystem.skinContainer)
             {
-                GameObject.Destroy(child.gameObject);
+                Destroy(child.gameObject);
             }
         }
 
@@ -59,6 +51,8 @@ public class AvatarMenuController : MonoBehaviour
 
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());
+
+        NetworkManager.Instance.SendSkin(bodyIndex, skinIndex, variant);
 
         FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
         FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
