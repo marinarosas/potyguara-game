@@ -15,6 +15,8 @@ using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using System.IO;
 using Steamworks;
+using Unity.VisualScripting;
+using UnityEngine.Analytics;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -40,6 +42,7 @@ public class NetworkManager : MonoBehaviour
     private ConcurrentQueue<int> pointingNormalMode = new ConcurrentQueue<int>();
     private ConcurrentQueue<int> pointingZombieMode = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
+    private ConcurrentQueue<int> skins = new ConcurrentQueue<int>();
     private List<string> tickets;
 
     //  Singleton stuff
@@ -186,6 +189,12 @@ public class NetworkManager : MonoBehaviour
                     Debug.Log("Recebi: " + response.parameters["ranking"]);
                     rankingB = response.parameters["ranking"];
                     break;
+                case "Skins":
+                    string skinsString = response.parameters["skins"];
+                    string[] indexList = skinsString.Split('|');
+                    foreach(var index in indexList)
+                        skins.Enqueue(int.Parse(index));
+                    break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
                     pointingNormalMode.Enqueue(int.Parse(response.parameters["pointingNormalMode"]));
@@ -266,12 +275,26 @@ public class NetworkManager : MonoBehaviour
     {
         Action action = new Action()
         {
-            type = "UpdateSkin",
+            type = "NewSkin",
             actor = playerId,
             parameters = new Dictionary<string, string>(){
                 { "gender", gender.ToString() },
                 { "index", index.ToString() },
                 { "material", material.ToString() }
+            }
+        };
+
+        // Enviar a ação para o servidor
+        ws.Send(action.ToJson());
+    }
+
+    internal void RequestSkins()
+    {
+        Action action = new Action()
+        {
+            type = "RequestSkins",
+            actor = playerId,
+            parameters = new Dictionary<string, string>(){
             }
         };
 

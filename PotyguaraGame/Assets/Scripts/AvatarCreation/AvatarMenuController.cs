@@ -18,6 +18,7 @@ public class AvatarMenuController : MonoBehaviour
 
     private void Start()
     {
+        NetworkManager.Instance.RequestSkins();
         SkinSystem skinSystem = bodies[0].GetComponent<SkinSystem>();
         if (skinSystem != null)
         {
@@ -33,6 +34,10 @@ public class AvatarMenuController : MonoBehaviour
         materials = new List<SkinMaterial> (skins[skinIndex].skinMaterials);
 
         IniciateMenu(Option.BODY, bodyIndex, skinIndex, skinMaterial);
+    }
+
+    private void Update()
+    {
     }
 
     public void IniciateMenu(Option option, int bodyIndex, int skinIndex, int skinMaterial)

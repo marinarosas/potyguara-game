@@ -14,6 +14,7 @@ public class PotyPlayerController : MonoBehaviour
     private int positionRankingNormalMode;
     private int potycoins = 0;
     private NetworkManager nm;
+    private List<int> skins;
 
     private bool potycoinContabilized = false;
     struct Skin
