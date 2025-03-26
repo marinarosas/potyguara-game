@@ -16,7 +16,8 @@ public class SalesCenterController : MonoBehaviour
     [SerializeField] public Product[] potycoins;
     [SerializeField] public Product[] shows;
     [SerializeField] public Product[] meditationClasses;
-    [SerializeField] public Product[] skins;
+    [SerializeField] public Product[] skinsFEM;
+    [SerializeField] public Product[] skinsMASC;
 
     [Header("Menu Container")]
     [SerializeField] private Transform content;
@@ -37,6 +38,23 @@ public class SalesCenterController : MonoBehaviour
     public Product[] GetShows()
     {
         return shows;
+    }
+
+    public int GetIndexSkin(string id)
+    {
+        if(int.Parse(id) <= 4012)
+        {
+            foreach (Product item in skinsFEM)
+                if (item.id == id)
+                    return item.index;
+        }
+        else
+        {
+            foreach (Product item in skinsMASC)
+                if (item.id == id)
+                    return item.index;
+        }
+        return 0;
     }
 
     public void UpdateSalesCenter(string category)
@@ -61,8 +79,12 @@ public class SalesCenterController : MonoBehaviour
         }
         if (category == "skin")
         {
-            foreach (Product item in skins)
-                AddNewButton(item.image, item.id, item.description, item.category);
+            if(FindFirstObjectByType<PotyPlayerController>().GetGender() == 0)
+                foreach (Product item in skinsFEM)
+                    AddNewButton(item.image, item.id, item.description, item.category);
+            else
+                foreach (Product item in skinsMASC)
+                    AddNewButton(item.image, item.id, item.description, item.category);
         }
     }
 

@@ -15,7 +15,6 @@ public class TimeEvent
 public class BandController : MonoBehaviour
 {
     [SerializeField] private BandMember[] members;
-    [SerializeField] private VideoPlayer video;
     [SerializeField] int silenceThreshold = 10;
     [SerializeField] private int numberOfSamples = 64;
 
@@ -30,8 +29,10 @@ public class BandController : MonoBehaviour
     private BandMember vocalist;
 
     private AudioSource audioBand;
+    private VideoPlayer video;
     private bool isSilence = false;
     private bool hasVocal = true;
+    private bool showStarted = false;
 
     private float[] samples;
     private float[] spectrum;
@@ -42,8 +43,14 @@ public class BandController : MonoBehaviour
     {
         samples = new float[numberOfSamples];
         spectrum = new float[numberOfSamples];
+        video = new VideoPlayer();
 
         audioBand = GetComponent<AudioSource>();
+    }
+
+    public void SetVideo(VideoClip clip)
+    {
+        video.clip = clip;
     }
 
     public void StartShow()
@@ -56,12 +63,13 @@ public class BandController : MonoBehaviour
             if (member.getInstrument() == Instrument.VOCALS)
                 vocalist = member;
         }
+        showStarted = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (video.isPlaying)
+        if (showStarted)
         {
             if (Time.time - lastCheckTime >= checkInterval)
             {

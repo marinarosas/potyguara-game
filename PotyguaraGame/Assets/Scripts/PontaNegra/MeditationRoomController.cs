@@ -8,10 +8,7 @@ using UnityEngine.UI;
 
 public class MeditationRoomController : MonoBehaviour
 {
-    //private string folderPath = Path.Combine(Application.streamingAssetsPath, "Techyguara");
     private int countClasses = 1; // qnt de aulas
-    //private List<string> audioFiles = new List<string>(); // adiciona os files 
-    //private HashSet<string> knownFiles = new HashSet<string>(); //adiciona os audios j� adicionados para que n�o haja duplicatas
     private bool StartedClass = false;
 
     [SerializeField] private GameObject magicCircles;
@@ -21,10 +18,7 @@ public class MeditationRoomController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (AudioClip clip in audios)
-        {
-            AddButton(clip);
-        }
+        AddButton(audios[0]);
     }
 
     void Update()
@@ -43,37 +37,6 @@ public class MeditationRoomController : MonoBehaviour
     {
         audioSource.Stop();
     }
-
-    #region checkingClasses
-    /*public IEnumerator CheckForNewFiles()
-    {
-        while (true)
-        {
-            if (Directory.Exists(folderPath))
-            {
-                try
-                {
-                    string[] files = Directory.GetFiles(folderPath, "*.*");
-                    foreach (string file in files)
-                    {
-                        if ((file.EndsWith(".WAV") || file.EndsWith(".mp3") || file.EndsWith(".ogg")) && !knownFiles.Contains(file))
-                        {
-                            audioFiles.Add(file);
-                            knownFiles.Add(file);
-                            AddButton(file);
-                            Debug.Log("Aula adicionada com sucesso!!!");
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError("error " + e.GetType() + ": " + e);
-                }
-            }
-            yield return new WaitForSeconds(15);
-        }
-    }*/
-    #endregion
 
     #region ButtonCreation
     public void AddButton(AudioClip clip)

@@ -25,7 +25,6 @@ public class SkinIntegrationController : MonoBehaviour
             transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
             GetSkin();
         }
-            
     }
 
     private void GetSkin()
@@ -41,16 +40,13 @@ public class SkinIntegrationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //InputDevice device = InputDevices.GetDeviceAtXRNode(inputSource);
-        //device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputAxis);
+        InputDevice device = InputDevices.GetDeviceAtXRNode(inputSource);
+        device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputAxis);
 
-        //bool isMoving = inputAxis.magnitude > 0.1f;
-        /*if (animator != null)
-        {
-            animator.SetBool("isWalking", isMoving);
-        }*/
+        bool isMoving = inputAxis.magnitude > 0.1f;
         if (animator != null)
         {
+            animator.SetBool("isWalking", isMoving);
             if (!animator.GetBool("isWalking"))
             {
                 Transform mainCam = transform.GetChild(0).GetChild(0);

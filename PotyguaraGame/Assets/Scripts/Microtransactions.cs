@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Steamworks;
+using System.Net.Sockets;
 
 public class Microtransaction : MonoBehaviour
 {
@@ -17,7 +18,6 @@ public class Microtransaction : MonoBehaviour
     private string currentTransactionId = "";
 
     private bool _isInPurchaseProcess = false;
-    private int currentCoins;
 
     //  Singleton stuff
     private static Microtransaction _instance;
@@ -138,7 +138,6 @@ public class Microtransaction : MonoBehaviour
                 if (ret.success)
                 {
                     // after confirmation, give the item to the player
-                    currentCoins += 1000;
                     foreach(WWWForm Form in wWWForms)
                     {
                         if (Form.headers["orderId"] == orderId)
@@ -146,50 +145,192 @@ public class Microtransaction : MonoBehaviour
                             if (Form.headers["itemId"].Equals("1001"))
                             {
                                 FindFirstObjectByType<PotyPlayerController>().SetPotycoins(100);
-                            }else if (Form.headers["itemId"].Equals("1002")){
+                            }
+                            else if (Form.headers["itemId"].Equals("1002"))
+                            {
                                 FindFirstObjectByType<PotyPlayerController>().SetPotycoins(250);
-                            }else if (Form.headers["itemId"].Equals("1003"))
+                            }
+                            else if (Form.headers["itemId"].Equals("1003"))
                             {
                                 FindFirstObjectByType<PotyPlayerController>().SetPotycoins(500);
-                            }else if (Form.headers["itemId"].Equals("1004"))
+                            }
+                            else if (Form.headers["itemId"].Equals("1004"))
                             {
                                 FindFirstObjectByType<PotyPlayerController>().SetPotycoins(1000);
-                            }else if (Form.headers["itemId"].Equals("2002"))
+                            }
+                            else if (Form.headers["itemId"].Equals("2001"))
                             {
-                                FindFirstObjectByType<MenuShowController>().UnclockShow("2002");
-                            }else if (Form.headers["itemId"].Equals("3002"))
+                                FindFirstObjectByType<MenuShowController>().UnclockShow("2001");
+                                NetworkManager.Instance.SendTicket("2001");
+                            }
+                            else if (Form.headers["itemId"].Equals("3002"))
                             {
 
-                            }else if (Form.headers["itemId"].Equals("3003"))
+                            }
+                            else if (Form.headers["itemId"].Equals("3003"))
                             {
+                            }
+                            else if (Form.headers["itemId"].Equals("4001"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4001");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                             else if (Form.headers["itemId"].Equals("4002"))
                             {
-
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4002");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                             else if (Form.headers["itemId"].Equals("4003"))
                             {
-
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4003");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                             else if (Form.headers["itemId"].Equals("4004"))
                             {
-
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4004");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                             else if (Form.headers["itemId"].Equals("4005"))
                             {
-
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4005");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                             else if (Form.headers["itemId"].Equals("4006"))
                             {
-
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4006");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                             else if (Form.headers["itemId"].Equals("4007"))
                             {
-
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4007");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                             else if (Form.headers["itemId"].Equals("4008"))
                             {
-
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4008");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4009"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4009");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4010"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4010");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4011"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4011");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4012"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4012");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4013"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4013");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4014"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4014");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4015"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4015");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4016"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4016");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4017"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4017");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
+                            }
+                            else if (Form.headers["itemId"].Equals("4018"))
+                            {
+                                int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4018");
+                                if (index != 0)
+                                {
+                                    FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                                    NetworkManager.Instance.SendSkin(index);
+                                }
                             }
                         }
                     }

@@ -10,5 +10,6 @@ public class Product : ScriptableObject
     public string description;
     public string category;
     public string id;
+    public int index;
 
 }

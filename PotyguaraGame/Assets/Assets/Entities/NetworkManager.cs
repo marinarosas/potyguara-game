@@ -43,7 +43,9 @@ public class NetworkManager : MonoBehaviour
     private ConcurrentQueue<int> pointingZombieMode = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
     private ConcurrentQueue<int> skins = new ConcurrentQueue<int>();
-    private List<string> tickets;
+    private ConcurrentQueue<string> tickets = new ConcurrentQueue<string>();
+    private int qntTickets = 0;
+    private int count = 0;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -63,19 +65,6 @@ public class NetworkManager : MonoBehaviour
             }
             return _instance;
         }
-    }
-
-    internal void CheckTickets(Transform content)
-    {
-        if (tickets.Count != 0)
-        {
-            for (int ii = 0; ii < tickets.Count; ii++)
-            {
-                if (tickets[ii] != "null")
-                    FindFirstObjectByType<MenuShowController>().UnclockShow(tickets[ii]);
-            }
-        }
-        tickets.Clear();
     }
 
     // Awake é chamado antes do Start, e é chamado apenas uma vez
@@ -203,8 +192,6 @@ public class NetworkManager : MonoBehaviour
 
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
-                    Debug.Log("Primeiro item: " + int.Parse(list[0]));
-                    Debug.Log(list.Length);
                     if (int.Parse(list[0]) != -1)
                     {
                         isTheFirstAcess = false;
@@ -212,8 +199,12 @@ public class NetworkManager : MonoBehaviour
                         skin.Enqueue(response.parameters["skin"]);
                     }
                     break;
-                case "Ticket":
-                    tickets.Add(response.parameters["ticket"]);
+                case "Tickets":
+                    string ticketsS = response.parameters["tickets"];
+                    string[] ticketList = ticketsS.Split('|');
+                    qntTickets = ticketList.Length;
+                    foreach (var ticket in ticketList)
+                        tickets.Enqueue(ticket);
                     break;
                 default:
                     break;
@@ -252,8 +243,9 @@ public class NetworkManager : MonoBehaviour
             }
         };
 
-        // Enviar a ação para o servidor
-        ws.Send(action.ToJson());
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
     }
 
     internal void SendConnectionSignal(string nickname)
@@ -267,15 +259,16 @@ public class NetworkManager : MonoBehaviour
             }
         };
 
-        // Enviar a ação para o servidor
-        ws.Send(action.ToJson());
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
     }
 
     internal void SendSkin(int gender, int index, int material)
     {
         Action action = new Action()
         {
-            type = "NewSkin",
+            type = "UpdateSkin",
             actor = playerId,
             parameters = new Dictionary<string, string>(){
                 { "gender", gender.ToString() },
@@ -284,10 +277,26 @@ public class NetworkManager : MonoBehaviour
             }
         };
 
-        // Enviar a ação para o servidor
-        ws.Send(action.ToJson());
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
     }
 
+    internal void SendSkin(int index)
+    {
+        Action action = new Action()
+        {
+            type = "NewSkin",
+            actor = playerId,
+            parameters = new Dictionary<string, string>(){
+                { "index", index.ToString() }
+            }
+        };
+
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
+    }
     internal void RequestSkins()
     {
         Action action = new Action()
@@ -298,54 +307,72 @@ public class NetworkManager : MonoBehaviour
             }
         };
 
-        // Enviar a ação para o servidor
-        ws.Send(action.ToJson());
+        FindFirstObjectByType<PotyPlayerController>().ResetSkins();
+
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
     }
 
     internal void SendPontuacionForte(int totalPoints, int mode)
     {
-        if (ws != null)
+        if (mode == 0)
         {
-            if (mode == 0)
+            Action action = new Action()
             {
-                Action action = new Action()
+                type = "GameForteZ",
+                actor = this.playerId,
+                parameters = new Dictionary<string, string>()
                 {
-                    type = "GameForteZ",
-                    actor = this.playerId,
-                    parameters = new Dictionary<string, string>()
-            {
-                { "nickname", PotyPlayerController.Instance.nickname },
-                { "pointing", totalPoints.ToString() }
-            }
-                };
+                    { "nickname", PotyPlayerController.Instance.nickname },
+                    { "pointing", totalPoints.ToString() }
+                }
+            };
 
+            if (ws != null)
                 // envia a pontuação final no jogo do Forte para o servidor
                 ws.Send(action.ToJson());
-            }
-            else
+        }
+        else
+        {
+            Action action = new Action()
             {
-                Action action = new Action()
+                type = "GameForteB",
+                actor = this.playerId,
+                parameters = new Dictionary<string, string>()
                 {
-                    type = "GameForteB",
-                    actor = this.playerId,
-                    parameters = new Dictionary<string, string>()
-            {
-                { "nickname", PotyPlayerController.Instance.nickname },
-                { "pointing", totalPoints.ToString() }
-            }
-                };
+                    { "nickname", PotyPlayerController.Instance.nickname },
+                    { "pointing", totalPoints.ToString() }
+                }
+            };
 
+            if (ws != null)
                 // envia a pontuação final no jogo do Forte para o servidor
                 ws.Send(action.ToJson());
-            }
         }
     }
 
-    internal void RequestTickets(string id)
+    internal void RequestTickets()
     {
         Action action = new Action()
         {
-            type = "Ticket",
+            type = "RequestTickets",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+            }
+        };
+
+        // solicita a atualização dos tickets para o servidor
+        if(ws != null)
+            ws.Send(action.ToJson());
+    }
+
+    internal void SendTicket(string id)
+    {
+        Action action = new Action()
+        {
+            type = "NewTicket",
             actor = this.playerId,
             parameters = new Dictionary<string, string>()
             {
@@ -354,7 +381,7 @@ public class NetworkManager : MonoBehaviour
         };
 
         // solicita a atualização dos tickets para o servidor
-        if(ws != null)
+        if (ws != null)
             ws.Send(action.ToJson());
     }
 
@@ -461,6 +488,21 @@ public class NetworkManager : MonoBehaviour
                 int variant = int.Parse(list[2]);
 
                 FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
+            }
+
+            while (skins.TryDequeue(out int skin))
+            {
+                FindFirstObjectByType<PotyPlayerController>().AddSkin(skin);
+            }
+
+            while (tickets.TryDequeue(out string ticket))
+            {
+                FindFirstObjectByType<PotyPlayerController>().AddTicket(ticket);
+                count++;
+                if (count == qntTickets) {
+                    FindFirstObjectByType<MenuShowController>().CheckTickets();
+                    count = 0;
+                }
             }
 
             while (pointingNormalMode.TryDequeue(out int pointingNM))

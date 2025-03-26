@@ -8,12 +8,24 @@ public class FadeController : MonoBehaviour
     private CanvasGroup canvas;
     private bool fadeIn = false;
     private bool fadeOut = false;
-    private GameObject obj;
+    private GameObject objToDesactive;
+    private GameObject objToTeleport;
+    private Vector3 newPos;
     private Animator animator;
+
+    private bool status = true;
 
     private void Start()
     {
         canvas = gameObject.GetComponent<CanvasGroup>();
+    }
+
+    public void FadeWithStatus()
+    {
+        if (status) FadeIn();
+        else FadeOut();
+
+        status = !status;
     }
 
     public void FadeOut()
@@ -49,6 +61,14 @@ public class FadeController : MonoBehaviour
         Invoke("FadeOut", time);
     }
 
+    public void FadeInForFadeOutWithTeleportOfGameObject(float time, GameObject objeto, Vector3 pos)
+    {
+        FadeIn();
+        SetObjectTeleport(objeto);
+        newPos = pos;
+        Invoke("FadeOut", time);
+    }
+
     public void FadeOutWithDeactivationOfGameObject(GameObject objeto)
     {
         FadeOut();
@@ -63,7 +83,12 @@ public class FadeController : MonoBehaviour
 
     public void SetObject(GameObject obj)
     {
-        this.obj = obj;
+        this.objToDesactive = obj;
+    }
+
+    public void SetObjectTeleport(GameObject obj)
+    {
+        this.objToTeleport = obj;
     }
 
     private void Update()
@@ -82,8 +107,8 @@ public class FadeController : MonoBehaviour
             else
             {
                 fadeOut = false;
-                if (this.obj != null)
-                    this.obj.SetActive(false);
+                if (this.objToDesactive != null)
+                    this.objToDesactive.SetActive(false);
                 else
                 {
                     if (SceneManager.GetActiveScene().buildIndex == 2) // ponta negra
@@ -93,6 +118,11 @@ public class FadeController : MonoBehaviour
                         else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MoveUpTerreo"))
                             FindFirstObjectByType<HeightController>().NewHeight(9.158f);
                     }
+                }
+
+                if(objToTeleport != null)
+                {
+                    this.objToTeleport.transform.position = newPos;
                 }
             }
         }

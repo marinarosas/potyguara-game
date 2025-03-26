@@ -30,7 +30,7 @@ public class TechGuaraController : MonoBehaviour
                 if (clip.name.Equals("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar"))
                     audioSource.clip = clip;
             }
-            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, gameObject);
             transform.position = new Vector3(0f, 2f, -32.35f);
             report.UpdateTitle("Bem-vindo(a) ao Potyguara Verse!");
             report.UpdateDescription("Você acaba de entrar em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia," +
@@ -54,7 +54,7 @@ public class TechGuaraController : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(true);
             if (SceneManager.GetActiveScene().buildIndex == 0)
-                Invoke("InitialTutorial", 1.5f);
+                Invoke("InitialTutorial", 1f);
 
             if (SceneManager.GetActiveScene().buildIndex == 1)
             {
@@ -63,8 +63,7 @@ public class TechGuaraController : MonoBehaviour
                     if (clip.name.Equals("Techyguara.CriaçãodePerfil+Avatar"))
                         audioSource.clip = clip;
                 }
-                transform.GetChild(1).gameObject.SetActive(true);
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+                transform.GetChild(0).gameObject.SetActive(false);
                 report.UpdateTitle("Crie seu Avatar!");
                 report.UpdateDescription("Agora que você já se apresentou, é hora de criar seu avatar! Escolha suas características, como rosto, cabelo, roupas e acessórios para refletir sua personalidade no " +
                     "Potyguara Verse. Depois, você estará pronto para explorar este mundo como nunca antes!");
@@ -76,7 +75,7 @@ public class TechGuaraController : MonoBehaviour
                     if (clip.name.Equals("Techyguara.ApresentaçãoPraiadePontaNegra"))
                         audioSource.clip = clip;
                 }
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
+                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithTeleportOfGameObject(audioSource.clip.length, gameObject, new Vector3(148.55f, 12.17f, 6.88f));
                 transform.position = new Vector3(177f, 3f, 76f);
                 report.UpdateTitle("Praia de Ponta Negra");
                 report.UpdateDescription("Você está na famosa Praia de Ponta Negra, uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. " +
@@ -137,13 +136,13 @@ public class TechGuaraController : MonoBehaviour
     #region ReportConfig
     public void CreateReport(string title, string description, float duration)
     {
-        transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 1;
         transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(duration, transform.GetChild(0).gameObject);
 
         report.UpdateTitle(title);
         report.UpdateDescription(description);
-        transform.gameObject.SetActive(true);
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void CreateReport(string title, string description, float duration, Vector3 pos, float direction)
@@ -151,12 +150,13 @@ public class TechGuaraController : MonoBehaviour
         transform.position = pos;
         transform.rotation = Quaternion.Euler(0f, direction, 0f);
 
-        transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 1;
         transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(duration, transform.GetChild(0).gameObject);
 
         report.UpdateTitle(title);
         report.UpdateDescription(description);
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public AudioSource SelectReport(string name)
