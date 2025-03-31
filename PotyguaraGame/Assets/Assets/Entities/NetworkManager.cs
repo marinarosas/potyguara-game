@@ -200,19 +200,22 @@ public class NetworkManager : MonoBehaviour
                     pointingZombieMode.Enqueue(int.Parse(response.parameters["pointingZombieMode"]));
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
 
-                    if (response.parameters["nDay"] == "true")
-                        isNewDay = true;
-                    else
-                        isNewDay = false;
-
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
                     if (int.Parse(list[0]) != -1)
                     {
+                        if (response.parameters["nDay"] == "true")
+                            isNewDay = true;
+                        else
+                            isNewDay = false;
+
                         isTheFirstAcess = false;
                         modeTutorial = int.Parse(response.parameters["modeTutorial"]);
                         modeWeather = int.Parse(response.parameters["modeWeather"]);
                         skin.Enqueue(response.parameters["skin"]);
+                    }
+                    else {
+                        isNewDay = true;
                     }
                     break;
                 case "Tickets":

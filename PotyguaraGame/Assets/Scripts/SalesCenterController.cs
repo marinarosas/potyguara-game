@@ -32,7 +32,26 @@ public class SalesCenterController : MonoBehaviour
         GameObject newButton = Instantiate(buttonPrefab, content);
         newButton.GetComponent<Image>().sprite = image;
         newButton.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = description;
-        newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
+        if(description != "FREE") 
+            newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
+        else
+            newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id));
+    }
+
+    private void BuyFreeProduct(string category, string id)
+    {
+        if (category == "show")
+        {
+            FindFirstObjectByType<MenuShowController>().UnclockShow(id);
+            NetworkManager.Instance.SendTicket(id);
+            FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
+        }
+        if(category == "class")
+        {
+            FindFirstObjectByType<MeditationRoomController>().AddButton(0);
+            NetworkManager.Instance.SendTicket(id);
+            FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
+        }
     }
 
     public Product[] GetShows()

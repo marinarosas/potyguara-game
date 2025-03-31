@@ -158,11 +158,6 @@ public class Microtransaction : MonoBehaviour
                             {
                                 FindFirstObjectByType<PotyPlayerController>().SetPotycoins(1000);
                             }
-                            else if (Form.headers["itemId"].Equals("2001"))
-                            {
-                                FindFirstObjectByType<MenuShowController>().UnclockShow("2001");
-                                NetworkManager.Instance.SendTicket("2001");
-                            }
                             else if (Form.headers["itemId"].Equals("3002"))
                             {
                                 FindFirstObjectByType<MeditationRoomController>().AddButton(1);
