@@ -55,7 +55,7 @@ public class BandController : MonoBehaviour
 
     public void StartShow()
     {
-        video.Play();
+        //video.Play();
         foreach (var member in members)
         {
             member.IniciateMember();

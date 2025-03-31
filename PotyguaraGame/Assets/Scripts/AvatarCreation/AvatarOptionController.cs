@@ -119,6 +119,24 @@ public class AvatarOptionController : MonoBehaviour
                 editSkin.changeMesh(index);
                 menuController.SetVariantList(index, 0);
                 editSkin.GetComponent<Animator>().SetTrigger("look");
+                if (index == 0)
+                {
+                    transform.parent.GetChild(3).GetChild(0).GetChild(1).GetComponent<Button>().interactable = true;
+                    transform.parent.GetChild(3).GetChild(0).GetChild(2).gameObject.SetActive(false);
+                }
+                else
+                {
+                    if (FindFirstObjectByType<PotyPlayerController>().VerifSkins(index))
+                    {
+                        transform.parent.GetChild(3).GetChild(0).GetChild(1).GetComponent<Button>().interactable = true;
+                        transform.parent.GetChild(3).GetChild(0).GetChild(2).gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        transform.parent.GetChild(3).GetChild(0).GetChild(1).GetComponent<Button>().interactable = false;
+                        transform.parent.GetChild(3).GetChild(0).GetChild(2).gameObject.SetActive(true);
+                    }
+                }
                 break;
             case Option.VARIANT:
                 editSkin.changeMaterial(index);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AvatarMenuController : MonoBehaviour
 {
@@ -28,16 +29,11 @@ public class AvatarMenuController : MonoBehaviour
             }
         }
 
-
         editSkin = bodies[bodyIndex].GetComponent<SkinSystem>();
         skins = editSkin.skins;
         materials = new List<SkinMaterial> (skins[skinIndex].skinMaterials);
 
         IniciateMenu(Option.BODY, bodyIndex, skinIndex, skinMaterial);
-    }
-
-    private void Update()
-    {
     }
 
     public void IniciateMenu(Option option, int bodyIndex, int skinIndex, int skinMaterial)
@@ -62,7 +58,6 @@ public class AvatarMenuController : MonoBehaviour
         FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
         FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
     }
-
 
     public void SetBodyList(int bodyIndex)
     {

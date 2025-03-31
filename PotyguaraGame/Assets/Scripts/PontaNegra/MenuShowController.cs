@@ -61,7 +61,7 @@ public class MenuShowController : MonoBehaviour
         FindObjectOfType<LiftShowController>().OpenCatraca2();
 
         GameObject banda = Instantiate(show.banda);
-        banda.GetComponent<BandController>().SetVideo(show.show);
+        //banda.GetComponent<BandController>().SetVideo(show.show);
         banda.GetComponent<BandController>().StartShow();
 
         foreach (GameObject extra in show.extras)

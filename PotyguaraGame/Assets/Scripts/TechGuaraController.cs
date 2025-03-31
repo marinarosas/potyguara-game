@@ -17,9 +17,14 @@ public class TechGuaraController : MonoBehaviour
     {
         return toggleTutorial.isOn;
     }
-    public void SetMode(bool value)
+
+    public void SetModeOfTheServer(bool value)
     {
         toggleTutorial.isOn = value;
+    }
+    public void SendMode(bool value)
+    {
+        NetworkManager.Instance.SendModeTutorial(value.ToString());
     }
     private void InitialTutorial()
     {
@@ -46,6 +51,7 @@ public class TechGuaraController : MonoBehaviour
     void Start()
     {
         toggleTutorial = GameObject.FindWithTag("MainCamera").transform.GetChild(1).GetChild(0).GetChild(4).GetComponent<Toggle>();
+        toggleTutorial.onValueChanged.AddListener(SendMode);
         audioSource = transform.GetChild(2).GetComponent<AudioSource>();
         report = transform.GetChild(0).GetComponent<Report>();
 
@@ -75,8 +81,9 @@ public class TechGuaraController : MonoBehaviour
                     if (clip.name.Equals("Techyguara.ApresentaçãoPraiadePontaNegra"))
                         audioSource.clip = clip;
                 }
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithTeleportOfGameObject(audioSource.clip.length, gameObject, new Vector3(148.55f, 12.17f, 6.88f));
+                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithTeleportOfGameObject(audioSource.clip.length+10f, gameObject, new Vector3(148.55f, 12.17f, 6.88f));
                 transform.position = new Vector3(177f, 3f, 76f);
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 report.UpdateTitle("Praia de Ponta Negra");
                 report.UpdateDescription("Você está na famosa Praia de Ponta Negra, uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. " +
                     "Aqui, você encontrará diversos eventos, como shows, exposições e o emocionante minigame Hoverbunda. Sinta-se livre para caminhar pela praia, explorar as atrações e aproveitar os eventos incríveis!");
@@ -129,6 +136,15 @@ public class TechGuaraController : MonoBehaviour
             {
                 report.UpdateTitle("Complete seu Perfil!");
                 report.UpdateDescription("Antes de começarmos, vamos conhecer um pouco mais sobre você! Crie o seu avatar para começar a sua jornada!");
+            }
+        }
+        if (audioSource.isPlaying && SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            if (audioSource.time >= 33.0)
+            {
+                report.UpdateTitle("Guias");
+                report.UpdateDescription("Espere um pouco jogador(a), antes de explorar o ambiente, visite o 2° andar do Escritorio do Potyguara Verse e " +
+                    "fale comigo, tenho algumas informações valiosas para você!!!");
             }
         }
     }

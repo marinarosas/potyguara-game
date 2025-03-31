@@ -14,8 +14,7 @@ public class TransitionController : MonoBehaviour
     private bool isSkip = false;
     private int tempMode;
     private int tempSceneIndex = -1;
-    private bool isForShowArea = false; 
-    private bool isTheFirstAcess = true;
+    private bool isForShowArea = false;
 
     public static TransitionController Instance;
 
@@ -50,12 +49,15 @@ public class TransitionController : MonoBehaviour
             GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
             GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(1));
             GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Criar Perfil";
+            GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(false);
         }
         else
         {
             GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
             GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(2));
             GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Iniciar Jogo";
+            GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.AddListener(NetworkManager.Instance.DeletePerfil);
+            GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(true);
         }
     }
 
@@ -81,20 +83,6 @@ public class TransitionController : MonoBehaviour
             player.transform.eulerAngles = Vector3.zero;
 
             isForShowArea = false;
-        }
-
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            if (!isTheFirstAcess)
-            {
-                GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.AddListener(NetworkManager.Instance.DeletePerfil);
-                GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(true);
-            }
-            else
-            {
-                GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.RemoveAllListeners();
-                GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(false);
-            }
         }
     }
 

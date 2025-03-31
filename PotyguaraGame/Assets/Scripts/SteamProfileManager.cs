@@ -10,26 +10,18 @@ public class SteamProfileManager : MonoBehaviour
 {
     public TextMeshProUGUI qnt;
     public RawImage avatarImage; // Referência para exibir a foto de perfil
-    private string currentDay;
+    private int currentDay = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
             return;
-
-        // dia atual
-        currentDay = DateTime.Today.DayOfWeek.ToString();
         // Obtém a foto de perfil (avatar)
         GetSteamAvatar(SteamUser.GetSteamID());
 
         // obtem o nickname
         FindFirstObjectByType<PotyPlayerController>().nickname = SteamFriends.GetPersonaName();
-
-        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 5 || SceneManager.GetActiveScene().buildIndex == 1)
-            gameObject.SetActive(false);
-        else
-            gameObject.SetActive(true);
     }
 
     private void Update()
@@ -37,10 +29,9 @@ public class SteamProfileManager : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
             qnt.text = FindFirstObjectByType<PotyPlayerController>().GetPotycoins().ToString();
 
-        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
         {
-            string day = DateTime.Today.DayOfWeek.ToString();
-            if (NetworkManager.Instance.isTheFirstAcess)
+            if (NetworkManager.Instance.isNewDay)
             {
                 GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
                 Button button = canva.transform.GetChild(5).GetComponent<Button>();
@@ -50,21 +41,15 @@ public class SteamProfileManager : MonoBehaviour
                     canva.SetActive(true);
                     canva.GetComponent<FadeController>().FadeIn();
                     button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
-                    NetworkManager.Instance.isTheFirstAcess = false;
                 }
+                NetworkManager.Instance.isNewDay = false;
             }
-            else if (currentDay != day)
+            else
             {
                 GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-                Button button = canva.transform.GetChild(5).GetComponent<Button>();
 
-                if (button != null && canva != null)
-                {
-                    canva.SetActive(true);
-                    canva.GetComponent<FadeController>().FadeIn();
-                    button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
-                }
-                currentDay = day;
+                if (canva != null)
+                    canva.SetActive(false);
             }
         }
     }

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ReportsController : MonoBehaviour
 {
+    private void Start()
+    {
+        transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 0f;
+    }
+
     public void StartShowReport()
     {
         FindFirstObjectByType<TechGuaraController>().CreateReport("Shows", "Olá jogador(a)!! Para assistir a um show, você deve comprar o ingresso na loja do jogo. " +
@@ -14,7 +19,8 @@ public class ReportsController : MonoBehaviour
     {
         FindFirstObjectByType<TechGuaraController>().CreateReport("Loja do Jogo", "Olá jogador(a)!! Na loja do Potyguara Verse você poderá comprar potycoins, as moedas usadas " +
             "para jogar os minigames; Ingressos, usados para assistir aos shows transmitidos na plataforma; Aulas de Meditação, para poder relaxar na sala de meditação com o " +
-            "auxilio da profissional Andrea Rosas; e por fim, skins para poder customizar o seu avatar!!!", 16f, new Vector3(148.55f, 12.17f, 6.88f), 180f);
+            "auxilio da profissional Andrea Rosas; e por fim, skins para poder customizar o seu avatar!!! Lembre-se, para poder acessar a loja, se aproxime de qualquer " +
+            "maquina de tickets e pressione B no controle!", 16f, new Vector3(148.55f, 12.17f, 6.88f), 180f);
     }
     public void StartGamesReport()
     {

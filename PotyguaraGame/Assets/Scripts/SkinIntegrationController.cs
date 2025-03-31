@@ -23,6 +23,7 @@ public class SkinIntegrationController : MonoBehaviour
         else
         {
             transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(0).GetChild(6).gameObject.SetActive(true);
             GetSkin();
         }
     }

@@ -32,6 +32,17 @@ public class DayController : MonoBehaviour
         skyBox = RenderSettings.skybox;
         url = $"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}&aqi=no";
         rotationSpeed = 360f / dayLenght;
+        toggleWeather.onValueChanged.AddListener(SendMode);
+    }
+
+    public void SendMode(bool value)
+    {
+        NetworkManager.Instance.SendModeWeather(value.ToString());
+    }
+
+    public void SetModeOfTheServer(bool value)
+    {
+        toggleWeather.isOn = value;
     }
 
     void RequestAPIWeather()
@@ -68,9 +79,6 @@ public class DayController : MonoBehaviour
 
                 precip_mm = weather.current.precip_mm;
                 clouds = weather.current.cloud;
-
-                Debug.Log("Precipitação: " + precip_mm);
-                Debug.Log("Cobertura de Nuvens: " + clouds);
             }
             else
             {
@@ -105,7 +113,7 @@ public class DayController : MonoBehaviour
             if (SceneManager.GetActiveScene().buildIndex == 1)
             {
                 RenderSettings.sun = sun.GetComponent<Light>();
-                sun.rotation= Quaternion.Euler(87.21f, 170f, 0f);
+                sun.rotation= Quaternion.Euler(137.7f, 0f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 0.8f);
             }
 
@@ -120,7 +128,7 @@ public class DayController : MonoBehaviour
                     sunAngle = (hours / 24f) * 180f;
                     moon.GetComponent<Light>().enabled = true;
                     RenderSettings.sun = moon.GetComponent<Light>();
-                    moon.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    moon.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 0.2f);
                 }
                 if (currentTime.Hour >= 16 && currentTime.Hour < 18)
@@ -128,7 +136,7 @@ public class DayController : MonoBehaviour
                     rotationSpeed = 360f / dayLenght;
                     sun.GetComponent<Light>().enabled = true;
                     RenderSettings.sun = sun.GetComponent<Light>();
-                    sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    sun.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 1.8f);
                 }
                 if (currentTime.Hour >= 4 && currentTime.Hour < 16)
@@ -136,7 +144,7 @@ public class DayController : MonoBehaviour
                     rotationSpeed = 360f / dayLenght;
                     sun.GetComponent<Light>().enabled = true;
                     RenderSettings.sun = sun.GetComponent<Light>();
-                    sun.rotation = Quaternion.Euler(sunAngle - 85f, 170f, 0f);
+                    sun.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 0.8f);
                 }
                 if (currentTime.Hour < 4)
@@ -144,7 +152,7 @@ public class DayController : MonoBehaviour
                     rotationSpeed = 180f / dayLenght;
                     sunAngle = 100;
                     RenderSettings.sun = moon.GetComponent<Light>();
-                    moon.rotation = Quaternion.Euler(sunAngle - 85f, 0f, 0f);
+                    moon.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 0.2f);
                 }
             }
@@ -152,7 +160,7 @@ public class DayController : MonoBehaviour
         else
         {
             RenderSettings.sun = sun.GetComponent<Light>();
-            sun.rotation = Quaternion.Euler(87.21f, 170f, 0f);
+            sun.rotation = Quaternion.Euler(87.21f, 0f, 0f);
             skyBox.SetFloat("_AtmosphereThickness", 0.8f);
         }
     }

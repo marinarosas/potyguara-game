@@ -58,10 +58,18 @@ public class PotyPlayerController : MonoBehaviour
     void Start()
     {
         SetSkin(-1, -1, -1);
+        skins = new List<int>();
     }
 
     public void AddSkin(int value){ skins.Add(value); }
     public void ResetSkins() { skins.Clear(); }
+
+    public bool VerifSkins(int index) {
+        if (skins.Contains(index))
+            return true;
+        else
+            return false;
+    }
 
     public void AddTicket(string ticket) {  tickets.Add(ticket); }
 

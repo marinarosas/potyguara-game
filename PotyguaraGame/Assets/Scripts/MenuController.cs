@@ -101,6 +101,8 @@ public class MenuController : MonoBehaviour
     void GoToGallery()
     {
         transitionController.TeleportGallery();
+        FindFirstObjectByType<MeditationRoomController>().StopClass();
+        GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(true);
     }
 
     void GoToGameForte()

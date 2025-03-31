@@ -18,7 +18,7 @@ public class MeditationRoomController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddButton(audios[0]);
+        AddButton(0);
     }
 
     void Update()
@@ -36,12 +36,15 @@ public class MeditationRoomController : MonoBehaviour
     public void StopClass()
     {
         audioSource.Stop();
+        GameObject.Find("MeditationRoom").transform.GetChild(0).gameObject.SetActive(true);
+        GameObject.Find("MeditationRoom").transform.parent.GetChild(1).gameObject.SetActive(false);
     }
 
     #region ButtonCreation
-    public void AddButton(AudioClip clip)
+    public void AddButton(int index)
     {
-        GameObject buttonGo = new GameObject("Aula" + countClasses);
+        AudioClip clip = audios[index];
+        GameObject buttonGo = new GameObject("Meditação " + countClasses);
         buttonGo.transform.SetParent(transform);
 
         RectTransform rectTransform = buttonGo.AddComponent<RectTransform>();
@@ -87,6 +90,7 @@ public class MeditationRoomController : MonoBehaviour
         transform.parent.parent.parent.parent.gameObject.SetActive(false);
         audioSource.clip = clip;
         audioSource.Play();
+        GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(false);
     }
     #endregion
 }

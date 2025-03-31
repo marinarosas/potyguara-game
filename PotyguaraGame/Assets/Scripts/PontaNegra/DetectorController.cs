@@ -20,10 +20,6 @@ public class DetectorController : MonoBehaviour
             {
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(0);
             }
-            else if (transform.name.Equals("Puff"))
-            {
-                GameObject.Find("Locomotion").SetActive(false);
-            }
         }
     }
 
@@ -40,13 +36,6 @@ public class DetectorController : MonoBehaviour
             else if (transform.name.Equals("Detector2"))
             {
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(0);
-            }
-            else if (transform.name.Equals("Puff"))
-            {
-                GameObject.Find("Player").transform.GetChild(1).gameObject.SetActive(true);
-                transform.parent.GetChild(0).gameObject.SetActive(true);
-                transform.parent.GetChild(1).gameObject.SetActive(false);
-                FindFirstObjectByType<MeditationRoomController>().StopClass();
             }
         }
     }

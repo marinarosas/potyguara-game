@@ -36,7 +36,8 @@ public class NetworkManager : MonoBehaviour
     private string rankingB = "";
 
     public bool isTheFirstAcess = true;
-    private int modeGame;
+    private int modeTutorial;
+    private int modeWeather;
 
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private ConcurrentQueue<int> pointingNormalMode = new ConcurrentQueue<int>();
@@ -46,6 +47,7 @@ public class NetworkManager : MonoBehaviour
     private ConcurrentQueue<string> tickets = new ConcurrentQueue<string>();
     private int qntTickets = 0;
     private int count = 0;
+    public bool isNewDay = false;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -153,6 +155,7 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
+                    isNewDay = true;
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -180,9 +183,16 @@ public class NetworkManager : MonoBehaviour
                     break;
                 case "Skins":
                     string skinsString = response.parameters["skins"];
-                    string[] indexList = skinsString.Split('|');
-                    foreach(var index in indexList)
-                        skins.Enqueue(int.Parse(index));
+                    if (skinsString.Contains("|"))
+                    {
+                        string[] indexList = skinsString.Split('|');
+                        foreach (var index in indexList)
+                            skins.Enqueue(int.Parse(index));
+                    }
+                    else
+                        skins.Enqueue(0);
+
+                    Debug.Log(skinsString + "o tamanho da lista: ");
                     break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
@@ -190,12 +200,18 @@ public class NetworkManager : MonoBehaviour
                     pointingZombieMode.Enqueue(int.Parse(response.parameters["pointingZombieMode"]));
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
 
+                    if (response.parameters["nDay"] == "true")
+                        isNewDay = true;
+                    else
+                        isNewDay = false;
+
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
                     if (int.Parse(list[0]) != -1)
                     {
                         isTheFirstAcess = false;
-                        modeGame = int.Parse(response.parameters["mode"]);
+                        modeTutorial = int.Parse(response.parameters["modeTutorial"]);
+                        modeWeather = int.Parse(response.parameters["modeWeather"]);
                         skin.Enqueue(response.parameters["skin"]);
                     }
                     break;
@@ -223,23 +239,30 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-
-    /// <summary>
-    /// Envia a posição do jogador para o servidor
-    /// </summary>
-    /// <param name="position"></param>
-    internal void SendPosition(Vector3 position)
+    internal void SendModeTutorial(string mode)
     {
-        // Antes é necessário criar um objeto Action, que contém o tipo de ação, o ator e os parâmetros
-        // esses parâmetros são um dicionário que contem a nova posição do jogador.
-        // é necessário usar o InvariantCulture para garantir que o ponto seja usado como separador decimal
-        Action action = new Action() {
-            type = "PositionUpdate",
-            actor = this.playerId,
+        Action action = new Action()
+        {
+            type = "UpdateModeTutorial",
+            actor = playerId,
             parameters = new Dictionary<string, string>(){
-                {"position_x", position.x.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)},
-                {"position_y", position.y.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)},
-                {"position_z", position.z.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)}
+                { "mode", mode }
+            }
+        };
+
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
+    }
+
+    internal void SendModeWeather(string mode)
+    {
+        Action action = new Action()
+        {
+            type = "UpdateModeWeather",
+            actor = playerId,
+            parameters = new Dictionary<string, string>(){
+                { "mode", mode }
             }
         };
 
@@ -306,8 +329,6 @@ public class NetworkManager : MonoBehaviour
             parameters = new Dictionary<string, string>(){
             }
         };
-
-        FindFirstObjectByType<PotyPlayerController>().ResetSkins();
 
         if (ws != null)
             // Enviar a ação para o servidor
@@ -481,7 +502,8 @@ public class NetworkManager : MonoBehaviour
 
             while (skin.TryDequeue(out string skinString))
             {
-                FindFirstObjectByType<TechGuaraController>().SetMode(modeGame == 0 ? true : false);
+                FindFirstObjectByType<TechGuaraController>().SetModeOfTheServer(modeTutorial == 0 ? true : false);
+                FindFirstObjectByType<DayController>().SetModeOfTheServer(modeWeather == 0 ? true : false);
                 string[] list = skinString.Split('|');
                 int bodyIndex = int.Parse(list[0]);
                 int skinIndex = int.Parse(list[1]);
