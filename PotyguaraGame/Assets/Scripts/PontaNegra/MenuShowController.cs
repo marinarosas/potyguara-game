@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using WaypointsFree;
 
 public class MenuShowController : MonoBehaviour
 {
@@ -16,13 +17,15 @@ public class MenuShowController : MonoBehaviour
     [Header("Menu Container")]
     [SerializeField] private Transform content;
 
+    public bool showLiberated = false;
+
     private void Start()
     {
         foreach (Show show in shows)
         {
             CreateButton(show.image, show.description);
         }
-        FindFirstObjectByType<NetworkManager>().RequestTickets();
+        CheckTickets();
     }
     private void CreateButton(Sprite image, string description)
     {
@@ -60,13 +63,26 @@ public class MenuShowController : MonoBehaviour
         FindObjectOfType<LiftShowController>().UnleashLift();
         FindObjectOfType<LiftShowController>().OpenCatraca2();
 
-        GameObject banda = Instantiate(show.banda);
-        //banda.GetComponent<BandController>().SetVideo(show.show);
-        banda.GetComponent<BandController>().StartShow();
+        if (!showLiberated)
+        {
+            GameObject banda = Instantiate(show.banda);
+            banda.transform.position = new Vector3(180.46f, 6.89f, 251.19f);
+            banda.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
-        foreach (GameObject extra in show.extras)
-            Instantiate(extra);
+            GameObject showGo = new GameObject("show");
+            banda.transform.parent = showGo.transform;
 
-        transform.GetChild(0).GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(transform.GetChild(0).gameObject);
+            foreach (GameObject extra in show.extras) {
+                GameObject obj = Instantiate(extra);
+                obj.GetComponent<WaypointsTraveler>().Move(true);
+                obj.transform.parent = showGo.transform;
+            }
+
+            banda.GetComponent<BandController>().StartShow(show.clip);
+            FindFirstObjectByType<LiftShowController>().hasTicket = true;
+
+            transform.GetChild(0).GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(transform.GetChild(0).gameObject);
+            showLiberated = true;
+        }
     }
 }

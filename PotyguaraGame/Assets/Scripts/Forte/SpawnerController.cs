@@ -72,7 +72,7 @@ public class SpawnerController : MonoBehaviour
             SetDestinyRandow(1);
             FindFirstObjectByType<HeightController>().NewHeight(7.98f);
 
-            if (FindFirstObjectByType<TechGuaraController>().GetMode())
+            if (GameObject.FindWithTag("MainMenu").GetComponent<MenuController>().toggleTutorial.isOn)
             {
                 AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
                 FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
@@ -100,7 +100,7 @@ public class SpawnerController : MonoBehaviour
     {
         finishUI.SetActive(false);
         cannons.SetActive(true);
-        if (FindFirstObjectByType<TechGuaraController>().GetMode())
+        if (GameObject.FindWithTag("MainMenu").GetComponent<MenuController>().toggleTutorial.isOn)
         {
             AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoBatalhadoForte");
             FindFirstObjectByType<TechGuaraController>().CreateReport("Defenda o Forte dos Invasores Maritimos!!!", "Na Batalha do Forte, você será um defensor da fortaleza durante uma época de invasões no século 15. Escolha um" +

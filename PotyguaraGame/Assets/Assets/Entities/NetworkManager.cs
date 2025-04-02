@@ -17,6 +17,8 @@ using System.IO;
 using Steamworks;
 using Unity.VisualScripting;
 using UnityEngine.Analytics;
+using NodaTime;
+using NodaTime.TimeZones;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -36,8 +38,8 @@ public class NetworkManager : MonoBehaviour
     private string rankingB = "";
 
     public bool isTheFirstAcess = true;
-    private int modeTutorial;
-    private int modeWeather;
+    public bool modeTutorialOn;
+    public bool modeWeatherOn;
 
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private ConcurrentQueue<int> pointingNormalMode = new ConcurrentQueue<int>();
@@ -45,8 +47,7 @@ public class NetworkManager : MonoBehaviour
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
     private ConcurrentQueue<int> skins = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> tickets = new ConcurrentQueue<string>();
-    private int qntTickets = 0;
-    private int count = 0;
+    private ConcurrentQueue<string> sessions = new ConcurrentQueue<string>();
     public bool isNewDay = false;
 
     //  Singleton stuff
@@ -115,7 +116,23 @@ public class NetworkManager : MonoBehaviour
         if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
             return;
 
-        SendConnectionSignal(SteamFriends.GetPersonaName());
+        string windowsTimeZone = TimeZoneInfo.Local.Id;
+        var ianaTimeZone = GetIanaTimeZone(windowsTimeZone);
+
+        SendConnectionSignal(SteamFriends.GetPersonaName(), ianaTimeZone);
+    }
+
+    private string GetIanaTimeZone(string windowsTimeZone)
+    {
+        var tzdbSource = TzdbDateTimeZoneSource.Default;
+        var mappings = tzdbSource.WindowsToTzdbIds;
+
+        if (mappings.TryGetValue(windowsTimeZone, out var ianaZone))
+        {
+            return ianaZone;
+        }
+
+        return "Unknown";
     }
 
     public string GetRankingZombieMode()
@@ -191,8 +208,6 @@ public class NetworkManager : MonoBehaviour
                     }
                     else
                         skins.Enqueue(0);
-
-                    Debug.Log(skinsString + "o tamanho da lista: ");
                     break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
@@ -200,6 +215,7 @@ public class NetworkManager : MonoBehaviour
                     pointingZombieMode.Enqueue(int.Parse(response.parameters["pointingZombieMode"]));
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
 
+                    isNewDay = true;
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
                     if (int.Parse(list[0]) != -1)
@@ -210,20 +226,25 @@ public class NetworkManager : MonoBehaviour
                             isNewDay = false;
 
                         isTheFirstAcess = false;
-                        modeTutorial = int.Parse(response.parameters["modeTutorial"]);
-                        modeWeather = int.Parse(response.parameters["modeWeather"]);
+                        modeTutorialOn = response.parameters["modeTutorial"] == "true" ? true : false;
+                        modeWeatherOn = response.parameters["modeWeather"] == "true" ? true : false;
+
+                        Debug.Log("MERDA é EssA: " + modeTutorialOn);
+
+                        string ticketsS = response.parameters["tickets"];
+                        string[] ticketList = ticketsS.Split('|');
+
+                        foreach (var ticket in ticketList)
+                            tickets.Enqueue(ticket);
+
+                        string sessionsS = response.parameters["sessions"];
+                        string[] sessionList = sessionsS.Split('|');
+
+                        foreach (var session in sessionList)
+                            sessions.Enqueue(session);
+
                         skin.Enqueue(response.parameters["skin"]);
                     }
-                    else {
-                        isNewDay = true;
-                    }
-                    break;
-                case "Tickets":
-                    string ticketsS = response.parameters["tickets"];
-                    string[] ticketList = ticketsS.Split('|');
-                    qntTickets = ticketList.Length;
-                    foreach (var ticket in ticketList)
-                        tickets.Enqueue(ticket);
                     break;
                 default:
                     break;
@@ -242,14 +263,14 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    internal void SendModeTutorial(string mode)
+    internal void SendModeTutorial(bool mode)
     {
         Action action = new Action()
         {
             type = "UpdateModeTutorial",
             actor = playerId,
             parameters = new Dictionary<string, string>(){
-                { "mode", mode }
+                { "mode", mode.ToString() }
             }
         };
 
@@ -258,14 +279,14 @@ public class NetworkManager : MonoBehaviour
             ws.Send(action.ToJson());
     }
 
-    internal void SendModeWeather(string mode)
+    internal void SendModeWeather(bool mode)
     {
         Action action = new Action()
         {
             type = "UpdateModeWeather",
             actor = playerId,
             parameters = new Dictionary<string, string>(){
-                { "mode", mode }
+                { "mode", mode.ToString() }
             }
         };
 
@@ -274,14 +295,15 @@ public class NetworkManager : MonoBehaviour
             ws.Send(action.ToJson());
     }
 
-    internal void SendConnectionSignal(string nickname)
+    internal void SendConnectionSignal(string nickname, string fusoH)
     {
         Action action = new Action()
         {
             type = "Connection",
             actor = nickname,
             parameters = new Dictionary<string, string>(){
-                { "serverAddress", serverAddress }
+                { "serverAddress", serverAddress },
+                { "fuso", fusoH }
             }
         };
 
@@ -376,27 +398,28 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    internal void RequestTickets()
-    {
-        Action action = new Action()
-        {
-            type = "RequestTickets",
-            actor = this.playerId,
-            parameters = new Dictionary<string, string>()
-            {
-            }
-        };
-
-        // solicita a atualização dos tickets para o servidor
-        if(ws != null)
-            ws.Send(action.ToJson());
-    }
-
     internal void SendTicket(string id)
     {
         Action action = new Action()
         {
             type = "NewTicket",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+                { "id", id },
+            }
+        };
+
+        // solicita a atualização dos tickets para o servidor
+        if (ws != null)
+            ws.Send(action.ToJson());
+    }
+
+    internal void SendSession(string id)
+    {
+        Action action = new Action()
+        {
+            type = "NewSession",
             actor = this.playerId,
             parameters = new Dictionary<string, string>()
             {
@@ -461,7 +484,7 @@ public class NetworkManager : MonoBehaviour
 
                 // Se o jogador for o jogador local, não fazer nada
                 if (playerId == this.playerId) {
-                    Debug.Log(playerId + " SOU EU!");
+                    //Debug.Log(playerId + " SOU EU!");
                     // é o jogador local
                     //TODO: talvez precisa atualiza a minha posição se isso puder acontecer
                     // com alguma ação do servidor.
@@ -505,12 +528,16 @@ public class NetworkManager : MonoBehaviour
 
             while (skin.TryDequeue(out string skinString))
             {
-                FindFirstObjectByType<TechGuaraController>().SetModeOfTheServer(modeTutorial == 0 ? true : false);
-                FindFirstObjectByType<DayController>().SetModeOfTheServer(modeWeather == 0 ? true : false);
                 string[] list = skinString.Split('|');
                 int bodyIndex = int.Parse(list[0]);
                 int skinIndex = int.Parse(list[1]);
                 int variant = int.Parse(list[2]);
+
+                MenuController menu = GameObject.FindWithTag("MainMenu").GetComponent<MenuController>();
+
+                menu.SetModeTutorial(modeTutorialOn);
+                menu.SetModeWeather(modeWeatherOn);
+                Debug.Log("ASetou esta MERDA: "+ modeTutorialOn);
 
                 FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
             }
@@ -523,11 +550,11 @@ public class NetworkManager : MonoBehaviour
             while (tickets.TryDequeue(out string ticket))
             {
                 FindFirstObjectByType<PotyPlayerController>().AddTicket(ticket);
-                count++;
-                if (count == qntTickets) {
-                    FindFirstObjectByType<MenuShowController>().CheckTickets();
-                    count = 0;
-                }
+            }
+
+            while (sessions.TryDequeue(out string session))
+            {
+                FindFirstObjectByType<PotyPlayerController>().AddSession(session);
             }
 
             while (pointingNormalMode.TryDequeue(out int pointingNM))

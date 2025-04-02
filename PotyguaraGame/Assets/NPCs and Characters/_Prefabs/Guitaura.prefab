@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 2810355898832169992}
   - component: {fileID: 834154275880643434}
   - component: {fileID: 5874708298965511878}
+  - component: {fileID: 1151858665112614686}
   m_Layer: 0
   m_Name: Guitaura
   m_TagString: Untagged
@@ -166,7 +167,6 @@ MonoBehaviour:
   - {fileID: 6545299004819624670}
   - {fileID: 989980228354051271}
   - {fileID: 5332937952819852446}
-  video: {fileID: 0}
   silenceThreshold: 1
   numberOfSamples: 64
   micBackingVocal: {fileID: 919132149155446097, guid: cbce6c7034c0b71429131a9e5325a397, type: 3}
@@ -181,6 +181,7 @@ MonoBehaviour:
   - min: 1
     sec: 3
     vocal: 1
+  video: {fileID: 1151858665112614686}
 --- !u!82 &834154275880643434
 AudioSource:
   m_ObjectHideFlags: 0
@@ -285,6 +286,42 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7887728902336364106}
   m_Enabled: 1
+--- !u!328 &1151858665112614686
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7887728902336364106}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: 53b32b7bf4330e24db7c1c9295532080, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: c475b210cf09c9146a23f26ef6eb299d, type: 2}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: <noninit>
+  m_RenderMode: 2
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_TimeUpdateMode: 2
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 1
+  m_TargetAudioSources:
+  - {fileID: 834154275880643434}
+  m_DirectAudioVolumes:
+  - 1
+  m_Url: 
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 00
+  m_ControlledAudioTrackCount: 1
+  m_PlayOnAwake: 0
+  m_SkipOnDrop: 0
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+  m_VideoShaders: []
 --- !u!1001 &2451327004692875549
 PrefabInstance:
   m_ObjectHideFlags: 0

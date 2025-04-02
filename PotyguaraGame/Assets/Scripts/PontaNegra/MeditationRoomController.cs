@@ -13,6 +13,7 @@ public class MeditationRoomController : MonoBehaviour
 
     [SerializeField] private GameObject magicCircles;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private Transform content;
     [SerializeField] private List<AudioClip> audios;
     [SerializeField] private Font font;
     // Start is called before the first frame update
@@ -23,7 +24,7 @@ public class MeditationRoomController : MonoBehaviour
         {
             if (!audioSource.isPlaying && StartedClass)
             {
-                transform.parent.parent.parent.parent.parent.GetChild(0).gameObject.SetActive(true);
+                transform.GetChild(0).gameObject.SetActive(true);
                 StartedClass = false;
             }
         }
@@ -32,16 +33,16 @@ public class MeditationRoomController : MonoBehaviour
     public void StopClass()
     {
         audioSource.Stop();
-        GameObject.Find("MeditationRoom").transform.GetChild(0).gameObject.SetActive(true);
-        GameObject.Find("MeditationRoom").transform.parent.GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(2).gameObject.SetActive(false);
     }
 
     #region ButtonCreation
     public void AddButton(int index)
     {
         AudioClip clip = audios[index];
-        GameObject buttonGo = new GameObject("Meditação " + countClasses);
-        buttonGo.transform.SetParent(transform);
+        GameObject buttonGo = new GameObject("Session " + countClasses);
+        buttonGo.transform.SetParent(content);
 
         RectTransform rectTransform = buttonGo.AddComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(230, 216);
@@ -71,7 +72,7 @@ public class MeditationRoomController : MonoBehaviour
         Text text = textGo.AddComponent<Text>();
         text.font = font;
         text.fontSize = 36;
-        text.text = "Aula " + countClasses;
+        text.text = "Sessão " + countClasses;
         text.alignment = TextAnchor.MiddleCenter;
         text.color = new Color(0.9245283f, 0.3079158f, 0, 1);
         countClasses++;
@@ -83,7 +84,7 @@ public class MeditationRoomController : MonoBehaviour
     {
         StartedClass = true;
         magicCircles.SetActive(true);
-        transform.parent.parent.parent.parent.gameObject.SetActive(false);
+        transform.GetChild(2).gameObject.SetActive(false);
         audioSource.clip = clip;
         audioSource.Play();
         GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(false);

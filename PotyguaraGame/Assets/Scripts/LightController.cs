@@ -16,7 +16,7 @@ public class LightController : MonoBehaviour
     {
         if (FindFirstObjectByType<DayController>() != null)
         {
-            if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
+            if (NetworkManager.Instance.modeWeatherOn)
             {
                 if (FindFirstObjectByType<DayController>().GetCurrentTime().Hour >= 18)
                 {

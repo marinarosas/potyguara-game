@@ -161,10 +161,13 @@ public class Microtransaction : MonoBehaviour
                             else if (Form.headers["itemId"].Equals("3002"))
                             {
                                 FindFirstObjectByType<MeditationRoomController>().AddButton(1);
+                                NetworkManager.Instance.SendSession("3002");
+
                             }
                             else if (Form.headers["itemId"].Equals("3003"))
                             {
                                 FindFirstObjectByType<MeditationRoomController>().AddButton(2);
+                                NetworkManager.Instance.SendSession("3003");
                             }
                             else if (Form.headers["itemId"].Equals("4001"))
                             {

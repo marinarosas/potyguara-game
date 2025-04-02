@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,70 +7,136 @@ using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
-    // Ponta Negra
-    // galeria
-    // Forte dos Reis
-    // Game Forte
-    // Game Forte Zombie Mode
-    // Hover Bunda
-    // Sala de Meditação
-    // Sair para o Menu
-
     private TransitionController transitionController;
+
     [SerializeField] private List<Sprite> galleryImages;
+    [SerializeField] private Transform content;
+
+    public Toggle toggleTutorial;
+    public Toggle toggleWeather;
 
     void Start()
     {
         int count = 0;
         foreach (var image in galleryImages) 
         { 
-            transform.GetChild(count).GetComponent<Image>().sprite = image;
+            content.GetChild(count).GetComponent<Image>().sprite = image;
             count++;
         }
 
-
         for (int ii = 0; ii < transform.childCount; ii++)
-            transform.GetChild(ii).gameObject.SetActive(true);
+            content.GetChild(ii).gameObject.SetActive(true);
 
         transitionController = FindFirstObjectByType<TransitionController>();
 
         if (SceneManager.GetActiveScene().buildIndex == 2) // ponta Negra
         {
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).GetComponent<Button>().onClick.AddListener(GoToGallery);
-            transform.GetChild(2).GetComponent<Button>().onClick.AddListener(GoToMeditationRoom);
-            transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
-            transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
-            transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
-            transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
-            transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+            content.GetChild(0).gameObject.SetActive(false);
+            content.GetChild(1).GetComponent<Button>().onClick.AddListener(GoToGallery);
+            content.GetChild(2).GetComponent<Button>().onClick.AddListener(GoToMeditationRoom);
+            content.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
+            int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+            if (potycoins >= 10)
+            {
+                content.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
+                content.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
+                content.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
+
+            }
+            else
+            {
+                content.GetChild(4).GetComponent<Button>().interactable = false;
+                content.GetChild(5).GetComponent<Button>().interactable = false;
+                content.GetChild(6).GetComponent<Button>().interactable = false;
+            }
+            content.GetChild(7).GetComponent<Button>().onClick.AddListener(LoadAvatarScene);
+            content.GetChild(8).GetComponent<Button>().onClick.AddListener(ExitGame);
         }
         if (SceneManager.GetActiveScene().buildIndex == 3) // Reis Magos
         {
-            transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
-            transform.GetChild(1).gameObject.SetActive(false);
-            transform.GetChild(2).gameObject.SetActive(false);
-            transform.GetChild(3).gameObject.SetActive(false);
-            transform.GetChild(4).gameObject.SetActive(false);
-            transform.GetChild(7).gameObject.SetActive(false);
-            transform.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
-            transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+            content.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
+            content.GetChild(1).gameObject.SetActive(false);
+            content.GetChild(2).gameObject.SetActive(false);
+            content.GetChild(3).gameObject.SetActive(false);
+            content.GetChild(4).gameObject.SetActive(false);
+            content.GetChild(5).gameObject.SetActive(false);
+            int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+            if (potycoins >= 10)
+                content.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
+            else
+                content.GetChild(6).GetComponent<Button>().interactable = false;
+            content.GetChild(7).GetComponent<Button>().onClick.AddListener(LoadAvatarScene);
+            content.GetChild(8).GetComponent<Button>().onClick.AddListener(ExitGame);
         }
         if (SceneManager.GetActiveScene().buildIndex == 4) // HoverBunda
         {
-            transform.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
-            transform.GetChild(1).gameObject.SetActive(false);
-            transform.GetChild(2).gameObject.SetActive(false);
-            transform.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
-            transform.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
-            transform.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
-            transform.GetChild(6).gameObject.SetActive(false);
-            transform.GetChild(7).GetComponent<Button>().onClick.AddListener(ExitGame);
+            content.GetChild(0).GetComponent<Button>().onClick.AddListener(LoadPontaNegra);
+            content.GetChild(1).gameObject.SetActive(false);
+            content.GetChild(2).gameObject.SetActive(false);
+            content.GetChild(3).GetComponent<Button>().onClick.AddListener(LoadForte);
+            int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+            if (potycoins >= 10)
+            {
+                content.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
+                content.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
+            }
+            else
+            {
+                content.GetChild(4).GetComponent<Button>().interactable = false;
+                content.GetChild(5).GetComponent<Button>().interactable = false;
+            }
+            content.GetChild(6).gameObject.SetActive(false);
+            content.GetChild(7).GetComponent<Button>().onClick.AddListener(LoadAvatarScene);
+            content.GetChild(8).GetComponent<Button>().onClick.AddListener(ExitGame);
         }
     }
 
+    public void SendModeWeather(Boolean value)
+    {
+        NetworkManager.Instance.SendModeWeather(value);
+    }
+
+    public void SendModeTutorial(Boolean value)
+    {
+        NetworkManager.Instance.SendModeTutorial(value);
+    }
+
+    public void SetModeWeather(bool value)
+    {
+        toggleWeather.isOn = value;
+    }
+
+    public void SetModeTutorial(bool value)
+    {
+        Debug.Log(value + "MERDA 2");
+        Canvas.ForceUpdateCanvases();
+        if (value == false)
+        {
+            toggleTutorial.onValueChanged.Invoke(false);
+        }
+        else
+        {
+            toggleTutorial.onValueChanged.Invoke(true);
+        }
+        Canvas.ForceUpdateCanvases();
+    }
+
+    void LoadAvatarScene()
+    {
+        transitionController.LoadSceneAsync(1);
+    }
     void GoToMeditationRoom()
     {
+        if (FindFirstObjectByType<TransitionController>().isInShowArea && SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            FindFirstObjectByType<LiftShowController>().hasTicket = false;
+            FindFirstObjectByType<MenuShowController>().showLiberated = false;
+            FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            FindFirstObjectByType<TransitionController>().isInShowArea = false;
+            Destroy(GameObject.Find("show"));
+            FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
+            FindFirstObjectByType<LiftShowController>().BlockLift();
+        }
         transitionController.TeleportMeditationRoom();
     }
 
@@ -88,18 +155,23 @@ public class MenuController : MonoBehaviour
         int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
         if (potycoins >= 10)
         {
-            FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
             transitionController.LoadSceneAsync(4);
-        }
-        else
-        {
-            Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
-            mainCam.GetChild(6).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
         }
     }
 
     void GoToGallery()
     {
+        if (FindFirstObjectByType<TransitionController>().isInShowArea && SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            FindFirstObjectByType<LiftShowController>().hasTicket = false;
+            FindFirstObjectByType<MenuShowController>().showLiberated = false;
+            FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            Destroy(GameObject.Find("show"));
+            FindFirstObjectByType<TransitionController>().isInShowArea = false;
+            FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
+            FindFirstObjectByType<LiftShowController>().BlockLift();
+        }
+
         transitionController.TeleportGallery();
         FindFirstObjectByType<MeditationRoomController>().StopClass();
         GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(true);
@@ -110,13 +182,7 @@ public class MenuController : MonoBehaviour
         int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
         if (potycoins >= 10)
         {
-            FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
             transitionController.TeleporGameForteNormalMode();
-        }
-        else
-        {
-            Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
-            mainCam.GetChild(6).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
         }
     }
 
@@ -125,13 +191,7 @@ public class MenuController : MonoBehaviour
         int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
         if (potycoins >= 10)
         {
-            FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
             transitionController.TeleportGameForteZombieMode();
-        }
-        else
-        {
-            Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
-            mainCam.GetChild(6).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
         }
     }
 

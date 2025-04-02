@@ -23,9 +23,10 @@ public class LeftHandController : MonoBehaviour
             devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
             if (Ybutton) // Y button pressed
             {
-                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
+                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
                 {
-                    GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
+
+                    GameObject menu = GameObject.FindWithTag("MainMenu").transform.GetChild(0).gameObject;
                     if (menu != null)
                     {
                         if (!changedStatus)
@@ -44,9 +45,9 @@ public class LeftHandController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.M)) // Y button pressed
             {
-                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
+                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
                 {
-                    GameObject menu = GameObject.FindWithTag("MainCamera").transform.GetChild(1).gameObject;
+                    GameObject menu = GameObject.FindWithTag("MainMenu").transform.GetChild(0).gameObject;
                     if (menu != null)
                     {
                         if (!changedStatus)

@@ -210,7 +210,7 @@ public class RainController : MonoBehaviour
 #endif
         if (FindFirstObjectByType<DayController>() != null)
         {
-            if (FindFirstObjectByType<DayController>().toggleWeather.isOn)
+            if (NetworkManager.Instance.modeWeatherOn)
                 precip = FindFirstObjectByType<DayController>().GetPrecip();
             else
                 precip = 0;

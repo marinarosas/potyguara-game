@@ -11,7 +11,7 @@ public class LiftShowController : MonoBehaviour
     public bool isInsideLift = false;
     public bool isGoingToShow = false;
     public bool isGoOutOfTheShow = false;
-    private bool hasTicket = false;
+    public bool hasTicket = false;
 
     private Transform player;
     private Animator ani;
@@ -34,8 +34,7 @@ public class LiftShowController : MonoBehaviour
         player.parent = null;
         if (isInsideLift)
         {
-            FindFirstObjectByType<HeightController>().NewHeight(8.15f);
-            //player.transform.position = new Vector3(177.8f, 8.3f, 111.95f);
+            FindFirstObjectByType<HeightController>().NewHeight(6.1f);
         }
     }
 
@@ -45,21 +44,20 @@ public class LiftShowController : MonoBehaviour
         player.parent = null;
         if (isInsideLift)
         {
-            FindFirstObjectByType<HeightController>().NewHeight(1.85f);
-            //player.transform.position = new Vector3(177.5f, 1.9f, 72f);
+            FindFirstObjectByType<HeightController>().NewHeight(0f);
         }
     }
 
     public void UnleashLift()
     {
-        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
+        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = true;
         catraca1.GetChild(0).GetChild(0).gameObject.SetActive(false);
         catraca2.GetChild(0).GetChild(0).gameObject.SetActive(false);
     }
 
     public void BlockLift()
     {
-        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = true;
+        transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
         catraca1.GetChild(0).GetChild(0).gameObject.SetActive(true);
         catraca2.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
@@ -89,10 +87,16 @@ public class LiftShowController : MonoBehaviour
     {
         if (isInsideLift)
         {
-            if(state==1)
+            if (state == 1)
+            {
                 ani.Play("GoingToTheShow");
+                FindFirstObjectByType<TransitionController>().isInShowArea = true;
+            }
             else
+            {
                 ani.Play("GoOutShow");
+                FindFirstObjectByType<TransitionController>().isInShowArea = false;
+            }
         }
     }
 
@@ -120,10 +124,17 @@ public class LiftShowController : MonoBehaviour
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             isInsideLift = false;
-            if(state==1)
+            if (state == 1)
                 catraca1.GetComponent<Animator>().Play("CatracaClose");
             else
+            {
                 catraca2.GetComponent<Animator>().Play("CatracaClose");
+                hasTicket = false;
+                FindFirstObjectByType<MenuShowController>().showLiberated = false;
+                FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
+                Destroy(GameObject.Find("show"));
+                BlockLift();
+            }
         }
     }
 }

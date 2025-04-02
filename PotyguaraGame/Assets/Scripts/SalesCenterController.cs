@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using TMPro;
 using UnityEngine.XR;
 using Steamworks;
+using System.Net.Sockets;
 
 public class SalesCenterController : MonoBehaviour
 {
@@ -25,31 +26,63 @@ public class SalesCenterController : MonoBehaviour
     public bool changedStatus = false;
 
     private List<InputDevice> devices = new List<InputDevice>();
-    private bool isWaiting = false;
 
-    public void AddNewButton(Sprite image, string id, string description, string category)
+    public void AddNewButton(Sprite image, string id, string description, string category, int index)
     {
         GameObject newButton = Instantiate(buttonPrefab, content);
         newButton.GetComponent<Image>().sprite = image;
         newButton.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = description;
-        if(description != "FREE") 
-            newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
-        else
-            newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id));
+        if (category == "skin")
+        {
+            if (FindFirstObjectByType<PotyPlayerController>().VerifSkins(index))
+            {
+                newButton.GetComponent<Button>().interactable = false;
+                return;
+            }
+        }
+        if(category == "class")
+        {
+            if (description == "FREE")
+            {
+                if (FindFirstObjectByType<PotyPlayerController>().VerifSessions(id))
+                {
+                    newButton.GetComponent<Button>().interactable = false;
+                    return;
+                }
+                newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id, index));
+                return;
+            }
+        }
+        if(category == "show")
+        {
+            if (description == "FREE")
+            {
+                if (FindFirstObjectByType<PotyPlayerController>().VerifTickets(id))
+                {
+                    newButton.GetComponent<Button>().interactable = false;
+                    return;
+                }
+                newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id, index));
+                return;
+            }
+        }
+        newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
     }
 
-    private void BuyFreeProduct(string category, string id)
+    private void BuyFreeProduct(string category, string id, int index)
     {
         if (category == "show")
         {
             FindFirstObjectByType<MenuShowController>().UnclockShow(id);
             NetworkManager.Instance.SendTicket(id);
+            FindFirstObjectByType<PotyPlayerController>().AddTicket(id);
             FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
         }
         if(category == "class")
         {
-            FindFirstObjectByType<MeditationRoomController>().AddButton(0);
-            NetworkManager.Instance.SendTicket(id);
+            FindFirstObjectByType<MeditationRoomController>().AddButton(index);
+            NetworkManager.Instance.SendSession(id);
+            FindFirstObjectByType<PotyPlayerController>().AddSession(id);
             FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
         }
     }
@@ -84,26 +117,26 @@ public class SalesCenterController : MonoBehaviour
         if (category == "moeda")
         {
             foreach (Product item in potycoins)
-                AddNewButton(item.image, item.id, item.description, item.category);
+                AddNewButton(item.image, item.id, item.description, item.category, item.index);
         }
         if(category == "show")
         {
             foreach (Product item in shows)
-                AddNewButton(item.image, item.id, item.description, item.category);
+                AddNewButton(item.image, item.id, item.description, item.category, item.index);
         }
         if (category == "class")
         {
             foreach (Product item in meditationClasses)
-                AddNewButton(item.image, item.id, item.description, item.category);
+                AddNewButton(item.image, item.id, item.description, item.category, item.index);
         }
         if (category == "skin")
         {
             if(FindFirstObjectByType<PotyPlayerController>().GetGender() == 0)
                 foreach (Product item in skinsFEM)
-                    AddNewButton(item.image, item.id, item.description, item.category);
+                    AddNewButton(item.image, item.id, item.description, item.category, item.index);
             else
                 foreach (Product item in skinsMASC)
-                    AddNewButton(item.image, item.id, item.description, item.category);
+                    AddNewButton(item.image, item.id, item.description, item.category, item.index);
         }
     }
 

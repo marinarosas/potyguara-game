@@ -10,7 +10,6 @@ public class Show : ScriptableObject
     public Sprite image;
     public GameObject banda;
     public string description;
-    //public VideoClip show;
     public AudioClip clip;
     public GameObject[] extras;
     public string id;

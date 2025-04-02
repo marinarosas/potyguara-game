@@ -14,7 +14,8 @@ public class TransitionController : MonoBehaviour
     private bool isSkip = false;
     private int tempMode;
     private int tempSceneIndex = -1;
-    private bool isForShowArea = false;
+
+    public bool isInShowArea = false;
 
     public static TransitionController Instance;
 
@@ -74,16 +75,6 @@ public class TransitionController : MonoBehaviour
 
             isSkip = false;
         }
-
-        if (isForShowArea && SceneManager.GetActiveScene().buildIndex == 2)
-        {
-            player = GameObject.FindWithTag("Player");
-            FindFirstObjectByType<HeightController>().NewHeight(6.06f);
-            player.transform.position = new Vector3(177.7f, 6.06f, 114.34f);
-            player.transform.eulerAngles = Vector3.zero;
-
-            isForShowArea = false;
-        }
     }
 
     public int GetTempIndex()
@@ -132,12 +123,6 @@ public class TransitionController : MonoBehaviour
         {
             Debug.Log("Error when load scenes: " + e);
         }
-    }
-
-    public void TeleportEnterShow()
-    {
-        isForShowArea = true;
-        SceneManager.LoadSceneAsync(2);
     }
 
     public void TeleportExitShow()

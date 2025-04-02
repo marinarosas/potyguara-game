@@ -9,7 +9,6 @@ public class FadeController : MonoBehaviour
     private bool fadeIn = false;
     private bool fadeOut = false;
     private GameObject objToDesactive;
-    private GameObject objToTeleport;
     private Vector3 newPos;
     private Animator animator;
 
@@ -61,14 +60,6 @@ public class FadeController : MonoBehaviour
         Invoke("FadeOut", time);
     }
 
-    public void FadeInForFadeOutWithTeleportOfGameObject(float time, GameObject objeto, Vector3 pos)
-    {
-        FadeIn();
-        SetObjectTeleport(objeto);
-        newPos = pos;
-        Invoke("FadeOut", time);
-    }
-
     public void FadeOutWithDeactivationOfGameObject(GameObject objeto)
     {
         FadeOut();
@@ -84,11 +75,6 @@ public class FadeController : MonoBehaviour
     public void SetObject(GameObject obj)
     {
         this.objToDesactive = obj;
-    }
-
-    public void SetObjectTeleport(GameObject obj)
-    {
-        this.objToTeleport = obj;
     }
 
     private void Update()
@@ -113,16 +99,15 @@ public class FadeController : MonoBehaviour
                 {
                     if (SceneManager.GetActiveScene().buildIndex == 2) // ponta negra
                     {
-                        if (animator.GetCurrentAnimatorStateInfo(0).IsName("DownTerreo"))
-                            FindFirstObjectByType<HeightController>().NewHeight(0f);
-                        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MoveUpTerreo"))
-                            FindFirstObjectByType<HeightController>().NewHeight(9.158f);
+                        if (animator != null)
+                        {
+                            if (animator.GetCurrentAnimatorStateInfo(0).IsName("DownTerreo"))
+                                FindFirstObjectByType<HeightController>().NewHeight(0f);
+                            else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MoveUpTerreo"))
+                                FindFirstObjectByType<HeightController>().NewHeight(9.158f);
+                            animator = null;
+                        }
                     }
-                }
-
-                if(objToTeleport != null)
-                {
-                    this.objToTeleport.transform.position = newPos;
                 }
             }
         }

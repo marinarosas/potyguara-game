@@ -16,6 +16,7 @@ public class PotyPlayerController : MonoBehaviour
     private NetworkManager nm;
     private List<int> skins;
     private List<string> tickets;
+    private List<string> sessions;
 
     private bool potycoinContabilized = false;
     struct Skin
@@ -59,21 +60,23 @@ public class PotyPlayerController : MonoBehaviour
     {
         SetSkin(-1, -1, -1);
         skins = new List<int>();
+        tickets = new List<string>();
+        sessions = new List<string>();
     }
 
     public void AddSkin(int value){ skins.Add(value); }
     public void ResetSkins() { skins.Clear(); }
-
-    public bool VerifSkins(int index) {
-        if (skins.Contains(index))
-            return true;
-        else
-            return false;
-    }
+    public bool VerifSkins(int index) { return skins.Contains(index) ? true : false; }
 
     public void AddTicket(string ticket) {  tickets.Add(ticket); }
-
     public List<string> GetTickets() {  return tickets; }
+    public bool VerifTickets(string id) { return tickets.Contains(id) ? true : false; }
+
+    public void AddSession(string session) { sessions.Add(session); }
+    public List<string> GetSessions() { return sessions; }
+    public bool VerifSessions(string id) { return sessions.Contains(id) ? true : false; }
+
+
     public void SetScore(int value, int gameMode)
     {
         if(gameMode == 0)

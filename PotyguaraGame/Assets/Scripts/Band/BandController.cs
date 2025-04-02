@@ -29,7 +29,7 @@ public class BandController : MonoBehaviour
     private BandMember vocalist;
 
     private AudioSource audioBand;
-    private VideoPlayer video;
+    [SerializeField] private VideoPlayer video;
     private bool isSilence = false;
     private bool hasVocal = true;
     private bool showStarted = false;
@@ -43,21 +43,16 @@ public class BandController : MonoBehaviour
     {
         samples = new float[numberOfSamples];
         spectrum = new float[numberOfSamples];
-        video = new VideoPlayer();
 
         audioBand = GetComponent<AudioSource>();
     }
 
-    public void SetVideo(VideoClip clip)
+    public void StartShow(AudioClip clip)
     {
-        video.clip = clip;
-    }
-
-    public void StartShow()
-    {
-        //video.Play();
+        video.Play();
         foreach (var member in members)
         {
+            member.setAnimator(member.GetComponent<Animator>());
             member.IniciateMember();
 
             if (member.getInstrument() == Instrument.VOCALS)
@@ -69,37 +64,35 @@ public class BandController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (Time.time - lastCheckTime >= checkInterval)
         if (showStarted)
         {
-            if (Time.time - lastCheckTime >= checkInterval)
+            int volume = GetVolume(audioBand);
+            if (volume < silenceThreshold)
             {
-                int volume = GetVolume(audioBand);
-                if (volume < silenceThreshold)
-                {
-                    isSilence = true;
-                    StartCoroutine(SetSilence(0.5f));
-                }
-                else if (isSilence)
-                {
-                    StopAllCoroutines();
-                    Play();
-                }
+                isSilence = true;
+                StartCoroutine(SetSilence(0.5f));
+            }
+            else if (isSilence)
+            {
+                StopAllCoroutines();
+                Play();
+            }
 
-                float frequency = GetSpectrum(audioBand);
-                //float mappedValue = mapValue(frequency, 0, 2);
-                //if (volume < silenceThreshold) mappedValue = 0;
-                float mappedValue = mapValue(volume, 0, 3, 0, 100);
+            float frequency = GetSpectrum(audioBand);
+            //float mappedValue = mapValue(frequency, 0, 2);
+            //if (volume < silenceThreshold) mappedValue = 0;
+            float mappedValue = mapValue(volume, 0, 3, 0, 100);
 
-                audioBand.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
+            audioBand.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
 
-                foreach (var timeEvent in vocalEvents)
-                    timeAction(audioBand, timeEvent.min, timeEvent.sec, timeEvent.vocal);
+            foreach (var timeEvent in vocalEvents)
+                timeAction(audioBand, timeEvent.min, timeEvent.sec, timeEvent.vocal);
 
-                foreach (var obj in reactiveObjects)
-                {
-                    Transform control = FindControl(obj.transform);
-                    control.localScale = Vector3.Lerp(control.localScale, new Vector3(control.localScale.x, mappedValue, control.localScale.z), Time.deltaTime * smoothFactor);
-                }
+            foreach (var obj in reactiveObjects)
+            {
+                Transform control = FindControl(obj.transform);
+                control.localScale = Vector3.Lerp(control.localScale, new Vector3(control.localScale.x, mappedValue, control.localScale.z), Time.deltaTime * smoothFactor);
             }
         }
     }

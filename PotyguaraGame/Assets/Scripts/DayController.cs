@@ -20,7 +20,6 @@ public class DayController : MonoBehaviour
     private Transform sun;
     private Transform moon;
     private Material skyBox;
-    public Toggle toggleWeather;
 
     void Start()
     {
@@ -32,17 +31,6 @@ public class DayController : MonoBehaviour
         skyBox = RenderSettings.skybox;
         url = $"http://api.weatherapi.com/v1/current.json?key={apiKey}&q={city}&aqi=no";
         rotationSpeed = 360f / dayLenght;
-        toggleWeather.onValueChanged.AddListener(SendMode);
-    }
-
-    public void SendMode(bool value)
-    {
-        NetworkManager.Instance.SendModeWeather(value.ToString());
-    }
-
-    public void SetModeOfTheServer(bool value)
-    {
-        toggleWeather.isOn = value;
     }
 
     void RequestAPIWeather()
@@ -106,7 +94,7 @@ public class DayController : MonoBehaviour
         currentTime = DateTime.Now.ToLocalTime();
         //GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
 
-        if (toggleWeather.isOn)
+        if (NetworkManager.Instance.modeWeatherOn)
         {
             InvokeRepeating("RequestAPIWeather", 0f, 3600f);
 

@@ -10,7 +10,6 @@ public class SteamProfileManager : MonoBehaviour
 {
     public TextMeshProUGUI qnt;
     public RawImage avatarImage; // Referência para exibir a foto de perfil
-    private int currentDay = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -43,13 +42,6 @@ public class SteamProfileManager : MonoBehaviour
                     button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
                 }
                 NetworkManager.Instance.isNewDay = false;
-            }
-            else
-            {
-                GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-
-                if (canva != null)
-                    canva.SetActive(false);
             }
         }
     }
