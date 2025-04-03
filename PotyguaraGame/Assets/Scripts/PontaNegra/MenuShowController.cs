@@ -69,13 +69,9 @@ public class MenuShowController : MonoBehaviour
             banda.transform.position = new Vector3(180.46f, 6.89f, 251.19f);
             banda.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
-            GameObject showGo = new GameObject("show");
-            banda.transform.parent = showGo.transform;
-
             foreach (GameObject extra in show.extras) {
                 GameObject obj = Instantiate(extra);
-                obj.GetComponent<WaypointsTraveler>().Move(true);
-                obj.transform.parent = showGo.transform;
+                obj.transform.position = new Vector3(184.1f, 34.6f, 210.1f);
             }
 
             banda.GetComponent<BandController>().StartShow(show.clip);

@@ -216,6 +216,7 @@ public class SpawnerController : MonoBehaviour
                     GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
                     finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                     GameObject.FindWithTag("Level").SetActive(false);
+                    GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(3).gameObject.SetActive(false);
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();
                     SendForRanking(0);
                 }

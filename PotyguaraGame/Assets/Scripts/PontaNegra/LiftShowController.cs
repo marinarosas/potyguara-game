@@ -132,7 +132,8 @@ public class LiftShowController : MonoBehaviour
                 hasTicket = false;
                 FindFirstObjectByType<MenuShowController>().showLiberated = false;
                 FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
-                Destroy(GameObject.Find("show"));
+                Destroy(GameObject.Find("Dragon"));
+                Destroy(GameObject.Find("Guitaura"));
                 BlockLift();
             }
         }

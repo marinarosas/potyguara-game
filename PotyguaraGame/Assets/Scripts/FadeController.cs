@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class FadeController : MonoBehaviour
     private bool fadeIn = false;
     private bool fadeOut = false;
     private GameObject objToDesactive;
+    private GameObject objToActive;
     private Vector3 newPos;
     private Animator animator;
 
@@ -56,14 +58,22 @@ public class FadeController : MonoBehaviour
     public void FadeInForFadeOutWithDeactivationOfGameObject(float time, GameObject objeto)
     {
         FadeIn();
-        SetObject(objeto);
+        SetObjectD(objeto);
+        Invoke("FadeOut", time);
+    }
+
+    public void FadeWithDeactivationAndActivationOfGameObject(float time, GameObject objetoD, GameObject objetoA)
+    {
+        FadeIn();
+        SetObjectD(objetoD);
+        SetObjectA(objetoA);
         Invoke("FadeOut", time);
     }
 
     public void FadeOutWithDeactivationOfGameObject(GameObject objeto)
     {
         FadeOut();
-        SetObject(objeto);
+        SetObjectD(objeto);
     }
 
     public void FadeOutForFadeIn(float time)
@@ -72,9 +82,14 @@ public class FadeController : MonoBehaviour
         Invoke("FadeIn", time);
     }
 
-    public void SetObject(GameObject obj)
+    public void SetObjectD(GameObject obj)
     {
         this.objToDesactive = obj;
+    }
+
+    public void SetObjectA(GameObject obj)
+    {
+        this.objToActive = obj;
     }
 
     private void Update()
@@ -93,8 +108,15 @@ public class FadeController : MonoBehaviour
             else
             {
                 fadeOut = false;
-                if (this.objToDesactive != null)
-                    this.objToDesactive.SetActive(false);
+                if(objToDesactive != null && objToActive != null)
+                {
+                    objToDesactive.SetActive(false);
+                    objToActive.SetActive(true);
+                    objToActive = null;
+                }
+
+                if (objToDesactive != null)
+                    objToDesactive.SetActive(false);
                 else
                 {
                     if (SceneManager.GetActiveScene().buildIndex == 2) // ponta negra

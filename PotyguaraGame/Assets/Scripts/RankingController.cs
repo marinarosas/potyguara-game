@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class RankingController : MonoBehaviour
 {
-    public void UpdateRanking(int mode)
+    public void UpdateRanking(string ranking, int mode)
     {
-        string ranking = mode == 0 ? FindObjectOfType<NetworkManager>().GetRankingZombieMode() : FindObjectOfType<NetworkManager>().GetRankingBatalhaMode();
-        string[] playersRanking = ranking.Split('|');
+        string rankingS = ranking;
+        string[] playersRanking = rankingS.Split('|');
 
-        Transform parent = transform.GetChild(mode == 0 ? 2 : 3);
+        Transform parent = transform.GetChild(mode == 0 ? 3 : 4);
         parent.GetChild(0).GetComponent<Text>().text = playersRanking[0] + "pt";
 
-        for (int ii = 1; ii < 8; ii++)
+        for (int ii = 1; ii < 6; ii++)
         {
             if (ii < playersRanking.Length)
             {
@@ -23,6 +23,54 @@ public class RankingController : MonoBehaviour
             }
             else
                 parent.GetChild(ii).GetComponent<Text>().text = "- : -";
+        }
+        if(mode == 0)
+        {
+            if(FindFirstObjectByType<PotyPlayerController>().GetPositionZombie() == "N/A")
+            {
+                parent.GetChild(7).GetComponent<Text>().text = "N/A";
+                parent.GetChild(8).GetComponent<Text>().text = "- : -";
+            }
+            else
+            {
+                int temp = int.Parse(FindFirstObjectByType<PotyPlayerController>().GetPositionZombie());
+                if (temp >= 1 && temp <= 6)
+                {
+                    parent.GetChild(7).gameObject.SetActive(false);
+                    parent.GetChild(8).gameObject.SetActive(false);
+                }
+                else
+                {
+                    parent.GetChild(7).gameObject.SetActive(true);
+                    parent.GetChild(8).gameObject.SetActive(true);
+                    parent.GetChild(7).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetPositionZombie() + "º";
+                    parent.GetChild(8).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetScoreZombie();
+                }
+            }
+        }
+        else
+        {
+            if (FindFirstObjectByType<PotyPlayerController>().GetPositionZombie() == "N/A")
+            {
+                parent.GetChild(7).GetComponent<Text>().text = "N/A";
+                parent.GetChild(8).GetComponent<Text>().text = "- : -";
+            }
+            else
+            {
+                int temp = int.Parse(FindFirstObjectByType<PotyPlayerController>().GetPositionNormal());
+                if (temp >= 1 && temp <= 6)
+                {
+                    parent.GetChild(7).gameObject.SetActive(false);
+                    parent.GetChild(8).gameObject.SetActive(false);
+                }
+                else
+                {
+                    parent.GetChild(7).gameObject.SetActive(true);
+                    parent.GetChild(8).gameObject.SetActive(true);
+                    parent.GetChild(7).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetPositionZombie() + "º";
+                    parent.GetChild(8).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetScoreZombie();
+                }
+            }
         }
     }
 }

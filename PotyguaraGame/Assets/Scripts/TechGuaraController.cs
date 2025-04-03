@@ -96,12 +96,18 @@ public class TechGuaraController : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().buildIndex == 4)
         {
+            GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10));
+            GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<TransitionController>().LoadSceneAsync(2));
+            if (!NetworkManager.Instance.modeTutorialOn)
+            {
+                GameObject.Find("InitialCanva").transform.GetChild(0).gameObject.SetActive(true);
+            }
             foreach (AudioClip clip in audios)
             {
                 if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
                     audioSource.clip = clip;
             }
-            transform.GetChild(0).GetComponent<FadeController>().FadeIn();
+            transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
             transform.position = new Vector3(584.61f, 53.4f, -559.51f);
             report.UpdateTitle("HoverBunda");
             report.UpdateDescription("Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
@@ -112,10 +118,14 @@ public class TechGuaraController : MonoBehaviour
 
     void Update()
     {
-        if(GameObject.FindWithTag("MainMenu").GetComponent<MenuController>().toggleTutorial.isOn){
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).gameObject.SetActive(false);
-            audioSource.Stop();
+        if (!NetworkManager.Instance.isTheFirstAcess)
+        {
+            if (!NetworkManager.Instance.modeTutorialOn)
+            {
+                transform.GetChild(0).gameObject.SetActive(false);
+                transform.GetChild(1).gameObject.SetActive(false);
+                audioSource.Stop();
+            }
         }
 
         if (audioSource.isPlaying && SceneManager.GetActiveScene().buildIndex == 0)

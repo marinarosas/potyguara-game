@@ -108,7 +108,6 @@ public class MenuController : MonoBehaviour
 
     public void SetModeTutorial(bool value)
     {
-        Debug.Log(value + "MERDA 2");
         Canvas.ForceUpdateCanvases();
         if (value == false)
         {
@@ -133,7 +132,8 @@ public class MenuController : MonoBehaviour
             FindFirstObjectByType<MenuShowController>().showLiberated = false;
             FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
             FindFirstObjectByType<TransitionController>().isInShowArea = false;
-            Destroy(GameObject.Find("show"));
+            Destroy(GameObject.Find("Dragon"));
+            Destroy(GameObject.Find("Guitaura"));
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
             FindFirstObjectByType<LiftShowController>().BlockLift();
         }
@@ -166,7 +166,8 @@ public class MenuController : MonoBehaviour
             FindFirstObjectByType<LiftShowController>().hasTicket = false;
             FindFirstObjectByType<MenuShowController>().showLiberated = false;
             FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            Destroy(GameObject.Find("show"));
+            Destroy(GameObject.Find("Dragon"));
+            Destroy(GameObject.Find("Guitaura"));
             FindFirstObjectByType<TransitionController>().isInShowArea = false;
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
             FindFirstObjectByType<LiftShowController>().BlockLift();

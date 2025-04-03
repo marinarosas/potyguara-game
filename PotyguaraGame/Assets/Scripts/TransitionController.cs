@@ -57,7 +57,7 @@ public class TransitionController : MonoBehaviour
             GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
             GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(2));
             GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Iniciar Jogo";
-            GameObject.Find("MainMenu").transform.GetChild(2).GetComponent<Button>().onClick.AddListener(NetworkManager.Instance.DeletePerfil);
+            GameObject.Find("MainMenu").transform.GetChild(4).GetChild(2).GetComponent<Button>().onClick.AddListener(NetworkManager.Instance.DeletePerfil);
             GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(true);
         }
     }

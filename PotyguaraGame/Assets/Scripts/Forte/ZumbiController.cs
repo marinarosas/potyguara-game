@@ -154,9 +154,10 @@ public class ZumbiController : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("MainCamera"))
         {
-            float value = GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount;
+            Transform healthBar = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(3);
+            float value = healthBar.GetComponent<Image>().fillAmount;
             if(value > 0)
-                GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount -= 0.1f;
+                healthBar.GetComponent<Image>().fillAmount -= 0.1f;
             else
                 FindFirstObjectByType<GameForteController>().GameOver();
         }

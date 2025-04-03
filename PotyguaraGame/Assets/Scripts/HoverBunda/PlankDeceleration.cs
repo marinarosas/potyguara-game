@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlankDeceleration : MonoBehaviour
 {
@@ -9,9 +10,14 @@ public class PlankDeceleration : MonoBehaviour
 
     private bool isInDecelerationZone = false;
 
+    private void Start()
+    {
+        menu.transform.GetChild(0).GetChild(4).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<TransitionController>().LoadSceneAsync(2));
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             isInDecelerationZone = true;
         }
@@ -19,7 +25,7 @@ public class PlankDeceleration : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && isInDecelerationZone)
+        if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera")) && isInDecelerationZone)
         {
             Vector3 currentVelocity = plankRigidbody.velocity;
             if (currentVelocity.magnitude > minimumSpeed)
@@ -43,7 +49,7 @@ public class PlankDeceleration : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             isInDecelerationZone = false;
         }

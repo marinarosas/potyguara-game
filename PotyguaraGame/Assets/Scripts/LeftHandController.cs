@@ -97,7 +97,9 @@ public class LeftHandController : MonoBehaviour
 
     public InputDevice GetTargetDevice()
     {
-        return devices[0];
+        if(devices.Count != 0)
+            return devices[0];
+        return new InputDevice();
     }
 
     public void AnimationFinger()

@@ -94,7 +94,7 @@ public class DayController : MonoBehaviour
         currentTime = DateTime.Now.ToLocalTime();
         //GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
 
-        if (NetworkManager.Instance.modeWeatherOn)
+        if (GameObject.FindWithTag("MainMenu").GetComponent<MenuController>().toggleWeather.isOn)
         {
             InvokeRepeating("RequestAPIWeather", 0f, 3600f);
 
@@ -103,6 +103,7 @@ public class DayController : MonoBehaviour
                 RenderSettings.sun = sun.GetComponent<Light>();
                 sun.rotation= Quaternion.Euler(137.7f, 0f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 0.8f);
+                return;
             }
 
             if (SceneManager.GetActiveScene().buildIndex != 0 && sun != null && moon != null)
@@ -147,9 +148,12 @@ public class DayController : MonoBehaviour
         }
         else
         {
-            RenderSettings.sun = sun.GetComponent<Light>();
-            sun.rotation = Quaternion.Euler(87.21f, 0f, 0f);
-            skyBox.SetFloat("_AtmosphereThickness", 0.8f);
+            if (SceneManager.GetActiveScene().buildIndex != 0)
+            {
+                RenderSettings.sun = sun.GetComponent<Light>();
+                sun.rotation = Quaternion.Euler(87.21f, 0f, 0f);
+                skyBox.SetFloat("_AtmosphereThickness", 0.8f);
+            }
         }
     }
 }

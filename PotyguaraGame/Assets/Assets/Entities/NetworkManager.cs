@@ -35,20 +35,22 @@ public class NetworkManager : MonoBehaviour
     private WebSocket ws;
 
     private string rankingZ = "";
-    private string rankingB = "";
+    private string rankingN = "";
+    private string posRankingZ = "";
+    private string posRankingN = "";
 
     public bool isTheFirstAcess = true;
-    public bool modeTutorialOn;
-    public bool modeWeatherOn;
+    public bool isNewDay = false;
+    public bool modeTutorialOn = true;
+    public bool modeWeatherOn = true;
 
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
-    private ConcurrentQueue<int> pointingNormalMode = new ConcurrentQueue<int>();
-    private ConcurrentQueue<int> pointingZombieMode = new ConcurrentQueue<int>();
+    private ConcurrentQueue<string> pointingNormalMode = new ConcurrentQueue<string>();
+    private ConcurrentQueue<string> pointingZombieMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
     private ConcurrentQueue<int> skins = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> tickets = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> sessions = new ConcurrentQueue<string>();
-    public bool isNewDay = false;
 
     //  Singleton stuff
     private static NetworkManager _instance;
@@ -135,16 +137,6 @@ public class NetworkManager : MonoBehaviour
         return "Unknown";
     }
 
-    public string GetRankingZombieMode()
-    {
-        return rankingZ;
-    }
-
-    public string GetRankingBatalhaMode()
-    {
-        return rankingB;
-    }
-
     NetworkManager() {
         gameState = new GameState();
     }
@@ -190,13 +182,11 @@ public class NetworkManager : MonoBehaviour
                     // gameState para saber a posição dos jogadores e atualizar a posição dos objetos na cena.
                     gameState = response.gameState;
                     break;
-                case "RankingZ":
-                    rankingZ = response.parameters["ranking"];
-                    Debug.Log("Recebi Zumbi: " + rankingZ);
-                    break;
-                case "RankingB":
-                    Debug.Log("Recebi: " + response.parameters["ranking"]);
-                    rankingB = response.parameters["ranking"];
+                case "Ranking":
+                    rankingZ = response.parameters["rankingZ"];
+                    rankingN = response.parameters["rankingN"];
+                    posRankingN = response.parameters["posRankingN"];
+                    posRankingZ = response.parameters["posRankingZ"];
                     break;
                 case "Skins":
                     string skinsString = response.parameters["skins"];
@@ -211,8 +201,8 @@ public class NetworkManager : MonoBehaviour
                     break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
-                    pointingNormalMode.Enqueue(int.Parse(response.parameters["pointingNormalMode"]));
-                    pointingZombieMode.Enqueue(int.Parse(response.parameters["pointingZombieMode"]));
+                    pointingNormalMode.Enqueue(response.parameters["pointingNormalMode"]);
+                    pointingZombieMode.Enqueue(response.parameters["pointingZombieMode"]);
                     potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
 
                     isNewDay = true;
@@ -273,6 +263,7 @@ public class NetworkManager : MonoBehaviour
                 { "mode", mode.ToString() }
             }
         };
+        modeTutorialOn = mode;
 
         if (ws != null)
             // Enviar a ação para o servidor
@@ -289,6 +280,8 @@ public class NetworkManager : MonoBehaviour
                 { "mode", mode.ToString() }
             }
         };
+
+        modeWeatherOn = mode;
 
         if (ws != null)
             // Enviar a ação para o servidor
@@ -510,15 +503,24 @@ public class NetworkManager : MonoBehaviour
                 );*/
             }
 
-            if (!rankingZ.Equals("")) {
-                FindObjectOfType<RankingController>().UpdateRanking(0);
-                rankingZ = "";
-            }
-
-            if (!rankingB.Equals(""))
+            if (SceneManager.GetActiveScene().buildIndex == 3)
             {
-                FindObjectOfType<RankingController>().UpdateRanking(1);
-                rankingB = "";
+                if (!rankingZ.Equals(""))
+                {
+                    FindObjectOfType<RankingController>().UpdateRanking(rankingZ, 0);
+                    FindFirstObjectByType<PotyPlayerController>().SetPositionRanking(posRankingZ, 0);
+                    posRankingZ = "";
+                    rankingZ = "";
+                }
+
+
+                if (!rankingN.Equals(""))
+                {
+                    FindObjectOfType<RankingController>().UpdateRanking(rankingN, 1);
+                    FindFirstObjectByType<PotyPlayerController>().SetPositionRanking(posRankingN, 1);
+                    posRankingN = "";
+                    rankingN = "";
+                }
             }
 
             while (potycoins.TryDequeue(out int potycoin))
@@ -537,7 +539,6 @@ public class NetworkManager : MonoBehaviour
 
                 menu.SetModeTutorial(modeTutorialOn);
                 menu.SetModeWeather(modeWeatherOn);
-                Debug.Log("ASetou esta MERDA: "+ modeTutorialOn);
 
                 FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
             }
@@ -557,12 +558,12 @@ public class NetworkManager : MonoBehaviour
                 FindFirstObjectByType<PotyPlayerController>().AddSession(session);
             }
 
-            while (pointingNormalMode.TryDequeue(out int pointingNM))
+            while (pointingNormalMode.TryDequeue(out string pointingNM))
             {
                 FindFirstObjectByType<PotyPlayerController>().SetScoreNormalMode(pointingNM);
             }
 
-            while (pointingZombieMode.TryDequeue(out int pointingZM))
+            while (pointingZombieMode.TryDequeue(out string pointingZM))
             {
                 FindFirstObjectByType<PotyPlayerController>().SetScoreZombieMode(pointingZM);
             }

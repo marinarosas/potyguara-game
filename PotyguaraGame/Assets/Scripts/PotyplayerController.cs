@@ -8,10 +8,10 @@ public class PotyPlayerController : MonoBehaviour
 {
     public string nickname { get; set; }
 
-    private int normalModeGameForteScore = 0;
-    private int zombieModeGameForteScore = 0;
-    private int positionRankingZombieMode;
-    private int positionRankingNormalMode;
+    private string positionRankingZombieMode = "N/A";
+    private string positionRankingNormalMode = "N/A";
+    private string scoreNormalMode = "";
+    private string scoreZombieMode = "";
     private int potycoins = 0;
     private NetworkManager nm;
     private List<int> skins;
@@ -75,15 +75,6 @@ public class PotyPlayerController : MonoBehaviour
     public void AddSession(string session) { sessions.Add(session); }
     public List<string> GetSessions() { return sessions; }
     public bool VerifSessions(string id) { return sessions.Contains(id) ? true : false; }
-
-
-    public void SetScore(int value, int gameMode)
-    {
-        if(gameMode == 0)
-            SetScoreZombieMode(value);
-        else
-            SetScoreNormalMode(value);
-    }
 
     public void HideControllers()
     {
@@ -157,21 +148,25 @@ public class PotyPlayerController : MonoBehaviour
         return potycoins;
     }
 
-    public void SetPositionRanking(int value, int mode)
+    public void SetScoreNormalMode(string value) { scoreNormalMode = value; }
+    public void SetScoreZombieMode(string value){  scoreZombieMode = value; }
+
+    public string GetScoreZombie(){
+        string formatedScore = nickname + ": " + scoreZombieMode + "pt";
+        return formatedScore;
+    }
+    public string GetScoreNormal() {
+        string formatedScore = nickname + ": " + scoreNormalMode + "pt";
+        return formatedScore;
+    }
+
+    public void SetPositionRanking(string value, int mode)
     {
         if (mode == 0)
-            positionRankingZombieMode = value;
+            positionRankingZombieMode = value.Equals("0") ? "N/A" : value;
         else
-            positionRankingNormalMode = value;
+            positionRankingNormalMode = value.Equals("0") ? "N/A" : value;
     }
-
-    public void SetScoreZombieMode(int value)
-    {
-        zombieModeGameForteScore = value;
-    }
-
-    public void SetScoreNormalMode(int value)
-    {
-        normalModeGameForteScore = value;
-    }
+    public string GetPositionZombie() { return positionRankingZombieMode; }
+    public string GetPositionNormal() { return positionRankingNormalMode; }
 }

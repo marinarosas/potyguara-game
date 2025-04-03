@@ -55,6 +55,8 @@ public class GameForteController : MonoBehaviour
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(3).gameObject.SetActive(true);
+        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(1).gameObject.SetActive(false);
         leftGunController.Reload();
     }
 
@@ -70,6 +72,8 @@ public class GameForteController : MonoBehaviour
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(3).gameObject.SetActive(true);
+        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(1).gameObject.SetActive(false);
         rightGunController.Reload();
     }
 
