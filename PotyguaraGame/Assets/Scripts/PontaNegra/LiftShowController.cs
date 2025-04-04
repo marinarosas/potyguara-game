@@ -110,12 +110,17 @@ public class LiftShowController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
-            if (hasTicket)
+            if(state == 1)
             {
-                GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
-                isInsideLift = true;
-                player.parent = transform;
+                catraca2.GetComponent<Animator>().Play("CatracaClose");
             }
+            else
+            {
+                catraca1.GetComponent<Animator>().Play("CatracaClose");
+            }
+            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
+            isInsideLift = true;
+            player.parent = transform;
         }
     }
 
@@ -125,13 +130,13 @@ public class LiftShowController : MonoBehaviour
         {
             isInsideLift = false;
             if (state == 1)
-                catraca1.GetComponent<Animator>().Play("CatracaClose");
+                catraca2.GetComponent<Animator>().Play("CatracaClose");
             else
             {
-                catraca2.GetComponent<Animator>().Play("CatracaClose");
+                catraca1.GetComponent<Animator>().Play("CatracaClose");
                 hasTicket = false;
-                Destroy(GameObject.Find("Dragon"));
-                Destroy(GameObject.Find("Guitaura"));
+                Destroy(GameObject.Find("Dragon(Clone)"));
+                Destroy(GameObject.Find("Guitaura(Clone)"));
                 BlockLift();
             }
         }

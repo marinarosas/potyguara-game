@@ -20,6 +20,7 @@ public class MeditationRoomController : MonoBehaviour
     private void Start()
     {
         FindFirstObjectByType<SalesCenterController>().CheckSessions();
+        transform.GetChild(0).GetChild(0).GetChild(4).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<TransitionController>().TeleportGallery);
     }
     void Update()
     {
@@ -27,17 +28,23 @@ public class MeditationRoomController : MonoBehaviour
         {
             if (!audioSource.isPlaying && StartedClass)
             {
-                transform.GetChild(0).gameObject.SetActive(true);
+                ResetRoom();
                 StartedClass = false;
             }
         }
     }
 
+    private void ResetRoom()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(false);
+        transform.GetChild(2).gameObject.SetActive(false);
+    }
+
     public void StopClass()
     {
         audioSource.Stop();
-        transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(2).gameObject.SetActive(false);
+        ResetRoom();
     }
 
     #region ButtonCreation

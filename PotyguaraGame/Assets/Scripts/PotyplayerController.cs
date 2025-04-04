@@ -85,6 +85,8 @@ public class PotyPlayerController : MonoBehaviour
         Transform right = FindFirstObjectByType<RightHandController>().gameObject.transform;
         right.GetChild(1).gameObject.SetActive(false);
         right.GetChild(2).gameObject.SetActive(false);
+
+        GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public void ShowControllers()
@@ -96,6 +98,8 @@ public class PotyPlayerController : MonoBehaviour
         Transform right = FindFirstObjectByType<RightHandController>().gameObject.transform;
         right.GetChild(1).gameObject.SetActive(true);
         right.GetChild(2).gameObject.SetActive(true);
+
+        GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void SetSkin(int skinGender, int skinIndex, int skinMaterial)

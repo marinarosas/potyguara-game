@@ -67,6 +67,7 @@ public class SpawnerController : MonoBehaviour
     public void SetLevelZombieMode()
     {
         finishUI.SetActive(false);
+        Achievement.Instance.firstInZombieMode = true;
         if (currentLevel == 1)
         {
             SetDestinyRandow(1);
@@ -159,7 +160,7 @@ public class SpawnerController : MonoBehaviour
                     if(Achievement.Instance.partidas_defesaForte == 100)
                         Achievement.Instance.UnclockAchievement("maquina_guerra");
 
-                    Achievement.Instance.SetStat("navios_levas", Achievement.Instance.ships_levas);
+                    Achievement.Instance.SetStat("partidas_defesaForte", Achievement.Instance.partidas_defesaForte);
 
                     finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
                     FindFirstObjectByType<GameForteController>().SetTotalPoints();

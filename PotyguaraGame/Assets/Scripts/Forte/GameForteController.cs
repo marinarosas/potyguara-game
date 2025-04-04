@@ -55,8 +55,7 @@ public class GameForteController : MonoBehaviour
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(3).gameObject.SetActive(true);
-        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(1).gameObject.SetActive(false);
+        FindFirstObjectByType<TechGuaraController>().StopTutorial();
         leftGunController.Reload();
     }
 
@@ -72,8 +71,7 @@ public class GameForteController : MonoBehaviour
         mainCamera.GetChild(0).GetChild(1).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         mainCamera.GetChild(0).GetChild(3).gameObject.SetActive(true);
-        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(0).gameObject.SetActive(false);
-        FindFirstObjectByType<TechGuaraController>().gameObject.transform.GetChild(1).gameObject.SetActive(false);
+        FindFirstObjectByType<TechGuaraController>().StopTutorial();
         rightGunController.Reload();
     }
 
@@ -211,7 +209,7 @@ public class GameForteController : MonoBehaviour
             }
             else
                 FindFirstObjectByType<SpawnerController>().CleanSlot();
-            finishUI.gameObject.SetActive(true);
+            finishUI.gameObject.SetActive(false);
             FindFirstObjectByType<SpawnerController>().SetLevelIsRunning(false);
         }
         catch (Exception e)

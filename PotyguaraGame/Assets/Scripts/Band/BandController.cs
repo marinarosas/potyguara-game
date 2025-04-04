@@ -67,6 +67,10 @@ public class BandController : MonoBehaviour
         //if (Time.time - lastCheckTime >= checkInterval)
         if (showStarted)
         {
+            if(video.time == video.length)
+            {
+                Achievement.Instance.firstCompleteEvent = true;
+            }
             int volume = GetVolume(audioBand);
             if (volume < silenceThreshold)
             {

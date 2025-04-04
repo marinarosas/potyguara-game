@@ -19,6 +19,7 @@ public class MenuController : MonoBehaviour
     {
         toggleTutorial.isOn = NetworkManager.Instance.modeTutorialOn;
         toggleWeather.isOn = NetworkManager.Instance.modeWeatherOn;
+        transitionController = FindFirstObjectByType<TransitionController>();
         int count = 0;
         foreach (var image in galleryImages) 
         { 
@@ -29,8 +30,11 @@ public class MenuController : MonoBehaviour
         for (int ii = 0; ii < transform.childCount; ii++)
             content.GetChild(ii).gameObject.SetActive(true);
 
-        transitionController = FindFirstObjectByType<TransitionController>();
+        Invoke("InitializeMenu", 0.5f);
+    }
 
+    private void InitializeMenu()
+    {
         if (SceneManager.GetActiveScene().buildIndex == 2) // ponta Negra
         {
             content.GetChild(0).gameObject.SetActive(false);
@@ -112,8 +116,8 @@ public class MenuController : MonoBehaviour
         {
             FindFirstObjectByType<LiftShowController>().hasTicket = false;
             FindFirstObjectByType<TransitionController>().isInShowArea = false;
-            Destroy(GameObject.Find("Dragon"));
-            Destroy(GameObject.Find("Guitaura"));
+            Destroy(GameObject.Find("Dragon(Clone)"));
+            Destroy(GameObject.Find("Guitaura(Clone)"));
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
             FindFirstObjectByType<LiftShowController>().BlockLift();
         }
@@ -146,8 +150,8 @@ public class MenuController : MonoBehaviour
         {
             FindFirstObjectByType<LiftShowController>().hasTicket = false;
             FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            Destroy(GameObject.Find("Dragon"));
-            Destroy(GameObject.Find("Guitaura"));
+            Destroy(GameObject.Find("Dragon(Clone)"));
+            Destroy(GameObject.Find("Guitaura(Clone)"));
             FindFirstObjectByType<TransitionController>().isInShowArea = false;
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
             FindFirstObjectByType<LiftShowController>().BlockLift();

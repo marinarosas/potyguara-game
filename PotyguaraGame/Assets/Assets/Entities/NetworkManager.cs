@@ -201,23 +201,26 @@ public class NetworkManager : MonoBehaviour
                     break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
-                    pointingNormalMode.Enqueue(response.parameters["pointingNormalMode"]);
-                    pointingZombieMode.Enqueue(response.parameters["pointingZombieMode"]);
-                    potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
 
                     isNewDay = true;
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
+
                     if (int.Parse(list[0]) != -1)
                     {
+                        isTheFirstAcess = false;
+
+                        modeTutorialOn = response.parameters["modeTutorial"] == "true" ? true : false;
+                        modeWeatherOn = response.parameters["modeWeather"] == "true" ? true : false;
+
+                        pointingNormalMode.Enqueue(response.parameters["pointingNormalMode"]);
+                        pointingZombieMode.Enqueue(response.parameters["pointingZombieMode"]);
+                        potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
+
                         if (response.parameters["nDay"] == "true")
                             isNewDay = true;
                         else
                             isNewDay = false;
-
-                        isTheFirstAcess = false;
-                        modeTutorialOn = response.parameters["modeTutorial"] == "true" ? true : false;
-                        modeWeatherOn = response.parameters["modeWeather"] == "true" ? true : false;
 
                         string ticketsS = response.parameters["tickets"];
                         string[] ticketList = ticketsS.Split('|');
@@ -400,6 +403,12 @@ public class NetworkManager : MonoBehaviour
                 { "id", id },
             }
         };
+        Achievement.Instance.eventos++;
+        if(Achievement.Instance.eventos == 1000)
+        {
+            Achievement.Instance.UnclockAchievement("potyverser");
+        }
+        Achievement.Instance.SetStat("eventos", Achievement.Instance.eventos);
 
         // solicita a atualização dos tickets para o servidor
         if (ws != null)

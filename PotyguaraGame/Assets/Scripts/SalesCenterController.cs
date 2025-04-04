@@ -51,7 +51,7 @@ public class SalesCenterController : MonoBehaviour
                     newButton.GetComponent<Button>().interactable = false;
                     return;
                 }
-                newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id, index));
+                newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id, index, newButton.GetComponent<Button>()));
                 return;
             }
         }
@@ -64,11 +64,11 @@ public class SalesCenterController : MonoBehaviour
                     newButton.GetComponent<Button>().interactable = false;
                     return;
                 }
-                newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id, index));
+                newButton.GetComponent<Button>().onClick.AddListener(() => BuyFreeProduct(category, id, index, newButton.GetComponent<Button>()));
                 return;
             }
         }
-        newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
+        newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category, newButton.GetComponent<Button>()));
     }
 
     public void CheckSessions()
@@ -88,7 +88,7 @@ public class SalesCenterController : MonoBehaviour
     }
 
 
-    private void BuyFreeProduct(string category, string id, int index)
+    private void BuyFreeProduct(string category, string id, int index, Button btn)
     {
         if (!isPurshing)
         {
@@ -106,6 +106,7 @@ public class SalesCenterController : MonoBehaviour
                 FindFirstObjectByType<PotyPlayerController>().AddSession(id);
                 FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
             }
+            btn.interactable = false;
             isPurshing = true;
         }
     }
@@ -163,11 +164,12 @@ public class SalesCenterController : MonoBehaviour
         }
     }
 
-    private void BuyProduct(string id, string description, string category)
+    private void BuyProduct(string id, string description, string category, Button btn)
     {
         if (!isPurshing)
         {
             Microtransaction.Instance.InitSale(id, description, category);
+            btn.interactable = false;
             isPurshing = true;
         }
     }

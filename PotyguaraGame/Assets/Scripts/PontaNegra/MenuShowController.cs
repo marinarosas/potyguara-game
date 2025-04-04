@@ -44,9 +44,6 @@ public class MenuShowController : MonoBehaviour
             }
 
             banda.GetComponent<BandController>().StartShow(currentShow.clip);
-            FindFirstObjectByType<LiftShowController>().hasTicket = true;
-
-            transform.GetChild(0).GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(transform.GetChild(0).gameObject);
             showLiberated = false;
         }
     }
@@ -84,6 +81,8 @@ public class MenuShowController : MonoBehaviour
     private void UnclockDeck(Show show)
     {
         currentShow = show;
+        FindFirstObjectByType<LiftShowController>().hasTicket = true;
+        transform.GetChild(0).GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(transform.GetChild(0).gameObject);
         FindObjectOfType<LiftShowController>().UnleashLift();
         FindObjectOfType<LiftShowController>().OpenCatraca2();
     }

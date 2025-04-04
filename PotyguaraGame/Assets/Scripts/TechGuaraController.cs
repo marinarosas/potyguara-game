@@ -12,109 +12,82 @@ public class TechGuaraController : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private List<AudioClip> audios;
 
-    private void InitialTutorial()
+    private void InitReport()
     {
         if (NetworkManager.Instance.isTheFirstAcess)
         {
+            if (SceneManager.GetActiveScene().buildIndex == 0)
+            {
+                transform.GetChild(0).gameObject.SetActive(true);
+                transform.GetChild(1).gameObject.SetActive(true);
+                if (SceneManager.GetActiveScene().buildIndex == 0)
+                {
+                    CreateReport("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar", new Vector3(0f, 2f, -32.35f), 0f, "Bem-vindo(a) ao Potyguara Verse!", "Você acaba de entrar " +
+                        "em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia, e juntos vamos explorar esse " +
+                        "universo cheio de novidades! No Potyguara Verse, você poderá participar de eventos incríveis, jogar minigames, visitar nossa loja exclusiva e muito mais.");
+                }
+            }
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            if (FindFirstObjectByType<PotyPlayerController>().GetIndex() == -1)
+            {
+                CreateReport("Techyguara.CriaçãodePerfil+Avatar", transform.position, 0f, "Crie seu Avatar!", "Agora que você já se apresentou, é hora de criar seu avatar! Escolha " +
+                "suas características, como rosto, cabelo, roupas e acessórios para refletir sua personalidade no Potyguara Verse. Depois, você estará pronto para explorar" +
+                " este mundo como nunca antes!");
+                transform.GetChild(0).gameObject.SetActive(true);
+            }
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            CreateReport("Techyguara.ApresentaçãoPraiadePontaNegra", new Vector3(177f, 3f, 76f), 0f, "Praia de Ponta Negra", "Você está na famosa Praia de Ponta Negra, " +
+                "uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. Aqui, você encontrará " +
+                "diversos eventos, como shows, exposições e o emocionante minigame Hoverbunda. Sinta-se livre para caminhar pela praia, explorar as atrações e aproveitar " +
+                "os eventos incríveis!");
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
+            {
+                CreateReport("Techyguara.ApresentaçãoFortalezaDosReisMagos", new Vector3(804.55f, 10.34f, 400.19f), 0f, "Forte dos Reis Magos", "Agora, vamos à Fortaleza " +
+                    "dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
+                    "Aqui, você poderá jogar minigames inspirados em épocas passadas. Sabia que, durante as invasões holandesas, a cidade de Natal foi chamada de Nova " +
+                    "Amsterdã? Explore os muros de pedra e descubra mais sobre essa fascinante história enquanto se diverte!");
+            }
+        }
+        if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10));
+            GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<TransitionController>().LoadSceneAsync(2));
+            if (!NetworkManager.Instance.modeTutorialOn)
+                GameObject.Find("InitialCanva").transform.GetChild(0).gameObject.SetActive(true);
             foreach (AudioClip clip in audios)
             {
-                if (clip.name.Equals("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar"))
+                if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
                     audioSource.clip = clip;
             }
-            transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, gameObject);
-            transform.position = new Vector3(0f, 2f, -32.35f);
-            report.UpdateTitle("Bem-vindo(a) ao Potyguara Verse!");
-            report.UpdateDescription("Você acaba de entrar em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia," +
-                " e juntos vamos explorar esse universo cheio de novidades! No Potyguara Verse, você poderá participar de eventos incríveis, jogar minigames, visitar nossa loja exclusiva e muito mais.");
+            CreateReport("HoverBunda", "Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
+                "apenas o mais rápido cruzará a linha de chegada!", new Vector3(584.61f, 53.4f, -559.51f));
+            transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
             audioSource.Play();
         }
-        else
-        {
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).gameObject.SetActive(false);
-        }
     }
+
     void Start()
     {
         audioSource = transform.GetChild(2).GetComponent<AudioSource>();
         report = transform.GetChild(0).GetComponent<Report>();
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+        Invoke("InitReport", 0.3f);
+    }
 
-        transform.GetChild(0).gameObject.SetActive(true);
-        transform.GetChild(1).gameObject.SetActive(true);
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-            Invoke("InitialTutorial", 1f);
-
-        if (NetworkManager.Instance.isTheFirstAcess)
-        {
-            if (SceneManager.GetActiveScene().buildIndex == 1)
-            {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.CriaçãodePerfil+Avatar"))
-                        audioSource.clip = clip;
-                }
-                report.UpdateTitle("Crie seu Avatar!");
-                report.UpdateDescription("Agora que você já se apresentou, é hora de criar seu avatar! Escolha suas características, como rosto, cabelo, roupas e acessórios para refletir sua personalidade no " +
-                    "Potyguara Verse. Depois, você estará pronto para explorar este mundo como nunca antes!");
-                transform.GetChild(0).gameObject.SetActive(false);
-            }
-            if (SceneManager.GetActiveScene().buildIndex == 2)
-            {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.ApresentaçãoPraiadePontaNegra"))
-                        audioSource.clip = clip;
-                }
-                transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(audioSource.clip.length + 10f);
-                transform.position = new Vector3(177f, 3f, 76f);
-                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-                report.UpdateTitle("Praia de Ponta Negra");
-                report.UpdateDescription("Você está na famosa Praia de Ponta Negra, uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. " +
-                    "Aqui, você encontrará diversos eventos, como shows, exposições e o emocionante minigame Hoverbunda. Sinta-se livre para caminhar pela praia, explorar as atrações e aproveitar os eventos incríveis!");
-            }
-            if (SceneManager.GetActiveScene().buildIndex == 3)
-            {
-                if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
-                {
-                    foreach (AudioClip clip in audios)
-                    {
-                        if (clip.name.Equals("Techyguara.ApresentaçãoFortalezaDosReisMagos"))
-                            audioSource.clip = clip;
-                    }
-                    transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
-                    transform.position = new Vector3(804.55f, 10.34f, 400.19f);
-                    report.UpdateTitle("Forte dos Reis Magos");
-                    report.UpdateDescription("Agora, vamos à Fortaleza dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
-                        "Aqui, você poderá jogar minigames inspirados em épocas passadas. Sabia que, durante as invasões holandesas, a cidade de Natal foi chamada de Nova Amsterdã? Explore os muros de pedra e descubra " +
-                        "mais sobre essa fascinante história enquanto se diverte!");
-                }
-            }
-            if (SceneManager.GetActiveScene().buildIndex == 4)
-            {
-                GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10));
-                GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<TransitionController>().LoadSceneAsync(2));
-                if (!NetworkManager.Instance.modeTutorialOn)
-                {
-                    GameObject.Find("InitialCanva").transform.GetChild(0).gameObject.SetActive(true);
-                }
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
-                        audioSource.clip = clip;
-                }
-                transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
-                transform.position = new Vector3(584.61f, 53.4f, -559.51f);
-                report.UpdateTitle("HoverBunda");
-                report.UpdateDescription("Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
-                    "apenas o mais rápido cruzará a linha de chegada!");
-            }
-            audioSource.Play();
-        }
-        else
-        {
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).gameObject.SetActive(false);
-        }
+    public void StopTutorial()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+        audioSource.Stop();
     }
 
     void Update()
@@ -123,9 +96,7 @@ public class TechGuaraController : MonoBehaviour
         {
             if (!NetworkManager.Instance.modeTutorialOn)
             {
-                transform.GetChild(0).gameObject.SetActive(false);
-                transform.GetChild(1).gameObject.SetActive(false);
-                audioSource.Stop();
+                StopTutorial();
             }
         }
 
@@ -141,23 +112,44 @@ public class TechGuaraController : MonoBehaviour
         {
             if (audioSource.time >= 33.0)
             {
-                report.UpdateTitle("Guias");
-                report.UpdateDescription("Espere um pouco jogador(a), antes de explorar o ambiente, visite o 2° andar do Escritorio do Potyguara Verse e " +
-                    "fale comigo, tenho algumas informações valiosas para você!!!");
-            }
-            if(audioSource.time >= 43.0)
-            {
-                transform.position = new Vector3(148.55f, 12.17f, 6.88f);
-                transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                CreateReport("Guias", "Espere um pouco jogador(a), antes de explorar o ambiente, visite o 2° andar do Escritorio do Potyguara Verse e " +
+                    "fale comigo, tenho algumas informações valiosas para você!!!", 10f, transform.position, 0f);
             }
         }
     }
 
     #region ReportConfig
+
+    public void CreateReport(string clipName, Vector3 pos, float direction, string title, string description)
+    {
+        foreach (AudioClip clip in audios)
+        {
+            if (clip.name.Equals(clipName))
+                audioSource.clip = clip;
+        }
+        transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 0;
+        transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(audioSource.clip.length);
+        transform.position =pos;
+        report.UpdateTitle(title);
+        report.UpdateDescription(description);
+        audioSource.Play();
+    }
+
     public void CreateReport(string title, string description, float duration)
     {
         transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 0;
         transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(duration, transform.GetChild(0).gameObject);
+
+        report.UpdateTitle(title);
+        report.UpdateDescription(description);
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    public void CreateReport(string title, string description, Vector3 pos)
+    {
+        transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 0;
+        transform.position = pos;
 
         report.UpdateTitle(title);
         report.UpdateDescription(description);

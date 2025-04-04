@@ -12,12 +12,13 @@ public class Achievement : MonoBehaviour
     public int ships_levas = 0;
     public int partidas_hover = 0;
     public int partidas_defesaForte = 0;
+    public bool firstInZombieMode = false;
+    public bool firstCompleteEvent = false;
 
     public bool isFirstShip = true;
     public bool isFirstDeadInZombieMode = true;
-    public bool isFirstPurchase = true;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if(Instance == null)
         {
@@ -28,7 +29,29 @@ public class Achievement : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        ResetAchievement();
+    }
+
+    private void Start()
+    {
+        partidas_defesaForte = GetStat("partidas_defesaForte");
+        partidas_hover = GetStat("partidas_hover");
+        ships_levas = GetStat("navios_levas");
+        zombies = GetStat("zombies");
+        eventos = GetStat("eventos");
+    }
+
+    private void Update()
+    {
+        if(firstCompleteEvent)
+        {
+            UnclockAchievement("espectador");
+            firstCompleteEvent = false;
+        }
+        if(partidas_defesaForte >= 1 && partidas_hover >= 1 && firstInZombieMode)
+        {
+            UnclockAchievement("espectador");
+            firstInZombieMode = false;
+        }
     }
 
     public void ResetAchievement()
@@ -44,10 +67,11 @@ public class Achievement : MonoBehaviour
         ships_levas = 0;
         partidas_hover = 0;
         partidas_defesaForte = 0;
+        firstInZombieMode = false;
+        firstCompleteEvent = false;
 
         isFirstShip = true;
         isFirstDeadInZombieMode = true;
-        isFirstPurchase = true;
     }
 
     public void UnclockAchievement(string id)
@@ -65,5 +89,14 @@ public class Achievement : MonoBehaviour
 
         SteamUserStats.SetStat(id, value);
         SteamUserStats.StoreStats();
+    }
+
+    public int GetStat(string id)
+    {
+        if (!SteamManager.Initialized)
+            return 0;
+
+        SteamUserStats.GetStat(id, out int qnt);
+        return qnt;
     }
 }

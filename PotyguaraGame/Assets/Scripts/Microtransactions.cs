@@ -332,6 +332,7 @@ public class Microtransaction : MonoBehaviour
                             }
                         }
                     }
+                    Achievement.Instance.UnclockAchievement("first_purchase");
                     Debug.Log("Transaction Finished.");
                     FindFirstObjectByType<SalesCenterController>().isPurshing = false;
                     _isInPurchaseProcess = false;
