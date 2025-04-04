@@ -108,11 +108,9 @@ public class MenuController : MonoBehaviour
     }
     void GoToMeditationRoom()
     {
-        if (FindFirstObjectByType<TransitionController>().isInShowArea && SceneManager.GetActiveScene().buildIndex == 2)
+        if (FindFirstObjectByType<TransitionController>().isInShowArea)
         {
             FindFirstObjectByType<LiftShowController>().hasTicket = false;
-            FindFirstObjectByType<MenuShowController>().showLiberated = false;
-            FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
             FindFirstObjectByType<TransitionController>().isInShowArea = false;
             Destroy(GameObject.Find("Dragon"));
             Destroy(GameObject.Find("Guitaura"));
@@ -144,10 +142,9 @@ public class MenuController : MonoBehaviour
 
     void GoToGallery()
     {
-        if (FindFirstObjectByType<TransitionController>().isInShowArea && SceneManager.GetActiveScene().buildIndex == 2)
+        if (FindFirstObjectByType<TransitionController>().isInShowArea)
         {
             FindFirstObjectByType<LiftShowController>().hasTicket = false;
-            FindFirstObjectByType<MenuShowController>().showLiberated = false;
             FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
             Destroy(GameObject.Find("Dragon"));
             Destroy(GameObject.Find("Guitaura"));
@@ -155,9 +152,8 @@ public class MenuController : MonoBehaviour
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
             FindFirstObjectByType<LiftShowController>().BlockLift();
         }
-
-        transitionController.TeleportGallery();
         FindFirstObjectByType<MeditationRoomController>().StopClass();
+        transitionController.TeleportGallery();
         GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(true);
     }
 

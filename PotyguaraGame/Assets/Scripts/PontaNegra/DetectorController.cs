@@ -18,7 +18,6 @@ public class DetectorController : MonoBehaviour
         {
             if (transform.name.Equals("Detector1"))
             {
-                FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeIn();
                 GameObject menuShow = FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject;
                 menuShow.SetActive(true);
                 menuShow.GetComponent<FadeController>().FadeIn();

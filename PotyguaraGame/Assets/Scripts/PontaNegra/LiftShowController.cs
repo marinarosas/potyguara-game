@@ -130,8 +130,6 @@ public class LiftShowController : MonoBehaviour
             {
                 catraca2.GetComponent<Animator>().Play("CatracaClose");
                 hasTicket = false;
-                FindFirstObjectByType<MenuShowController>().showLiberated = false;
-                FindFirstObjectByType<MenuShowController>().gameObject.transform.GetChild(0).gameObject.SetActive(true);
                 Destroy(GameObject.Find("Dragon"));
                 Destroy(GameObject.Find("Guitaura"));
                 BlockLift();
