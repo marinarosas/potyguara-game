@@ -17,7 +17,10 @@ public class MeditationRoomController : MonoBehaviour
     [SerializeField] private List<AudioClip> audios;
     [SerializeField] private Font font;
     // Start is called before the first frame update
-
+    private void Start()
+    {
+        FindFirstObjectByType<SalesCenterController>().CheckSessions();
+    }
     void Update()
     {
         if (audioSource != null)

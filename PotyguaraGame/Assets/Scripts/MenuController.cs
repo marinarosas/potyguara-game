@@ -17,6 +17,8 @@ public class MenuController : MonoBehaviour
 
     void Start()
     {
+        toggleTutorial.isOn = NetworkManager.Instance.modeTutorialOn;
+        toggleWeather.isOn = NetworkManager.Instance.modeWeatherOn;
         int count = 0;
         foreach (var image in galleryImages) 
         { 
@@ -41,7 +43,6 @@ public class MenuController : MonoBehaviour
                 content.GetChild(4).GetComponent<Button>().onClick.AddListener(GoToGameForte);
                 content.GetChild(5).GetComponent<Button>().onClick.AddListener(GoToGameForteZombieMode);
                 content.GetChild(6).GetComponent<Button>().onClick.AddListener(LoadHoverBunda);
-
             }
             else
             {
@@ -91,33 +92,14 @@ public class MenuController : MonoBehaviour
         }
     }
 
-    public void SendModeWeather(Boolean value)
+    public void SendModeWeather(bool value)
     {
         NetworkManager.Instance.SendModeWeather(value);
     }
 
-    public void SendModeTutorial(Boolean value)
+    public void SendModeTutorial(bool value)
     {
         NetworkManager.Instance.SendModeTutorial(value);
-    }
-
-    public void SetModeWeather(bool value)
-    {
-        toggleWeather.isOn = value;
-    }
-
-    public void SetModeTutorial(bool value)
-    {
-        Canvas.ForceUpdateCanvases();
-        if (value == false)
-        {
-            toggleTutorial.onValueChanged.Invoke(false);
-        }
-        else
-        {
-            toggleTutorial.onValueChanged.Invoke(true);
-        }
-        Canvas.ForceUpdateCanvases();
     }
 
     void LoadAvatarScene()
@@ -137,6 +119,7 @@ public class MenuController : MonoBehaviour
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
             FindFirstObjectByType<LiftShowController>().BlockLift();
         }
+        FindFirstObjectByType<MeditationRoomController>().StopClass();
         transitionController.TeleportMeditationRoom();
     }
 

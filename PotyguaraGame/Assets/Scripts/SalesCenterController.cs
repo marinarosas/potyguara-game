@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.XR;
 using Steamworks;
 using System.Net.Sockets;
+using Unity.VisualScripting;
 
 public class SalesCenterController : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class SalesCenterController : MonoBehaviour
     [SerializeField] private Transform content;
     public bool controlMenu = false;
     public bool changedStatus = false;
+    public bool isPurshing = false;
 
     private List<InputDevice> devices = new List<InputDevice>();
 
@@ -69,21 +71,42 @@ public class SalesCenterController : MonoBehaviour
         newButton.GetComponent<Button>().onClick.AddListener(() => BuyProduct(id, description, category));
     }
 
+    public void CheckSessions()
+    {
+        List<string> sessions = FindFirstObjectByType<PotyPlayerController>().GetSessions();
+        if (sessions.Count != 0)
+        {
+            foreach (string session in sessions)
+            {
+                foreach (Product product in meditationClasses)
+                {
+                    if (product.id == session)
+                        FindFirstObjectByType<MeditationRoomController>().AddButton(product.index);
+                }
+            }
+        }
+    }
+
+
     private void BuyFreeProduct(string category, string id, int index)
     {
-        if (category == "show")
+        if (!isPurshing)
         {
-            FindFirstObjectByType<MenuShowController>().UnclockShow(id);
-            NetworkManager.Instance.SendTicket(id);
-            FindFirstObjectByType<PotyPlayerController>().AddTicket(id);
-            FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
-        }
-        if(category == "class")
-        {
-            FindFirstObjectByType<MeditationRoomController>().AddButton(index);
-            NetworkManager.Instance.SendSession(id);
-            FindFirstObjectByType<PotyPlayerController>().AddSession(id);
-            FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
+            if (category == "show")
+            {
+                FindFirstObjectByType<MenuShowController>().UnclockShow(id);
+                NetworkManager.Instance.SendTicket(id);
+                FindFirstObjectByType<PotyPlayerController>().AddTicket(id);
+                FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
+            }
+            if (category == "class")
+            {
+                FindFirstObjectByType<MeditationRoomController>().AddButton(index);
+                NetworkManager.Instance.SendSession(id);
+                FindFirstObjectByType<PotyPlayerController>().AddSession(id);
+                FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
+            }
+            isPurshing = true;
         }
     }
 
@@ -142,7 +165,11 @@ public class SalesCenterController : MonoBehaviour
 
     private void BuyProduct(string id, string description, string category)
     {
-        Microtransaction.Instance.InitSale(id, description, category);
+        if (!isPurshing)
+        {
+            Microtransaction.Instance.InitSale(id, description, category);
+            isPurshing = true;
+        }
     }
 
     private void OnTriggerStay(Collider collision)

@@ -162,7 +162,6 @@ public class Microtransaction : MonoBehaviour
                             {
                                 FindFirstObjectByType<MeditationRoomController>().AddButton(1);
                                 NetworkManager.Instance.SendSession("3002");
-
                             }
                             else if (Form.headers["itemId"].Equals("3003"))
                             {
@@ -334,11 +333,13 @@ public class Microtransaction : MonoBehaviour
                         }
                     }
                     Debug.Log("Transaction Finished.");
+                    FindFirstObjectByType<SalesCenterController>().isPurshing = false;
                     _isInPurchaseProcess = false;
                 }
                 else if (!string.IsNullOrEmpty(ret.error))
                 {
                     Debug.LogError("Error from API: " + ret.error);
+                    FindFirstObjectByType<SalesCenterController>().isPurshing = false;
                 }
             }
         }

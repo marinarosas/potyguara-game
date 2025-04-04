@@ -10,7 +10,7 @@ public class GalleryController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach(Image image in images)
-            image.sprite = sprites[Random.Range(0, sprites.Count)];
+        for (int ii = 0; ii < images.Count; ii++)
+            images[ii].sprite = sprites[ii]; 
     }
 }

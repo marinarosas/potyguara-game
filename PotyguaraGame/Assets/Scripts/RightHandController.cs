@@ -38,9 +38,7 @@ public class RightHandController : MonoBehaviour
 
     public InputDevice GetTargetDevice()
     {
-        if (devices.Count != 0)
-            return devices[0];
-        return new InputDevice();
+        return devices[0];
     }
 
     public void AnimationFinger()

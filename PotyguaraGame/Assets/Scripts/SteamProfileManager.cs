@@ -27,25 +27,6 @@ public class SteamProfileManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
             qnt.text = FindFirstObjectByType<PotyPlayerController>().GetPotycoins().ToString();
-
-        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
-        {
-            if (NetworkManager.Instance.isNewDay)
-            {
-                GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-                AudioSource audio = canva.transform.GetChild(6).GetComponent<AudioSource>();
-                Button button = canva.transform.GetChild(5).GetComponent<Button>();
-
-                if (button != null && canva != null)
-                {
-                    canva.SetActive(true);
-                    canva.GetComponent<FadeController>().FadeIn();
-                    audio.Play();
-                    button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
-                }
-                NetworkManager.Instance.isNewDay = false;
-            }
-        }
     }
 
     void GetSteamAvatar(CSteamID steamID)

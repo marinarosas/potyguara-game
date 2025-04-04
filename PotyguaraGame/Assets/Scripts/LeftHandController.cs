@@ -18,46 +18,21 @@ public class LeftHandController : MonoBehaviour
     {
         InputDeviceCharacteristics leftHandCharacteristics = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
         InputDevices.GetDevicesWithCharacteristics(leftHandCharacteristics, devices);
-        if (devices.Count != 0)
+        devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
+        if (Ybutton) // Y button pressed
         {
-            devices[0].TryGetFeatureValue(CommonUsages.secondaryButton, out bool Ybutton);
-            if (Ybutton) // Y button pressed
+            if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
             {
-                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
+                GameObject menu = GameObject.FindWithTag("MainMenu").transform.GetChild(0).gameObject;
+                if (menu != null)
                 {
-
-                    GameObject menu = GameObject.FindWithTag("MainMenu").transform.GetChild(0).gameObject;
-                    if (menu != null)
+                    if (!changedStatus)
                     {
-                        if (!changedStatus)
-                        {
-                            controlMenu = !controlMenu;
-                            menu.SetActive(controlMenu);
-                            changedStatus = true;
-                            GameObject.FindWithTag("MainCamera").transform.GetChild(6).gameObject.SetActive(!controlMenu);
-                            Invoke("ChangeStatus", .3f);
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.M)) // Y button pressed
-            {
-                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
-                {
-                    GameObject menu = GameObject.FindWithTag("MainMenu").transform.GetChild(0).gameObject;
-                    if (menu != null)
-                    {
-                        if (!changedStatus)
-                        {
-                            controlMenu = !controlMenu;
-                            menu.SetActive(controlMenu);
-                            changedStatus = true;
-                            GameObject.FindWithTag("MainCamera").transform.GetChild(6).gameObject.SetActive(!controlMenu);
-                            Invoke("ChangeStatus", .3f);
-                        }
+                        controlMenu = !controlMenu;
+                        menu.SetActive(controlMenu);
+                        changedStatus = true;
+                        GameObject.FindWithTag("MainCamera").transform.GetChild(6).gameObject.SetActive(!controlMenu);
+                        Invoke("ChangeStatus", .3f);
                     }
                 }
             }
@@ -97,9 +72,7 @@ public class LeftHandController : MonoBehaviour
 
     public InputDevice GetTargetDevice()
     {
-        if(devices.Count != 0)
-            return devices[0];
-        return new InputDevice();
+         return devices[0];
     }
 
     public void AnimationFinger()

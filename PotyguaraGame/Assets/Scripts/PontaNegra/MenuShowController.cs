@@ -18,6 +18,7 @@ public class MenuShowController : MonoBehaviour
     [SerializeField] private Transform content;
 
     public bool showLiberated = false;
+    private Show currentShow;
 
     private void Start()
     {
@@ -26,6 +27,28 @@ public class MenuShowController : MonoBehaviour
             CreateButton(show.image, show.description);
         }
         CheckTickets();
+    }
+
+    private void Update()
+    {
+        if (showLiberated)
+        {
+            GameObject banda = Instantiate(currentShow.banda);
+            banda.transform.position = new Vector3(180.46f, 6.89f, 251.19f);
+            banda.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+            foreach (GameObject extra in currentShow.extras)
+            {
+                GameObject obj = Instantiate(extra);
+                obj.transform.position = new Vector3(184.1f, 34.6f, 210.1f);
+            }
+
+            banda.GetComponent<BandController>().StartShow(currentShow.clip);
+            FindFirstObjectByType<LiftShowController>().hasTicket = true;
+
+            transform.GetChild(0).GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(transform.GetChild(0).gameObject);
+            showLiberated = false;
+        }
     }
     private void CreateButton(Sprite image, string description)
     {
@@ -54,31 +77,14 @@ public class MenuShowController : MonoBehaviour
         if (tickets.Count != 0)
         {
             foreach(string ticket in tickets)
-                FindFirstObjectByType<MenuShowController>().UnclockShow(ticket);
+                UnclockShow(ticket);
         }
     }
 
     private void UnclockDeck(Show show)
     {
+        currentShow = show;
         FindObjectOfType<LiftShowController>().UnleashLift();
         FindObjectOfType<LiftShowController>().OpenCatraca2();
-
-        if (!showLiberated)
-        {
-            GameObject banda = Instantiate(show.banda);
-            banda.transform.position = new Vector3(180.46f, 6.89f, 251.19f);
-            banda.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-
-            foreach (GameObject extra in show.extras) {
-                GameObject obj = Instantiate(extra);
-                obj.transform.position = new Vector3(184.1f, 34.6f, 210.1f);
-            }
-
-            banda.GetComponent<BandController>().StartShow(show.clip);
-            FindFirstObjectByType<LiftShowController>().hasTicket = true;
-
-            transform.GetChild(0).GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(transform.GetChild(0).gameObject);
-            showLiberated = true;
-        }
     }
 }

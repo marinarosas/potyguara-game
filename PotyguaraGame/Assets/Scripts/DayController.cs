@@ -23,6 +23,25 @@ public class DayController : MonoBehaviour
 
     void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
+        {
+            if (NetworkManager.Instance.isNewDay)
+            {
+                GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
+                AudioSource audio = canva.transform.GetChild(6).GetComponent<AudioSource>();
+                Button button = canva.transform.GetChild(5).GetComponent<Button>();
+
+                if (button != null && canva != null)
+                {
+                    canva.SetActive(true);
+                    canva.GetComponent<FadeController>().FadeIn();
+                    audio.Play();
+                    button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
+                }
+                NetworkManager.Instance.isNewDay = false;
+            }
+        }
+
         if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
         {
             moon = GameObject.FindWithTag("Moon").transform;
@@ -94,7 +113,7 @@ public class DayController : MonoBehaviour
         currentTime = DateTime.Now.ToLocalTime();
         //GetComponent<TextMeshProUGUI>().text = currentTime.ToString("HH:mm:ss");
 
-        if (GameObject.FindWithTag("MainMenu").GetComponent<MenuController>().toggleWeather.isOn)
+        if (NetworkManager.Instance.modeWeatherOn)
         {
             InvokeRepeating("RequestAPIWeather", 0f, 3600f);
 
@@ -120,15 +139,7 @@ public class DayController : MonoBehaviour
                     moon.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 0.2f);
                 }
-                if (currentTime.Hour >= 16 && currentTime.Hour < 18)
-                {
-                    rotationSpeed = 360f / dayLenght;
-                    sun.GetComponent<Light>().enabled = true;
-                    RenderSettings.sun = sun.GetComponent<Light>();
-                    sun.rotation = Quaternion.Euler(137.7f, 0f, 0f);
-                    skyBox.SetFloat("_AtmosphereThickness", 1.8f);
-                }
-                if (currentTime.Hour >= 4 && currentTime.Hour < 16)
+                if (currentTime.Hour >= 5 && currentTime.Hour < 18)
                 {
                     rotationSpeed = 360f / dayLenght;
                     sun.GetComponent<Light>().enabled = true;
@@ -136,10 +147,11 @@ public class DayController : MonoBehaviour
                     sun.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 0.8f);
                 }
-                if (currentTime.Hour < 4)
+                if (currentTime.Hour < 5)
                 {
                     rotationSpeed = 180f / dayLenght;
-                    sunAngle = 100;
+                    sunAngle = (hours / 24f) * 180f;
+                    moon.GetComponent<Light>().enabled = true;
                     RenderSettings.sun = moon.GetComponent<Light>();
                     moon.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                     skyBox.SetFloat("_AtmosphereThickness", 0.2f);
@@ -151,7 +163,7 @@ public class DayController : MonoBehaviour
             if (SceneManager.GetActiveScene().buildIndex != 0)
             {
                 RenderSettings.sun = sun.GetComponent<Light>();
-                sun.rotation = Quaternion.Euler(87.21f, 0f, 0f);
+                sun.rotation = Quaternion.Euler(137.7f, 0f, 0f);
                 skyBox.SetFloat("_AtmosphereThickness", 0.8f);
             }
         }

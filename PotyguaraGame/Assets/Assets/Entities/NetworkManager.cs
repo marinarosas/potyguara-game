@@ -40,7 +40,7 @@ public class NetworkManager : MonoBehaviour
     private string posRankingN = "";
 
     public bool isTheFirstAcess = true;
-    public bool isNewDay = false;
+    public bool isNewDay = true;
     public bool modeTutorialOn = true;
     public bool modeWeatherOn = true;
 
@@ -218,8 +218,6 @@ public class NetworkManager : MonoBehaviour
                         isTheFirstAcess = false;
                         modeTutorialOn = response.parameters["modeTutorial"] == "true" ? true : false;
                         modeWeatherOn = response.parameters["modeWeather"] == "true" ? true : false;
-
-                        Debug.Log("MERDA é EssA: " + modeTutorialOn);
 
                         string ticketsS = response.parameters["tickets"];
                         string[] ticketList = ticketsS.Split('|');
@@ -534,11 +532,6 @@ public class NetworkManager : MonoBehaviour
                 int bodyIndex = int.Parse(list[0]);
                 int skinIndex = int.Parse(list[1]);
                 int variant = int.Parse(list[2]);
-
-                MenuController menu = GameObject.FindWithTag("MainMenu").GetComponent<MenuController>();
-
-                menu.SetModeTutorial(modeTutorialOn);
-                menu.SetModeWeather(modeWeatherOn);
 
                 FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
             }
