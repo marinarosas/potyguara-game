@@ -263,7 +263,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendModeTutorial(bool mode)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "UpdateModeTutorial",
             actor = playerId,
@@ -280,7 +280,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendModeWeather(bool mode)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "UpdateModeWeather",
             actor = playerId,
@@ -298,7 +298,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendConnectionSignal(string nickname, string fusoH)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "Connection",
             actor = nickname,
@@ -315,7 +315,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendSkin(int gender, int index, int material)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "UpdateSkin",
             actor = playerId,
@@ -333,7 +333,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendSkin(int index)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "NewSkin",
             actor = playerId,
@@ -348,7 +348,7 @@ public class NetworkManager : MonoBehaviour
     }
     internal void RequestSkins()
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "RequestSkins",
             actor = playerId,
@@ -363,7 +363,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendSignalTutorialOK(string typeT)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = typeT,
             actor = playerId,
@@ -381,7 +381,7 @@ public class NetworkManager : MonoBehaviour
     {
         if (mode == 0)
         {
-            Action action = new Action()
+            ActionServer action = new ActionServer()
             {
                 type = "GameForteZ",
                 actor = this.playerId,
@@ -398,7 +398,7 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            Action action = new Action()
+            ActionServer action = new ActionServer()
             {
                 type = "GameForteB",
                 actor = this.playerId,
@@ -419,7 +419,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendTicket(string id)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "NewTicket",
             actor = this.playerId,
@@ -442,7 +442,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void SendSession(string id)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "NewSession",
             actor = this.playerId,
@@ -459,7 +459,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void UpdatePotycoins(int potycoins)
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "UpdatePotycoins",
             actor = this.playerId,
@@ -476,7 +476,7 @@ public class NetworkManager : MonoBehaviour
 
     internal void DeletePerfil()
     {
-        Action action = new Action()
+        ActionServer action = new ActionServer()
         {
             type = "DeletePerfil",
             actor = this.playerId,
@@ -544,7 +544,6 @@ public class NetworkManager : MonoBehaviour
                     posRankingZ = "";
                     rankingZ = "";
                 }
-
 
                 if (!rankingN.Equals(""))
                 {

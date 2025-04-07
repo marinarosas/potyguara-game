@@ -141,6 +141,7 @@ public class PotyPlayerController : MonoBehaviour
     public void SetPotycoins(int value)
     {
         potycoins += value;
+        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
     }
 
     public void ConsumePotycoins(int value)

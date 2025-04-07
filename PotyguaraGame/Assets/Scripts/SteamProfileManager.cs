@@ -23,10 +23,9 @@ public class SteamProfileManager : MonoBehaviour
         FindFirstObjectByType<PotyPlayerController>().nickname = SteamFriends.GetPersonaName();
     }
 
-    private void Update()
+    public void UpdatePotycoins(int value)
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5 && SceneManager.GetActiveScene().buildIndex != 1)
-            qnt.text = FindFirstObjectByType<PotyPlayerController>().GetPotycoins().ToString();
+        qnt.text = value.ToString();
     }
 
     void GetSteamAvatar(CSteamID steamID)

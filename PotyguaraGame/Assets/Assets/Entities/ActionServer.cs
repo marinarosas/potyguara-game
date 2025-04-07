@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 /// Classe que representa uma ação que pode ser executada por um jogador
 /// E enviada para o servidor
 /// </summary>
-public class Action
+public class ActionServer
 {
     // Tipo da ação
     public string type;
@@ -25,8 +25,8 @@ public class Action
     /// </summary>
     /// <param name="json"></param>
     /// <returns></returns>
-    public static Action FromJson(string json) {
-        Action action = JsonUtility.FromJson<Action>(json);
+    public static ActionServer FromJson(string json) {
+        ActionServer action = JsonUtility.FromJson<ActionServer>(json);
         return action;
     }
 

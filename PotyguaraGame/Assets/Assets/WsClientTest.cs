@@ -20,7 +20,7 @@ public class WsClientTest : MonoBehaviour
         Debug.Log("coisado");
 
         string json = "{ \"type\": \"move\", \"actor\": \"player1\", \"target\": \"(1,1,1)\", \"parameters\": \"\" }";
-        Action action = Action.FromJson(json);
+        ActionServer action = ActionServer.FromJson(json);
         Debug.Log(json);
         Debug.Log(action.ToJson());
     }
