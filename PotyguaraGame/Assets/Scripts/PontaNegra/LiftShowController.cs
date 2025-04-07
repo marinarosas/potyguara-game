@@ -91,6 +91,9 @@ public class LiftShowController : MonoBehaviour
             {
                 ani.Play("GoingToTheShow");
                 FindFirstObjectByType<TransitionController>().isInShowArea = true;
+                GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
+                if (locomotion != null)
+                    locomotion.SetActive(false);
             }
             else
             {
@@ -105,12 +108,17 @@ public class LiftShowController : MonoBehaviour
         if(state != this.state)
             this.state = state;
     }
+    public int GetStatus()
+    {
+        return state;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
-            if(state == 1)
+            isInsideLift = true;
+            if (state == 1)
             {
                 catraca2.GetComponent<Animator>().Play("CatracaClose");
             }
@@ -119,7 +127,6 @@ public class LiftShowController : MonoBehaviour
                 catraca1.GetComponent<Animator>().Play("CatracaClose");
             }
             GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
-            isInsideLift = true;
             player.parent = transform;
         }
     }
@@ -129,11 +136,11 @@ public class LiftShowController : MonoBehaviour
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
         {
             isInsideLift = false;
-            if (state == 1)
-                catraca2.GetComponent<Animator>().Play("CatracaClose");
-            else
+            if (state == 0)
             {
-                catraca1.GetComponent<Animator>().Play("CatracaClose");
+                GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
+                if (locomotion != null)
+                    locomotion.SetActive(true);
                 hasTicket = false;
                 Destroy(GameObject.Find("Dragon(Clone)"));
                 Destroy(GameObject.Find("Guitaura(Clone)"));

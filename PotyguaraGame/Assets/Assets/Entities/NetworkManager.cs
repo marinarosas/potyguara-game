@@ -43,6 +43,9 @@ public class NetworkManager : MonoBehaviour
     public bool isNewDay = true;
     public bool modeTutorialOn = true;
     public bool modeWeatherOn = true;
+    public bool firstInPN = false;
+    public bool firstInHover = false;
+    public bool firstInForte = false;
 
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> pointingNormalMode = new ConcurrentQueue<string>();
@@ -210,6 +213,10 @@ public class NetworkManager : MonoBehaviour
                     {
                         isTheFirstAcess = false;
 
+                        firstInPN = response.parameters["pnTutorial"] == "true" ? true : false;
+                        firstInHover = response.parameters["hoverTutorial"] == "true" ? true : false;
+                        firstInForte = response.parameters["forteTutorial"] == "true" ? true : false;
+
                         modeTutorialOn = response.parameters["modeTutorial"] == "true" ? true : false;
                         modeWeatherOn = response.parameters["modeWeather"] == "true" ? true : false;
 
@@ -354,6 +361,22 @@ public class NetworkManager : MonoBehaviour
             ws.Send(action.ToJson());
     }
 
+    internal void SendSignalTutorialOK(string typeT)
+    {
+        Action action = new Action()
+        {
+            type = typeT,
+            actor = playerId,
+            parameters = new Dictionary<string, string>()
+            {
+            }
+        };
+
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
+    }
+
     internal void SendPontuacionForte(int totalPoints, int mode)
     {
         if (mode == 0)
@@ -391,6 +414,8 @@ public class NetworkManager : MonoBehaviour
                 ws.Send(action.ToJson());
         }
     }
+
+    
 
     internal void SendTicket(string id)
     {

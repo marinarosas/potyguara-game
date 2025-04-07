@@ -107,14 +107,6 @@ public class FadeController : MonoBehaviour
                 canvas.alpha -= Time.deltaTime;
             else
             {
-                fadeOut = false;
-                if(objToDesactive != null && objToActive != null)
-                {
-                    objToDesactive.SetActive(false);
-                    objToActive.SetActive(true);
-                    objToActive = null;
-                }
-
                 if (objToDesactive != null)
                     objToDesactive.SetActive(false);
                 else
@@ -127,10 +119,16 @@ public class FadeController : MonoBehaviour
                                 FindFirstObjectByType<HeightController>().NewHeight(0f);
                             else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MoveUpTerreo"))
                                 FindFirstObjectByType<HeightController>().NewHeight(9.158f);
-                            animator = null;
                         }
                     }
                 }
+                if (objToDesactive != null && objToActive != null)
+                {
+                    objToDesactive.SetActive(false);
+                    objToActive.SetActive(true);
+                    objToActive = null;
+                }
+                fadeOut = false;
             }
         }
     }

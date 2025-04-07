@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class DetectorController : MonoBehaviour
 {
-    private void Update()
-    {
-        if (FindFirstObjectByType<LiftShowController>().isInsideLift && transform.name.Equals("Detector2"))
-        {
-            gameObject.SetActive(true);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("MainCamera"))
@@ -25,8 +17,6 @@ public class DetectorController : MonoBehaviour
             }
             else if (transform.name.Equals("Detector2"))
             {
-                FindFirstObjectByType<MenuShowController>().showLiberated = true;
-                gameObject.SetActive(false);
                 FindFirstObjectByType<LiftShowController>().ChangeThePoint(0);
             }
         }

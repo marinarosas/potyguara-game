@@ -41,22 +41,13 @@ public class SkinIntegrationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InputDevice device = InputDevices.GetDeviceAtXRNode(inputSource);
+        /*InputDevice device = InputDevices.GetDeviceAtXRNode(inputSource);
         device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputAxis);
 
         bool isMoving = inputAxis.magnitude > 0.1f;
         if (animator != null)
         {
             animator.SetBool("isWalking", isMoving);
-            if (!animator.GetBool("isWalking"))
-            {
-                Transform mainCam = transform.GetChild(0).GetChild(0);
-                Transform avatar = transform.GetChild(0).GetChild(5);
-
-                avatar.rotation = Quaternion.Euler(new Vector3(avatar.eulerAngles.x, mainCam.eulerAngles.y, avatar.eulerAngles.z));
-            }
-            else
-                transform.GetChild(2).rotation = transform.rotation;
-        }
+        }*/
     }
 }

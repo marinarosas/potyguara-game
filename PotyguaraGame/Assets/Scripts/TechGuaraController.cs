@@ -18,8 +18,6 @@ public class TechGuaraController : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().buildIndex == 0)
             {
-                transform.GetChild(0).gameObject.SetActive(true);
-                transform.GetChild(1).gameObject.SetActive(true);
                 if (SceneManager.GetActiveScene().buildIndex == 0)
                 {
                     CreateReport("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar", new Vector3(0f, 2f, -32.35f), 0f, "Bem-vindo(a) ao Potyguara Verse!", "Você acaba de entrar " +
@@ -36,41 +34,73 @@ public class TechGuaraController : MonoBehaviour
                 CreateReport("Techyguara.CriaçãodePerfil+Avatar", transform.position, 0f, "Crie seu Avatar!", "Agora que você já se apresentou, é hora de criar seu avatar! Escolha " +
                 "suas características, como rosto, cabelo, roupas e acessórios para refletir sua personalidade no Potyguara Verse. Depois, você estará pronto para explorar" +
                 " este mundo como nunca antes!");
-                transform.GetChild(0).gameObject.SetActive(true);
+                transform.GetChild(1).gameObject.SetActive(true);
             }
         }
         if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            CreateReport("Techyguara.ApresentaçãoPraiadePontaNegra", new Vector3(177f, 3f, 76f), 0f, "Praia de Ponta Negra", "Você está na famosa Praia de Ponta Negra, " +
-                "uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. Aqui, você encontrará " +
-                "diversos eventos, como shows, exposições e o emocionante minigame Hoverbunda. Sinta-se livre para caminhar pela praia, explorar as atrações e aproveitar " +
-                "os eventos incríveis!");
+            if (!NetworkManager.Instance.firstInPN)
+            {
+                CreateReport("Techyguara.ApresentaçãoPraiadePontaNegra", new Vector3(177f, 3f, 76f), 0f, "Praia de Ponta Negra", "Você está na famosa Praia de Ponta Negra, " +
+                    "uma das mais conhecidas da Cidade do Natal, principalmente por conta do imponente Morro do Careca, com seus 110 metros de altura. Aqui, você encontrará " +
+                    "diversos eventos, como shows, exposições e o emocionante minigame Hoverbunda. Sinta-se livre para caminhar pela praia, explorar as atrações e aproveitar " +
+                    "os eventos incríveis!");
+                NetworkManager.Instance.firstInPN = true;
+                NetworkManager.Instance.SendSignalTutorialOK("pnTutorialOK");
+            }
         }
         if (SceneManager.GetActiveScene().buildIndex == 3)
         {
-            if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
+            if (!NetworkManager.Instance.firstInForte)
             {
-                CreateReport("Techyguara.ApresentaçãoFortalezaDosReisMagos", new Vector3(804.55f, 10.34f, 400.19f), 0f, "Forte dos Reis Magos", "Agora, vamos à Fortaleza " +
-                    "dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
-                    "Aqui, você poderá jogar minigames inspirados em épocas passadas. Sabia que, durante as invasões holandesas, a cidade de Natal foi chamada de Nova " +
-                    "Amsterdã? Explore os muros de pedra e descubra mais sobre essa fascinante história enquanto se diverte!");
+                if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
+                {
+                    CreateReport("Techyguara.ApresentaçãoFortalezaDosReisMagos", new Vector3(804.55f, 10.34f, 400.19f), 0f, "Forte dos Reis Magos", "Agora, vamos à Fortaleza " +
+                        "dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
+                        "Aqui, você poderá jogar minigames inspirados em épocas passadas. Sabia que, durante as invasões holandesas, a cidade de Natal foi chamada de Nova " +
+                        "Amsterdã? Explore os muros de pedra e descubra mais sobre essa fascinante história enquanto se diverte!");
+                    NetworkManager.Instance.firstInForte = true;
+                    NetworkManager.Instance.SendSignalTutorialOK("forteTutorialOK");
+                }
             }
         }
         if (SceneManager.GetActiveScene().buildIndex == 4)
         {
             GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10));
             GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<TransitionController>().LoadSceneAsync(2));
-            if (!NetworkManager.Instance.modeTutorialOn)
-                GameObject.Find("InitialCanva").transform.GetChild(0).gameObject.SetActive(true);
-            foreach (AudioClip clip in audios)
+            if (!NetworkManager.Instance.firstInHover)
             {
-                if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
-                    audioSource.clip = clip;
+                foreach (AudioClip clip in audios)
+                {
+                    if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
+                        audioSource.clip = clip;
+                }
+                CreateReport("HoverBunda", "Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
+                    "apenas o mais rápido cruzará a linha de chegada!", new Vector3(584.61f, 53.4f, -559.51f));
+                transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
+                audioSource.Play();
+                NetworkManager.Instance.firstInHover = true;
+                NetworkManager.Instance.SendSignalTutorialOK("hoverTutorialOK");
             }
-            CreateReport("HoverBunda", "Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
-                "apenas o mais rápido cruzará a linha de chegada!", new Vector3(584.61f, 53.4f, -559.51f));
-            transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
-            audioSource.Play();
+            else
+            {
+                if (NetworkManager.Instance.modeTutorialOn)
+                {
+                    foreach (AudioClip clip in audios)
+                    {
+                        if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
+                            audioSource.clip = clip;
+                    }
+                    CreateReport("HoverBunda", "Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
+                        "apenas o mais rápido cruzará a linha de chegada!", new Vector3(584.61f, 53.4f, -559.51f));
+                    transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
+                    audioSource.Play();
+                }
+                else
+                {
+                    GameObject.Find("InitialCanva").transform.GetChild(0).gameObject.SetActive(true);
+                }
+            }
         }
     }
 
@@ -122,13 +152,15 @@ public class TechGuaraController : MonoBehaviour
 
     public void CreateReport(string clipName, Vector3 pos, float direction, string title, string description)
     {
+        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
         foreach (AudioClip clip in audios)
         {
             if (clip.name.Equals(clipName))
                 audioSource.clip = clip;
         }
         transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 0;
-        transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(audioSource.clip.length);
+        transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
         transform.position =pos;
         report.UpdateTitle(title);
         report.UpdateDescription(description);

@@ -64,7 +64,7 @@ public class SpawnerController : MonoBehaviour
         }
     }
 
-    public void SetLevelZombieMode()
+    public void SetLevelZombieMode(bool isRestart)
     {
         finishUI.SetActive(false);
         Achievement.Instance.firstInZombieMode = true;
@@ -73,13 +73,16 @@ public class SpawnerController : MonoBehaviour
             SetDestinyRandow(1);
             FindFirstObjectByType<HeightController>().NewHeight(7.98f);
 
-            if (NetworkManager.Instance.modeTutorialOn)
+            if (!isRestart)
             {
-                AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
-                FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
-                    " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
-                    "sobrevivência!", audio.clip.length, new Vector3(752.74f, 11.35f, 400.29f), 90f);
-                audio.Play();
+                if (NetworkManager.Instance.modeTutorialOn)
+                {
+                    AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
+                    FindFirstObjectByType<TechGuaraController>().CreateReport("Zumbis a Vista!!!", "Em uma história misteriosa que você descobrirá em um futuro distante, os zumbis tomaram conta da cidade" +
+                        " do Natal, e o último refúgio da humanidade é a Fortaleza dos Reis Magos.\r\nDefenda a fortaleza contra hordas de zumbis famintos pela " +
+                        "sobrevivência!", audio.clip.length, new Vector3(752.74f, 11.35f, 400.29f), 90f);
+                    audio.Play();
+                }
             }
 
             NextLevel(90f, new Vector3(749f, 7.98f, 400.44f));
@@ -187,7 +190,7 @@ public class SpawnerController : MonoBehaviour
         }
         else
         {
-            if (GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount <= 0 && currentLevel == 1)
+            if (GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount <= 0)
             {
                 levelIsRunning = false;
                 FindFirstObjectByType<GameForteController>().GameOver();

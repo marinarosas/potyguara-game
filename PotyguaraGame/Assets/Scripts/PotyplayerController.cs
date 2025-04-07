@@ -98,6 +98,8 @@ public class PotyPlayerController : MonoBehaviour
         Transform right = FindFirstObjectByType<RightHandController>().gameObject.transform;
         right.GetChild(1).gameObject.SetActive(true);
         right.GetChild(2).gameObject.SetActive(true);
+        if (FindFirstObjectByType<LiftShowController>().GetStatus() == 1)
+            FindFirstObjectByType<MenuShowController>().showLiberated = true;
 
         GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(true);
     }

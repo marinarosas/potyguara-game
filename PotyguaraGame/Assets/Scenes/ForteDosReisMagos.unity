@@ -6815,7 +6815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12384,13 +12384,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1288002790}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.53729963, z: 0, w: 0.8433915}
   m_LocalPosition: {x: 810, y: 6.96, z: 400.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 65, z: 0}
 --- !u!1001 &1305203636
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16273,7 +16273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 892526229954309014, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.8433915
       objectReference: {fileID: 0}
     - target: {fileID: 892526229954309014, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_LocalRotation.x
@@ -16281,7 +16281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 892526229954309014, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071068
+      value: 0.53729963
       objectReference: {fileID: 0}
     - target: {fileID: 892526229954309014, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_LocalRotation.z
@@ -16293,10 +16293,58 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 892526229954309014, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 892526229954309014, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: field of view
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_FocalLength
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_FocusDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: near clip plane
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: orthographic size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.4745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.19215687
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255657024562988269, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1288753382832810872, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_CameraYOffset
+      value: 2.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 2702704861402964852, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3848225861924626212, guid: a212ce68ff0b58b4bb99d66aab36edeb, type: 3}

@@ -77,7 +77,7 @@ public class GameForteController : MonoBehaviour
 
     public void NextLevel()
     {
-        FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
+        FindFirstObjectByType<SpawnerController>().SetLevelZombieMode(false);
         FindFirstObjectByType<LeftHandController>().ResetHand();
         FindFirstObjectByType<RightHandController>().ResetHand();
     }
@@ -124,7 +124,7 @@ public class GameForteController : MonoBehaviour
                 portal.SetActive(false);
                 ranking.GetComponent<FadeController>().FadeOut();
                 FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
-                FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
+                FindFirstObjectByType<SpawnerController>().SetLevelZombieMode(false);
                 zombieMode.gameObject.transform.parent.gameObject.SetActive(false);
                 mainCam.GetChild(6).gameObject.SetActive(false);
             }
@@ -166,6 +166,7 @@ public class GameForteController : MonoBehaviour
         Transform finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0);
         finishUI.GetChild(1).GetComponent<Text>().text = "Você Perdeu!!!";
         finishUI.GetChild(3).GetChild(0).GetComponent<Text>().text = "Repetir Nivel";
+        finishUI.GetChild(3).GetComponent<Button>().onClick.RemoveAllListeners();
         finishUI.GetChild(3).GetComponent<Button>().onClick.AddListener(()=> ResetLevel(finishUI.gameObject));
 
         finishUI.gameObject.SetActive(true);
@@ -205,6 +206,7 @@ public class GameForteController : MonoBehaviour
                 if (rightHand.GetHand())
                     rightHand.ResetHand();
 
+                GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(3).GetComponent<Image>().fillAmount = 1;
                 DestroyRemainingEnemies();
             }
             else
@@ -227,7 +229,7 @@ public class GameForteController : MonoBehaviour
                 Achievement.Instance.UnclockAchievement("player_dead");
                 Achievement.Instance.isFirstDeadInZombieMode = false;
             }
-            FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
+            FindFirstObjectByType<SpawnerController>().SetLevelZombieMode(true);
             FindFirstObjectByType<GameForteController>().ResetCount();
             handMenuLevel1.SetActive(true);
             handMenuLevel1.GetComponent<FadeController>().FadeIn();
@@ -244,8 +246,7 @@ public class GameForteController : MonoBehaviour
         try
         {
             FindFirstObjectByType<GameForteController>().ResetCount();
-            FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
-            //FindFirstObjectByType<SpawnerController>().NextLevel(90f, new Vector3(654.91f, 18.6f, 400.95f));
+            FindFirstObjectByType<SpawnerController>().SetLevelZombieMode(true);
             handMenuLevel2.SetActive(true);
             handMenuLevel2.GetComponent<FadeController>().FadeIn();
         }
