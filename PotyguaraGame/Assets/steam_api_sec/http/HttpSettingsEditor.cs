@@ -7,7 +7,7 @@ namespace Jazz.http
     [CreateAssetMenu(fileName = "HttpSettings", menuName = "JazzHttp/CreateHttpSettings", order = 1)]
     public class HttpSettingsEditor : ScriptableObject 
     {
-        public string ApiUrl = "http://127.0.0.1/";
+        public string ApiUrl = "https://potysteam.ffcloud.com.br";
         public int RequestTimeout = 2000;
         public bool RequestKeepAlive = true;
 

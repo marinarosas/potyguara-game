@@ -17,8 +17,6 @@ public class PotyPlayerController : MonoBehaviour
     private List<int> skins;
     private List<string> tickets;
     private List<string> sessions;
-
-    private bool potycoinContabilized = false;
     struct Skin
     {
         public int gender;
@@ -115,39 +113,24 @@ public class PotyPlayerController : MonoBehaviour
     public int GetGender() { return skin.gender; }
     public int GetMaterial() { return skin.material; }
 
-    public void UpdatePotycoins(int value, Button btn, GameObject canva)
-    {
-        if (!potycoinContabilized)
-        {
-            SetPotycoins(value);
-            potycoinContabilized = true;
-            StartCoroutine("ResetBoolean");
-        }
-        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
-        canva.GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(canva);
-    }
-
-    private IEnumerator ResetBoolean()
-    {
-        yield return new WaitForSeconds(2f);
-        potycoinContabilized = false;
-    }
-
     public void GetPotycoinsOfTheServer(int value)
     {
         potycoins = value;
+        GameObject.FindWithTag("MainCamera").transform.GetChild(6).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public void SetPotycoins(int value)
     {
         potycoins += value;
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(6).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public void ConsumePotycoins(int value)
     {
         potycoins -= value;
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(6).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public int GetPotycoins()

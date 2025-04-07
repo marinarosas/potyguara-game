@@ -34,7 +34,7 @@ public class TechGuaraController : MonoBehaviour
                 CreateReport("Techyguara.CriaçãodePerfil+Avatar", transform.position, 0f, "Crie seu Avatar!", "Agora que você já se apresentou, é hora de criar seu avatar! Escolha " +
                 "suas características, como rosto, cabelo, roupas e acessórios para refletir sua personalidade no Potyguara Verse. Depois, você estará pronto para explorar" +
                 " este mundo como nunca antes!");
-                transform.GetChild(1).gameObject.SetActive(true);
+                transform.GetChild(0).gameObject.SetActive(false);
             }
         }
         if (SceneManager.GetActiveScene().buildIndex == 2)

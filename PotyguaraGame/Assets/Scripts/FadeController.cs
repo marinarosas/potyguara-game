@@ -11,7 +11,6 @@ public class FadeController : MonoBehaviour
     private bool fadeOut = false;
     private GameObject objToDesactive;
     private GameObject objToActive;
-    private Vector3 newPos;
     private Animator animator;
 
     private bool status = true;

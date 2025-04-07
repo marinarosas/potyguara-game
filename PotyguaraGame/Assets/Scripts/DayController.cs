@@ -21,31 +21,8 @@ public class DayController : MonoBehaviour
     private Transform moon;
     private Material skyBox;
 
-    IEnumerator RewardCoins()
-    {
-        yield return new WaitForSeconds(1);
-        if (NetworkManager.Instance.isNewDay)
-        {
-            GameObject canva = GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject;
-            AudioSource audio = canva.transform.GetChild(6).GetComponent<AudioSource>();
-            Button button = canva.transform.GetChild(5).GetComponent<Button>();
-
-            if (button != null && canva != null)
-            {
-                canva.SetActive(true);
-                canva.GetComponent<FadeController>().FadeIn();
-                audio.Play();
-                button.onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().UpdatePotycoins(50, button, canva));
-            }
-            NetworkManager.Instance.isNewDay = false;
-        }
-    }
-
     void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 2)
-            StartCoroutine(RewardCoins());
-
         if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 5)
         {
             moon = GameObject.FindWithTag("Moon").transform;

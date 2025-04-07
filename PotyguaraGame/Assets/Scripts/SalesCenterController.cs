@@ -169,7 +169,8 @@ public class SalesCenterController : MonoBehaviour
         if (!isPurshing)
         {
             Microtransaction.Instance.InitSale(id, description, category);
-            btn.interactable = false;
+            if (!category.Equals("moeda"))
+                btn.interactable = false;
             isPurshing = true;
         }
     }

@@ -51,6 +51,7 @@ public class TransitionController : MonoBehaviour
             GameObject.Find("MainMenu").transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => LoadSceneAsync(1));
             GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Criar Perfil";
             GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(false);
+            GameObject.Find("MainMenu").transform.GetChild(3).GetComponent<Button>().onClick.AddListener(ExitGame);
         }
         else
         {
@@ -59,6 +60,7 @@ public class TransitionController : MonoBehaviour
             GameObject.Find("MainMenu").transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Iniciar Jogo";
             GameObject.Find("MainMenu").transform.GetChild(4).GetChild(2).GetComponent<Button>().onClick.AddListener(NetworkManager.Instance.DeletePerfil);
             GameObject.Find("MainMenu").transform.GetChild(2).gameObject.SetActive(true);
+            GameObject.Find("MainMenu").transform.GetChild(3).GetComponent<Button>().onClick.AddListener(ExitGame);
         }
     }
 
