@@ -93,7 +93,7 @@ public class NetworkManager : MonoBehaviour
     {
         ConnectToServer();
     }
-
+     
     // Id do jogador local. É definido pelo servidor após a conexão com o evento "Wellcome"
     public string playerId;
     
@@ -167,7 +167,6 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
-                    isNewDay = true;
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -204,14 +203,18 @@ public class NetworkManager : MonoBehaviour
                     break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
-
-                    isNewDay = true;
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
 
                     if (int.Parse(list[0]) != -1)
                     {
                         isTheFirstAcess = false;
+                        if (response.parameters["nDay"].Equals("true"))
+                            isNewDay = true;
+                        else
+                            isNewDay = false;
+
+                        Debug.Log("Oq é: " + isNewDay);
 
                         firstInPN = response.parameters["pnTutorial"] == "true" ? true : false;
                         firstInHover = response.parameters["hoverTutorial"] == "true" ? true : false;
@@ -223,11 +226,6 @@ public class NetworkManager : MonoBehaviour
                         pointingNormalMode.Enqueue(response.parameters["pointingNormalMode"]);
                         pointingZombieMode.Enqueue(response.parameters["pointingZombieMode"]);
                         potycoins.Enqueue(int.Parse(response.parameters["potycoins"]));
-
-                        if (response.parameters["nDay"] == "true")
-                            isNewDay = true;
-                        else
-                            isNewDay = false;
 
                         string ticketsS = response.parameters["tickets"];
                         string[] ticketList = ticketsS.Split('|');
