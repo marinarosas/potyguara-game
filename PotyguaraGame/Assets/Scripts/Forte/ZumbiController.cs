@@ -133,6 +133,7 @@ public class ZumbiController : MonoBehaviour
         {
             if (!MarkedPontuacion)
             {
+                MarkedPontuacion = true;
                 Debug.Log("Acertou!!");
                 collision.gameObject.GetComponent<BulletController>().playEffect();
                 collision.gameObject.GetComponent<BulletController>().StartBloodEffect(2f, 0.5f);
@@ -146,20 +147,9 @@ public class ZumbiController : MonoBehaviour
 
                 Achievement.Instance.SetStat("zombies", Achievement.Instance.zombies);
 
-                MarkedPontuacion = true;
                 GetComponent<ZumbiController>().Dead();
                 Destroy(collision.gameObject, 3f);
             }
-        }
-
-        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("MainCamera"))
-        {
-            Transform healthBar = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(3);
-            float value = healthBar.GetComponent<Image>().fillAmount;
-            if(value > 0)
-                healthBar.GetComponent<Image>().fillAmount -= 0.1f;
-            else
-                FindFirstObjectByType<GameForteController>().GameOver();
         }
     }
 }

@@ -17,13 +17,15 @@ public class SkinIntegrationController : MonoBehaviour
         Transform mainCam = transform.GetChild(0).GetChild(0);
         Transform avatar = transform.GetChild(0).GetChild(5);
         animator = transform.GetChild(0).GetChild(5).GetChild(0).GetComponent<Animator>();
-        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5) { 
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5)
+        {
             transform.GetChild(0).GetChild(5).gameObject.SetActive(false);
+            transform.GetChild(0).GetChild(0).GetChild(5).gameObject.SetActive(false);
         }
         else
         {
             transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
-            transform.GetChild(0).GetChild(0).GetChild(6).gameObject.SetActive(true);
+            transform.GetChild(0).GetChild(0).GetChild(5).gameObject.SetActive(true);
             GetSkin();
         }
     }

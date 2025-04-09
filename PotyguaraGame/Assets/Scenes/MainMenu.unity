@@ -1407,7 +1407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2598,7 +2598,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1967112178}
-  - component: {fileID: 1967112177}
+  - component: {fileID: 1967112179}
   m_Layer: 0
   m_Name: Microtransaction
   m_TagString: Untagged
@@ -2606,20 +2606,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1967112177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1967112176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa8f12e301f8a434383b221ccc9797b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clientSettings: {fileID: 11400000, guid: e35e0fd20a616674d80c58ecfeea258b, type: 2}
-  appId: 3181940
 --- !u!4 &1967112178
 Transform:
   m_ObjectHideFlags: 0
@@ -2635,6 +2621,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1967112179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967112176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c15206c439be5440a9f17ec4e4c0653, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseUrl: https://potyws.ffcloud.com.br/
+  appId: 3181940
 --- !u!1 &2016256556
 GameObject:
   m_ObjectHideFlags: 0

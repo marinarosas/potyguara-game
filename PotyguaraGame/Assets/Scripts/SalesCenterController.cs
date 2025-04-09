@@ -164,6 +164,15 @@ public class SalesCenterController : MonoBehaviour
         }
     }
 
+    [System.Serializable]
+    public class ItemPurchaseButton 
+    {
+        public Button btnBuy;
+        public int itemId;
+        public string description;
+        public string category;
+    }
+
     private void BuyProduct(string id, string description, string category, Button btn)
     {
         if (!isPurshing)

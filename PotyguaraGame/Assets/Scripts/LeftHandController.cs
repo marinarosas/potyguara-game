@@ -31,7 +31,7 @@ public class LeftHandController : MonoBehaviour
                         controlMenu = !controlMenu;
                         menu.SetActive(controlMenu);
                         changedStatus = true;
-                        GameObject.FindWithTag("MainCamera").transform.GetChild(6).gameObject.SetActive(!controlMenu);
+                        GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject.SetActive(!controlMenu);
                         Invoke("ChangeStatus", .3f);
                     }
                 }

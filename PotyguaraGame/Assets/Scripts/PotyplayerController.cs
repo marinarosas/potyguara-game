@@ -116,21 +116,21 @@ public class PotyPlayerController : MonoBehaviour
     public void GetPotycoinsOfTheServer(int value)
     {
         potycoins = value;
-        GameObject.FindWithTag("MainCamera").transform.GetChild(6).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public void SetPotycoins(int value)
     {
         potycoins += value;
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
-        GameObject.FindWithTag("MainCamera").transform.GetChild(6).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public void ConsumePotycoins(int value)
     {
         potycoins -= value;
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
-        GameObject.FindWithTag("MainCamera").transform.GetChild(6).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public int GetPotycoins()

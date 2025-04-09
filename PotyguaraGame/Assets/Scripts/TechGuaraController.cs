@@ -138,14 +138,6 @@ public class TechGuaraController : MonoBehaviour
                 report.UpdateDescription("Antes de começarmos, vamos conhecer um pouco mais sobre você! Crie o seu avatar para começar a sua jornada!");
             }
         }
-        if (audioSource.isPlaying && SceneManager.GetActiveScene().buildIndex == 2)
-        {
-            if (audioSource.time >= 33.0)
-            {
-                CreateReport("Guias", "Espere um pouco jogador(a), antes de explorar o ambiente, visite o 2° andar do Escritorio do Potyguara Verse e " +
-                    "fale comigo, tenho algumas informações valiosas para você!!!", 10f, transform.position, 0f);
-            }
-        }
     }
 
     #region ReportConfig

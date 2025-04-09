@@ -1,30 +1,30 @@
 // Install http://steamworks.github.io/ to use this script
-// This script is just an example but you can use as you please
+// This script is just an example but you can use it as you please
 using Steamworks;
 using UnityEngine;
-using Jazz.http;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.Networking;
+using System.Collections.Concurrent;
 
 public class Microtransaction : MonoBehaviour
 {
-    [SerializeField] private HttpSettingsEditor clientSettings;
-    private HttpApi m_internalHttpApi;
-
-    [SerializeField] private string appId = "3181940"; // replace by your own appId
+    [SerializeField] private string baseUrl = "https://potyws.ffcloud.com.br"; // Set this to your API base URL
+    [SerializeField] private string appId = "3181940"; // replace with your own appId
 
     // finish transaction callback
     protected Callback<MicroTxnAuthorizationResponse_t> m_MicroTxnAuthorizationResponse;
 
     private int currentOrder = 1000;
-
     private string currentTransactionId = "";
+    private string currentItemId = "";
 
-    private string currentItemId;
-    private string currentDescription;
-    private string currentCategory;
+    private bool _isInPurchaseProcess = false;
 
-    //  Singleton stuff
+    private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
+    private ConcurrentQueue<string> skins = new ConcurrentQueue<string>();
+    private ConcurrentQueue<int> tickets = new ConcurrentQueue<int>();
+    private ConcurrentQueue<int> sessions = new ConcurrentQueue<int>();
+
     private static Microtransaction _instance;
 
     public static Microtransaction Instance
@@ -44,8 +44,7 @@ public class Microtransaction : MonoBehaviour
         }
     }
 
-
-    // unity awake function    
+    // Unity Awake function    
     private void Awake() 
     {
         if (_instance == null)
@@ -60,292 +59,228 @@ public class Microtransaction : MonoBehaviour
 
         // initialize the callback to receive after the purchase
         m_MicroTxnAuthorizationResponse = Callback<MicroTxnAuthorizationResponse_t>.Create(OnMicroTxnAuthorizationResponse); 
-
-       m_internalHttpApi = new HttpApi(clientSettings.GenerateSettings());
-
-       currentOrder += Random.Range(1000000,100000000);
+        currentOrder += Random.Range(1000000, 100000000);
     }
-
-    // unity update function
-    private void Update()
-    {
-        if(m_internalHttpApi != null)
-        {
-            m_internalHttpApi.Update();
-        }
-    }
-
-    bool _isInPurchaseProcess = false;
 
     public void InitSale(string itemID, string description, string category)
     {
-        this._isInPurchaseProcess = true;
-
-        currentItemId = itemID;
-        currentDescription = description;
-        currentCategory = category;
-
-        InitializePurchase();
+        if (!_isInPurchaseProcess)
+        {
+            this._isInPurchaseProcess = true;
+            StartCoroutine(InitializePurchase(itemID, description, category));
+        }
     }
 
+    private void Update()
+    {
+        while (potycoins.TryDequeue(out int potycoin))
+        {
+            FindFirstObjectByType<PotyPlayerController>().SetPotycoins(potycoin);
+        }
+
+        while (sessions.TryDequeue(out int session))
+        {
+            FindFirstObjectByType<MeditationRoomController>().AddButton(session);
+            NetworkManager.Instance.SendSession(currentItemId);
+        }
+
+        while (skins.TryDequeue(out string skinId))
+        {
+            int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin(skinId);
+            if (index != 0)
+            {
+                FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                NetworkManager.Instance.SendSkin(index);
+            }
+        }
+    }
 
     // This callback is called when the user confirms the purchase
     // See https://partner.steamgames.com/doc/api/ISteamUser#MicroTxnAuthorizationResponse_t
     private void OnMicroTxnAuthorizationResponse(MicroTxnAuthorizationResponse_t pCallback) 
     {
-        if(pCallback.m_bAuthorized == 1)
+        if (pCallback.m_bAuthorized == 1)
         {
-            this.FinishPurchase(pCallback.m_ulOrderID.ToString());
+            StartCoroutine(FinishPurchase(pCallback.m_ulOrderID.ToString()));
         }
         Debug.Log("[" + MicroTxnAuthorizationResponse_t.k_iCallback + " - MicroTxnAuthorizationResponse] - " + pCallback.m_unAppID + " -- " + pCallback.m_ulOrderID + " -- " + pCallback.m_bAuthorized);
     }
 
     // To understand how to create products
     // see https://partner.steamgames.com/doc/features/microtransactions/implementation
-    public void InitializePurchase()
+    public IEnumerator InitializePurchase(string itemID, string description, string category)
     {
         string userId = SteamUser.GetSteamID().ToString();
 
-        InitPurchaseArgs argsRequest = new InitPurchaseArgs();
-        argsRequest.itemId = currentItemId;
-        argsRequest.steamId = userId;
-        argsRequest.orderId = currentOrder.ToString();
-        argsRequest.itemDescription = currentDescription;
-        argsRequest.category = currentCategory;
+        WWWForm form = new WWWForm();
+        form.AddField("itemId", itemID);
+        form.AddField("steamId", userId);
+        form.AddField("orderId", currentOrder.ToString());
+        form.AddField("itemDescription", description);
+        form.AddField("category", category);
+        form.AddField("appId", appId);
 
-        // you can use your own library to call the API if you want to.
-        this.MakeApiCall("InitPurchase",argsRequest, (HttpJsonResponse response) => 
+        currentItemId = itemID;
+
+        using (UnityWebRequest www = UnityWebRequest.Post(baseUrl + "/InitPurchase", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
             {
-                ApiReturnTransaction ret = JsonUtility.FromJson<ApiReturnTransaction>(response.rawResponse);
-                if(ret.transid != "")
+                Debug.Log("Full URL: " + baseUrl + "/InitPurchase");
+                Debug.LogError("Error initializing purchase: " + www.error);
+                Debug.LogError("Response Code: " + www.responseCode);
+                Debug.LogError("Response: " + www.downloadHandler.text);
+            }
+            else
+            {
+                ApiReturnTransaction ret = JsonUtility.FromJson<ApiReturnTransaction>(www.downloadHandler.text);
+                if (!string.IsNullOrEmpty(ret.transid))
                 {
-                    Debug.Log("Transaction initiated. Id:" + ret.transid);
-                    this.currentTransactionId = ret.transid;
+                    Debug.Log("Transaction initiated. Id: " + ret.transid);
+                    currentTransactionId = ret.transid;
                 }
-
-            },(HttpRequestError error) => {
-                Debug.Log(error.message);
-            },true,HttpRequestContainerType.POST);
+                else if (!string.IsNullOrEmpty(ret.error))
+                {
+                    Debug.LogError("Error from API: " + ret.error);
+                }
+            }
+        }
     }
 
-    public void FinishPurchase(string orderId)
+    public IEnumerator FinishPurchase(string orderId)
     {
-        PurchaseArgs argsRequest = new PurchaseArgs();
-        argsRequest.orderId = orderId.ToString();
+        WWWForm form = new WWWForm();
+        form.AddField("orderId", orderId);
+        form.AddField("appId", appId);
 
-        this.MakeApiCall("FinalizePurchase",argsRequest, (HttpJsonResponse response) => 
+        using (UnityWebRequest www = UnityWebRequest.Post(baseUrl + "/FinalizePurchase", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
             {
-                ApiReturn ret = JsonUtility.FromJson<ApiReturn>(response.rawResponse);
-                if(ret.success)
+                Debug.LogError("Error finalizing purchase: " + www.error);
+                Debug.LogError("Response Code: " + www.responseCode);
+                Debug.LogError("Response: " + www.downloadHandler.text);
+            }
+            else
+            {
+                ApiReturn ret = JsonUtility.FromJson<ApiReturn>(www.downloadHandler.text);
+                if (ret.success)
                 {
-                    // after confirmation, you can give the item for the player
-                    if (currentItemId.Equals("1001"))
+                    // after confirmation, give the item to the player
+                    if(currentItemId != "")
                     {
-                        FindFirstObjectByType<PotyPlayerController>().SetPotycoins(100);
-                    }else if (currentItemId.Equals("1002"))
-                    {
-                        FindFirstObjectByType<PotyPlayerController>().SetPotycoins(250);
-                    }
-                    else if (currentItemId.Equals("1003"))
-                    {
-                        FindFirstObjectByType<PotyPlayerController>().SetPotycoins(500);
-                    }
-                    else if (currentItemId.Equals("1004"))
-                    {
-                        FindFirstObjectByType<PotyPlayerController>().SetPotycoins(1000);
-                    }else if (currentItemId.Equals("3002"))
-                    {
-                        FindFirstObjectByType<MeditationRoomController>().AddButton(1);
-                        NetworkManager.Instance.SendSession("3002");
-                    }else if (currentItemId.Equals("3003"))
-                    {
-                        FindFirstObjectByType<MeditationRoomController>().AddButton(2);
-                        NetworkManager.Instance.SendSession("3003");
-                    }else if (currentItemId.Equals("4001"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4001");
-                        if (index != 0)
+                        if (currentItemId.Equals("1001"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            potycoins.Enqueue(100);
                         }
-                    }else if (currentItemId.Equals("4002"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4002");
-                        if (index != 0)
+                        else if (currentItemId.Equals("1002"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            potycoins.Enqueue(250);
                         }
-                    }
-                    else if (currentItemId.Equals("4003"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4003");
-                        if (index != 0)
+                        else if (currentItemId.Equals("1003"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            potycoins.Enqueue(500);
                         }
-                    }
-                    else if (currentItemId.Equals("4004"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4004");
-                        if (index != 0)
+                        else if (currentItemId.Equals("1004"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            potycoins.Enqueue(1000);
                         }
-                    }
-                    else if (currentItemId.Equals("4005"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4005");
-                        if (index != 0)
+                        else if (currentItemId.Equals("3002"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            sessions.Enqueue(1);
                         }
-                    }
-                    else if (currentItemId.Equals("4006"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4006");
-                        if (index != 0)
+                        else if (currentItemId.Equals("3003"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            sessions.Enqueue(2);
                         }
-                    }
-                    else if (currentItemId.Equals("4007"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4007");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4001"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
                         }
-                    }
-                    else if (currentItemId.Equals("4008"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4008");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4002"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4002");
                         }
-                    }
-                    else if (currentItemId.Equals("4009"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4009");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4003"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4003");
                         }
-                    }
-                    else if (currentItemId.Equals("4010"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4010");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4004"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4004");
                         }
-                    }
-                    else if (currentItemId.Equals("4011"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4011");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4005"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4005");
                         }
-                    }
-                    else if (currentItemId.Equals("4012"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4012");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4006"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
                         }
-                    }
-                    else if (currentItemId.Equals("4013"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4013");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4007"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
                         }
-                    }
-                    else if (currentItemId.Equals("4014"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4014");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4008"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
                         }
-                    }
-                    else if (currentItemId.Equals("4015"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4015");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4009"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
                         }
-                    }
-                    else if (currentItemId.Equals("4016"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4016");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4010"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
                         }
-                    }
-                    else if (currentItemId.Equals("4017"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4017");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4011"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
                         }
-                    }
-                    else if (currentItemId.Equals("4018"))
-                    {
-                        int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin("4018");
-                        if (index != 0)
+                        else if (currentItemId.Equals("4012"))
                         {
-                            FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                            NetworkManager.Instance.SendSkin(index);
+                            skins.Enqueue("4001");
+                        }
+                        else if (currentItemId.Equals("4013"))
+                        {
+                            skins.Enqueue("4001");
+                        }
+                        else if (currentItemId.Equals("4014"))
+                        {
+                            skins.Enqueue("4001");
+                        }
+                        else if (currentItemId.Equals("4015"))
+                        {
+                            skins.Enqueue("4001");
+                        }
+                        else if (currentItemId.Equals("4016"))
+                        {
+                            skins.Enqueue("4001");
+                        }
+                        else if (currentItemId.Equals("4017"))
+                        {
+                            skins.Enqueue("4001");
+                        }
+                        else if (currentItemId.Equals("4018"))
+                        {
+                            skins.Enqueue("4001");
                         }
                     }
                     Achievement.Instance.UnclockAchievement("first_purchase");
                     FindFirstObjectByType<SalesCenterController>().isPurshing = false;
                     Debug.Log("Transaction Finished.");
-                    this._isInPurchaseProcess = false;
+                    _isInPurchaseProcess = false;
                 }
-            },(HttpRequestError error) => {
-                Debug.Log(error.message);
-            },true,HttpRequestContainerType.POST);
-    }
-
-    // call the api    
-    private void MakeApiCall(string apiEndPoint, HttpRequestArgs args, HttpRequestContainer.ActionSuccessHandler successCallback, HttpRequestContainer.ActionErrorHandler errorCallback, bool allowQueueing = false,string requestType = HttpRequestContainerType.POST)
-    {
-        if(m_internalHttpApi != null)
-        {
-            Dictionary<string, string> extraHeaders = new Dictionary<string, string>();
-
-            args = args ?? new HttpRequestArgs();
-
-            // steam app id
-            args.appId = this.appId;
-
-            m_internalHttpApi.MakeApiCall(apiEndPoint, args, successCallback,errorCallback,extraHeaders,requestType,allowQueueing);
-        }         
+                else if (!string.IsNullOrEmpty(ret.error))
+                {
+                    Debug.LogError("Error from API: " + ret.error);
+                }
+            }
+        }
     }
 
     public class ApiReturn
@@ -357,17 +292,5 @@ public class Microtransaction : MonoBehaviour
     public class ApiReturnTransaction : ApiReturn
     {
         public string transid;
-    }
-
-    public class PurchaseArgs : HttpRequestArgs {
-        public string orderId;
-        public string transId;
-    } 
-
-    public class InitPurchaseArgs : PurchaseArgs {
-        public string itemId;
-        public string steamId;
-        public string category;
-        public string itemDescription;
     }
 }

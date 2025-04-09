@@ -78,10 +78,4 @@ public class SteamProfileManager : MonoBehaviour
         flipped.Apply();
         return flipped;
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("CannonBall"))
-            FindFirstObjectByType<GameForteController>().GameOver();
-    }
 }
