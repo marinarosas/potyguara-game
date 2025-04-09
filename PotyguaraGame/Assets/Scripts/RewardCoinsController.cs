@@ -11,16 +11,12 @@ public class RewardCoinsController : MonoBehaviour
         if (NetworkManager.Instance.isNewDay)
         {
             GameObject canva = transform.GetChild(2).gameObject;
-            AudioSource audio = canva.transform.GetChild(6).GetComponent<AudioSource>();
-            Button button = canva.transform.GetChild(0).GetChild(5).GetComponent<Button>();
-            Debug.Log("clicoi ao menos");
-            if (button != null && canva != null)
+            AudioSource audio = canva.transform.GetChild(5).GetComponent<AudioSource>();
+            if (canva != null)
             {
-                Debug.Log("Vai sair o monstro da jaula");
-                canva.SetActive(true);
+                UpdatePotycoins();
                 canva.GetComponent<FadeController>().FadeIn();
                 audio.Play();
-                button.onClick.AddListener(UpdatePotycoins);
                 NetworkManager.Instance.isNewDay = false;
             }
         }
