@@ -12,6 +12,7 @@ public class PotyPlayerController : MonoBehaviour
     private string positionRankingNormalMode = "N/A";
     private string scoreNormalMode = "";
     private string scoreZombieMode = "";
+    private int day = 0;
     private int potycoins = 0;
     private NetworkManager nm;
     private List<int> skins;
@@ -61,6 +62,9 @@ public class PotyPlayerController : MonoBehaviour
         tickets = new List<string>();
         sessions = new List<string>();
     }
+
+    public int GetDay() { return day;}
+    public void SetDay(int value)  { day = value; }
 
     public void AddSkin(int value){ skins.Add(value); }
     public void ResetSkins() { skins.Clear(); }

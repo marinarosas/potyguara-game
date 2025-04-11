@@ -36,8 +36,6 @@ public class SimpleShoot : MonoBehaviour
     [Tooltip("Specify time to destory the casing object")] [SerializeField] private float destroyTimer = 2f;
     [Tooltip("Bullet Speed")] [SerializeField] private float shotPower = 803.5f;
     [Tooltip("Casing Ejection Speed")] [SerializeField] private float ejectPower = 250f;
-
-
     void Start()
     {
         if (barrelLocation == null)
@@ -73,7 +71,7 @@ public class SimpleShoot : MonoBehaviour
 
         if (isLeft)
         {
-           targetDevice = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
+            targetDevice = FindFirstObjectByType<LeftHandController>().GetTargetDevice();
         }
         else if (isRight) { 
             targetDevice = FindFirstObjectByType<RightHandController>().GetTargetDevice();
@@ -82,7 +80,7 @@ public class SimpleShoot : MonoBehaviour
         if (isRight != false || isLeft != false)
         {
             targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-            if (triggerValue > 0.1f ||  Input.GetKeyDown(KeyCode.F))
+            if (triggerValue > 0.1f || Input.GetKeyDown(KeyCode.F))
             {
                 if (currentBullets > 0)
                 {

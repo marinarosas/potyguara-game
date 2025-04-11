@@ -87,7 +87,6 @@ public class SalesCenterController : MonoBehaviour
         }
     }
 
-
     private void BuyFreeProduct(string category, string id, int index, Button btn)
     {
         if (!isPurshing)
@@ -97,14 +96,12 @@ public class SalesCenterController : MonoBehaviour
                 FindFirstObjectByType<MenuShowController>().UnclockShow(id);
                 NetworkManager.Instance.SendTicket(id);
                 FindFirstObjectByType<PotyPlayerController>().AddTicket(id);
-                FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
             }
             if (category == "class")
             {
                 FindFirstObjectByType<MeditationRoomController>().AddButton(index);
                 NetworkManager.Instance.SendSession(id);
                 FindFirstObjectByType<PotyPlayerController>().AddSession(id);
-                FindFirstObjectByType<DayController>().gameObject.transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOut(2f);
             }
             btn.interactable = false;
             isPurshing = true;

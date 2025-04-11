@@ -1,36 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class RewardCoinsController : MonoBehaviour
 {
     private bool potycoinContabilized = false;
-    public void GetRewardCoins()
+    public void Start()
     {
-        if (NetworkManager.Instance.isNewDay)
+        if (SceneManager.GetActiveScene().buildIndex == 2)
         {
-            GameObject canva = transform.GetChild(2).gameObject;
-            AudioSource audio = canva.transform.GetChild(5).GetComponent<AudioSource>();
-            if (canva != null)
+            DateTime today = DateTime.Now;
+            int day = today.Day;
+
+            if (FindFirstObjectByType<PotyPlayerController>().GetDay() != day)
             {
-                UpdatePotycoins();
-                canva.GetComponent<FadeController>().FadeIn();
-                audio.Play();
-                NetworkManager.Instance.isNewDay = false;
+                NetworkManager.Instance.SendNewDay(day);
+                Invoke("RewardCoins", 1f);
             }
         }
     }
 
-    private void UpdatePotycoins()
+    private void RewardCoins()
     {
+        AudioSource audio = transform.GetChild(0).GetChild(5).GetComponent<AudioSource>();
+        ParticleSystem confetti = transform.GetChild(0).GetChild(3).GetComponent<ParticleSystem>();
+        GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(2f, gameObject);
+
+        confetti.Play();
+        audio.Play();
+
         if (!potycoinContabilized)
         {
             FindFirstObjectByType<PotyPlayerController>().SetPotycoins(50);
-            transform.GetChild(2).GetComponent<FadeController>().FadeOutWithDeactivationOfGameObject(transform.GetChild(2).gameObject);
             potycoinContabilized = true;
-            StartCoroutine("ResetBoolean");
         }
+        StartCoroutine("ResetBoolean");
     }
 
     private IEnumerator ResetBoolean()

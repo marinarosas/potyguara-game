@@ -40,7 +40,6 @@ public class NetworkManager : MonoBehaviour
     private string posRankingN = "";
 
     public bool isTheFirstAcess = true;
-    public bool isNewDay = true;
     public bool modeTutorialOn = true;
     public bool modeWeatherOn = true;
     public bool firstInPN = false;
@@ -48,6 +47,7 @@ public class NetworkManager : MonoBehaviour
     public bool firstInForte = false;
 
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
+    private ConcurrentQueue<int> day = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> pointingNormalMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> pointingZombieMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
@@ -206,20 +206,19 @@ public class NetworkManager : MonoBehaviour
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
 
+
                     if (int.Parse(list[0]) != -1)
                     {
                         isTheFirstAcess = false;
-                        if (response.parameters["nDay"].Equals("true"))
-                            isNewDay = true;
-                        else
-                            isNewDay = false;
-
-                        Debug.Log("Oq é: " + isNewDay);
 
                         firstInPN = response.parameters["pnTutorial"] == "true" ? true : false;
                         firstInHover = response.parameters["hoverTutorial"] == "true" ? true : false;
                         firstInForte = response.parameters["forteTutorial"] == "true" ? true : false;
 
+                        if (firstInPN)
+                        {
+                            day.Enqueue(int.Parse(response.parameters["day"]));
+                        }
                         modeTutorialOn = response.parameters["modeTutorial"] == "true" ? true : false;
                         modeWeatherOn = response.parameters["modeWeather"] == "true" ? true : false;
 
@@ -257,6 +256,22 @@ public class NetworkManager : MonoBehaviour
             ws.Close();
             ws = null;
         }
+    }
+
+    internal void SendNewDay(int value)
+    {
+        ActionServer action = new ActionServer()
+        {
+            type = "NewDay",
+            actor = playerId,
+            parameters = new Dictionary<string, string>(){
+                { "day", value.ToString() }
+            }
+        };
+
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
     }
 
     internal void SendModeTutorial(bool mode)
@@ -570,6 +585,11 @@ public class NetworkManager : MonoBehaviour
             while (skins.TryDequeue(out int skin))
             {
                 FindFirstObjectByType<PotyPlayerController>().AddSkin(skin);
+            }
+
+            while (day.TryDequeue(out int currentDay))
+            {
+                FindFirstObjectByType<PotyPlayerController>().SetDay(currentDay);
             }
 
             while (tickets.TryDequeue(out string ticket))
