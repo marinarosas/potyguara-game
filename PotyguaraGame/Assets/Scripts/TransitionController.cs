@@ -69,11 +69,11 @@ public class TransitionController : MonoBehaviour
     {
         if (isSkip && SceneManager.GetActiveScene().buildIndex == 3)
         {
-            FindFirstObjectByType<GameForteController>().SetStartMode(tempMode);
+            GameForteController.Instance.SetStartMode(tempMode);
             if (tempMode == 0)
-                FindFirstObjectByType<GameForteController>().GetZombieModeButton().onClick.Invoke();
+                GameForteController.Instance.GetZombieModeButton().onClick.Invoke();
             else if (tempMode == 1)
-                FindFirstObjectByType<GameForteController>().GetNormalModeButton().onClick.Invoke();
+                GameForteController.Instance.GetNormalModeButton().onClick.Invoke();
 
             isSkip = false;
         }

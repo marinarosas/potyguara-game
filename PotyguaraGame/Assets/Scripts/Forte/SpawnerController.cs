@@ -30,7 +30,7 @@ public class SpawnerController : MonoBehaviour
 
     private void Start()
     {
-        FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
+        GameForteController.Instance.SetCurrentLevel(currentLevel);
         player = GameObject.FindWithTag("Player");
         finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0).gameObject;
 
@@ -71,6 +71,7 @@ public class SpawnerController : MonoBehaviour
         if (currentLevel == 1)
         {
             SetDestinyRandow(1);
+            GameForteController.Instance.ChangeStateWalls(true);
             FindFirstObjectByType<HeightController>().NewHeight(7.98f);
             if (NetworkManager.Instance.modeTutorialOn)
             {
@@ -86,15 +87,14 @@ public class SpawnerController : MonoBehaviour
         if (currentLevel == 2)
         {
             cannons.SetActive(false);
-            FindFirstObjectByType<GameForteController>().handMenuLevel2.SetActive(true);
-            FindFirstObjectByType<GameForteController>().handMenuLevel2.GetComponent<FadeController>().FadeIn();
+            GameForteController.Instance.handMenuLevel2.SetActive(true);
+            GameForteController.Instance.handMenuLevel2.GetComponent<FadeController>().FadeIn();
             SetDestinyRandow(2);
-            FindFirstObjectByType<GameForteController>().ResetCount();
+            GameForteController.Instance.ResetCount();
             FindFirstObjectByType<HeightController>().NewHeight(17.19f);
             UpdateLevelBar();
             NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
         }
-        SetSpawn();
     }
 
     public void SetLevelNormalMode()
@@ -122,7 +122,7 @@ public class SpawnerController : MonoBehaviour
 
     public void SendForRanking(int mode)
     {
-        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(FindFirstObjectByType<GameForteController>().GetTotalPoints(), mode);
+        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(GameForteController.Instance.GetTotalPoints(), mode);
         FindFirstObjectByType<RankingController>().gameObject.GetComponent<FadeController>().FadeIn();
     }
 
@@ -137,7 +137,7 @@ public class SpawnerController : MonoBehaviour
     {
         if (levelIsRunning)
         {
-            if (FindFirstObjectByType<GameForteController>().GetMode() == 1)
+            if (GameForteController.Instance.GetMode() == 1)
             {
                 Transform timer = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(2);
                 timer.gameObject.SetActive(true);
@@ -152,7 +152,7 @@ public class SpawnerController : MonoBehaviour
                     finishUI.transform.GetChild(1).GetComponent<Text>().text = "Parabéns!!!";
                     finishUI.transform.GetChild(3).gameObject.SetActive(false);
                     finishUI.transform.GetChild(6).gameObject.SetActive(true);
-                    finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
+                    finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(GameForteController.Instance.ResetGame);
                     Achievement.Instance.partidas_defesaForte++;
 
                     if (Achievement.Instance.partidas_defesaForte == 50)
@@ -162,8 +162,8 @@ public class SpawnerController : MonoBehaviour
 
                     Achievement.Instance.SetStat("partidas_defesaForte", Achievement.Instance.partidas_defesaForte);
 
-                    finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
-                    FindFirstObjectByType<GameForteController>().SetTotalPoints();
+                    finishUI.transform.GetChild(5).GetComponent<Text>().text = GameForteController.Instance.GetCurrrentScore() + "";
+                    GameForteController.Instance.SetTotalPoints();
                     finishUI.SetActive(true);
                     finishUI.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
                     SendForRanking(1);
@@ -206,27 +206,27 @@ public class SpawnerController : MonoBehaviour
                     if (currentLevel == 1)
                     {
                         currentLevel++;
-                        FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
-                        finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
-                        FindFirstObjectByType<GameForteController>().SetTotalPoints();
+                        GameForteController.Instance.SetCurrentLevel(currentLevel);
+                        GameForteController.Instance.ChangeStateWalls(false);
+                        finishUI.transform.GetChild(5).GetComponent<Text>().text = GameForteController.Instance.GetCurrrentScore() + "";
+                        GameForteController.Instance.SetTotalPoints();
                         finishUI.transform.GetChild(3).GetChild(0).GetComponent<Text>().text = "Proximo Nivel";
-                        finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().NextLevel);
+                        finishUI.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(GameForteController.Instance.NextLevel);
                     }
-
-                    if (currentLevel == 2)
+                    else if (currentLevel == 2)
                     {
                         Achievement.Instance.UnclockAchievement("end_line");
 
                         finishUI.transform.GetChild(3).gameObject.SetActive(false);
                         finishUI.transform.GetChild(6).gameObject.SetActive(true);
-                        finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<GameForteController>().ResetGame);
+                        finishUI.transform.GetChild(6).GetComponent<Button>().onClick.AddListener(GameForteController.Instance.ResetGame);
 
                         currentLevel = 1;
-                        FindFirstObjectByType<GameForteController>().SetCurrentLevel(currentLevel);
+                        GameForteController.Instance.SetCurrentLevel(currentLevel);
                         GameObject.FindWithTag("Level").transform.GetChild(3).GetComponent<Text>().text = currentLevel + "";
-                        finishUI.transform.GetChild(5).GetComponent<Text>().text = FindFirstObjectByType<GameForteController>().GetCurrrentScore() + "";
+                        finishUI.transform.GetChild(5).GetComponent<Text>().text = GameForteController.Instance.GetCurrrentScore() + "";
                         GameObject.FindWithTag("Level").SetActive(false);
-                        FindFirstObjectByType<GameForteController>().SetTotalPoints();
+                        GameForteController.Instance.SetTotalPoints();
                         SendForRanking(0);
                     }
 
@@ -254,7 +254,7 @@ public class SpawnerController : MonoBehaviour
     public void SetSpawn()
     {
         levelIsRunning = true;
-        if (FindFirstObjectByType<GameForteController>().GetMode() == 0)
+        if (GameForteController.Instance.GetMode() == 0)
         {
             if (currentLevel == 1)
             {

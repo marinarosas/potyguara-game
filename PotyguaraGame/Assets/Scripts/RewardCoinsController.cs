@@ -25,8 +25,8 @@ public class RewardCoinsController : MonoBehaviour
 
     private void RewardCoins()
     {
-        AudioSource audio = transform.GetChild(0).GetChild(5).GetComponent<AudioSource>();
-        ParticleSystem confetti = transform.GetChild(0).GetChild(3).GetComponent<ParticleSystem>();
+        AudioSource audio = transform.GetChild(0).GetChild(4).GetComponent<AudioSource>();
+        ParticleSystem confetti = transform.GetChild(1).GetComponent<ParticleSystem>();
         GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(2f, gameObject);
 
         confetti.Play();

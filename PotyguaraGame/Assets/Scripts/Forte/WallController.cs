@@ -54,7 +54,6 @@ public class WallController : MonoBehaviour
             if (collision.gameObject.CompareTag("Body"))
             {
                 setDamage(true);
-                GameObject.Find("UIPlayer").transform.GetChild(3).GetComponent<Image>().fillAmount -= 0.05f;
             }
         }
     }

@@ -37,6 +37,25 @@ public class GameForteController : MonoBehaviour
     private LeftHandController leftController;
     private RightHandController rightController;
 
+    public static GameForteController instance;
+
+    public static GameForteController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameForteController>();
+                if (instance == null)
+                {
+                    GameObject obj = new GameObject("GameForteController");
+                    instance = obj.AddComponent<GameForteController>();
+                }
+            }
+            return instance;
+        }
+    }
+
     private void Update()
     {
         if (startTimer)
@@ -55,6 +74,7 @@ public class GameForteController : MonoBehaviour
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         FindFirstObjectByType<TechGuaraController>().StopTutorial();
         leftGunController.Reload();
+        FindFirstObjectByType<SpawnerController>().SetSpawn();
     }
 
     public void SetRightHand()
@@ -69,6 +89,7 @@ public class GameForteController : MonoBehaviour
         mainCamera.GetChild(0).GetChild(2).gameObject.SetActive(true);
         FindFirstObjectByType<TechGuaraController>().StopTutorial();
         rightGunController.Reload();
+        FindFirstObjectByType<SpawnerController>().SetSpawn();
     }
 
     public void NextLevel()
@@ -94,8 +115,8 @@ public class GameForteController : MonoBehaviour
     {
         if (gameMode == 0)
         {
-            timer.transform.GetChild(0).GetComponent<Text>().text = 10 + "";
-            count = 10;
+            timer.transform.GetChild(0).GetComponent<Text>().text = 90 + "";
+            count = 90;
         }
         else
         {
@@ -106,6 +127,10 @@ public class GameForteController : MonoBehaviour
 
     public void SetStartMode(int value)
     {
+        if (value < 0 || value > 1)
+            return;
+
+        gameMode = value;
         Transform mainCamera = GameObject.FindWithTag("MainCamera").transform;
         timer = mainCamera.GetChild(0).Find("Timer").gameObject;
         if (value == 0)
@@ -149,7 +174,6 @@ public class GameForteController : MonoBehaviour
             else
                 mainCam.GetChild(5).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
         }
-        gameMode = value;
     }
 
     public int GetMode()

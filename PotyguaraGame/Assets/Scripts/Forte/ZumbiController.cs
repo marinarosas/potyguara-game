@@ -44,7 +44,7 @@ public class ZumbiController : MonoBehaviour
             }
         }
 
-        if (FindFirstObjectByType<GameForteController>().GetMode() == 0)
+        if (GameForteController.Instance.GetMode() == 0)
         {
             distanceForPlayer = Vector3.Distance(player.transform.position, transform.position);
 
@@ -134,10 +134,9 @@ public class ZumbiController : MonoBehaviour
             if (!MarkedPontuacion)
             {
                 MarkedPontuacion = true;
-                Debug.Log("Acertou!!");
                 collision.gameObject.GetComponent<BulletController>().playEffect();
                 collision.gameObject.GetComponent<BulletController>().StartBloodEffect(2f, 0.5f);
-                FindFirstObjectByType<GameForteController>().SetCurrentScore(1);
+                GameForteController.Instance.SetCurrentScore(1);
                 Achievement.Instance.zombies++;
 
                 if (Achievement.Instance.partidas_defesaForte == 100)
