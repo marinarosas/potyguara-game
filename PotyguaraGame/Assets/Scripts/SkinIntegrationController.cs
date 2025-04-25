@@ -8,24 +8,20 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class SkinIntegrationController : MonoBehaviour
 {
     public XRNode inputSource = XRNode.LeftHand; // Define qual controle será utilizado
-
     private Animator animator; // Referência ao Animator do avatar;
-    private Vector2 inputAxis;
-
     private void Start()
     {
         Transform mainCam = transform.GetChild(0).GetChild(0);
         Transform avatar = transform.GetChild(0).GetChild(5);
-        animator = transform.GetChild(0).GetChild(5).GetChild(0).GetComponent<Animator>();
         if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 5)
         {
-            transform.GetChild(0).GetChild(5).gameObject.SetActive(false);
-            transform.GetChild(0).GetChild(0).GetChild(5).gameObject.SetActive(false);
+            mainCam.GetChild(4).gameObject.SetActive(false);
+            avatar.gameObject.SetActive(false);
         }
         else
         {
-            transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
-            transform.GetChild(0).GetChild(0).GetChild(5).gameObject.SetActive(true);
+            mainCam.GetChild(4).gameObject.SetActive(true);
+            avatar.gameObject.SetActive(true);
             GetSkin();
         }
     }

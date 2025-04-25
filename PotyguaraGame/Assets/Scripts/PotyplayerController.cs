@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
@@ -15,9 +17,12 @@ public class PotyPlayerController : MonoBehaviour
     private int day = 0;
     private int potycoins = 0;
     private NetworkManager nm;
-    private List<int> skins;
+    private List<int> skinsMASC;
+    private List<int> skinsFEM;
     private List<string> tickets;
     private List<string> sessions;
+
+    private bool wasConsumed = false;
     struct Skin
     {
         public int gender;
@@ -53,12 +58,16 @@ public class PotyPlayerController : MonoBehaviour
             Destroy(gameObject);
 
         nm = NetworkManager.Instance;
+
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     void Start()
     {
         SetSkin(-1, -1, -1);
-        skins = new List<int>();
+        skinsMASC = new List<int>();
+        skinsFEM = new List<int>();
         tickets = new List<string>();
         sessions = new List<string>();
     }
@@ -66,9 +75,26 @@ public class PotyPlayerController : MonoBehaviour
     public int GetDay() { return day;}
     public void SetDay(int value)  { day = value; }
 
-    public void AddSkin(int value){ skins.Add(value); }
-    public void ResetSkins() { skins.Clear(); }
-    public bool VerifSkins(int index) { return skins.Contains(index) ? true : false; }
+    public void AddSkin(int value)
+    {
+        if (GetGender() == 0)
+            skinsMASC.Add(value);
+        else
+            skinsFEM.Add(value);
+    }
+    public void ResetSkins() {
+        if (GetGender() == 0)
+            skinsMASC.Clear();
+        else
+            skinsFEM.Clear();
+    }
+    public bool VerifSkins(int index)
+    {
+        if (GetGender() == 0)
+            return skinsMASC.Contains(index) ? true : false;
+        else
+            return skinsFEM.Contains(index) ? true : false;
+    }
 
     public void AddTicket(string ticket) {  tickets.Add(ticket); }
     public List<string> GetTickets() {  return tickets; }
@@ -113,6 +139,11 @@ public class PotyPlayerController : MonoBehaviour
         skin.material = skinMaterial;   
     }
 
+    public void SetGender(int gender)
+    {
+        skin.gender = gender;
+    }
+
     public int GetIndex() { return skin.index; }
     public int GetGender() { return skin.gender; }
     public int GetMaterial() { return skin.material; }
@@ -120,21 +151,31 @@ public class PotyPlayerController : MonoBehaviour
     public void GetPotycoinsOfTheServer(int value)
     {
         potycoins = value;
-        GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public void SetPotycoins(int value)
     {
         potycoins += value;
         FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
-        GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     public void ConsumePotycoins(int value)
     {
-        potycoins -= value;
-        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
-        GameObject.FindWithTag("MainCamera").transform.GetChild(5).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        if (!wasConsumed)
+        {
+            potycoins -= value;
+            wasConsumed = true;
+            FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
+            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+            Invoke("ResetBoolean", 2f);
+        }
+    }
+
+    private void ResetBoolean()
+    {
+        wasConsumed = false;
     }
 
     public int GetPotycoins()
@@ -144,6 +185,16 @@ public class PotyPlayerController : MonoBehaviour
 
     public void SetScoreNormalMode(string value) { scoreNormalMode = value; }
     public void SetScoreZombieMode(string value){  scoreZombieMode = value; }
+
+    public int GetScoreNormalMode()
+    {
+        return int.Parse(scoreNormalMode);
+    }
+
+    public int GetScoreZombieMode()
+    {
+        return int.Parse(scoreZombieMode);
+    }
 
     public string GetScoreZombie(){
         string formatedScore = nickname + ": " + scoreZombieMode + "pt";

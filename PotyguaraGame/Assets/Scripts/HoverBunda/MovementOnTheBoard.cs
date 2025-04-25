@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class MovementOnTheBoard : MonoBehaviour
 {
     private InputAction moveAction;
-    public float turnSpeed = 200f;
+    public float turnSpeed = 80f;
 
     private Rigidbody rb;
     void Start()
@@ -14,15 +14,12 @@ public class MovementOnTheBoard : MonoBehaviour
         moveAction = new InputAction("Move", binding: "<XRController>{LeftHand}/thumbstick");
         moveAction.Enable();
         rb = GetComponent<Rigidbody>();
+        transform.GetChild(0).GetChild(1).GetChild(1).gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*Vector2 input = moveAction.ReadValue<Vector2>();
-        float turn = input.x * turnSpeed * Time.fixedDeltaTime;
-        transform.Rotate(Vector3.up, turn);*/
-        Vector3 torque = transform.right * turnSpeed * Time.fixedDeltaTime;
-        rb.AddTorque(torque, ForceMode.Force);
+         rb.AddForce(transform.forward * turnSpeed * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 }

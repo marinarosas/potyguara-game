@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class MeditationRoomController : MonoBehaviour
 {
-    private int countClasses = 1; // qnt de aulas
     private bool StartedClass = false;
+    private int countClasses = 0;
 
     [SerializeField] private GameObject magicCircles;
     [SerializeField] private AudioSource audioSource;
@@ -20,7 +20,7 @@ public class MeditationRoomController : MonoBehaviour
     private void Start()
     {
         FindFirstObjectByType<SalesCenterController>().CheckSessions();
-        transform.GetChild(0).GetChild(0).GetChild(4).GetComponent<Button>().onClick.AddListener(FindFirstObjectByType<TransitionController>().TeleportGallery);
+        transform.GetChild(0).GetChild(0).GetChild(4).GetComponent<Button>().onClick.AddListener(ExitRoom);
     }
     void Update()
     {
@@ -44,12 +44,25 @@ public class MeditationRoomController : MonoBehaviour
     public void StopClass()
     {
         audioSource.Stop();
+        GameObject locomotion = GameObject.Find("Player").transform.GetChild(1).gameObject;
+        if (locomotion != null)
+            locomotion.SetActive(true);
+        ResetRoom();
+    }
+
+    private void ExitRoom()
+    {
+        TransitionController.Instance.TeleportGallery();
+        GameObject locomotion = GameObject.Find("Player").transform.GetChild(1).gameObject;
+        if (locomotion != null)
+            locomotion.SetActive(true);
         ResetRoom();
     }
 
     #region ButtonCreation
     public void AddButton(int index)
     {
+        countClasses++;
         AudioClip clip = audios[index];
         GameObject buttonGo = new GameObject("Session " + countClasses);
         buttonGo.transform.SetParent(content);
@@ -85,7 +98,6 @@ public class MeditationRoomController : MonoBehaviour
         text.text = "Sessão " + countClasses;
         text.alignment = TextAnchor.MiddleCenter;
         text.color = new Color(0.9245283f, 0.3079158f, 0, 1);
-        countClasses++;
 
         button.onClick.AddListener(() => PlayClass(clip));
     }

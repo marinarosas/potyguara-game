@@ -35,7 +35,7 @@ public class LiftController : MonoBehaviour
     {
         if(currentFloor != value)
         {
-            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(3f, ani);
+            GameObject.FindWithTag("MainCamera").transform.GetChild(3).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(3f, ani);
             FindObjectOfType<HeightController>().SetBool(true);
             if (value == 0)
                 ani.Play("DownTerreo");

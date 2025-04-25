@@ -5,16 +5,19 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Concurrent;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 public class Microtransaction : MonoBehaviour
 {
-    [SerializeField] private string baseUrl = "https://potyws.ffcloud.com.br"; // Set this to your API base URL
+    [SerializeField] private string baseUrl = "https://potysteam.ffcloud.com.br"; // Set this to your API base URL
     [SerializeField] private string appId = "3181940"; // replace with your own appId
 
     // finish transaction callback
     protected Callback<MicroTxnAuthorizationResponse_t> m_MicroTxnAuthorizationResponse;
 
-    private int currentOrder = 1000;
+    private int currentOrder = 100;
     private string currentTransactionId = "";
     private string currentItemId = "";
 
@@ -24,6 +27,8 @@ public class Microtransaction : MonoBehaviour
     private ConcurrentQueue<string> skins = new ConcurrentQueue<string>();
     private ConcurrentQueue<int> tickets = new ConcurrentQueue<int>();
     private ConcurrentQueue<int> sessions = new ConcurrentQueue<int>();
+
+    private List<OrderRequest> transactions = new List<OrderRequest>();
 
     private static Microtransaction _instance;
 
@@ -44,6 +49,8 @@ public class Microtransaction : MonoBehaviour
         }
     }
 
+
+
     // Unity Awake function    
     private void Awake() 
     {
@@ -59,7 +66,6 @@ public class Microtransaction : MonoBehaviour
 
         // initialize the callback to receive after the purchase
         m_MicroTxnAuthorizationResponse = Callback<MicroTxnAuthorizationResponse_t>.Create(OnMicroTxnAuthorizationResponse); 
-        currentOrder += Random.Range(1000000, 100000000);
     }
 
     public void InitSale(string itemID, string description, string category)
@@ -71,46 +77,34 @@ public class Microtransaction : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        while (potycoins.TryDequeue(out int potycoin))
-        {
-            FindFirstObjectByType<PotyPlayerController>().SetPotycoins(potycoin);
-        }
-
-        while (sessions.TryDequeue(out int session))
-        {
-            FindFirstObjectByType<MeditationRoomController>().AddButton(session);
-            NetworkManager.Instance.SendSession(currentItemId);
-        }
-
-        while (skins.TryDequeue(out string skinId))
-        {
-            int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin(skinId);
-            if (index != 0)
-            {
-                FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
-                NetworkManager.Instance.SendSkin(index);
-            }
-        }
-    }
-
     // This callback is called when the user confirms the purchase
     // See https://partner.steamgames.com/doc/api/ISteamUser#MicroTxnAuthorizationResponse_t
     private void OnMicroTxnAuthorizationResponse(MicroTxnAuthorizationResponse_t pCallback) 
     {
+        string orderId = pCallback.m_ulOrderID.ToString();
         if (pCallback.m_bAuthorized == 1)
         {
             StartCoroutine(FinishPurchase(pCallback.m_ulOrderID.ToString()));
         }
+        else
+        {
+            Debug.Log("Removeu transação negada.");
+            FindFirstObjectByType<SalesCenterController>().isPurshing = false;
+            this._isInPurchaseProcess = false;
+
+            // removi a transacao que foi negada
+            int idx = transactions.FindIndex(i => i.orderId == orderId);
+            if (idx >= 0)
+                transactions.RemoveAt(idx);
+        }
         Debug.Log("[" + MicroTxnAuthorizationResponse_t.k_iCallback + " - MicroTxnAuthorizationResponse] - " + pCallback.m_unAppID + " -- " + pCallback.m_ulOrderID + " -- " + pCallback.m_bAuthorized);
     }
 
-    // To understand how to create products
     // see https://partner.steamgames.com/doc/features/microtransactions/implementation
     public IEnumerator InitializePurchase(string itemID, string description, string category)
     {
         string userId = SteamUser.GetSteamID().ToString();
+        currentOrder += UnityEngine.Random.Range(1000000, 100000000);
 
         WWWForm form = new WWWForm();
         form.AddField("itemId", itemID);
@@ -128,7 +122,6 @@ public class Microtransaction : MonoBehaviour
 
             if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.Log("Full URL: " + baseUrl + "/InitPurchase");
                 Debug.LogError("Error initializing purchase: " + www.error);
                 Debug.LogError("Response Code: " + www.responseCode);
                 Debug.LogError("Response: " + www.downloadHandler.text);
@@ -140,6 +133,11 @@ public class Microtransaction : MonoBehaviour
                 {
                     Debug.Log("Transaction initiated. Id: " + ret.transid);
                     currentTransactionId = ret.transid;
+                    transactions.Add(new OrderRequest()
+                    {
+                        orderId = currentOrder.ToString(),
+                        transId = ret.transid
+                    });
                 }
                 else if (!string.IsNullOrEmpty(ret.error))
                 {
@@ -219,59 +217,58 @@ public class Microtransaction : MonoBehaviour
                         }
                         else if (currentItemId.Equals("4006"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4006");
                         }
                         else if (currentItemId.Equals("4007"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4007");
                         }
                         else if (currentItemId.Equals("4008"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4008");
                         }
                         else if (currentItemId.Equals("4009"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4009");
                         }
                         else if (currentItemId.Equals("4010"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4010");
                         }
                         else if (currentItemId.Equals("4011"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4011");
                         }
                         else if (currentItemId.Equals("4012"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4012");
                         }
                         else if (currentItemId.Equals("4013"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4013");
                         }
                         else if (currentItemId.Equals("4014"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4014");
                         }
                         else if (currentItemId.Equals("4015"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4015");
                         }
                         else if (currentItemId.Equals("4016"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4016");
                         }
                         else if (currentItemId.Equals("4017"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4017");
                         }
                         else if (currentItemId.Equals("4018"))
                         {
-                            skins.Enqueue("4001");
+                            skins.Enqueue("4018");
                         }
                     }
                     Achievement.Instance.UnclockAchievement("first_purchase");
-                    FindFirstObjectByType<SalesCenterController>().isPurshing = false;
                     Debug.Log("Transaction Finished.");
                     _isInPurchaseProcess = false;
                 }
@@ -283,10 +280,45 @@ public class Microtransaction : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        SteamAPI.RunCallbacks();
+        while (potycoins.TryDequeue(out int potycoin))
+        {
+            FindFirstObjectByType<PotyPlayerController>().SetPotycoins(potycoin);
+            FindFirstObjectByType<MenuController>().InitializeMenu();
+            FindFirstObjectByType<SalesCenterController>().isPurshing = false;
+        }
+
+        while (sessions.TryDequeue(out int session))
+        {
+            FindFirstObjectByType<MeditationRoomController>().AddButton(session);
+            FindFirstObjectByType<SalesCenterController>().isPurshing = false;
+            NetworkManager.Instance.SendSession(currentItemId);
+        }
+
+        while (skins.TryDequeue(out string skinId))
+        {
+            int index = FindFirstObjectByType<SalesCenterController>().GetIndexSkin(skinId);
+            if (index != 0)
+            {
+                FindFirstObjectByType<PotyPlayerController>().AddSkin(index);
+                FindFirstObjectByType<SalesCenterController>().isPurshing = false;
+                NetworkManager.Instance.SendSkin(index);
+            }
+        }
+    }
+
     public class ApiReturn
     {
         public bool success;
         public string error;
+    }
+
+    public class OrderRequest
+    {
+        public string orderId;
+        public string transId;
     }
 
     public class ApiReturnTransaction : ApiReturn

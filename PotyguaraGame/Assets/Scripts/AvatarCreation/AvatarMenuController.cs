@@ -56,7 +56,7 @@ public class AvatarMenuController : MonoBehaviour
         NetworkManager.Instance.SendSkin(bodyIndex, skinIndex, variant);
 
         FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
-        FindFirstObjectByType<TransitionController>().LoadSceneAsync(2);
+        TransitionController.Instance.LoadSceneAsync(2);
     }
 
     public void SetBodyList(int bodyIndex)

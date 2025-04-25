@@ -72,7 +72,7 @@ public class SpawnerController : MonoBehaviour
         {
             SetDestinyRandow(1);
             GameForteController.Instance.ChangeStateWalls(true);
-            FindFirstObjectByType<HeightController>().NewHeight(7.98f);
+            FindFirstObjectByType<HeightController>().NewHeight(8.07f);
             if (NetworkManager.Instance.modeTutorialOn)
             {
                 AudioSource audio = FindFirstObjectByType<TechGuaraController>().SelectReport("Techyguara.ApresentaçãoZombieMode");
@@ -81,8 +81,7 @@ public class SpawnerController : MonoBehaviour
                     audio.clip.length, new Vector3(752.74f, 11.35f, 400.29f), 90f);
                 audio.Play();
             }
-
-            NextLevel(90f, new Vector3(749f, 7.98f, 400.44f));
+            NextLevel(90f, new Vector3(745.6f, 8.07f, 400.4f));
         }
         if (currentLevel == 2)
         {
@@ -91,9 +90,9 @@ public class SpawnerController : MonoBehaviour
             GameForteController.Instance.handMenuLevel2.GetComponent<FadeController>().FadeIn();
             SetDestinyRandow(2);
             GameForteController.Instance.ResetCount();
-            FindFirstObjectByType<HeightController>().NewHeight(17.19f);
+            FindFirstObjectByType<HeightController>().NewHeight(17.25f);
             UpdateLevelBar();
-            NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
+            NextLevel(90f, new Vector3(659f, 17.25f, 401f));
         }
     }
 
@@ -110,7 +109,7 @@ public class SpawnerController : MonoBehaviour
             audio.Play();
         }
         FindFirstObjectByType<HeightController>().NewHeight(17.19f);
-        NextLevel(90f, new Vector3(659f, 17.19f, 400.44f));
+        NextLevel(90f, new Vector3(659f, 17.25f, 401f));
         SetSpawn();
     }
 
@@ -122,7 +121,7 @@ public class SpawnerController : MonoBehaviour
 
     public void SendForRanking(int mode)
     {
-        FindFirstObjectByType<NetworkManager>().SendPontuacionForte(GameForteController.Instance.GetTotalPoints(), mode);
+        NetworkManager.Instance.SendPontuacionForte(GameForteController.Instance.GetTotalPoints(), mode);
         FindFirstObjectByType<RankingController>().gameObject.GetComponent<FadeController>().FadeIn();
     }
 

@@ -28,6 +28,11 @@ public class SteamProfileManager : MonoBehaviour
         qnt.text = value.ToString();
     }
 
+    public void ShootAlert()
+    {
+        transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
+    }
+
     void GetSteamAvatar(CSteamID steamID)
     {
         int imageID = SteamFriends.GetLargeFriendAvatar(steamID); // Obtém o ID da imagem

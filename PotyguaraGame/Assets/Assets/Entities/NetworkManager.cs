@@ -51,7 +51,8 @@ public class NetworkManager : MonoBehaviour
     private ConcurrentQueue<string> pointingNormalMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> pointingZombieMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
-    private ConcurrentQueue<int> skins = new ConcurrentQueue<int>();
+    private ConcurrentQueue<int> skinsFEM = new ConcurrentQueue<int>();
+    private ConcurrentQueue<int> skinsMAL = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> tickets = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> sessions = new ConcurrentQueue<string>();
 
@@ -191,21 +192,30 @@ public class NetworkManager : MonoBehaviour
                     posRankingZ = response.parameters["posRankingZ"];
                     break;
                 case "Skins":
-                    string skinsString = response.parameters["skins"];
-                    if (skinsString.Contains("|"))
+                    string skinsStringFEM = response.parameters["skinsFEM"];
+                    if (skinsStringFEM.Contains("|"))
                     {
-                        string[] indexList = skinsString.Split('|');
+                        string[] indexList = skinsStringFEM.Split('|');
                         foreach (var index in indexList)
-                            skins.Enqueue(int.Parse(index));
+                            skinsFEM.Enqueue(int.Parse(index));
                     }
                     else
-                        skins.Enqueue(0);
+                        skinsFEM.Enqueue(0);
+
+                    string skinsStringMAL = response.parameters["skinsMAL"];
+                    if (skinsStringMAL.Contains("|"))
+                    {
+                        string[] indexList = skinsStringMAL.Split('|');
+                        foreach (var index in indexList)
+                            skinsMAL.Enqueue(int.Parse(index));
+                    }
+                    else
+                        skinsMAL.Enqueue(0);
                     break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
                     string skinS = response.parameters["skin"];
                     string[] list = skinS.Split('|');
-
 
                     if (int.Parse(list[0]) != -1)
                     {
@@ -501,7 +511,7 @@ public class NetworkManager : MonoBehaviour
         if (ws != null)
         {
             ws.Send(action.ToJson());
-            FindFirstObjectByType<TransitionController>().ExitGame();
+            TransitionController.Instance.ExitGame();
         }
     }
 
@@ -582,9 +592,14 @@ public class NetworkManager : MonoBehaviour
                 FindFirstObjectByType<PotyPlayerController>().SetSkin(bodyIndex, skinIndex, variant);
             }
 
-            while (skins.TryDequeue(out int skin))
+            while (skinsFEM.TryDequeue(out int skinF))
             {
-                FindFirstObjectByType<PotyPlayerController>().AddSkin(skin);
+                FindFirstObjectByType<PotyPlayerController>().AddSkin(skinF);
+            }
+
+            while (skinsMAL.TryDequeue(out int skinM))
+            {
+                FindFirstObjectByType<PotyPlayerController>().AddSkin(skinM);
             }
 
             while (day.TryDequeue(out int currentDay))
@@ -613,7 +628,7 @@ public class NetworkManager : MonoBehaviour
             }
 
             if (SceneManager.GetActiveScene().buildIndex == 0)
-                FindFirstObjectByType<TransitionController>().UpdateMainMenu(isTheFirstAcess);
+                TransitionController.Instance.UpdateMainMenu(isTheFirstAcess);
         }
     }
 }

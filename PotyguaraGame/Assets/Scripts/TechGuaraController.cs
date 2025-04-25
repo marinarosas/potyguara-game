@@ -18,12 +18,9 @@ public class TechGuaraController : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().buildIndex == 0)
             {
-                if (SceneManager.GetActiveScene().buildIndex == 0)
-                {
-                    CreateReport("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar", new Vector3(0f, 2f, -32.35f), 0f, "Bem-vindo(a) ao Potyguara Verse!", "Você acaba de entrar " +
-                        "em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia, e juntos vamos explorar esse " +
-                        "universo cheio de novidades! No Potyguara Verse, você poderá participar de eventos incríveis, jogar minigames, visitar nossa loja exclusiva e muito mais.");
-                }
+                CreateReport("Techyguara.InicioDoJogo.CriaçãoDeCadastro+Avatar", new Vector3(0f, 2f, -32.35f), 0f, "Bem-vindo(a) ao Potyguara Verse!", "Você acaba de entrar " +
+                    "em um mundo onde a cultura e a tecnologia se encontram em uma experiência imersiva única. Eu sou a Techyguara, sua guia, e juntos vamos explorar esse " +
+                    "universo cheio de novidades! No Potyguara Verse, você poderá participar de eventos incríveis, jogar minigames, visitar nossa loja exclusiva e muito mais.");
             }
         }
 
@@ -53,7 +50,7 @@ public class TechGuaraController : MonoBehaviour
         {
             if (!NetworkManager.Instance.firstInForte)
             {
-                if (!FindFirstObjectByType<TransitionController>().GetIsSkip())
+                if (!TransitionController.Instance.GetIsSkip())
                 {
                     CreateReport("Techyguara.ApresentaçãoFortalezaDosReisMagos", new Vector3(804.55f, 10.34f, 400.19f), 0f, "Forte dos Reis Magos", "Agora, vamos à Fortaleza " +
                         "dos Reis Magos, um dos locais mais históricos da cidade de Natal. Este lugar foi palco de batalhas importantes que mudaram o rumo da nossa região." +
@@ -66,8 +63,6 @@ public class TechGuaraController : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().buildIndex == 4)
         {
-            GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10));
-            GameObject.Find("InitialCanva").transform.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<TransitionController>().LoadSceneAsync(2));
             if (!NetworkManager.Instance.firstInHover)
             {
                 foreach (AudioClip clip in audios)
@@ -84,22 +79,7 @@ public class TechGuaraController : MonoBehaviour
             }
             else
             {
-                if (NetworkManager.Instance.modeTutorialOn)
-                {
-                    foreach (AudioClip clip in audios)
-                    {
-                        if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
-                            audioSource.clip = clip;
-                    }
-                    CreateReport("HoverBunda", "Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
-                        "apenas o mais rápido cruzará a linha de chegada!", new Vector3(584.61f, 53.4f, -559.51f));
-                    transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
-                    audioSource.Play();
-                }
-                else
-                {
-                    GameObject.Find("InitialCanva").transform.GetChild(0).gameObject.SetActive(true);
-                }
+                GameObject.Find("InitialCanva").transform.GetChild(0).gameObject.SetActive(true);
             }
         }
     }
@@ -122,14 +102,6 @@ public class TechGuaraController : MonoBehaviour
 
     void Update()
     {
-        if (!NetworkManager.Instance.isTheFirstAcess)
-        {
-            if (!NetworkManager.Instance.modeTutorialOn)
-            {
-                StopTutorial();
-            }
-        }
-
         if (audioSource.isPlaying && SceneManager.GetActiveScene().buildIndex == 0)
         {
             if (audioSource.time >= 27.0)

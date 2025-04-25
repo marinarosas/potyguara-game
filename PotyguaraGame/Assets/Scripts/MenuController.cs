@@ -28,10 +28,10 @@ public class MenuController : MonoBehaviour
         for (int ii = 0; ii < transform.childCount; ii++)
             content.GetChild(ii).gameObject.SetActive(true);
 
-        Invoke("InitializeMenu", 0.5f);
+        Invoke("InitializeMenu", 0.8f);
     }
 
-    private void InitializeMenu()
+    public void InitializeMenu()
     {
         toggleTutorial.isOn = NetworkManager.Instance.modeTutorialOn;
         toggleWeather.isOn = NetworkManager.Instance.modeWeatherOn;
@@ -112,13 +112,13 @@ public class MenuController : MonoBehaviour
     }
     void GoToMeditationRoom()
     {
-        if (FindFirstObjectByType<TransitionController>().isInShowArea)
+        if (transitionController.isInShowArea)
         {
             GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
             if (locomotion != null)
                 locomotion.SetActive(true);
             FindFirstObjectByType<LiftShowController>().hasTicket = false;
-            FindFirstObjectByType<TransitionController>().isInShowArea = false;
+            transitionController.isInShowArea = false;
             Destroy(GameObject.Find("Dragon(Clone)"));
             Destroy(GameObject.Find("Guitaura(Clone)"));
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
@@ -139,16 +139,12 @@ public class MenuController : MonoBehaviour
 
     void LoadHoverBunda()
     {
-        int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
-        if (potycoins >= 10)
-        {
-            transitionController.LoadSceneAsync(4);
-        }
+       transitionController.LoadSceneAsync(4);
     }
 
     void GoToGallery()
     {
-        if (FindFirstObjectByType<TransitionController>().isInShowArea)
+        if (transitionController.isInShowArea)
         {
             GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
             if (locomotion != null)
@@ -156,7 +152,7 @@ public class MenuController : MonoBehaviour
             FindFirstObjectByType<LiftShowController>().hasTicket = false;
             Destroy(GameObject.Find("Dragon(Clone)"));
             Destroy(GameObject.Find("Guitaura(Clone)"));
-            FindFirstObjectByType<TransitionController>().isInShowArea = false;
+            transitionController.isInShowArea = false;
             FindFirstObjectByType<LiftShowController>().GoOutFromTheShow();
             FindFirstObjectByType<LiftShowController>().BlockLift();
         }
@@ -166,22 +162,13 @@ public class MenuController : MonoBehaviour
 
     void GoToGameForte()
     {
-        int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
-        if (potycoins >= 10)
-        {
-            transitionController.TeleporGameForteNormalMode();
-        }
+        transitionController.TeleporGameForteNormalMode();
     }
 
     void GoToGameForteZombieMode()
     {
-        int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
-        if (potycoins >= 10)
-        {
-            transitionController.TeleportGameForteZombieMode();
-        }
+        transitionController.TeleportGameForteZombieMode();
     }
-
     void ExitGame()
     {
         transitionController.LoadSceneAsync(0);

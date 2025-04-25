@@ -105,7 +105,13 @@ public class SalesCenterController : MonoBehaviour
             }
             btn.interactable = false;
             isPurshing = true;
+            Invoke("ResetBoolean", 0.7f);
         }
+    }
+
+    private void ResetBoolean()
+    {
+        isPurshing = false;
     }
 
     public Product[] GetShows()
@@ -152,22 +158,13 @@ public class SalesCenterController : MonoBehaviour
         }
         if (category == "skin")
         {
-            if(FindFirstObjectByType<PotyPlayerController>().GetGender() == 0)
+            if(FindFirstObjectByType<PotyPlayerController>().GetGender() == 1)
                 foreach (Product item in skinsFEM)
                     AddNewButton(item.image, item.id, item.description, item.category, item.index);
             else
                 foreach (Product item in skinsMASC)
                     AddNewButton(item.image, item.id, item.description, item.category, item.index);
         }
-    }
-
-    [System.Serializable]
-    public class ItemPurchaseButton 
-    {
-        public Button btnBuy;
-        public int itemId;
-        public string description;
-        public string category;
     }
 
     private void BuyProduct(string id, string description, string category, Button btn)

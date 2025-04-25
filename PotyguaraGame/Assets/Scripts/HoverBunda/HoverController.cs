@@ -1,17 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HoverController : MonoBehaviour
 {
     public GameObject board;
+    public Transform initialCanva;
+
     private void Start()
     {
+        initialCanva.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartHover());
+        initialCanva.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(() => TransitionController.Instance.LoadSceneAsync(2));
         StartPositionOfGame();
     }
     public void StartHover()
     {
-        Invoke("ModifyPositionOfPlayer", 2f);
+        int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+        if (potycoins >= 10)
+        {
+            FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
+            Invoke("ModifyPositionOfPlayer", 2f);
+        }
+        else
+        {
+            FindFirstObjectByType<SteamProfileManager>().ShootAlert();
+        }
     }
 
     public void ModifyPositionOfPlayer() {
@@ -36,6 +50,7 @@ public class HoverController : MonoBehaviour
 
     public void RestartTheGame()
     {
+        board.transform.GetChild(1).gameObject.SetActive(false);
         StartPositionOfGame();
     }
 

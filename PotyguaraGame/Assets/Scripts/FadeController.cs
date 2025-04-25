@@ -14,8 +14,7 @@ public class FadeController : MonoBehaviour
     private Animator animator;
 
     private bool status = true;
-
-    private void Start()
+    void Awake()
     {
         canvas = gameObject.GetComponent<CanvasGroup>();
     }
@@ -30,7 +29,8 @@ public class FadeController : MonoBehaviour
 
     public void FadeOut()
     {
-        fadeOut = true;
+        if (canvas.alpha == 1)
+            fadeOut = true;
     }
 
     public void FadeWithTime(string type, float time)
@@ -127,12 +127,14 @@ public class FadeController : MonoBehaviour
                     objToActive.SetActive(true);
                     objToActive = null;
                 }
+                canvas.alpha = 0;
                 fadeOut = false;
             }
         }
     }
     public void FadeIn()
     {
-        fadeIn = true;
+        if(canvas.alpha == 0)
+            fadeIn = true;
     }
 }

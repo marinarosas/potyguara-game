@@ -90,7 +90,7 @@ public class LiftShowController : MonoBehaviour
             if (state == 1)
             {
                 ani.Play("GoingToTheShow");
-                FindFirstObjectByType<TransitionController>().isInShowArea = true;
+                TransitionController.Instance.isInShowArea = true;
                 GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
                 if (locomotion != null)
                     locomotion.SetActive(false);
@@ -98,7 +98,7 @@ public class LiftShowController : MonoBehaviour
             else
             {
                 ani.Play("GoOutShow");
-                FindFirstObjectByType<TransitionController>().isInShowArea = false;
+                TransitionController.Instance.isInShowArea = false;
             }
         }
     }
@@ -126,7 +126,7 @@ public class LiftShowController : MonoBehaviour
             {
                 catraca1.GetComponent<Animator>().Play("CatracaClose");
             }
-            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
+            GameObject.FindWithTag("MainCamera").transform.GetChild(3).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
             player.parent = transform;
         }
     }

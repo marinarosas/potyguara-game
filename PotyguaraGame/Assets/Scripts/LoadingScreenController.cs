@@ -11,7 +11,7 @@ public class LoadingScreenController : MonoBehaviour
 
     private void Awake()
     {
-        index = FindFirstObjectByType<TransitionController>().GetTempIndex();
+        index = TransitionController.Instance.GetTempIndex();
     }
 
     void Start()

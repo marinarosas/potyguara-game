@@ -120,8 +120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6401812419994803572}
   m_HandleRect: {fileID: 5608186316952928934}
   m_Direction: 0
-  m_Value: 0.0000009730205
-  m_Size: 0.19834496
+  m_Value: 0.00000008479466
+  m_Size: 0.17737152
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -161,7 +161,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: -0.0010638951, y: 159.3}
-  m_SizeDelta: {x: 3129.9, y: 9}
+  m_SizeDelta: {x: 3500, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6632727365703554046
 MonoBehaviour:
@@ -546,8 +546,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8662696246555642419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.0000007800268, y: 0}
-  m_AnchorMax: {x: 0.19834581, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -746,7 +746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6310215159769817853
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1853,15 +1853,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e4f527998cf5f048bd8665630b3f070, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 107.27
+      value: 174.20546
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e4f527998cf5f048bd8665630b3f070, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000009536743
+      value: -0.0000014305115
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e4f527998cf5f048bd8665630b3f070, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 47.47
+      value: 52.804512
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e4f527998cf5f048bd8665630b3f070, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1943,23 +1943,35 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 69ef920980e8f8045bcf7418a45aac9c, type: 2}
   - {fileID: 11400000, guid: ec731bea823d5cb4aab69313322ea12a, type: 2}
   shows:
-  - {fileID: 11400000, guid: 158d1208d889a3c40a824eaa282928ea, type: 2}
+  - {fileID: 11400000, guid: 7400eaccf8be90f43ab318ae90583370, type: 2}
   meditationClasses:
-  - {fileID: 11400000, guid: e1ff8c260340d45449f88ae0e5bdd54b, type: 2}
+  - {fileID: 11400000, guid: b2ff00041d73c8d48b79cbd1a7d069ca, type: 2}
   - {fileID: 11400000, guid: f62d2bd8833354548ba5f5ec895fa46b, type: 2}
   - {fileID: 11400000, guid: 0f77860878a24804db1135451ded2787, type: 2}
-  skins:
-  - {fileID: 11400000, guid: 811d767b518cc4544bc394971676860c, type: 2}
+  skinsFEM:
+  - {fileID: 11400000, guid: ed5a429c1884ab242b0dd7f8a81b66b1, type: 2}
+  - {fileID: 11400000, guid: 1c2840829f63fcf44ae51303031b149f, type: 2}
+  - {fileID: 11400000, guid: 135072d1b6966ea45be2a3c055e3a271, type: 2}
+  - {fileID: 11400000, guid: 41f58961a22a3344fb18a8b5e117a974, type: 2}
+  - {fileID: 11400000, guid: 1f1ed99b20ee76a44bb26616d54e1425, type: 2}
+  - {fileID: 11400000, guid: ba570e5475ea6bd4884754bdac4a3c5c, type: 2}
+  - {fileID: 11400000, guid: 4a212e03e3006b54f92cc9295b63b8a2, type: 2}
+  - {fileID: 11400000, guid: c7e893b4c288519419c949c0101bdf44, type: 2}
+  - {fileID: 11400000, guid: 0f3fd8815b2216f4cbf9ea1a2f920e69, type: 2}
+  - {fileID: 11400000, guid: 190f9ea3682d3394983377f82da03986, type: 2}
+  - {fileID: 11400000, guid: 60c2c007fe97e3b4fb9acbd8e7d028a6, type: 2}
+  skinsMASC:
   - {fileID: 11400000, guid: 23efe76fd2e7562448070b16a46e50e5, type: 2}
+  - {fileID: 11400000, guid: 44aa287b841b32248bc09d8a0ae13726, type: 2}
+  - {fileID: 11400000, guid: 811d767b518cc4544bc394971676860c, type: 2}
   - {fileID: 11400000, guid: 71f86dbb0afa02345aed949a12ae4c0f, type: 2}
   - {fileID: 11400000, guid: fd80bb804963e974d84ed10b5e27f4eb, type: 2}
   - {fileID: 11400000, guid: fde80510802e980429e6e8876edc66f1, type: 2}
-  - {fileID: 11400000, guid: a4e3cf4ed63727d4b8e60641289fbfd1, type: 2}
-  - {fileID: 11400000, guid: 44aa287b841b32248bc09d8a0ae13726, type: 2}
   - {fileID: 11400000, guid: d908582e29201474cad01dcbfd507caa, type: 2}
   content: {fileID: 737582005549402047}
   controlMenu: 0
   changedStatus: 0
+  isPurshing: 0
 --- !u!65 &530265747485779877
 BoxCollider:
   m_ObjectHideFlags: 0

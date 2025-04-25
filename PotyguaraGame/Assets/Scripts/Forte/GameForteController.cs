@@ -149,10 +149,10 @@ public class GameForteController : MonoBehaviour
                 FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
                 FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
                 zombieMode.gameObject.transform.parent.gameObject.SetActive(false);
-                mainCam.GetChild(5).gameObject.SetActive(false);
+                mainCam.GetChild(4).gameObject.SetActive(false);
             }
             else
-                mainCam.GetChild(5).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
+                mainCam.GetChild(4).GetComponent<SteamProfileManager>().ShootAlert();
         }
         else
         {
@@ -169,10 +169,10 @@ public class GameForteController : MonoBehaviour
                 FindFirstObjectByType<SpawnerController>().SetLevelNormalMode();
                 SetStartTimer();
                 normalMode.gameObject.transform.parent.gameObject.SetActive(false);
-                mainCam.GetChild(5).gameObject.SetActive(false);
+                mainCam.GetChild(4).gameObject.SetActive(false);
             }
             else
-                mainCam.GetChild(5).GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
+                mainCam.GetChild(4).GetComponent<SteamProfileManager>().ShootAlert();
         }
     }
 
@@ -202,8 +202,8 @@ public class GameForteController : MonoBehaviour
 
         Transform finishUI = GameObject.FindWithTag("MainCamera").transform.GetChild(0).GetChild(0);
         finishUI.gameObject.SetActive(false);
-        GameObject.FindWithTag("MainCamera").transform.GetChild(5).gameObject.SetActive(true);
-        FindFirstObjectByType<HeightController>().NewHeight(6.96f);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(4).gameObject.SetActive(true);
+        FindFirstObjectByType<HeightController>().NewHeight(7.015f);
 
         ResetCount();
         SetInitScene();
@@ -211,7 +211,7 @@ public class GameForteController : MonoBehaviour
 
     private void SetInitScene()
     {
-        GameObject.FindWithTag("Player").transform.position = new Vector3(809.36f, 8.2f, 400.38f);
+        GameObject.FindWithTag("Player").transform.position = new Vector3(809f, 7.015f, 400.3f);
         GameObject.FindWithTag("Player").transform.eulerAngles = new Vector3(0, -90f, 0);
 
         GameObject.FindWithTag("Ranking").SetActive(true);
@@ -264,6 +264,7 @@ public class GameForteController : MonoBehaviour
 
     public void SetTotalPoints()
     {
+        
         totalPoints += currentPoints;
         currentPoints = 0;
     }

@@ -18,7 +18,7 @@ public class RewardCoinsController : MonoBehaviour
             if (FindFirstObjectByType<PotyPlayerController>().GetDay() != day)
             {
                 NetworkManager.Instance.SendNewDay(day);
-                Invoke("RewardCoins", 1f);
+                Invoke("RewardCoins", 0.6f);
             }
         }
     }

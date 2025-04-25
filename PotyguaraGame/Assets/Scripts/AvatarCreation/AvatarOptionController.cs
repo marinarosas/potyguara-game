@@ -114,6 +114,7 @@ public class AvatarOptionController : MonoBehaviour
         {
             case Option.BODY:
                 menuController.refreshBody(index);
+                FindFirstObjectByType<PotyPlayerController>().SetGender(index);
                 break;
             case Option.SKIN:
                 editSkin.changeMesh(index);

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class PlankDeceleration : MonoBehaviour
 {
     public Rigidbody plankRigidbody;
+    public Transform board;
     public float deceleration = 5f;
     public float minimumSpeed = 0.7f;
     public GameObject menu;
@@ -12,7 +13,8 @@ public class PlankDeceleration : MonoBehaviour
 
     private void Start()
     {
-        menu.transform.GetChild(0).GetChild(4).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<TransitionController>().LoadSceneAsync(2));
+        menu.transform.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(() => FindFirstObjectByType<HoverController>().RestartTheGame());
+        menu.transform.GetChild(0).GetChild(4).GetComponent<Button>().onClick.AddListener(() => TransitionController.Instance.LoadSceneAsync(2));
     }
 
     void OnTriggerEnter(Collider other)
@@ -40,6 +42,7 @@ public class PlankDeceleration : MonoBehaviour
                 isInDecelerationZone = false;
                 if (menu != null)
                 {
+                    board.eulerAngles = new Vector3(0f, board.eulerAngles.y, 0f);
                     menu.SetActive(true);
                     plankRigidbody.isKinematic = true;
                 }
