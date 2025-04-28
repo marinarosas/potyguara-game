@@ -12,7 +12,6 @@ public class Achievement : MonoBehaviour
     public int ships_levas = 0;
     public int partidas_hover = 0;
     public int partidas_defesaForte = 0;
-    public bool firstInZombieMode = false;
     public bool firstCompleteEvent = false;
 
     public bool isFirstShip = true;
@@ -47,10 +46,9 @@ public class Achievement : MonoBehaviour
             UnclockAchievement("espectador");
             firstCompleteEvent = false;
         }
-        if(partidas_defesaForte >= 1 && partidas_hover >= 1 && firstInZombieMode)
+        if(partidas_defesaForte >= 1 && partidas_hover >= 1 && zombies >= 1)
         {
-            UnclockAchievement("espectador");
-            firstInZombieMode = false;
+            UnclockAchievement("Inside_gamer");
         }
     }
 
@@ -67,7 +65,6 @@ public class Achievement : MonoBehaviour
         ships_levas = 0;
         partidas_hover = 0;
         partidas_defesaForte = 0;
-        firstInZombieMode = false;
         firstCompleteEvent = false;
 
         isFirstShip = true;

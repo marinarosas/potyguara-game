@@ -67,7 +67,6 @@ public class SpawnerController : MonoBehaviour
     public void SetLevelZombieMode()
     {
         finishUI.SetActive(false);
-        Achievement.Instance.firstInZombieMode = true;
         if (currentLevel == 1)
         {
             SetDestinyRandow(1);

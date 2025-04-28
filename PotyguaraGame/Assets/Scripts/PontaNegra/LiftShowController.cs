@@ -58,6 +58,8 @@ public class LiftShowController : MonoBehaviour
     public void BlockLift()
     {
         transform.GetChild(1).GetComponent<TeleportationArea>().enabled = false;
+        catraca1.GetComponent<Animator>().Play("CatracaClose");
+        catraca2.GetComponent<Animator>().Play("CatracaClose");
         catraca1.GetChild(0).GetChild(0).gameObject.SetActive(true);
         catraca2.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
@@ -75,6 +77,7 @@ public class LiftShowController : MonoBehaviour
     public void StartTrasition()
     {
         FindFirstObjectByType<PotyPlayerController>().HideControllers();
+        GameObject.FindWithTag("MainCamera").transform.GetChild(3).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
     }
 
     public void EndTransition()
@@ -91,9 +94,6 @@ public class LiftShowController : MonoBehaviour
             {
                 ani.Play("GoingToTheShow");
                 TransitionController.Instance.isInShowArea = true;
-                GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
-                if (locomotion != null)
-                    locomotion.SetActive(false);
             }
             else
             {
@@ -119,14 +119,9 @@ public class LiftShowController : MonoBehaviour
         {
             isInsideLift = true;
             if (state == 1)
-            {
                 catraca2.GetComponent<Animator>().Play("CatracaClose");
-            }
             else
-            {
                 catraca1.GetComponent<Animator>().Play("CatracaClose");
-            }
-            GameObject.FindWithTag("MainCamera").transform.GetChild(3).GetComponent<FadeController>().FadeInForFadeOutWithAnimator(6f, ani);
             player.parent = transform;
         }
     }
@@ -138,13 +133,7 @@ public class LiftShowController : MonoBehaviour
             isInsideLift = false;
             if (state == 0)
             {
-                GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
-                if (locomotion != null)
-                    locomotion.SetActive(true);
-                hasTicket = false;
-                Destroy(GameObject.Find("Dragon(Clone)"));
-                Destroy(GameObject.Find("Guitaura(Clone)"));
-                BlockLift();
+                FindFirstObjectByType<LiftShowController>().BlockLift();
             }
         }
     }

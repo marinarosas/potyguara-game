@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -126,10 +127,25 @@ public class PotyPlayerController : MonoBehaviour
         Transform right = FindFirstObjectByType<RightHandController>().gameObject.transform;
         right.GetChild(1).gameObject.SetActive(true);
         right.GetChild(2).gameObject.SetActive(true);
-        if (FindFirstObjectByType<LiftShowController>().GetStatus() == 1)
-            FindFirstObjectByType<MenuShowController>().showLiberated = true;
 
         GameObject.FindWithTag("Player").transform.GetChild(1).gameObject.SetActive(true);
+
+        if (FindFirstObjectByType<LiftShowController>().GetStatus() == 1)
+        {
+            FindFirstObjectByType<MenuShowController>().showLiberated = true;
+            GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
+            if (locomotion != null)
+                locomotion.SetActive(false);
+        }
+        else
+        {
+            Destroy(GameObject.Find("Dragon(Clone)"));
+            Destroy(GameObject.Find("Guitaura(Clone)"));
+            FindFirstObjectByType<LiftShowController>().hasTicket = false;
+            GameObject locomotion = GameObject.Find("Locomotion").transform.GetChild(1).gameObject;
+            if (locomotion != null)
+                locomotion.SetActive(true);
+        }
     }
 
     public void SetSkin(int skinGender, int skinIndex, int skinMaterial)

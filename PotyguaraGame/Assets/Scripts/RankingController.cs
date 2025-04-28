@@ -50,7 +50,7 @@ public class RankingController : MonoBehaviour
         }
         else
         {
-            if (FindFirstObjectByType<PotyPlayerController>().GetPositionZombie() == "N/A")
+            if (FindFirstObjectByType<PotyPlayerController>().GetPositionNormal() == "N/A")
             {
                 parent.GetChild(7).GetComponent<Text>().text = "N/A";
                 parent.GetChild(8).GetComponent<Text>().text = "- : -";
@@ -58,6 +58,8 @@ public class RankingController : MonoBehaviour
             else
             {
                 int temp = int.Parse(FindFirstObjectByType<PotyPlayerController>().GetPositionNormal());
+                if (temp == 1)
+                    Achievement.Instance.UnclockAchievement("heroi_guerra");
                 if (temp >= 1 && temp <= 6)
                 {
                     parent.GetChild(7).gameObject.SetActive(false);
@@ -67,8 +69,8 @@ public class RankingController : MonoBehaviour
                 {
                     parent.GetChild(7).gameObject.SetActive(true);
                     parent.GetChild(8).gameObject.SetActive(true);
-                    parent.GetChild(7).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetPositionZombie() + "º";
-                    parent.GetChild(8).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetScoreZombie();
+                    parent.GetChild(7).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetPositionNormal() + "º";
+                    parent.GetChild(8).GetComponent<Text>().text = FindFirstObjectByType<PotyPlayerController>().GetScoreNormal();
                 }
             }
         }
