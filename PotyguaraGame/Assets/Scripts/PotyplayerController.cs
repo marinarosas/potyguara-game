@@ -15,7 +15,6 @@ public class PotyPlayerController : MonoBehaviour
     private string positionRankingNormalMode = "N/A";
     private string scoreNormalMode = "";
     private string scoreZombieMode = "";
-    private int day = 0;
     private int potycoins = 0;
     private NetworkManager nm;
     private List<int> skinsMASC;
@@ -59,9 +58,6 @@ public class PotyPlayerController : MonoBehaviour
             Destroy(gameObject);
 
         nm = NetworkManager.Instance;
-
-        if (SceneManager.GetActiveScene().buildIndex != 0)
-            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
     void Start()
@@ -72,9 +68,6 @@ public class PotyPlayerController : MonoBehaviour
         tickets = new List<string>();
         sessions = new List<string>();
     }
-
-    public int GetDay() { return day;}
-    public void SetDay(int value)  { day = value; }
 
     public void AddSkin(int value)
     {
@@ -173,7 +166,7 @@ public class PotyPlayerController : MonoBehaviour
     public void SetPotycoins(int value)
     {
         potycoins += value;
-        FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
+        NetworkManager.Instance.UpdatePotycoins(potycoins);
         GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
     }
 
@@ -183,7 +176,7 @@ public class PotyPlayerController : MonoBehaviour
         {
             potycoins -= value;
             wasConsumed = true;
-            FindFirstObjectByType<NetworkManager>().UpdatePotycoins(potycoins);
+            NetworkManager.Instance.UpdatePotycoins(potycoins);
             GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
             Invoke("ResetBoolean", 2f);
         }

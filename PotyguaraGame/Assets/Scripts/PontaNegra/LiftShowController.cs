@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
 
@@ -33,9 +34,7 @@ public class LiftShowController : MonoBehaviour
         catraca1.GetComponent<Animator>().Play("CatracaOpen");
         player.parent = null;
         if (isInsideLift)
-        {
             FindFirstObjectByType<HeightController>().NewHeight(6.1f);
-        }
     }
 
     public void OpenCatraca2()
@@ -43,9 +42,7 @@ public class LiftShowController : MonoBehaviour
         catraca2.GetComponent<Animator>().Play("CatracaOpen");
         player.parent = null;
         if (isInsideLift)
-        {
             FindFirstObjectByType<HeightController>().NewHeight(0f);
-        }
     }
 
     public void UnleashLift()

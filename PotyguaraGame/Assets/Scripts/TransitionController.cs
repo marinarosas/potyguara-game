@@ -14,7 +14,6 @@ public class TransitionController : MonoBehaviour
     private bool isSkip = false;
     private int tempMode;
     private int tempSceneIndex = -1;
-
     public bool isInShowArea = false;
 
     public static TransitionController Instance;

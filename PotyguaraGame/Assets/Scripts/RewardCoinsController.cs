@@ -8,19 +8,12 @@ using UnityEngine.UI;
 public class RewardCoinsController : MonoBehaviour
 {
     private bool potycoinContabilized = false;
-    public void Start()
+
+    void Start()
     {
         if (SceneManager.GetActiveScene().buildIndex == 2)
-        {
-            DateTime today = DateTime.Now;
-            int day = today.Day;
-
-            if (FindFirstObjectByType<PotyPlayerController>().GetDay() != day)
-            {
-                NetworkManager.Instance.SendNewDay(day);
+            if (NetworkManager.Instance.newDay)
                 Invoke("RewardCoins", 0.6f);
-            }
-        }
     }
 
     private void RewardCoins()
@@ -36,8 +29,10 @@ public class RewardCoinsController : MonoBehaviour
         {
             FindFirstObjectByType<PotyPlayerController>().SetPotycoins(50);
             potycoinContabilized = true;
+            NetworkManager.Instance.SendRewardCoins();
+            NetworkManager.Instance.newDay = false;
+            StartCoroutine("ResetBoolean");
         }
-        StartCoroutine("ResetBoolean");
     }
 
     private IEnumerator ResetBoolean()

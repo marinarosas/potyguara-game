@@ -39,6 +39,7 @@ public class NetworkManager : MonoBehaviour
     private string posRankingZ = "";
     private string posRankingN = "";
 
+    public bool newDay = true;
     public bool isTheFirstAcess = true;
     public bool modeTutorialOn = true;
     public bool modeWeatherOn = true;
@@ -47,7 +48,6 @@ public class NetworkManager : MonoBehaviour
     public bool firstInForte = false;
 
     private ConcurrentQueue<int> potycoins = new ConcurrentQueue<int>();
-    private ConcurrentQueue<int> day = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> pointingNormalMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> pointingZombieMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
@@ -168,6 +168,7 @@ public class NetworkManager : MonoBehaviour
                     // identificar o jogador local. Esse id é gerado pelo servidor.
                     Debug.Log("::: WELCOME RECEIVED" + response.parameters);
                     this.playerId = response.parameters["playerId"];
+                    SendNewDay();
                     break;
                 case "GameState":
                     // Aqui o servidor enviou o estado atual do jogo, com as posições dos jogadores
@@ -219,18 +220,15 @@ public class NetworkManager : MonoBehaviour
 
                     if (int.Parse(list[0]) != -1)
                     {
+                        SendNewDay();
                         isTheFirstAcess = false;
 
-                        firstInPN = response.parameters["pnTutorial"] == "true" ? true : false;
-                        firstInHover = response.parameters["hoverTutorial"] == "true" ? true : false;
-                        firstInForte = response.parameters["forteTutorial"] == "true" ? true : false;
+                        firstInPN = response.parameters["pnTutorial"].ToLower() == "true" ? true : false;
+                        firstInHover = response.parameters["hoverTutorial"].ToLower() == "true" ? true : false;
+                        firstInForte = response.parameters["forteTutorial"].ToLower() == "true" ? true : false;
 
-                        if (firstInPN)
-                        {
-                            day.Enqueue(int.Parse(response.parameters["day"]));
-                        }
-                        modeTutorialOn = response.parameters["modeTutorial"] == "true" ? true : false;
-                        modeWeatherOn = response.parameters["modeWeather"] == "true" ? true : false;
+                        modeTutorialOn = response.parameters["modeTutorial"].ToLower() == "true" ? true : false;
+                        modeWeatherOn = response.parameters["modeWeather"].ToLower() == "true" ? true : false;
 
                         pointingNormalMode.Enqueue(response.parameters["pointingNormalMode"]);
                         pointingZombieMode.Enqueue(response.parameters["pointingZombieMode"]);
@@ -251,6 +249,9 @@ public class NetworkManager : MonoBehaviour
                         skin.Enqueue(response.parameters["skin"]);
                     }
                     break;
+                case "RewardCoins":
+                    newDay = response.parameters["newDay"].ToLower() == "true" ? true : false;
+                    break;
                 default:
                     break;
             }
@@ -268,14 +269,54 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    internal void SendNewDay(int value)
+    /// <summary>
+    /// Envia a posição do jogador para o servidor
+    /// </summary>
+    /// <param name="position"></param>
+    internal void SendPosition(Vector3 position)
+    {
+        // Antes é necessário criar um objeto Action, que contém o tipo de ação, o ator e os parâmetros
+        // esses parâmetros são um dicionário que contem a nova posição do jogador.
+        // é necessário usar o InvariantCulture para garantir que o ponto seja usado como separador decimal
+        ActionServer action = new ActionServer()
+        {
+            type = "PositionUpdate",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>(){
+                {"position_x", position.x.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)},
+                {"position_y", position.y.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)},
+                {"position_z", position.z.ToString("0.000000", System.Globalization.CultureInfo.InvariantCulture)}
+            }
+        };
+
+        // Enviar a ação para o servidor
+        ws.Send(action.ToJson());
+    }
+    internal void SendNewDay()
     {
         ActionServer action = new ActionServer()
         {
-            type = "NewDay",
-            actor = playerId,
+            type = "isNewDay",
+            actor = this.playerId,
             parameters = new Dictionary<string, string>(){
-                { "day", value.ToString() }
+               
+            }
+        };
+
+        if (ws != null)
+            // Enviar a ação para o servidor
+            ws.Send(action.ToJson());
+    }
+
+    internal void SendRewardCoins()
+    {
+        ActionServer action = new ActionServer()
+        {
+            type = "RewardCoins",
+            actor = this.playerId,
+            parameters = new Dictionary<string, string>()
+            {
+
             }
         };
 
@@ -438,8 +479,6 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    
-
     internal void SendTicket(string id)
     {
         ActionServer action = new ActionServer()
@@ -525,37 +564,43 @@ public class NetworkManager : MonoBehaviour
         // LocalPlayerPrefab forem necessários
         if (gameState != null) {
 
-            // Para cada jogador no gameState verificar se o jogador já existe na cena
-            // Se não existir, instanciar um novo jogador
-            // Se existir, atualizar a posição do jogador
-            foreach (var playerId in gameState.players.Keys) {
+            if (SceneManager.GetActiveScene().buildIndex == 2)
+            {
+                // Para cada jogador no gameState verificar se o jogador já existe na cena
+                // Se não existir, instanciar um novo jogador
+                // Se existir, atualizar a posição do jogador
+                foreach (var playerId in gameState.players.Keys)
+                {
 
-                // Se o jogador for o jogador local, não fazer nada
-                if (playerId == this.playerId) {
-                    //Debug.Log(playerId + " SOU EU!");
-                    // é o jogador local
-                    //TODO: talvez precisa atualiza a minha posição se isso puder acontecer
-                    // com alguma ação do servidor.
-                    continue;
+                    // Se o jogador for o jogador local, não fazer nada
+                    if (playerId == this.playerId)
+                    {
+                        //Debug.Log(playerId + " SOU EU!");
+                        // é o jogador local
+                        //TODO: talvez precisa atualiza a minha posição se isso puder acontecer
+                        // com alguma ação do servidor.
+                        continue;
+                    }
+
+                    // Buscar o jogador na cena pelo playerId
+                    GameObject playerObject = GameObject.Find(playerId);
+
+
+                    // Se o jogador não existir, instanciar um novo jogador
+                    if (playerObject == null)
+                    {
+                        playerObject = Instantiate(RemotePlayerPrefab) as GameObject;
+                        playerObject.name = playerId;
+                    }
+
+                    // Atualizar a posição do jogador
+                    // TODO: implementar interpolação de movimento
+                    playerObject.transform.position = new Vector3(
+                        gameState.players[playerId].position_x,
+                        gameState.players[playerId].position_y,
+                        gameState.players[playerId].position_z
+                    );
                 }
-
-                // Buscar o jogador na cena pelo playerId
-                GameObject playerObject = GameObject.Find(playerId);
-
-
-                // Se o jogador não existir, instanciar um novo jogador
-                if (playerObject == null) {
-                    playerObject = Instantiate(RemotePlayerPrefab) as GameObject;
-                    playerObject.name = playerId;
-                }
-
-                // Atualizar a posição do jogador
-                // TODO: implementar interpolação de movimento
-                /*playerObject.transform.position = new Vector3(
-                    gameState.players[playerId].position_x,
-                    gameState.players[playerId].position_y,
-                    gameState.players[playerId].position_z
-                );*/
             }
 
             if (SceneManager.GetActiveScene().buildIndex == 3)
@@ -600,11 +645,6 @@ public class NetworkManager : MonoBehaviour
             while (skinsMAL.TryDequeue(out int skinM))
             {
                 FindFirstObjectByType<PotyPlayerController>().AddSkin(skinM);
-            }
-
-            while (day.TryDequeue(out int currentDay))
-            {
-                FindFirstObjectByType<PotyPlayerController>().SetDay(currentDay);
             }
 
             while (tickets.TryDequeue(out string ticket))

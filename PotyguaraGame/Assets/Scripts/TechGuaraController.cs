@@ -65,13 +65,9 @@ public class TechGuaraController : MonoBehaviour
         {
             if (!NetworkManager.Instance.firstInHover)
             {
-                foreach (AudioClip clip in audios)
-                {
-                    if (clip.name.Equals("Techyguara.ApresentaçãoHoverbunda"))
-                        audioSource.clip = clip;
-                }
+                SelectAudioReport("Techyguara.ApresentaçãoHoverbunda");
                 CreateReport("HoverBunda", "Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
-                    "apenas o mais rápido cruzará a linha de chegada!", new Vector3(584.61f, 53.4f, -559.51f));
+                    "apenas o mais rápido cruzará a linha de chegada!", new Vector3(-1.82f, -1.98f, 0.09f));
                 transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
                 audioSource.Play();
                 NetworkManager.Instance.firstInHover = true;
@@ -118,14 +114,12 @@ public class TechGuaraController : MonoBehaviour
     {
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(1).gameObject.SetActive(true);
-        foreach (AudioClip clip in audios)
-        {
-            if (clip.name.Equals(clipName))
-                audioSource.clip = clip;
-        }
+
+        SelectAudioReport(clipName);
         transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 0;
         transform.GetChild(0).GetComponent<FadeController>().FadeInForFadeOutWithDeactivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject);
         transform.position =pos;
+
         report.UpdateTitle(title);
         report.UpdateDescription(description);
         audioSource.Play();
@@ -179,6 +173,18 @@ public class TechGuaraController : MonoBehaviour
         report.UpdateDescription(description);
         transform.GetChild(0).gameObject.SetActive(true);
         transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    private void SelectAudioReport(string name)
+    {
+        foreach (AudioClip clip in audios)
+        {
+            if (clip.name.Equals(name))
+            {
+                audioSource.clip = clip;
+                return;
+            }
+        }
     }
 
     public AudioSource SelectReport(string name)

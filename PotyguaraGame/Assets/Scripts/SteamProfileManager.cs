@@ -22,6 +22,10 @@ public class SteamProfileManager : MonoBehaviour
         // obtem o nickname
         FindFirstObjectByType<PotyPlayerController>().nickname = SteamFriends.GetPersonaName();
     }
+    void OnEnable()
+    {
+        UpdatePotycoins(FindFirstObjectByType<PotyPlayerController>().GetPotycoins());
+    }
 
     public void UpdatePotycoins(int value)
     {
