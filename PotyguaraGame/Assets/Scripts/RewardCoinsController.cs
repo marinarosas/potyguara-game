@@ -9,7 +9,7 @@ public class RewardCoinsController : MonoBehaviour
 {
     private bool potycoinContabilized = false;
 
-    void Start()
+    void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex == 2)
             if (NetworkManager.Instance.newDay)

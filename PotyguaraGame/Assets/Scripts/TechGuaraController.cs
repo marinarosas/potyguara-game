@@ -67,7 +67,7 @@ public class TechGuaraController : MonoBehaviour
             {
                 SelectAudioReport("Techyguara.ApresentaçãoHoverbunda");
                 CreateReport("HoverBunda", "Prepare-se para a adrenalina no Hoverbunda, uma corrida emocionante onde você se lança no seu skibunda voador! Compita contra seus amigos e mostre que você é o melhor, pois " +
-                    "apenas o mais rápido cruzará a linha de chegada!", new Vector3(-1.82f, -1.98f, 0.09f));
+                    "apenas o mais rápido cruzará a linha de chegada!", new Vector3(480.1024f, 65.43f, -410.83f));
                 transform.GetChild(0).GetComponent<FadeController>().FadeWithDeactivationAndActivationOfGameObject(audioSource.clip.length, transform.GetChild(0).gameObject, GameObject.Find("InitialCanva").transform.GetChild(0).gameObject);
                 audioSource.Play();
                 NetworkManager.Instance.firstInHover = true;
