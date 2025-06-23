@@ -20,7 +20,7 @@ public class SteamProfileManager : MonoBehaviour
         GetSteamAvatar(SteamUser.GetSteamID());
 
         // obtem o nickname
-        FindFirstObjectByType<PotyPlayerController>().nickname = SteamFriends.GetPersonaName();
+        FindFirstObjectByType<PotyPlayerController>().playerData.name = SteamFriends.GetPersonaName();
     }
     void OnEnable()
     {

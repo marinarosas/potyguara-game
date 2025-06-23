@@ -10,7 +10,7 @@ public class AvatarMenuController : MonoBehaviour
     [SerializeField] private AvatarOptionController[] options;
     public SkinSystem editSkin;
     public List<GameObject> bodies;
-    public List<Skin> skins;
+    public List<SkinUser> skins;
     public List<SkinMaterial> materials;
 
     private int bodyIndex = 0;

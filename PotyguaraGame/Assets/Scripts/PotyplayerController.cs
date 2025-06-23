@@ -9,37 +9,15 @@ using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
 {
-    public string nickname { get; set; }
+    public Player playerData;
 
     private string positionRankingZombieMode = "N/A";
     private string positionRankingNormalMode = "N/A";
     private string scoreNormalMode = "";
     private string scoreZombieMode = "";
-    private int potycoins = 0;
-    private NetworkManager nm;
-    private List<int> skinsMASC;
-    private List<int> skinsFEM;
-    private List<string> tickets;
-    private List<string> sessions;
+   
 
     private bool wasConsumed = false;
-    struct Skin
-    {
-        public int gender;
-        public int index;
-        public int material;
-    }
-    private Skin skin;
-    public string PlayerId
-    {
-        get
-        {
-            return nm.playerId;
-        }
-    }
-
-    // vari�vel para armazenar a �lltime vez que a posi��o foi enviada
-    float lastSentPositionTime = 0;
 
     // Quantas vezes por segundo enviar a posi��o para o servidor
     public float updateServerTimesPerSecond = 10;
@@ -56,47 +34,41 @@ public class PotyPlayerController : MonoBehaviour
         }
         else
             Destroy(gameObject);
-
-        nm = NetworkManager.Instance;
     }
 
     void Start()
     {
         SetSkin(-1, -1, -1);
-        skinsMASC = new List<int>();
-        skinsFEM = new List<int>();
-        tickets = new List<string>();
-        sessions = new List<string>();
     }
 
     public void AddSkin(int value)
     {
         if (GetGender() == 0)
-            skinsMASC.Add(value);
+            playerData.skinsMASC.Add(value);
         else
-            skinsFEM.Add(value);
+            playerData.skinsFEM.Add(value);
     }
     public void ResetSkins() {
         if (GetGender() == 0)
-            skinsMASC.Clear();
+            playerData.skinsMASC.Clear();
         else
-            skinsFEM.Clear();
+            playerData.skinsFEM.Clear();
     }
     public bool VerifSkins(int index)
     {
         if (GetGender() == 0)
-            return skinsMASC.Contains(index) ? true : false;
+            return playerData.skinsMASC.Contains(index) ? true : false;
         else
-            return skinsFEM.Contains(index) ? true : false;
+            return playerData.skinsFEM.Contains(index) ? true : false;
     }
 
-    public void AddTicket(string ticket) {  tickets.Add(ticket); }
-    public List<string> GetTickets() {  return tickets; }
-    public bool VerifTickets(string id) { return tickets.Contains(id) ? true : false; }
+    public void AddTicket(string ticket) {  playerData.tickets.Add(ticket); }
+    public List<string> GetTickets() {  return playerData.tickets; }
+    public bool VerifTickets(string id) { return playerData.tickets.Contains(id) ? true : false; }
 
-    public void AddSession(string session) { sessions.Add(session); }
-    public List<string> GetSessions() { return sessions; }
-    public bool VerifSessions(string id) { return sessions.Contains(id) ? true : false; }
+    public void AddSession(string session) { playerData.sessions.Add(session); }
+    public List<string> GetSessions() { return playerData.sessions; }
+    public bool VerifSessions(string id) { return playerData.sessions.Contains(id) ? true : false; }
 
     public void HideControllers()
     {
@@ -143,41 +115,41 @@ public class PotyPlayerController : MonoBehaviour
 
     public void SetSkin(int skinGender, int skinIndex, int skinMaterial)
     {
-        skin.gender = skinGender;
-        skin.index = skinIndex; 
-        skin.material = skinMaterial;   
+        playerData.skin.gender = skinGender;
+        playerData.skin.index = skinIndex; 
+        playerData.skin.material = skinMaterial;   
     }
 
     public void SetGender(int gender)
     {
-        skin.gender = gender;
+        playerData.skin.gender = gender;
     }
 
-    public int GetIndex() { return skin.index; }
-    public int GetGender() { return skin.gender; }
-    public int GetMaterial() { return skin.material; }
+    public int GetIndex() { return playerData.skin.index; }
+    public int GetGender() { return playerData.skin.gender; }
+    public int GetMaterial() { return playerData.skin.material; }
 
     public void GetPotycoinsOfTheServer(int value)
     {
-        potycoins = value;
-        GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        playerData.potycoins = value;
+        GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(playerData.potycoins);
     }
 
     public void SetPotycoins(int value)
     {
-        potycoins += value;
-        NetworkManager.Instance.UpdatePotycoins(potycoins);
-        GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+        playerData.potycoins += value;
+        NetworkManager.Instance.UpdatePotycoins(playerData.potycoins);
+        GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(playerData.potycoins);
     }
 
     public void ConsumePotycoins(int value)
     {
         if (!wasConsumed)
         {
-            potycoins -= value;
+            playerData.potycoins -= value;
             wasConsumed = true;
-            NetworkManager.Instance.UpdatePotycoins(potycoins);
-            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(potycoins);
+            NetworkManager.Instance.UpdatePotycoins(playerData.potycoins);
+            GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(playerData.potycoins);
             Invoke("ResetBoolean", 2f);
         }
     }
@@ -189,7 +161,7 @@ public class PotyPlayerController : MonoBehaviour
 
     public int GetPotycoins()
     {
-        return potycoins;
+        return playerData.potycoins;
     }
 
     public void SetScoreNormalMode(string value) { scoreNormalMode = value; }
@@ -206,11 +178,11 @@ public class PotyPlayerController : MonoBehaviour
     }
 
     public string GetScoreZombie(){
-        string formatedScore = nickname + ": " + scoreZombieMode + "pt";
+        string formatedScore = playerData.name + ": " + scoreZombieMode + "pt";
         return formatedScore;
     }
     public string GetScoreNormal() {
-        string formatedScore = nickname + ": " + scoreNormalMode + "pt";
+        string formatedScore = playerData.name + ": " + scoreNormalMode + "pt";
         return formatedScore;
     }
 

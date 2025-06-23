@@ -139,6 +139,7 @@ public class GameForteController : MonoBehaviour
             count = 90;
 
             Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
+
             int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
             if (potycoins >= 10)
             {
@@ -160,6 +161,7 @@ public class GameForteController : MonoBehaviour
             count = 120;
 
             Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
+
             int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
             if (potycoins >= 10)
             {

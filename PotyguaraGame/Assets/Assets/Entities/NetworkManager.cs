@@ -451,7 +451,7 @@ public class NetworkManager : MonoBehaviour
                 actor = this.playerId,
                 parameters = new Dictionary<string, string>()
                 {
-                    { "nickname", PotyPlayerController.Instance.nickname },
+                    { "nickname", PotyPlayerController.Instance.playerData.name },
                     { "pointing", totalPoints.ToString() }
                 }
             };
@@ -468,7 +468,7 @@ public class NetworkManager : MonoBehaviour
                 actor = this.playerId,
                 parameters = new Dictionary<string, string>()
                 {
-                    { "nickname", PotyPlayerController.Instance.nickname },
+                    { "nickname", PotyPlayerController.Instance.playerData.name },
                     { "pointing", totalPoints.ToString() }
                 }
             };
@@ -590,6 +590,8 @@ public class NetworkManager : MonoBehaviour
                     if (playerObject == null)
                     {
                         playerObject = Instantiate(RemotePlayerPrefab) as GameObject;
+                        playerObject.transform.GetChild(0).GetComponent<SetSkin>().SetSkinAvatar(gameState.players[playerId].skin.gender, 
+                            gameState.players[playerId].skin.index, gameState.players[playerId].skin.material);
                         playerObject.name = playerId;
                     }
 

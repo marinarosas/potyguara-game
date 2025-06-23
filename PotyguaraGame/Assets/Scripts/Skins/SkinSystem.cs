@@ -10,8 +10,8 @@ public class SkinSystem : MonoBehaviour{
     [SerializeField] public Transform rootBone;
     [SerializeField] public Transform skinContainer;
     [SerializeField] public GameObject hair, head, chest, belly, arms, forearms, hands, hips, legs, feet, beard;
-    [SerializeField] public List<Skin> skins;
-    [SerializeField] public Skin currentSkin = null;
+    [SerializeField] public List<SkinUser> skins;
+    [SerializeField] public SkinUser currentSkin = null;
     
     protected int indexSkin = 0;
     protected int oldIndexSkin = -1;
@@ -77,7 +77,7 @@ public class SkinSystem : MonoBehaviour{
         }
     }
 
-    protected void UpdateBodyMesh(Skin skin){
+    protected void UpdateBodyMesh(SkinUser skin){
         hair?.SetActive(skin.hasHair);
         head?.SetActive(skin.hasHead);
         chest?.SetActive(skin.hasChest);

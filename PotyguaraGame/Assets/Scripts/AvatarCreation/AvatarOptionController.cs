@@ -20,7 +20,7 @@ public class AvatarOptionController : MonoBehaviour
 
     private SkinSystem editSkin = null;
     private List<GameObject> bodies;
-    private List<Skin> skins;
+    private List<SkinUser> skins;
     private List<SkinMaterial> materials;
 
     private void Start()
