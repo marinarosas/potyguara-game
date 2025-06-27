@@ -27,6 +27,7 @@ public class MenuShowController : MonoBehaviour
             CreateButton(show.image, show.description);
         }
         CheckTickets();
+        UnclockShow("2001");
     }
 
     private void Update()

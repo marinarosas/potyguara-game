@@ -17,7 +17,7 @@ public class Player
     public List<string> tickets = new List<string>();
     public List<string> sessions = new List<string>();
 
-    public Skin skin { get; set; }
+    public SkinUser skin { get; set; } = new SkinUser();
 
     public float position_x { get; set; }
     public float position_y { get; set; }

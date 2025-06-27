@@ -21,6 +21,7 @@ public class MeditationRoomController : MonoBehaviour
     {
         FindFirstObjectByType<SalesCenterController>().CheckSessions();
         transform.GetChild(0).GetChild(0).GetChild(4).GetComponent<Button>().onClick.AddListener(ExitRoom);
+        AddButton(0);
     }
     void Update()
     {

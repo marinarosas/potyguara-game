@@ -67,10 +67,10 @@ public class BandController : MonoBehaviour
         //if (Time.time - lastCheckTime >= checkInterval)
         if (showStarted)
         {
-            if(video.time == video.length)
+            /*if(video.time == video.length)
             {
                 Achievement.Instance.firstCompleteEvent = true;
-            }
+            }*/
             int volume = GetVolume(audioBand);
             if (volume < silenceThreshold)
             {
@@ -82,6 +82,7 @@ public class BandController : MonoBehaviour
                 StopAllCoroutines();
                 Play();
             }
+            audioBand.Play();
 
             float frequency = GetSpectrum(audioBand);
             //float mappedValue = mapValue(frequency, 0, 2);

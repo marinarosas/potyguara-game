@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class PotyPlayerController : MonoBehaviour
 {
-    public Player playerData;
+    public Player playerData = new Player();
 
     private string positionRankingZombieMode = "N/A";
     private string positionRankingNormalMode = "N/A";

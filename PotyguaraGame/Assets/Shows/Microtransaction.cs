@@ -1,6 +1,5 @@
 // Install http://steamworks.github.io/ to use this script
 // This script is just an example but you can use it as you please
-using Steamworks;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
@@ -15,7 +14,7 @@ public class Microtransaction : MonoBehaviour
     [SerializeField] private string appId = "3181940"; // replace with your own appId
 
     // finish transaction callback
-    protected Callback<MicroTxnAuthorizationResponse_t> m_MicroTxnAuthorizationResponse;
+    //protected Callback<MicroTxnAuthorizationResponse_t> m_MicroTxnAuthorizationResponse;
 
     private int currentOrder = 100;
     private string currentTransactionId = "";
@@ -65,7 +64,7 @@ public class Microtransaction : MonoBehaviour
         }
 
         // initialize the callback to receive after the purchase
-        m_MicroTxnAuthorizationResponse = Callback<MicroTxnAuthorizationResponse_t>.Create(OnMicroTxnAuthorizationResponse); 
+       // m_MicroTxnAuthorizationResponse = Callback<MicroTxnAuthorizationResponse_t>.Create(OnMicroTxnAuthorizationResponse); 
     }
 
     public void InitSale(string itemID, string description, string category)
@@ -79,7 +78,7 @@ public class Microtransaction : MonoBehaviour
 
     // This callback is called when the user confirms the purchase
     // See https://partner.steamgames.com/doc/api/ISteamUser#MicroTxnAuthorizationResponse_t
-    private void OnMicroTxnAuthorizationResponse(MicroTxnAuthorizationResponse_t pCallback) 
+    /*private void OnMicroTxnAuthorizationResponse(MicroTxnAuthorizationResponse_t pCallback) 
     {
         string orderId = pCallback.m_ulOrderID.ToString();
         if (pCallback.m_bAuthorized == 1)
@@ -98,17 +97,17 @@ public class Microtransaction : MonoBehaviour
                 transactions.RemoveAt(idx);
         }
         Debug.Log("[" + MicroTxnAuthorizationResponse_t.k_iCallback + " - MicroTxnAuthorizationResponse] - " + pCallback.m_unAppID + " -- " + pCallback.m_ulOrderID + " -- " + pCallback.m_bAuthorized);
-    }
+    }*/
 
     // see https://partner.steamgames.com/doc/features/microtransactions/implementation
     public IEnumerator InitializePurchase(string itemID, string description, string category)
     {
-        string userId = SteamUser.GetSteamID().ToString();
+        //string userId = SteamUser.GetSteamID().ToString();
         currentOrder += UnityEngine.Random.Range(1000000, 100000000);
 
         WWWForm form = new WWWForm();
         form.AddField("itemId", itemID);
-        form.AddField("steamId", userId);
+        //form.AddField("steamId", userId);
         form.AddField("orderId", currentOrder.ToString());
         form.AddField("itemDescription", description);
         form.AddField("category", category);
@@ -282,7 +281,7 @@ public class Microtransaction : MonoBehaviour
 
     private void Update()
     {
-        SteamAPI.RunCallbacks();
+        //SteamAPI.RunCallbacks();
         while (potycoins.TryDequeue(out int potycoin))
         {
             FindFirstObjectByType<PotyPlayerController>().SetPotycoins(potycoin);

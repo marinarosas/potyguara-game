@@ -14,7 +14,6 @@ using System.Collections.Concurrent;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using System.IO;
-using Steamworks;
 using Unity.VisualScripting;
 using UnityEngine.Analytics;
 using NodaTime;
@@ -119,13 +118,14 @@ public class NetworkManager : MonoBehaviour
         // Depois de definir os eventos, conectar ao servidor
         ws.Connect();
 
-        if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
-            return;
+        /*if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
+            return;*/
 
         string windowsTimeZone = TimeZoneInfo.Local.Id;
         var ianaTimeZone = GetIanaTimeZone(windowsTimeZone);
 
-        SendConnectionSignal(SteamFriends.GetPersonaName(), ianaTimeZone);
+            SendConnectionSignal("PotyguaraVerse", ianaTimeZone);
+            //SendConnectionSignal(SteamFriends.GetPersonaName(), ianaTimeZone);
     }
 
     private string GetIanaTimeZone(string windowsTimeZone)
@@ -490,12 +490,12 @@ public class NetworkManager : MonoBehaviour
                 { "id", id },
             }
         };
-        Achievement.Instance.eventos++;
+        /*Achievement.Instance.eventos++;
         if(Achievement.Instance.eventos == 1000)
         {
             Achievement.Instance.UnclockAchievement("potyverser");
         }
-        Achievement.Instance.SetStat("eventos", Achievement.Instance.eventos);
+        Achievement.Instance.SetStat("eventos", Achievement.Instance.eventos);*/
 
         // solicita a atualização dos tickets para o servidor
         if (ws != null)

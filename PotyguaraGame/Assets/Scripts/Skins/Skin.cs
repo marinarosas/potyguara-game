@@ -12,7 +12,7 @@ public class SkinMaterial
 
 
 [CreateAssetMenu(fileName = "newSkin", menuName = "Skin")]
-public class SkinUser : ScriptableObject
+public class Skin : ScriptableObject
 {
     [SerializeField] private string skinName;
     [SerializeField] public SkinnedMeshRenderer[] skinMeshes;

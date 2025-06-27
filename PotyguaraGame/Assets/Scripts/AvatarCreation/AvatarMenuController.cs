@@ -10,7 +10,7 @@ public class AvatarMenuController : MonoBehaviour
     [SerializeField] private AvatarOptionController[] options;
     public SkinSystem editSkin;
     public List<GameObject> bodies;
-    public List<SkinUser> skins;
+    public List<Skin> skins;
     public List<SkinMaterial> materials;
 
     private int bodyIndex = 0;
@@ -45,10 +45,10 @@ public class AvatarMenuController : MonoBehaviour
 
     public void SendChosenSkin()
     {
-        if (!SteamManager.Initialized)
-            return;
+        /*if (!SteamManager.Initialized)
+            return;*/
 
-        Achievement.Instance.UnclockAchievement("criando_vida");
+        //Achievement.Instance.UnclockAchievement("criando_vida");
 
         int skinIndex = int.Parse(options[(int)Option.SKIN].GetOption());
         int variant = int.Parse(options[(int)Option.VARIANT].GetOption());

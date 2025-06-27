@@ -5,22 +5,25 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Steamworks;
 public class SteamProfileManager : MonoBehaviour
 {
     public TextMeshProUGUI qnt;
     public RawImage avatarImage; // Referência para exibir a foto de perfil
+    public Sprite defaultImage;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
-            return;
+        avatarImage.texture = defaultImage.texture;
+        FindFirstObjectByType<PotyPlayerController>().playerData.name = "PotyguaraVerse";
+        //if (!SteamManager.Initialized) // Verifica se a Steam está inicializada
+        //    return;
+
         // Obtém a foto de perfil (avatar)
-        GetSteamAvatar(SteamUser.GetSteamID());
+        //GetSteamAvatar(SteamUser.GetSteamID());
 
         // obtem o nickname
-        FindFirstObjectByType<PotyPlayerController>().playerData.name = SteamFriends.GetPersonaName();
+        //FindFirstObjectByType<PotyPlayerController>().playerData.name = SteamFriends.GetPersonaName();
     }
     void OnEnable()
     {
@@ -37,7 +40,7 @@ public class SteamProfileManager : MonoBehaviour
         transform.GetChild(4).GetComponent<FadeController>().FadeInForFadeOut(2f);
     }
 
-    void GetSteamAvatar(CSteamID steamID)
+    /*void GetSteamAvatar(CSteamID steamID)
     {
         int imageID = SteamFriends.GetLargeFriendAvatar(steamID); // Obtém o ID da imagem
 
@@ -73,7 +76,7 @@ public class SteamProfileManager : MonoBehaviour
 
         // Exibe a textura na UI
         avatarImage.texture = avatarTexture;
-    }
+    }*/
 
     Texture2D FlipTextureVertically(Texture2D original)
     {

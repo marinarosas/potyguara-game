@@ -140,8 +140,7 @@ public class GameForteController : MonoBehaviour
 
             Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
 
-            int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
-            if (potycoins >= 10)
+            if (Application.platform == RuntimePlatform.Android)
             {
                 handMenuLevel1.SetActive(true);
                 handMenuLevel1.GetComponent<FadeController>().FadeIn();
@@ -153,7 +152,22 @@ public class GameForteController : MonoBehaviour
                 mainCam.GetChild(4).gameObject.SetActive(false);
             }
             else
-                mainCam.GetChild(4).GetComponent<SteamProfileManager>().ShootAlert();
+            {
+                int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+                if (potycoins >= 10)
+                {
+                    handMenuLevel1.SetActive(true);
+                    handMenuLevel1.GetComponent<FadeController>().FadeIn();
+                    portal.SetActive(false);
+                    ranking.GetComponent<FadeController>().FadeOut();
+                    FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
+                    FindFirstObjectByType<SpawnerController>().SetLevelZombieMode();
+                    zombieMode.gameObject.transform.parent.gameObject.SetActive(false);
+                    mainCam.GetChild(4).gameObject.SetActive(false);
+                }
+                else
+                    mainCam.GetChild(4).GetComponent<SteamProfileManager>().ShootAlert();
+            }
         }
         else
         {
@@ -161,8 +175,14 @@ public class GameForteController : MonoBehaviour
             count = 120;
 
             Transform mainCam = GameObject.FindWithTag("MainCamera").transform;
-
-            int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
+            portal.SetActive(false);
+            ranking.GetComponent<FadeController>().FadeOut();
+            FindFirstObjectByType<PotyPlayerController>().ConsumePotycoins(10);
+            FindFirstObjectByType<SpawnerController>().SetLevelNormalMode();
+            SetStartTimer();
+            normalMode.gameObject.transform.parent.gameObject.SetActive(false);
+            mainCam.GetChild(4).gameObject.SetActive(false);
+            /*int potycoins = FindFirstObjectByType<PotyPlayerController>().GetPotycoins();
             if (potycoins >= 10)
             {
                 portal.SetActive(false);
@@ -174,7 +194,7 @@ public class GameForteController : MonoBehaviour
                 mainCam.GetChild(4).gameObject.SetActive(false);
             }
             else
-                mainCam.GetChild(4).GetComponent<SteamProfileManager>().ShootAlert();
+                mainCam.GetChild(4).GetComponent<SteamProfileManager>().ShootAlert();*/
         }
     }
 
