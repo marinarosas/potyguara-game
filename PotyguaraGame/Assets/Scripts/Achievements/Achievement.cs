@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Steamworks;
 
 public class Achievement : MonoBehaviour
 {
@@ -29,14 +30,14 @@ public class Achievement : MonoBehaviour
         }
     }
 
-    /*private void Start()
+    private void Start()
     {
         partidas_defesaForte = GetStat("partidas_defesaForte");
         partidas_hover = GetStat("partidas_hover");
         ships_levas = GetStat("navios_levas");
         zombies = GetStat("zombies");
         eventos = GetStat("eventos");
-    }*/
+    }
 
     private void Update()
     {
@@ -53,11 +54,11 @@ public class Achievement : MonoBehaviour
 
     public void ResetAchievement()
     {
-        /*if (!SteamManager.Initialized)
-            return;*/
+        if (!SteamManager.Initialized)
+            return;
 
-        //SteamUserStats.ResetAllStats(true);
-        //SteamUserStats.RequestCurrentStats();
+        SteamUserStats.ResetAllStats(true);
+        SteamUserStats.RequestCurrentStats();
 
         zombies = 0;
         eventos = 0;
@@ -72,27 +73,27 @@ public class Achievement : MonoBehaviour
 
     public void UnclockAchievement(string id)
     {
-        /*if(!SteamManager.Initialized)
-            return;*/
+        if(!SteamManager.Initialized)
+            return;
 
-        //SteamUserStats.SetAchievement(id);
-        //SteamUserStats.StoreStats();
+        SteamUserStats.SetAchievement(id);
+        SteamUserStats.StoreStats();
     }
 
     public void SetStat(string id, int value)
     {
         if(!SteamManager.Initialized) return;
 
-        //SteamUserStats.SetStat(id, value);
-        //SteamUserStats.StoreStats();
+        SteamUserStats.SetStat(id, value);
+        SteamUserStats.StoreStats();
     }
 
-    /*public int GetStat(string id)
+    public int GetStat(string id)
     {
         if (!SteamManager.Initialized)
             return 0;
 
-        //SteamUserStats.GetStat(id, out int qnt);
-        //return qnt;
-    }*/
+        SteamUserStats.GetStat(id, out int qnt);
+        return qnt;
+    }
 }
