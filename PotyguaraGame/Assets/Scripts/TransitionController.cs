@@ -15,6 +15,7 @@ public class TransitionController : MonoBehaviour
     private int tempMode;
     private int tempSceneIndex = -1;
     public bool isInShowArea = false;
+    private bool menuUpdated = false;
 
     public static TransitionController Instance;
 
