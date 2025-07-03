@@ -562,34 +562,34 @@ public class NetworkManager : MonoBehaviour
         // A cada frame, verificar se precisa instanciar quantos RemotePlayerPrefab e
         // LocalPlayerPrefab forem necessários
         if (gameState != null) {
-
-            if (SceneManager.GetActiveScene().buildIndex == 2)
+            // Para cada jogador no gameState verificar se o jogador já existe na cena
+            // Se não existir, instanciar um novo jogador
+            // Se existir, atualizar a posição do jogador
+            foreach (var playerId in gameState.players.Keys)
             {
-                // Para cada jogador no gameState verificar se o jogador já existe na cena
-                // Se não existir, instanciar um novo jogador
-                // Se existir, atualizar a posição do jogador
-                foreach (var playerId in gameState.players.Keys)
+
+                // Se o jogador for o jogador local, não fazer nada
+                if (playerId == this.playerId)
                 {
+                    FindFirstObjectByType<PotyPlayerController>().GetPotycoinsOfTheServer(gameState.players[playerId].potycoins);
+                    //Debug.Log(playerId + " SOU EU!");
+                    // é o jogador local
+                    //TODO: talvez precisa atualiza a minha posição se isso puder acontecer
+                    // com alguma ação do servidor.
+                    continue;
+                }
 
-                    // Se o jogador for o jogador local, não fazer nada
-                    if (playerId == this.playerId)
-                    {
-                        //Debug.Log(playerId + " SOU EU!");
-                        // é o jogador local
-                        //TODO: talvez precisa atualiza a minha posição se isso puder acontecer
-                        // com alguma ação do servidor.
-                        continue;
-                    }
-
+                if (SceneManager.GetActiveScene().buildIndex == 2)
+                {
                     // Buscar o jogador na cena pelo playerId
                     GameObject playerObject = GameObject.Find(playerId);
-
 
                     // Se o jogador não existir, instanciar um novo jogador
                     if (playerObject == null)
                     {
-                        playerObject = Instantiate(RemotePlayerPrefab) as GameObject;
-                        playerObject.transform.GetChild(0).GetComponent<SetSkin>().SetSkinAvatar(gameState.players[playerId].skin.gender, 
+                        Vector3 initialPos = GameObject.Find("InitialPosition").transform.position;
+                        playerObject = Instantiate(RemotePlayerPrefab, initialPos, Quaternion.identity);
+                        playerObject.transform.GetChild(0).GetComponent<SetSkin>().SetSkinAvatar(gameState.players[playerId].skin.gender,
                             gameState.players[playerId].skin.index, gameState.players[playerId].skin.material);
                         playerObject.name = playerId;
                     }
@@ -623,10 +623,10 @@ public class NetworkManager : MonoBehaviour
                 }
             }
 
-            while (potycoins.TryDequeue(out int potycoin))
+            /*while (potycoins.TryDequeue(out int potycoin))
             {
                 FindFirstObjectByType<PotyPlayerController>().GetPotycoinsOfTheServer(potycoin);
-            }
+            }*/
 
             while (skin.TryDequeue(out string skinString))
             {
@@ -667,9 +667,6 @@ public class NetworkManager : MonoBehaviour
             {
                 FindFirstObjectByType<PotyPlayerController>().SetScoreZombieMode(pointingZM);
             }
-
-            if (SceneManager.GetActiveScene().buildIndex == 0)
-                TransitionController.Instance.UpdateMainMenu(isTheFirstAcess);
         }
     }
 }
