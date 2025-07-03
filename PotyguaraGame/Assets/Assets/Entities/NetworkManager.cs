@@ -584,23 +584,27 @@ public class NetworkManager : MonoBehaviour
                     // Buscar o jogador na cena pelo playerId
                     GameObject playerObject = GameObject.Find(playerId);
 
+                    RemoteUser remoteCharacterController = null;
+
                     // Se o jogador não existir, instanciar um novo jogador
                     if (playerObject == null)
                     {
                         Vector3 initialPos = GameObject.Find("InitialPosition").transform.position;
                         playerObject = Instantiate(RemotePlayerPrefab, initialPos, Quaternion.identity);
-                        playerObject.transform.GetChild(0).GetComponent<SetSkin>().SetSkinAvatar(gameState.players[playerId].skin.gender,
+                        playerObject.GetComponentInChildren<SetSkin>().SetSkinAvatar(gameState.players[playerId].skin.gender,
                             gameState.players[playerId].skin.index, gameState.players[playerId].skin.material);
                         playerObject.name = playerId;
-                    }
 
-                    // Atualizar a posição do jogador
-                    // TODO: implementar interpolação de movimento
-                    playerObject.transform.position = new Vector3(
-                        gameState.players[playerId].position_x,
-                        gameState.players[playerId].position_y,
-                        gameState.players[playerId].position_z
-                    );
+                        remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
+                        // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
+                        remoteCharacterController.OnPositionUpdate(serverPosition);
+                    }
+                    else
+                    {
+                        remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
+                        // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
+                        remoteCharacterController.OnPositionUpdate(serverPosition);
+                    }
                 }
             }
 
