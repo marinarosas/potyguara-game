@@ -19,7 +19,6 @@ public class AvatarMenuController : MonoBehaviour
 
     private void Start()
     {
-        NetworkManager.Instance.RequestSkins();
         SkinSystem skinSystem = bodies[0].GetComponent<SkinSystem>();
         if (skinSystem != null)
         {
@@ -34,6 +33,23 @@ public class AvatarMenuController : MonoBehaviour
         materials = new List<SkinMaterial> (skins[skinIndex].skinMaterials);
 
         IniciateMenu(Option.BODY, bodyIndex, skinIndex, skinMaterial);
+        Invoke("RequestSkinsOfTheServer", 0.1f);
+    }
+
+    public void RequestSkinsOfTheServer()
+    {
+        Player player = NetworkManager.Instance.gameState.players[NetworkManager.Instance.playerId];
+        if (player != null)
+        {
+            foreach (var skin in player.skinsMASC)
+            {
+                FindFirstObjectByType<PotyPlayerController>().playerData.skinsMASC.Add(skin);
+            }
+            foreach (var skin in player.skinsFEM)
+            {
+                FindFirstObjectByType<PotyPlayerController>().playerData.skinsFEM.Add(skin);
+            }
+        }
     }
 
     public void IniciateMenu(Option option, int bodyIndex, int skinIndex, int skinMaterial)

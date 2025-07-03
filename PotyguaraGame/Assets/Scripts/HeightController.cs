@@ -13,7 +13,7 @@ public class HeightController : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         GameObject.FindWithTag("MainCamera").transform.GetChild(4).GetComponent<SteamProfileManager>().UpdatePotycoins(FindFirstObjectByType<PotyPlayerController>().GetPotycoins());
-        // Se não for Atalhos de Menu, coloca o player na posição inicial da Cena
+        // Se nï¿½o for Atalhos de Menu, coloca o player na posiï¿½ï¿½o inicial da Cena
         if (!TransitionController.Instance.GetIsSkip())
         {
             Transform initialPosition = GameObject.Find("InitialPosition").transform;
@@ -28,28 +28,34 @@ public class HeightController : MonoBehaviour
         height = value;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (player != null)
-        {
-            if (!insideLift)
-            {
-                LiftShowController show = FindFirstObjectByType<LiftShowController>();
-                if (show != null)
-                {
-                    if (show.isInsideLift)
-                        VariableHeight(player);
-                    else
-                        FixedHeight(player);
-                }
-                else
-                    FixedHeight(player);
-            }
-            else
-                VariableHeight(player);
-        }
-    }
+  private void SendPos()
+  {
+      NetworkManager.Instance.SendPosition(player.transform.position);
+  }
+
+  // Update is called once per frame
+  void Update()
+  {
+      if (player != null)
+      {
+          if (!insideLift)
+          {
+              LiftShowController show = FindFirstObjectByType<LiftShowController>();
+              if (show != null)
+              {
+                  if (show.isInsideLift)
+                      VariableHeight(player);
+                  else
+                      FixedHeight(player);
+              }
+              else
+                  FixedHeight(player);
+          }
+          else
+              VariableHeight(player);
+          Invoke("SendPos", 0.2f);
+      }
+  }
 
     public void SetBool(bool value)
     {

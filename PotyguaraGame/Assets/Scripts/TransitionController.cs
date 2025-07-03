@@ -15,7 +15,6 @@ public class TransitionController : MonoBehaviour
     private int tempMode;
     private int tempSceneIndex = -1;
     public bool isInShowArea = false;
-    private bool menuUpdated = false;
 
     public static TransitionController Instance;
 
@@ -66,20 +65,7 @@ public class TransitionController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if(SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            if (!menuUpdated)
-            {
-                NetworkManager net = NetworkManager.Instance;
-                if(net != null)
-                {
-                    UpdateMainMenu(net.isTheFirstAcess);
-                    menuUpdated = true;
-                }
-            }
-        }
-        
+    {   
         if (isSkip && SceneManager.GetActiveScene().buildIndex == 3)
         {
             GameForteController.Instance.SetStartMode(tempMode);
