@@ -543,7 +543,7 @@ public class NetworkManager : MonoBehaviour
                     continue;
                 }
 
-                if (SceneManager.GetActiveScene().buildIndex == 2)
+                if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 1 && SceneManager.GetActiveScene().buildIndex != 5)
                 {
                     // Buscar o jogador na cena pelo playerId
                     GameObject playerObject = GameObject.Find(playerId);
