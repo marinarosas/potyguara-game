@@ -51,6 +51,9 @@ public class NetworkManager : MonoBehaviour
     private ConcurrentQueue<string> pointingNormalMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> pointingZombieMode = new ConcurrentQueue<string>();
     private ConcurrentQueue<string> skin = new ConcurrentQueue<string>();
+
+    private ConcurrentQueue<string> deleteUserQueue = new ConcurrentQueue<string>();
+
     private ConcurrentQueue<int> skinsFEM = new ConcurrentQueue<int>();
     private ConcurrentQueue<int> skinsMAL = new ConcurrentQueue<int>();
     private ConcurrentQueue<string> tickets = new ConcurrentQueue<string>();
@@ -190,6 +193,9 @@ public class NetworkManager : MonoBehaviour
                     rankingN = response.parameters["rankingN"];
                     posRankingN = response.parameters["posRankingN"];
                     posRankingZ = response.parameters["posRankingZ"];
+                    break;
+                case "DeleteUser":
+                    deleteUserQueue.Enqueue(response.parameters["otherUserID"]);
                     break;
                 case "Reconnection":
                     this.playerId = response.parameters["playerID"];
@@ -558,28 +564,32 @@ public class NetworkManager : MonoBehaviour
                         gameState.players[playerId].position_z
                     );
 
-                    // Se o jogador não existir, instanciar um novo jogador
-                    if (playerObject == null)
+                    // Se o perfil já foi criado
+                    if (gameState.players[playerId].skin.gender != -1)
                     {
-                        playerObject = Instantiate(RemotePlayerPrefab);
-                        playerObject.transform.position = initialPos;
+                        // Se o jogador não existir, instanciar um novo jogador
+                        if (playerObject == null)
+                        {
+                            playerObject = Instantiate(RemotePlayerPrefab);
+                            playerObject.transform.position = initialPos;
 
-                        SkinUser skin = gameState.players[playerId].skin;
-                        playerObject.GetComponentInChildren<SetSkin>().SetSkinAvatar(skin.gender, skin.index, skin.material);
-                        playerObject.name = playerId;
+                            SkinUser skin = gameState.players[playerId].skin;
+                            playerObject.GetComponentInChildren<SetSkin>().SetSkinAvatar(skin.gender, skin.index, skin.material);
+                            playerObject.name = playerId;
 
-                        remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
-                        // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
-                        remoteCharacterController.OnPositionUpdate(initialPos);
-                    }
-                    else
-                    {
-                        remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
-                        // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
-                        if (serverPosition == Vector3.zero)
+                            remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
+                            // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
                             remoteCharacterController.OnPositionUpdate(initialPos);
+                        }
                         else
-                            remoteCharacterController.OnPositionUpdate(serverPosition);
+                        {
+                            remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
+                            // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
+                            if (serverPosition == Vector3.zero)
+                                remoteCharacterController.OnPositionUpdate(initialPos);
+                            else
+                                remoteCharacterController.OnPositionUpdate(serverPosition);
+                        }
                     }
                 }
             }
@@ -601,6 +611,12 @@ public class NetworkManager : MonoBehaviour
                     posRankingN = "";
                     rankingN = "";
                 }
+            }
+
+            while (deleteUserQueue.TryDequeue(out string userID))
+            {
+                GameObject remoteUSer = GameObject.Find(userID);
+                if (remoteUSer != null) Destroy(remoteUSer);
             }
 
             while (potycoins.TryDequeue(out int potycoin))
