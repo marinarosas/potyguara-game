@@ -549,6 +549,12 @@ public class NetworkManager : MonoBehaviour
                     continue;
                 }
 
+                if(!gameState.players[playerId].online)
+                    continue;
+
+                if (gameState.players[playerId].skin.gender == -1)
+                    continue;
+
                 if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 1 && SceneManager.GetActiveScene().buildIndex != 5)
                 {
                     // Buscar o jogador na cena pelo playerId
@@ -564,32 +570,28 @@ public class NetworkManager : MonoBehaviour
                         gameState.players[playerId].position_z
                     );
 
-                    // Se o perfil já foi criado
-                    if (gameState.players[playerId].skin.gender != -1)
+                    // Se o jogador não existir, instanciar um novo jogador
+                    if (playerObject == null)
                     {
-                        // Se o jogador não existir, instanciar um novo jogador
-                        if (playerObject == null)
-                        {
-                            playerObject = Instantiate(RemotePlayerPrefab);
-                            playerObject.transform.position = initialPos;
+                        playerObject = Instantiate(RemotePlayerPrefab);
+                        playerObject.transform.position = initialPos;
 
-                            SkinUser skin = gameState.players[playerId].skin;
-                            playerObject.GetComponentInChildren<SetSkin>().SetSkinAvatar(skin.gender, skin.index, skin.material);
-                            playerObject.name = playerId;
+                        SkinUser skin = gameState.players[playerId].skin;
+                        playerObject.GetComponentInChildren<SetSkin>().SetSkinAvatar(skin.gender, skin.index, skin.material);
+                        playerObject.name = playerId;
 
-                            remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
-                            // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
+                        remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
+                        // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
+                        remoteCharacterController.OnPositionUpdate(initialPos);
+                    }
+                    else
+                    {
+                        remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
+                        // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
+                        if (serverPosition == Vector3.zero)
                             remoteCharacterController.OnPositionUpdate(initialPos);
-                        }
                         else
-                        {
-                            remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
-                            // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
-                            if (serverPosition == Vector3.zero)
-                                remoteCharacterController.OnPositionUpdate(initialPos);
-                            else
-                                remoteCharacterController.OnPositionUpdate(serverPosition);
-                        }
+                            remoteCharacterController.OnPositionUpdate(serverPosition);
                     }
                 }
             }
