@@ -7,8 +7,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class SkinIntegrationController : MonoBehaviour
 {
-    public XRNode inputSource = XRNode.LeftHand; // Define qual controle será utilizado
-    private Animator animator; // Referência ao Animator do avatar;
+    private List<InputDevice> devices = new List<InputDevice>();
+    private InputDevice leftHandDevice;
+    public float movementThreshold = 0.1f;
+    Animator animator;
     private void Start()
     {
         Transform mainCam = transform.GetChild(0).GetChild(0);
@@ -39,13 +41,18 @@ public class SkinIntegrationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*InputDevice device = InputDevices.GetDeviceAtXRNode(inputSource);
-        device.TryGetFeatureValue(CommonUsages.primary2DAxis, out inputAxis);
-
-        bool isMoving = inputAxis.magnitude > 0.1f;
-        if (animator != null)
+        InputDeviceCharacteristics leftHandedController = InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller;
+        InputDevices.GetDevicesWithCharacteristics(leftHandedController, devices);
+        if (leftHandDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 joystickInput))
         {
-            animator.SetBool("isWalking", isMoving);
-        }*/
+            if (joystickInput.magnitude > movementThreshold)
+            {
+                Debug.Log("Personagem se movimentou");
+                PotyPlayerController.Instance.playerData.position_x = transform.position.x;
+                PotyPlayerController.Instance.playerData.position_y = transform.position.y;
+                PotyPlayerController.Instance.playerData.position_z = transform.position.z;
+                NetworkManager.Instance.SendPosition(new Vector3(transform.position.x, transform.position.y, transform.position.z));
+            }
+        }
     }
 }

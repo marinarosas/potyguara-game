@@ -5,7 +5,9 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Splines;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class PotyPlayerController : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class PotyPlayerController : MonoBehaviour
     private string positionRankingNormalMode = "N/A";
     private string scoreNormalMode = "";
     private string scoreZombieMode = "";
-   
+
 
     private bool wasConsumed = false;
 

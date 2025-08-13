@@ -563,13 +563,6 @@ public class NetworkManager : MonoBehaviour
                     RemoteUser remoteCharacterController = null;
                     Vector3 initialPos = GameObject.Find("InitialPosition").transform.position;
 
-                    // Posição recebida do servidor para o jogador remoto atual
-                    Vector3 serverPosition = new Vector3(
-                        gameState.players[playerId].position_x,
-                        gameState.players[playerId].position_y,
-                        gameState.players[playerId].position_z
-                    );
-
                     // Se o jogador não existir, instanciar um novo jogador
                     if (playerObject == null)
                     {
@@ -581,17 +574,21 @@ public class NetworkManager : MonoBehaviour
                         playerObject.name = playerId;
 
                         remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
+
                         // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
                         remoteCharacterController.OnPositionUpdate(initialPos);
                     }
                     else
                     {
+                        // Posição recebida do servidor para o jogador remoto atual
+                        Vector3 serverPosition = new Vector3(
+                            gameState.players[playerId].position_x,
+                            gameState.players[playerId].position_y,
+                            gameState.players[playerId].position_z
+                        );
+
                         remoteCharacterController = playerObject.GetComponentInChildren<RemoteUser>();
-                        // Define a posição inicial (o Lerp no SetRemoteCharacter fará o resto)
-                        if (serverPosition == Vector3.zero)
-                            remoteCharacterController.OnPositionUpdate(initialPos);
-                        else
-                            remoteCharacterController.OnPositionUpdate(serverPosition);
+                        remoteCharacterController.OnPositionUpdate(serverPosition);
                     }
                 }
             }
